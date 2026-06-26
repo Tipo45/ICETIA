@@ -7,7 +7,7 @@ export default function HostDepartment() {
 
         <div className="max-w-4xl mx-auto text-center">
 
-          <FaRegBuilding className="mx-auto h-16 w-16 text-blue-700" />
+          <FaRegBuilding className="mx-auto h-15 w-15 text-blue-700" />
 
           <h2 className="mt-6 text-4xl font-bold">
             Host Institution
@@ -25,7 +25,7 @@ export default function HostDepartment() {
             partnerships.
           </p>
 
-          <div className="mt-8 inline-flex items-center gap-2 rounded-full border px-5 py-3">
+          <div className="mt-8 inline-flex items-center gap-2 rounded-full border px-5 py-3 text-sm">
             <FaGraduationCap className="h-5 w-5 text-blue-700" />
             Academic Excellence • Research • Innovation
           </div>

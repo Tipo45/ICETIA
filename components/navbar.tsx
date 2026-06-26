@@ -10,22 +10,31 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { IoMdMenu } from "react-icons/io";
+import { useRouter } from "next/navigation";
 
-const navItems = [
-  { name: "About", href: "#about" },
-  { name: "Call for Papers", href: "#cfp" },
-  { name: "Tracks", href: "#tracks" },
-  { name: "Dates", href: "#dates" },
-  { name: "Registration", href: "#registration" },
-  { name: "Contact", href: "#contact" },
-];
+
 
 export default function Navbar() {
+  const navItems = [
+  { name: "About", href: "/#about" },
+  { name: "Committees", href: "/committees" },
+  { name: "Call for Papers", href: "#cfp" },
+  { name: "Tracks", href: "#tracks" },
+  {name: "Program", href: "/program"},
+  {name: "Sponsorship", href: "/sponsorship"},
+  { name: "Contact", href: "/contact" },
+];
+const router = useRouter();
+
+const handleRegistrationNavigation = () => {
+  router.push("/registration")
+}
+
   return (
     <header className="sticky top-0 z-50 border-b bg-white/90 backdrop-blur-md">
       <div className="container mx-auto flex h-20 items-center justify-between px-6">
         <Link href="/" className="max-w-sm">
-          <h1 className="font-bold text-xl text-blue-900">
+          <h1 className="font-bold text-lg text-blue-900">
             ICETIA 2026
           </h1>
           <p className="text-xs text-muted-foreground">
@@ -39,7 +48,7 @@ export default function Navbar() {
             <a
               key={item.name}
               href={item.href}
-              className="text-sm font-medium transition hover:text-blue-700"
+              className="font-medium transition hover:text-blue-700"
             >
               {item.name}
             </a>
@@ -47,7 +56,7 @@ export default function Navbar() {
         </nav>
 
         <div className="hidden xl:block">
-          <Button>
+          <Button onClick={handleRegistrationNavigation}>
             Register Now
           </Button>
         </div>
@@ -59,7 +68,7 @@ export default function Navbar() {
               size="icon"
               className="xl:hidden"
             >
-              <IoMdMenu />
+              <IoMdMenu className="text-4xl" />
             </Button>
           </SheetTrigger>
 

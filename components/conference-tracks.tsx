@@ -9,21 +9,39 @@ const tracks = [
     {
     title: "Cybersecurity, Privacy & Digital Trust",
     topics: [
-      "Network Security",
-      "Digital Forensics",
-      "Blockchain Security",
-      "Privacy Technologies",
-      "Threat Intelligence",
+      "Cybersecurity and Information Assurance",
+      "Network Security and Intrusion Detection Systems",
+      "Cyber Threat Intelligence and Risk Management",
+      "Digital Forensics and Incident Response",
+      "Malware Analysis and Cybercrime Investigation",
+      "Cryptography and Secure Communication",
+      "Blockchain Security and Distributed Ledger Technologies",
+      "Cloud Security, Edge Security and IoT Security",
+      "Privacy-Preserving Technologies and Data Protection",
+      "Identity Management and Access Control",
+      "Critical Infrastructure Protection",
+      "Cybersecurity Governance, Policy and Compliance",
+      "Cyber Resilience and Security Awareness",
+      "Security in 5G, 6G and Future Communication Networks",
     ],
   },
   {
     title: "Artificial Intelligence & Intelligent Systems",
     topics: [
-      "Generative AI",
-      "Deep Learning",
-      "Computer Vision",
-      "Natural Language Processing",
-      "AI Ethics",
+      "Artificial Intelligence Theory, Methods and Applications",
+      "Machine Learning and Deep Learning",
+      "Generative AI and Large Language Models",
+      "Natural Language Processing and Speech Technologies",
+      "Computer Vision and Speech Technologies",
+      "Intelligent Decision Support Systems",
+      "Expert Systems and Knowledge-Based Systems",
+      "Reinforcement Learning and Autonomous Intelligence",
+      "Explainable AI and Trustworthy AI",
+      "AI Ethics, Governance and Responsible Innovation",
+      "AI Ethics, Governance and Responsible Innovation",
+      "AI for Education, Healthcare, Agriculture, Finance and Governance",
+      "Human-Centred AI and AI-Human Collaboration",
+      "Robotics, Automation and Intelligent Agents",
     ],
   },
   {
@@ -34,6 +52,15 @@ const tracks = [
       "Blockchain Security",
       "Privacy Technologies",
       "Threat Intelligence",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
     ],
   },
   {
@@ -44,6 +71,15 @@ const tracks = [
       "Blockchain Security",
       "Privacy Technologies",
       "Threat Intelligence",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
     ],
   },
   {
@@ -54,6 +90,15 @@ const tracks = [
       "Business Intelligence",
       "Data Mining",
       "Data Visualization",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
     ],
   },
   {
@@ -64,6 +109,15 @@ const tracks = [
       "DevOps",
       "Microservices",
       "Software Quality Assurance",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
     ],
   },
   {
@@ -74,6 +128,15 @@ const tracks = [
       "DevOps",
       "Microservices",
       "Software Quality Assurance",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
     ],
   },
   {
@@ -84,6 +147,15 @@ const tracks = [
       "DevOps",
       "Microservices",
       "Software Quality Assurance",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
     ],
   },
   {
@@ -94,6 +166,15 @@ const tracks = [
       "DevOps",
       "Microservices",
       "Software Quality Assurance",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
     ],
   },
 ];
@@ -125,14 +206,14 @@ export default function ConferenceTracks() {
               value={track.title}
               key={track.title}
             >
-              <AccordionTrigger>
+              <AccordionTrigger className="text-lg">
                 {track.title}
               </AccordionTrigger>
 
               <AccordionContent>
-                <ul className="grid md:grid-cols-2 gap-3">
+                <ul className="grid grid-cols-2 gap-3 px-4">
                   {track.topics.map((topic) => (
-                    <li key={topic}>
+                    <li key={topic} className="text-base">
                       • {topic}
                     </li>
                   ))}

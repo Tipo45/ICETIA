@@ -37,7 +37,7 @@ export default function Hero() {
             initial={{ y: 40, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: .4 }}
-            className="mt-8 text-lg text-slate-200 lg:text-xl"
+            className="mt-8 text-lg text-slate-200 xl:text-xl"
           >
             Advancing Emerging Technologies, Innovations and
             Applications for Sustainable Digital Transformation.
@@ -52,7 +52,7 @@ export default function Hero() {
             </div>
 
             <div className="flex items-center gap-2">
-              <FaRegBuilding size={20} />
+              <FaRegBuilding size={18} />
               <span>
                 Department of Computer Science and Informatics
               </span>

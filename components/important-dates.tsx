@@ -3,20 +3,24 @@ import { FaCalendar } from "react-icons/fa";
 
 const dates = [
   {
+    title: "Paper Submission Opens",
+    date: "TBA",
+  },
+  {
     title: "Paper Submission Deadline",
-    date: "15 August 2026",
+    date: "TBA",
   },
   {
     title: "Notification of Acceptance",
-    date: "15 September 2026",
+    date: "TBA",
   },
   {
     title: "Camera Ready Submission",
-    date: "10 October 2026",
+    date: "TBA",
   },
   {
-    title: "Registration Deadline",
-    date: "31 October 2026",
+    title: "Author Registration Deadline",
+    date: "TBA",
   },
   {
     title: "Conference Dates",

@@ -24,16 +24,28 @@ export default function Footer() {
             </h4>
 
             <div className="mt-4 flex flex-col gap-3">
-              <Link href="#about">
+              <Link href="/#about">
                 About
+              </Link>
+
+              <Link href="/committees">
+                Committees
               </Link>
 
               <Link href="#cfp">
                 Call For Papers
               </Link>
 
-              <Link href="#registration">
+              <Link href="/program">
+                Program
+              </Link>
+
+              <Link href="/registration">
                 Registration
+              </Link>
+
+              <Link href="/contact">
+                Contact
               </Link>
             </div>
           </div>
@@ -53,7 +65,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 border-t border-slate-800 pt-8 text-center text-slate-500">
-          © 2026 ICETIA. All Rights Reserved.
+          © 2026 Tipotek. All Rights Reserved.
         </div>
 
       </div>
