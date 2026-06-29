@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-
 import {
   Sheet,
   SheetContent,
@@ -16,28 +15,28 @@ import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const navItems = [
-  { name: "About", href: "/#about" },
-  { name: "Committees", href: "/committees" },
-  { name: "Call for Papers", href: "#cfp" },
-  { name: "Tracks", href: "#tracks" },
-  {name: "Program", href: "/program"},
-  {name: "Sponsorship", href: "/sponsorship"},
-  { name: "Contact", href: "/contact" },
-];
-const router = useRouter();
+    { name: "About", href: "/#about" },
+    { name: "Committees", href: "/committees" },
+    { name: "Call for Papers", href: "#cfp" },
+    { name: "Tracks", href: "#tracks" },
+    { name: "Program", href: "/program" },
+    { name: "Sponsorship", href: "/sponsorship" },
+    { name: "Contact", href: "/contact" },
+  ];
+  const router = useRouter();
 
-const handleRegistrationNavigation = () => {
-  router.push("/registration")
-}
+  const handleRegistrationNavigation = () => {
+    router.push("/#registration")
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b bg-white/90 backdrop-blur-md">
-      <div className="container mx-auto flex h-20 items-center justify-between px-6">
+      <div className="container mx-auto flex h-20 items-center justify-between px-2">
         <Link href="/" className="max-w-sm">
-          <h1 className="font-bold text-lg text-blue-900">
+          <h1 className="font-bold text-sm lg:text-lg text-blue-900">
             ICETIA 2026
           </h1>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs lg:text-md text-muted-foreground">
             International Conference on Emerging Technologies,
             Innovation and Application
           </p>
@@ -48,7 +47,7 @@ const handleRegistrationNavigation = () => {
             <a
               key={item.name}
               href={item.href}
-              className="font-medium transition hover:text-blue-700"
+              className="text-sm font-medium transition hover:text-blue-700"
             >
               {item.name}
             </a>
@@ -65,14 +64,14 @@ const handleRegistrationNavigation = () => {
           <SheetTrigger asChild>
             <Button
               variant="ghost"
-              size="icon"
-              className="xl:hidden"
+              size="icon-lg"
+              className="xl:hidden w-12 h-12"
             >
-              <IoMdMenu className="text-4xl" />
+              <IoMdMenu className="text-5xl" />
             </Button>
           </SheetTrigger>
 
-          <SheetContent side="right">
+          <SheetContent side="left">
             <div className="mt-10 flex flex-col gap-6">
               {navItems.map((item) => (
                 <a
@@ -84,7 +83,7 @@ const handleRegistrationNavigation = () => {
                 </a>
               ))}
 
-              <Button className="mt-4">
+              <Button onClick={handleRegistrationNavigation} className="mt-4">
                 Register Now
               </Button>
             </div>

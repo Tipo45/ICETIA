@@ -1,4 +1,3 @@
-
 import Navbar from "@/components/navbar";
 import Hero from "@/components/hero";
 import CallForPapers from "@/components/call-for-papers";

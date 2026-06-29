@@ -18,7 +18,7 @@ export default function HostDepartment() {
           </h3>
 
           <p className="mt-6 text-muted-foreground leading-8">
-            The Department of Computer Science and Informatics
+            The Department of Computer Science and Informatics, Federal University Otuoke, Ogbia, Bayelsa State
             is committed to advancing research, innovation,
             and digital transformation through academic
             excellence, collaborative research, and industry

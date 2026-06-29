@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import Link from "next/link";
+import { it } from "node:test";
 import { BsFileText } from "react-icons/bs";
 import { CiCircleCheck } from "react-icons/ci";
 import { FaAward, FaRegCalendarCheck, FaUsers } from "react-icons/fa";
-import { IoMdBook } from "react-icons/io";
+import { IoIosInformationCircleOutline, IoMdBook } from "react-icons/io";
 import { LuCoffee } from "react-icons/lu";
 import { MdOutlineDisplaySettings, MdOutlineRecordVoiceOver } from "react-icons/md";
 import { PiPresentationChartFill } from "react-icons/pi";
@@ -14,24 +16,28 @@ const categories = [
         price: "₦30,000",
         description:
             "Presenting authors with accepted papers.",
+        href: "/registration/authors-registration"
     },
     {
         title: "Co-Authors",
         price: "₦30,000",
         description:
             "Additional authors of accepted papers.",
+        href: "/registration/co-authors-registration"
     },
     {
         title: "Non-authors/Participants",
         price: "₦30,000",
         description:
             "Industry professionals and attendees.",
+        href: "/registration/non-authors-registration"
     },
     {
         title: "Students",
         price: "₦20,000",
         description:
             "Undergraduate and postgraduate students.",
+        href: "/registration/students-registration"
     },
 ];
 
@@ -53,12 +59,33 @@ export default function RegistrationCategories() {
             className="py-24 bg-slate-50"
         >
             <div className="container mx-auto px-6">
-                <div className="text-center">
-                    <span className="uppercase tracking-wider text-blue-700 font-semibold">
+                <div className="text-center max-w-4xl mx-auto mb-16">
+                    <span className="inline-block px-4 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold tracking-wider uppercase">
                         Registration
                     </span>
-
-                    <h2 className="mt-4 text-4xl font-bold">
+                    <h2 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900">
+                        Conference Registration
+                    </h2>
+                    <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
+                        All authors, co-authors, non-authors, presenters, participants, postgraduate students,
+                        undergraduate students, industry representatives and invited guests are required to register
+                        for the First International Conference on Emerging Technologies, Innovation and Applications (ICETIA 2026).
+                    </p>
+                    <p className="mt-4 text-muted-foreground leading-relaxed">
+                        Registration will provide access to the conference sessions, keynote presentations, technical paper presentations,
+                        panel discussions, workshops, conference materials and other approved conference activities.
+                    </p>
+                    <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-3">
+                        <IoIosInformationCircleOutline className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                        <p className="text-sm text-amber-800">
+                            <span className="font-semibold">Important:</span> At least one author of each accepted paper must complete
+                            registration within the specified deadline for the paper to be included in the final conference programme and
+                            considered for presentation and publication in the conference proceedings.
+                        </p>
+                    </div>
+                </div>
+                <div className="text-center">
+                    <h2 className="mt-4 text-2xl font-bold">
                         Registration Categories
                     </h2>
 
@@ -86,8 +113,10 @@ export default function RegistrationCategories() {
                                     {item.description}
                                 </p>
 
-                                <Button className="mt-8 w-full">
-                                    Choose
+                                <Button asChild className="mt-12 w-full rounded-xl">
+                                    <Link href={item.href}>
+                                        Choose Category
+                                    </Link>
                                 </Button>
                             </CardContent>
                         </Card>
@@ -112,7 +141,7 @@ export default function RegistrationCategories() {
 
                         <div className="grid grid-cols-2 lg:grid-cols-1 gap-3 mt-10">
                             {benefits.map((benefit, index) => (
-                                <div 
+                                <div
                                     key={index}
                                     className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 hover:bg-blue-50 transition-colors group"
                                 >
