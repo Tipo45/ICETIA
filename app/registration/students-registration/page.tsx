@@ -7,6 +7,7 @@ import { FiUserCheck, FiUsers, FiFileText, FiCoffee } from "react-icons/fi";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { MdOutlineEventNote, MdOutlineVerified } from "react-icons/md";
 import { BsClockHistory } from "react-icons/bs";
+import { RiSecurePaymentLine } from "react-icons/ri";
 
 export default function RegistrationSection() {
 
@@ -114,9 +115,10 @@ export default function RegistrationSection() {
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center gap-4 mt-6">
-                                        <button className="mt-10 px-6 py-3 bg-blue-700 rounded-lg w-full text-base text-white font-semibold shadow-lg hover:blue-200 cursor-pointer transition-all duration-300">
-                                            Continue Registration →
+                                    <div className="flex gap-4 mt-6">
+                                        <button className="flex justify-center items-center gap-2.5 mt-10 px-6 py-3.5 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl w-full text-base text-white font-semibold shadow-lg hover:shadow-blue-200/50 transition-all duration-300 cursor-pointer">
+                                            <span>Make Payment</span>
+                                            <RiSecurePaymentLine className="text-xl" />
                                         </button>
                                     </div>
                                 </div>
@@ -127,39 +129,39 @@ export default function RegistrationSection() {
                         </div>
                     </div>
 
-                    <div className="">
-                        <Card className="sticky top-24 rounded-3xl border-2 border-blue-200/60 shadow-xl bg-linear-to-br from-white to-blue-50/30 overflow-hidden">
-                            <CardContent className="p-6">
-                                <div className="text-center">
-                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold mb-4">
-                                        <FiUserCheck className="w-3 h-3" />
-                                        Student Package
-                                    </div>
-                                    <p className="text-sm text-muted-foreground">Registration Fee</p>
-                                    <p className="text-5xl lg:text-6xl font-bold text-blue-700 mt-1">
-                                        {paymentValue.toLocaleString()}
-                                    </p>
-                                    <div className="mt-2 h-px bg-linear-to-r from-transparent via-blue-200 to-transparent"></div>
-                                </div>
 
-                                <div className="mt-6 space-y-3">
-                                    <p className="text-sm font-semibold text-slate-700 mb-3">What's Included:</p>
-                                    {[
-                                        { icon: FiUserCheck, text: "Access to Conference Sessions" },
-                                        { icon: FiFileText, text: "Paper in Conference Proceedings" },
-                                        { icon: MdOutlineVerified, text: "Certificate of Presentation" },
-                                        { icon: FiCoffee, text: "Conference Meals & Refreshments" },
-                                        { icon: FiUsers, text: "Networking Opportunities" },
-                                    ].map((item, index) => (
-                                        <div key={index} className="flex items-start gap-3 p-2 rounded-lg hover:bg-blue-50/50 transition-colors">
-                                            <CiCircleCheck className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
-                                            <span className="text-sm text-slate-700">{item.text}</span>
-                                        </div>
-                                    ))}
+                    <Card className="sticky top-24 rounded-3xl border-2 border-blue-200/60 shadow-xl bg-linear-to-br from-white to-blue-50/30 overflow-hidden">
+                        <CardContent className="p-6">
+                            <div className="text-center">
+                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold mb-4">
+                                    <FiUserCheck className="w-3 h-3" />
+                                    Student Package
                                 </div>
-                            </CardContent>
-                        </Card>
-                    </div>
+                                <p className="text-sm text-muted-foreground">Registration Fee</p>
+                                <p className="text-5xl lg:text-6xl font-bold text-blue-700 mt-1">
+                                    {paymentValue.toLocaleString()}
+                                </p>
+                                <div className="mt-2 h-px bg-linear-to-r from-transparent via-blue-200 to-transparent"></div>
+                            </div>
+
+                            <div className="mt-6 space-y-3">
+                                <p className="text-sm font-semibold text-slate-700 mb-3">What's Included:</p>
+                                {[
+                                    { icon: FiUserCheck, text: "Access to Conference Sessions" },
+                                    { icon: FiFileText, text: "Paper in Conference Proceedings" },
+                                    { icon: MdOutlineVerified, text: "Certificate of Presentation" },
+                                    { icon: FiCoffee, text: "Conference Meals & Refreshments" },
+                                    { icon: FiUsers, text: "Networking Opportunities" },
+                                ].map((item, index) => (
+                                    <div key={index} className="flex items-start gap-3 p-2 rounded-lg hover:bg-blue-50/50 transition-colors">
+                                        <CiCircleCheck className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
+                                        <span className="text-sm text-slate-700">{item.text}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </CardContent>
+                    </Card>
+
 
                 </div>
 

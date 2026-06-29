@@ -10,6 +10,7 @@ import { MdOutlineEventNote, MdOutlineVerified } from "react-icons/md";
 import { BsClockHistory } from "react-icons/bs";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
+import { RiSecurePaymentLine } from "react-icons/ri";
 
 
 const benefits = [
@@ -130,9 +131,10 @@ export default function RegistrationSection() {
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center gap-4 mt-6">
-                                        <button className="mt-10 px-6 py-3 bg-blue-700 rounded-lg w-full text-base text-white font-semibold shadow-lg hover:blue-200 cursor-pointer transition-all duration-300">
-                                            Continue Registration →
+                                    <div className="flex gap-4 mt-6">
+                                        <button className="flex justify-center items-center gap-2.5 mt-10 px-6 py-3.5 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl w-full text-base text-white font-semibold shadow-lg hover:shadow-blue-200/50 transition-all duration-300 cursor-pointer">
+                                            <span>Make Payment</span>
+                                            <RiSecurePaymentLine className="text-xl" />
                                         </button>
                                     </div>
                                 </div>
@@ -143,7 +145,7 @@ export default function RegistrationSection() {
                         </div>
                     </div>
 
-                    <div className="">
+                   
                         <Card className="sticky top-24 rounded-3xl border-2 border-blue-200/60 shadow-xl bg-linear-to-br from-white to-blue-50/30 overflow-hidden">
                             <CardContent className="p-6">
                                 <div className="text-center">
@@ -169,7 +171,7 @@ export default function RegistrationSection() {
                                 </div>
                             </CardContent>
                         </Card>
-                    </div>
+                    
 
                 </div>
 
