@@ -1,7 +1,9 @@
+"use client"
+
 import { Card, CardContent } from "@/components/ui/card";
 import { CiCircleCheck } from "react-icons/ci";
 import { FaAward, FaRegCalendarCheck, FaRegCreditCard, FaUsers } from "react-icons/fa";
-import { FiUserCheck } from "react-icons/fi";
+import { FiDollarSign, FiEdit2, FiMail, FiTag, FiUser, FiUserCheck } from "react-icons/fi";
 import { IoIosInformationCircleOutline, IoMdBook } from "react-icons/io";
 import { LuCoffee, LuGraduationCap } from "react-icons/lu";
 import { MdOutlineDisplaySettings, MdOutlineRecordVoiceOver } from "react-icons/md";
@@ -11,6 +13,11 @@ import { BsClockHistory } from "react-icons/bs";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import { RiSecurePaymentLine } from "react-icons/ri";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { useState } from "react";
+import { toast } from "sonner";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 
 const benefits = [
@@ -28,6 +35,158 @@ const benefits = [
 export default function RegistrationSection() {
 
     const paymentValue = 30000;
+    const register = useMutation(api.registration.register);
+    const [step, setStep] = useState<1 | 2>(1);
+
+    const [formData, setFormData] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+    });
+
+    const [formErrors, setFormErrors] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+    });
+
+    const [formTouched, setFormTouched] = useState({
+        firstName: false,
+        lastName: false,
+        email: false,
+    });
+
+    const resetForm = () => {
+        setFormData({
+            firstName: "",
+            lastName: "",
+            email: "",
+        });
+
+        setFormErrors({
+            firstName: "",
+            lastName: "",
+            email: "",
+        });
+
+        setFormTouched({
+            firstName: false,
+            lastName: false,
+            email: false,
+        });
+    }
+
+    const validateFirstName = (firstName: string): string | null => {
+        if (!firstName.trim()) return "First Name is required";
+        if (firstName.length < 3) return "First Name must be at least 3 characters";
+        if (!/^[a-zA-Z\s\-]+$/.test(firstName)) return "First Name should only contain letters and spaces";
+        return null;
+    };
+
+    const validateLastName = (lastName: string): string | null => {
+        if (!lastName.trim()) return "Last Name is required";
+        if (lastName.length < 3) return "Last Name must be at least 3 characters";
+        if (!/^[a-zA-Z\s\-]+$/.test(lastName)) return "Last Name should only contain letters and spaces";
+        return null;
+    };
+
+    const validateEmail = (email: string): string | null => {
+        if (!email.trim()) return "Email Address is required";
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(email))
+            return "Please enter a valid email address";
+
+        return null;
+    };
+
+
+    const handleChange = (field: keyof typeof formData, value: string) => {
+        setFormData(prev => ({
+            ...prev,
+            [field]: value,
+        }));
+
+        setFormTouched(prev => ({
+            ...prev,
+            [field]: true,
+        }));
+
+        let error = "";
+
+        switch (field) {
+            case "firstName":
+                error = validateFirstName(value) || "";
+                break;
+            case "lastName":
+                error = validateLastName(value) || "";
+                break;
+            case "email":
+                error = validateEmail(value) || "";
+                break;
+        }
+
+        setFormErrors(prev => ({
+            ...prev,
+            [field]: error,
+        }));
+    };
+
+    const isRegFormValid = () => {
+        return (
+            !validateFirstName(formData.firstName) &&
+            !validateLastName(formData.lastName) &&
+            !validateEmail(formData.email)
+        );
+    };
+
+
+
+    const proceed = () => {
+        const firstNameError = validateFirstName(formData.firstName);
+        const lastNameError = validateLastName(formData.lastName);
+        const emailError = validateEmail(formData.email);
+
+        setFormErrors({
+            firstName: firstNameError || "",
+            lastName: lastNameError || "",
+            email: emailError || "",
+        });
+
+        setFormTouched({
+            firstName: true,
+            lastName: true,
+            email: true,
+        });
+
+        if (firstNameError || lastNameError || emailError) {
+            return;
+        }
+
+        setStep(2);
+    };
+
+    const registerParticipant = async () => {
+
+        try {
+            await register({
+                firstName: formData.firstName,
+                lastName: formData.lastName,
+                email: formData.email,
+                category: "participant",
+                amount: 30000,
+            })
+
+
+            toast.success("Registered Succesfully");
+            resetForm();
+
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to register");
+        }
+    };
 
     return (
         <section className="min-h-screen bg-linear-to-b from-slate-50 via-white to-slate-50">
@@ -75,21 +234,27 @@ export default function RegistrationSection() {
                                             Registration Information
                                         </h3>
                                     </div>
-                                    <p className="text-muted-foreground ml-12 :ml-14">
+                                    {step === 1 ? (<p className="text-muted-foreground ml-12">
                                         Complete the form below to begin your conference registration.
-                                    </p>
+                                    </p>) : (<p className="text-muted-foreground ml-12">Review Your Details</p>)}
                                 </div>
 
-                                <div className="flex flex-col gap-6 mt-8">
+                                {step === 1 && (<div className="flex flex-col gap-6 mt-8">
                                     <div className="space-y-2">
                                         <label className="text-sm">
                                             First Name <span className="text-red-500">*</span>
                                         </label>
                                         <input
                                             type="text"
+                                            value={formData.firstName}
+                                            onChange={(e) => handleChange("firstName", e.target.value)}
                                             placeholder="First Name"
-                                            className="w-full h-12 border placeholder:text-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                            className={`w-full h-12 border placeholder:text-gray-700 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-600 transition ${formTouched.firstName && formErrors.firstName ? "border-red-500 focus:ring-red-500" : formTouched.firstName && !formErrors.firstName && formData.firstName ? "border-green-500 focus:ring-green-500"
+                                                : "border-input-border"}`}
                                         />
+                                        {formTouched.firstName && formErrors.firstName && (
+                                            <p className="text-red-500 text-sm mt-1">{formErrors.firstName}</p>
+                                        )}
                                     </div>
 
                                     <div className="space-y-2">
@@ -98,9 +263,15 @@ export default function RegistrationSection() {
                                         </label>
                                         <input
                                             type="text"
+                                            value={formData.lastName}
+                                            onChange={(e) => handleChange("lastName", e.target.value)}
                                             placeholder="Enter last name"
-                                            className="w-full h-12 border placeholder:text-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                            className={`w-full h-12 border placeholder:text-gray-700 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-600 transition ${formTouched.lastName && formErrors.lastName ? "border-red-500 focus:ring-red-500" : formTouched.lastName && !formErrors.lastName && formData.lastName ? "border-green-500 focus:ring-green-500"
+                                                : "border-input-border"}`}
                                         />
+                                        {formTouched.lastName && formErrors.lastName && (
+                                            <p className="text-red-500 text-sm mt-1">{formErrors.lastName}</p>
+                                        )}
                                     </div>
 
                                     <div className="space-y-2">
@@ -109,9 +280,15 @@ export default function RegistrationSection() {
                                         </label>
                                         <input
                                             type="email"
+                                            value={formData.email}
+                                            onChange={(e) => handleChange("email", e.target.value)}
                                             placeholder="Enter email address"
-                                            className="w-full h-12 border placeholder:text-gray-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                            className={`w-full h-12 border placeholder:text-gray-700 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-600 transition ${formTouched.email && formErrors.email ? "border-red-500 focus:ring-red-500" : formTouched.email && !formErrors.email && formData.email ? "border-green-500 focus:ring-green-500"
+                                                : "border-input-border"}`}
                                         />
+                                        {formTouched.email && formErrors.email && (
+                                            <p className="text-red-500 text-sm mt-1">{formErrors.email}</p>
+                                        )}
                                     </div>
 
                                     <div className="space-y-2">
@@ -132,46 +309,112 @@ export default function RegistrationSection() {
                                     </div>
 
                                     <div className="flex gap-4 mt-6">
-                                        <button className="flex justify-center items-center gap-2.5 mt-10 px-6 py-3.5 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl w-full text-base text-white font-semibold shadow-lg hover:shadow-blue-200/50 transition-all duration-300 cursor-pointer">
-                                            <span>Make Payment</span>
-                                            <RiSecurePaymentLine className="text-xl" />
+                                        <button onClick={proceed} disabled={!isRegFormValid()} className="flex justify-center items-center gap-2.5 mt-10 px-6 py-3.5 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl w-full text-base text-white font-semibold shadow-lg hover:shadow-blue-200/50 transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                                            <span>Proceed</span>
+                                            <FaArrowRightLong className="text-xl" />
                                         </button>
                                     </div>
-                                </div>
+                                </div>)}
+                                {step === 2 && (
+                                    <div>
+                                        <div className="bg-white rounded-2xl border-2 border-slate-200/60 overflow-hidden shadow-sm">
+                                            <div className="divide-y divide-slate-100">
+                                                <div className="flex items-center justify-between p-4 hover:bg-slate-50/50 transition-colors">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="p-1.5 bg-blue-100 rounded-lg">
+                                                            <FiUser className="w-3.5 h-3.5 text-blue-600" />
+                                                        </div>
+                                                        <span className="text-sm text-slate-500">Full Name</span>
+                                                    </div>
+                                                    <span className="text-sm font-medium text-slate-900">
+                                                        {formData.firstName} {formData.lastName}
+                                                    </span>
+                                                </div>
 
+                                                <div className="flex items-center justify-between p-4 hover:bg-slate-50/50 transition-colors">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="p-1.5 bg-blue-100 rounded-lg">
+                                                            <FiMail className="w-3.5 h-3.5 text-blue-600" />
+                                                        </div>
+                                                        <span className="text-sm text-slate-500">Email</span>
+                                                    </div>
+                                                    <span className="text-sm font-medium text-slate-900">
+                                                        {formData.email}
+                                                    </span>
+                                                </div>
+
+                                                <div className="flex items-center justify-between p-4 hover:bg-slate-50/50 transition-colors">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="p-1.5 bg-blue-100 rounded-lg">
+                                                            <FiTag className="w-3.5 h-3.5 text-blue-600" />
+                                                        </div>
+                                                        <span className="text-sm text-slate-500">Category</span>
+                                                    </div>
+                                                    <span className="text-sm font-medium text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                                                        Non-Author/Participant
+                                                    </span>
+                                                </div>
+
+                                                <div className="flex items-center justify-between p-4 bg-linear-to-r from-blue-50/30 to-white hover:bg-blue-50/50 transition-colors">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="p-1.5 bg-blue-200 rounded-lg">
+                                                            <FiDollarSign className="w-3.5 h-3.5 text-blue-700" />
+                                                        </div>
+                                                        <span className="text-sm font-semibold text-slate-700">Total Amount</span>
+                                                    </div>
+                                                    <span className="text-xl font-bold text-blue-700">
+                                                        ₦{paymentValue.toLocaleString()}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="flex px-8 gap-4 mt-6">
+                                            <button onClick={() => setStep(1)} className="flex justify-center items-center gap-2.5 mt-10 px-6 py-3.5 bg-gray-400 rounded-xl w-full text-base text-white font-semibold shadow-lg hover:shadow-gray-200/50 transition-all duration-300 cursor-pointer">
+                                                <span>Edit Details </span>
+                                                <FiEdit2 className="w-3.5 h-3.5" />
+                                            </button>
+                                        </div>
+                                        <div className="flex gap-4 mt-6">
+                                            <button onClick={registerParticipant} className="flex justify-center items-center gap-2.5 mt-10 px-6 py-3.5 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl w-full text-base text-white font-semibold shadow-lg hover:shadow-blue-200/50 transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                                                <span>Make Payment</span>
+                                                <RiSecurePaymentLine className="text-xl" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
 
 
                             </div>
                         </div>
                     </div>
 
-                   
-                        <Card className="sticky top-24 rounded-3xl border-2 border-blue-200/60 shadow-xl bg-linear-to-br from-white to-blue-50/30 overflow-hidden">
-                            <CardContent className="p-6">
-                                <div className="text-center">
-                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold mb-4">
-                                        <FiUserCheck className="w-3 h-3" />
-                                        Non-Authors/Participants Package
-                                    </div>
-                                    <p className="text-sm text-muted-foreground">Registration Fee</p>
-                                    <p className="text-5xl lg:text-6xl font-bold text-blue-700 mt-1">
-                                        {paymentValue.toLocaleString()}
-                                    </p>
-                                    <div className="mt-2 h-px bg-linear-to-r from-transparent via-blue-200 to-transparent"></div>
-                                </div>
 
-                                <div className="mt-6 space-y-3">
-                                    <p className="text-sm font-semibold text-slate-700 mb-3">What's Included:</p>
-                                    {benefits.map((item, index) => (
-                                        <div key={index} className="flex items-start gap-3 p-2 rounded-lg hover:bg-blue-50/50 transition-colors">
-                                            <CiCircleCheck className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
-                                            <span className="text-sm text-slate-700">{item.text}</span>
-                                        </div>
-                                    ))}
+                    <Card className="sticky top-24 rounded-3xl border-2 border-blue-200/60 shadow-xl bg-linear-to-br from-white to-blue-50/30 overflow-hidden">
+                        <CardContent className="p-6">
+                            <div className="text-center">
+                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold mb-4">
+                                    <FiUserCheck className="w-3 h-3" />
+                                    Non-Authors/Participants Package
                                 </div>
-                            </CardContent>
-                        </Card>
-                    
+                                <p className="text-sm text-muted-foreground">Registration Fee</p>
+                                <p className="text-5xl lg:text-6xl font-bold text-blue-700 mt-1">
+                                    ₦{paymentValue.toLocaleString()}
+                                </p>
+                                <div className="mt-2 h-px bg-linear-to-r from-transparent via-blue-200 to-transparent"></div>
+                            </div>
+
+                            <div className="mt-6 space-y-3">
+                                <p className="text-sm font-semibold text-slate-700 mb-3">What's Included:</p>
+                                {benefits.map((item, index) => (
+                                    <div key={index} className="flex items-start gap-3 p-2 rounded-lg hover:bg-blue-50/50 transition-colors">
+                                        <CiCircleCheck className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
+                                        <span className="text-sm text-slate-700">{item.text}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </CardContent>
+                    </Card>
+
 
                 </div>
 
