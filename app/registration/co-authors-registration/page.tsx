@@ -207,10 +207,10 @@ export default function RegistrationSection() {
                     <h1 className="text-4xl lg:text-6xl font-bold text-slate-900 mb-4 tracking-tight">
                         Co-Authors <span className="text-blue-700">Registration</span>
                     </h1>
-                    {/* <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
+                    <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
                         Co-Authors whose papers have been accepted must complete registration
                         before the camera-ready deadline.
-                    </p> */}
+                    </p>
                     <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm text-slate-600">
                         <span className="flex items-center gap-2">
                             <BsClockHistory className="w-4 h-4 text-amber-600" />
