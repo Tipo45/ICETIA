@@ -52,7 +52,7 @@ export default function Hero() {
             </div>
 
             <div className="flex items-center gap-2">
-              <FaRegBuilding size={18} />
+              <FaRegBuilding size={20} />
               <span>
                 Department of Computer Science and Informatics
               </span>
