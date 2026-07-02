@@ -113,11 +113,11 @@ export default function RegistrationCategories() {
                                     {item.description}
                                 </p>
 
-                                <Button asChild className="mt-12 w-full rounded-xl">
+                                <button className="bg-black text-white mt-12 w-full px-2 py-3 rounded-xl">
                                     <Link href={item.href}>
                                         Choose Category
                                     </Link>
-                                </Button>
+                                </button>
                             </CardContent>
                         </Card>
                     ))}
