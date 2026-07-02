@@ -101,11 +101,11 @@ export default function RegistrationCategories() {
                             className="hover:shadow-xl transition"
                         >
                             <CardContent className="p-8">
-                                <h3 className="text-2xl font-bold">
+                                <h3 className="text-xl lg:text-2xl font-bold wrap-break-word">
                                     {item.title}
                                 </h3>
 
-                                <div className="mt-4 text-3xl font-bold text-blue-700">
+                                <div className="mt-4 text-2xl lg:text-3xl font-bold text-blue-700">
                                     {item.price}
                                 </div>
 
