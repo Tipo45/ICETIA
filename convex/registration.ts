@@ -1,5 +1,9 @@
 import { v } from "convex/values";
-import { mutation } from "./_generated/server";
+import { internalAction, mutation } from "./_generated/server";
+import { components, internal } from "./_generated/api";
+import { ConvexError } from "convex/values";
+import { Resend } from "@convex-dev/resend";
+import { Resend as ResendSdk } from "resend";
 
 export const register = mutation({
     args: {
@@ -38,13 +42,13 @@ export const register = mutation({
             .withIndex("by_email", q => q.eq("email", args.email))
             .unique();
 
-        if (existing && existing.paymentStatus === "paid") {
-            throw new Error("This email has already completed registration.");
-        }
-
 
         if (existing?.paymentStatus === "paid") {
-            throw new Error("This email has already completed registration.");
+            throw new ConvexError("This email has already completed registration.");
+        }
+
+        if (existing?.paymentStatus === "pending") {
+            throw new ConvexError("A payment is already pending for this email.");
         }
 
         return await ctx.db.insert("registrations", {

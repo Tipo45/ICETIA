@@ -168,9 +168,12 @@ export default function RegistrationSection() {
             toast.success("Registered Succesfully");
             resetForm();
 
-        } catch (error) {
-            console.error(error);
-            toast.error("Failed to register");
+        } catch (error: any) {
+            toast.error(
+                error.data ??
+                error.message ??
+                "Something went wrong. Please try again."
+            );
         }
     };
 
@@ -208,7 +211,7 @@ export default function RegistrationSection() {
                 {/* Main Content Grid */}
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 xl:gap-8">
 
-                    <div className="">
+                    <div>
                         <div className="rounded-3xl border-2 border-slate-200/60 shadow-xl hover:shadow-2xl transition-shadow duration-300 overflow-hidden">
                             <div className="p-6 lg:p-10">
                                 <div className="mb-8">
@@ -234,7 +237,7 @@ export default function RegistrationSection() {
                                             type="text"
                                             value={formData.firstName}
                                             onChange={(e) => handleChange("firstName", e.target.value)}
-                                            placeholder="First Name"
+                                            placeholder="Enter first name"
                                             className={`w-full h-12 border placeholder:text-gray-700 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-600 transition ${formTouched.firstName && formErrors.firstName ? "border-red-500 focus:ring-red-500" : formTouched.firstName && !formErrors.firstName && formData.firstName ? "border-green-500 focus:ring-green-500"
                                                 : "border-input-border"}`}
                                         />
@@ -361,7 +364,7 @@ export default function RegistrationSection() {
                                             </button>
                                         </div>
                                         <div className="flex gap-4 mt-6">
-                                            <button onClick={registerParticipant} className="flex justify-center items-center gap-2.5 mt-10 px-6 py-3.5 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl w-full text-base text-white font-semibold shadow-lg hover:shadow-blue-200/50 transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                                            <button onClick={registerParticipant} disabled={!isRegFormValid()} className="flex justify-center items-center gap-2.5 mt-10 px-6 py-3.5 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl w-full text-base text-white font-semibold shadow-lg hover:shadow-blue-200/50 transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
                                                 <span>Make Payment</span>
                                                 <RiSecurePaymentLine className="text-xl" />
                                             </button>
