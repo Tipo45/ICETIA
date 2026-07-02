@@ -1,9 +1,6 @@
 import { v } from "convex/values";
-import { internalAction, mutation } from "./_generated/server";
-import { components, internal } from "./_generated/api";
+import { mutation } from "./_generated/server";
 import { ConvexError } from "convex/values";
-import { Resend } from "@convex-dev/resend";
-import { Resend as ResendSdk } from "resend";
 
 export const register = mutation({
     args: {
