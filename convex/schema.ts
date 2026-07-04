@@ -10,10 +10,40 @@ export default defineSchema({
         email: v.string(),
         category: v.union(
             v.literal("author"),
-            v.literal("co-author"),
             v.literal("participant"),
             v.literal("student")
         ),
+        institution: v.optional(v.string()),
+        country: v.optional(v.string()),
+        department: v.optional(v.string()),
+
+        degree: v.optional(v.union(
+            v.literal("BSc"),
+            v.literal("MSc"),
+            v.literal("MPhil"),
+            v.literal("PhD"),
+            v.literal("Professor"),
+            v.literal("Other")
+        )),
+        paperTitle: v.optional(v.string()),
+        // paperId: v.optional(v.string()),
+
+        coAuthors: v.optional(v.array(v.object({
+            firstName: v.string(),
+            lastName: v.string(),
+            email: v.optional(v.string()),
+            institution: v.optional(v.string()),
+            country: v.optional(v.string()),
+            department: v.optional(v.string()),
+            degree: v.optional(v.union(
+                v.literal("BSc"),
+                v.literal("MSc"),
+                v.literal("MPhil"),
+                v.literal("PhD"),
+                v.literal("Professor"),
+                v.literal("Other")
+            )),
+        }))),
         amount: v.number(),
         paymentStatus: v.union(
             v.literal("pending"),
@@ -44,5 +74,11 @@ export default defineSchema({
         ),
         gatewayResponse: v.optional(v.string())
     }).index("by_registration", ["registrationId"])
-        .index("by_reference", ["reference"])
+        .index("by_reference", ["reference"]),
+
+    emails: defineTable({
+        to: v.string(),
+        subject: v.string(),
+        body: v.string(),
+    })
 })

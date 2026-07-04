@@ -8,6 +8,9 @@
  * @module
  */
 
+import type * as email from "../email.js";
+import type * as emailTemplate from "../emailTemplate.js";
+import type * as http from "../http.js";
 import type * as registration from "../registration.js";
 
 import type {
@@ -17,6 +20,9 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  email: typeof email;
+  emailTemplate: typeof emailTemplate;
+  http: typeof http;
   registration: typeof registration;
 }>;
 
@@ -46,4 +52,6 @@ export declare const internal: FilterApi<
   FunctionReference<any, "internal">
 >;
 
-export declare const components: {};
+export declare const components: {
+  resend: import("@convex-dev/resend/_generated/component.js").ComponentApi<"resend">;
+};

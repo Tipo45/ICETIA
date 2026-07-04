@@ -19,13 +19,6 @@ const categories = [
         href: "/registration/authors-registration"
     },
     {
-        title: "Co-Authors",
-        price: "₦30,000",
-        description:
-            "Additional authors of accepted papers.",
-        href: "/registration/co-authors-registration"
-    },
-    {
         title: "Non-authors/Participants",
         price: "₦30,000",
         description:
@@ -94,7 +87,7 @@ export default function RegistrationCategories() {
                     </p>
                 </div>
 
-                <div className="mt-16 grid grid-cols-2 xl:grid-cols-4 gap-8">
+                <div className="mt-16 grid grid-cols-2 xl:grid-cols-3 gap-8">
                     {categories.map((item) => (
                         <Card
                             key={item.title}
@@ -113,7 +106,7 @@ export default function RegistrationCategories() {
                                     {item.description}
                                 </p>
 
-                                <button className="bg-black text-white mt-12 w-full px-2 py-3 rounded-xl">
+                                <button className="bg-black text-white mt-12 w-full px-2 py-3 rounded-xl cursor-pointer">
                                     <Link href={item.href}>
                                         Choose Category
                                     </Link>

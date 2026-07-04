@@ -15,18 +15,21 @@ import { useState } from "react";
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
 
 export default function RegistrationSection() {
 
     const paymentValue = 20000;
-    const register = useMutation(api.registration.register);
-    const [step, setStep] = useState<1 | 2>(1);
-
+    const router = useRouter();
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
         email: "",
     });
+    const register = useMutation(api.registration.register);
+    const sendConfirmationEmail = useMutation(api.registration.sendMail);
+    const [step, setStep] = useState<1 | 2>(1);
+
 
     const [formErrors, setFormErrors] = useState({
         firstName: "",
@@ -154,18 +157,24 @@ export default function RegistrationSection() {
     const registerParticipant = async () => {
 
         try {
-            await register({
+            const result = await register({
                 firstName: formData.firstName,
                 lastName: formData.lastName,
                 email: formData.email,
                 category: "student",
-                amount: 20000,
+                amount: 30000,
             })
 
 
-            toast.success("Registered Succesfully");
-            resetForm();
 
+            await sendConfirmationEmail({
+                registrationId: result.registrationId,
+            });
+            toast.success("Registered Succesfully");
+            setTimeout(() => {
+                router.push(`/registration/success/${result.registrationId}`);
+            }, 1000);
+            resetForm();
         } catch (error: any) {
             toast.error(
                 error.data ??
