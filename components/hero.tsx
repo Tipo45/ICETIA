@@ -1,12 +1,23 @@
-
 "use client";
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { IoCalendarNumber } from "react-icons/io5";
 import { FaRegBuilding } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 export default function Hero() {
+
+  const router = useRouter();
+
+  const handleCFPButton = () => {
+      router.push("/registration/authors-registration")
+    }
+  
+    const handleRegButton = () => {
+      router.push("/#registration")
+    }
+
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0 bg-linear-to-br from-slate-950 via-blue-950 to-blue-800" />
@@ -60,13 +71,14 @@ export default function Hero() {
           </div>
 
           <div className="mt-12 flex flex-wrap justify-center gap-4">
-            <Button size="lg">
+            <Button size="lg" onClick={handleCFPButton}>
               Submit Paper
             </Button>
 
             <Button
               variant="secondary"
               size="lg"
+              onClick={handleRegButton}
             >
               Register Now
             </Button>

@@ -1,6 +1,16 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function CallForPapers() {
+
+  const router = useRouter();
+
+  const handleCFPButton = () => {
+    router.push("/registration/authors-registration")
+  }
+
   return (
     <section
       id="cfp"
@@ -30,6 +40,7 @@ export default function CallForPapers() {
             <Button
               variant="secondary"
               size="lg"
+              onClick={handleCFPButton}
             >
               Submit Paper
             </Button>

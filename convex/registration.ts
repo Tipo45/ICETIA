@@ -3,26 +3,20 @@ import { mutation, query } from "./_generated/server";
 import { ConvexError } from "convex/values";
 import { Resend } from "@convex-dev/resend";
 import { api, components } from "./_generated/api";
-import QRCode from "qrcode";
-import { registrationConfirmationEmail, ticketEmail } from "./emailTemplate";
+import { registrationConfirmationEmail, reminderEmail, ticketEmail } from "./emailTemplate";
 
 export const resend: Resend = new Resend(components.resend, {
     testMode: false,
 });
 
-export const register = mutation({
+export const registerAuthor = mutation({
     args: {
         firstName: v.string(),
         lastName: v.string(),
         email: v.string(),
-        category: v.union(
-            v.literal("author"),
-            v.literal("participant"),
-            v.literal("student")
-        ),
-        institution: v.string(),
-        country: v.string(),
-        department: v.string(),
+        institution: v.optional(v.string()),
+        country: v.optional(v.string()),
+        department: v.optional(v.string()),
         degree: v.optional(v.union(
             v.literal("BSc"),
             v.literal("MSc"),
@@ -31,12 +25,13 @@ export const register = mutation({
             v.literal("Professor"),
             v.literal("Other")
         )),
-        paperTitle: v.string(),
-        coAuthors: v.array(v.object({
-            firstName: v.string(),
-            lastName: v.string(),
-            email: v.string(),
-            institution: v.string(),
+        paperTitle: v.optional(v.string()),
+        paperFileId: v.optional(v.id("_storage")),
+        coAuthors: v.optional(v.array(v.object({
+            firstName: (v.string()),
+            lastName: (v.string()),
+            email: (v.string()),
+            institution: (v.string()),
             country: v.optional(v.string()),
             department: v.optional(v.string()),
             degree: v.optional(v.union(
@@ -47,7 +42,7 @@ export const register = mutation({
                 v.literal("Professor"),
                 v.literal("Other")
             )),
-        })),
+        }))),
 
     },
 
@@ -57,13 +52,9 @@ export const register = mutation({
             .slice(0, 8)
             .toUpperCase()}`;
 
-        const amountMap = {
-            "author": 30000,
-            "participant": 30000,
-            "student": 20000,
-        } as const;
 
-        const amount = amountMap[args.category];
+
+        const amount = 30000;
 
 
         const existing = await ctx.db
@@ -86,15 +77,128 @@ export const register = mutation({
             firstName: args.firstName,
             lastName: args.lastName,
             email: args.email,
-            category: args.category,
+            category: "author",
             institution: args.institution,
             country: args.country,
             degree: args.degree,
-            paperTitle : args.paperTitle,
-            coAuthors: args.coAuthors,
+            paperTitle: args.paperTitle,
+            paperFileId: args.paperFileId,
+            coAuthors: args.coAuthors ?? [],
             department: args.department,
             amount,
 
+            paymentStatus: "pending",
+
+            paymentReference: undefined,
+            paidAt: undefined,
+
+            ticketSent: false,
+            confirmationEmailSent: false,
+        });
+
+        return { registrationId, registrationNumber };
+    },
+});
+
+export const generateUploadUrl = mutation(async (ctx) => {
+    return await ctx.storage.generateUploadUrl();
+});
+
+export const registerParticipant = mutation({
+    args: {
+        firstName: v.string(),
+        lastName: v.string(),
+        email: v.string(),
+        institution: v.string(),
+        country: v.string(),
+    },
+    handler: async (ctx, args) => {
+
+        const registrationNumber = `ICETIA2026-${crypto
+            .randomUUID()
+            .slice(0, 8)
+            .toUpperCase()}`;
+
+        const amount = 30000;
+
+        const existing = await ctx.db
+            .query("registrations")
+            .withIndex("by_email", q => q.eq("email", args.email))
+            .unique();
+
+
+        if (existing?.paymentStatus === "paid") {
+            throw new ConvexError("This email has already completed registration.");
+        }
+
+        if (existing?.paymentStatus === "pending") {
+            throw new ConvexError("A payment is already pending for this email.");
+        }
+
+        const registrationId = await ctx.db.insert("registrations", {
+            registrationNumber,
+
+            firstName: args.firstName,
+            lastName: args.lastName,
+            email: args.email,
+            institution: args.institution,
+            country: args.country,
+            category: "participant",
+            amount,
+            paymentStatus: "pending",
+
+            paymentReference: undefined,
+            paidAt: undefined,
+
+            ticketSent: false,
+            confirmationEmailSent: false,
+        });
+
+        return { registrationId, registrationNumber };
+    },
+});
+
+export const registerStudent = mutation({
+    args: {
+        firstName: v.string(),
+        lastName: v.string(),
+        email: v.string(),
+        institution: v.string(),
+        country: v.string(),
+    },
+    handler: async (ctx, args) => {
+
+        const registrationNumber = `ICETIA2026-${crypto
+            .randomUUID()
+            .slice(0, 8)
+            .toUpperCase()}`;
+
+        const amount = 20000;
+
+        const existing = await ctx.db
+            .query("registrations")
+            .withIndex("by_email", q => q.eq("email", args.email))
+            .unique();
+
+
+        if (existing?.paymentStatus === "paid") {
+            throw new ConvexError("This email has already completed registration.");
+        }
+
+        if (existing?.paymentStatus === "pending") {
+            throw new ConvexError("A payment is already pending for this email.");
+        }
+
+        const registrationId = await ctx.db.insert("registrations", {
+            registrationNumber,
+
+            firstName: args.firstName,
+            lastName: args.lastName,
+            email: args.email,
+            institution: args.institution,
+            country: args.country,
+            category: "student",
+            amount,
             paymentStatus: "pending",
 
             paymentReference: undefined,
@@ -137,6 +241,7 @@ export const sendMail = mutation({
             email: existing.email,
             category: existing.category,
             amountPaid: existing.amount,
+            coAuthors: existing.coAuthors,
         });
 
         await resend.sendEmail(ctx, {
@@ -188,6 +293,7 @@ export const sendConferenceTicket = mutation({
         const subject = "Your ICETIA 2026 Conference Ticket";
 
         const body = ticketEmail({
+            firstName: registration.firstName,
             registrationNumber: registration.registrationNumber,
             qrCode,
         });
@@ -201,6 +307,108 @@ export const sendConferenceTicket = mutation({
 
         await ctx.db.patch(registration._id, {
             ticketSent: true,
+        });
+    },
+});
+
+export const getParticipants = query({
+    args: {
+        search: v.optional(v.string()),
+        category: v.optional(
+            v.union(
+                v.literal("author"),
+                v.literal("participant"),
+                v.literal("student")
+            )
+        ),
+        country: v.optional(v.string()),
+        paymentDate: v.optional(v.number()),
+    },
+
+    handler: async (ctx, args) => {
+        let participants = await ctx.db
+            .query("registrations")
+            .withIndex("by_payment_status", q =>
+                q.eq("paymentStatus", "paid")
+            )
+            .collect();
+
+        if (args.search) {
+            const search = args.search.toLowerCase();
+
+            participants = participants.filter(p =>
+                p.firstName.toLowerCase().includes(search) ||
+                p.lastName.toLowerCase().includes(search) ||
+                p.email.toLowerCase().includes(search) ||
+                p.registrationNumber.toLowerCase().includes(search)
+            );
+        }
+
+        if (args.category) {
+            participants = participants.filter(
+                p => p.category === args.category
+            );
+        }
+
+        if (args.country) {
+            participants = participants.filter(
+                p => p.country === args.country
+            );
+        }
+
+        if (args.paymentDate) {
+            const selected = new Date(args.paymentDate);
+
+            participants = participants.filter(p => {
+                if (!p.paidAt) return false;
+
+                const paid = new Date(p.paidAt);
+
+                return (
+                    paid.getFullYear() === selected.getFullYear() &&
+                    paid.getMonth() === selected.getMonth() &&
+                    paid.getDate() === selected.getDate()
+                );
+            });
+        }
+
+        return participants;
+    },
+});
+
+export const sendReminder = mutation({
+    args: {
+        registrationId: v.id("registrations"),
+    },
+
+    handler: async (ctx, args) => {
+        const registration = await ctx.db.get(args.registrationId);
+
+        if (!registration) {
+            throw new ConvexError("Participant not found.");
+        }
+
+        const existing = await ctx.db
+            .query("registrations")
+            .withIndex("by_email", q => q.eq("email", registration.email))
+            .unique();
+
+        if (!existing) {
+            throw new ConvexError("No registration found for this email.");
+        }
+
+        const subject = "ICETIA 2026 Conference Reminder";
+
+        const body = reminderEmail({
+            firstName: existing.firstName,
+            registrationNumber: existing.registrationNumber,
+        })
+
+        await resend.sendEmail(ctx, {
+            from: "ICETIA <icetia@resend.dev>",
+            to: registration.email,
+            subject: subject,
+            text: body,
         });
     },
 });

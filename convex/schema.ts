@@ -26,7 +26,7 @@ export default defineSchema({
             v.literal("Other")
         )),
         paperTitle: v.optional(v.string()),
-        // paperId: v.optional(v.string()),
+        paperFileId: v.optional(v.id("_storage")),
 
         coAuthors: v.optional(v.array(v.object({
             firstName: v.string(),
@@ -57,7 +57,8 @@ export default defineSchema({
         confirmationEmailSent: v.boolean(),
     }).index("by_email", ["email"])
         .index("by_registration_number", ["registrationNumber"])
-        .index("by_payment_reference", ["paymentReference"]),
+        .index("by_payment_reference", ["paymentReference"])
+        .index("by_payment_status", ["paymentStatus"]),
 
     payments: defineTable({
         registrationId: v.id("registrations"),

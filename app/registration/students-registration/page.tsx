@@ -4,10 +4,10 @@ import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import { Card, CardContent } from "@/components/ui/card";
 import { CiCircleCheck } from "react-icons/ci";
-import { FaRegCreditCard } from "react-icons/fa";
+import { FaAward, FaRegCalendarCheck, FaRegCreditCard, FaUsers } from "react-icons/fa";
 import { FiUserCheck, FiUsers, FiFileText, FiCoffee, FiUser, FiMail, FiTag, FiDollarSign, FiEdit2 } from "react-icons/fi";
-import { IoIosInformationCircleOutline } from "react-icons/io";
-import { MdOutlineEventNote, MdOutlineVerified } from "react-icons/md";
+import { IoIosInformationCircleOutline, IoMdBook } from "react-icons/io";
+import { MdOutlineDisplaySettings, MdOutlineEventNote, MdOutlineRecordVoiceOver, MdOutlineVerified } from "react-icons/md";
 import { BsClockHistory } from "react-icons/bs";
 import { RiSecurePaymentLine } from "react-icons/ri";
 import { toast } from "sonner";
@@ -16,17 +16,37 @@ import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
+import { PiPresentationChartFill } from "react-icons/pi";
+import { LuBuilding2, LuCoffee } from "react-icons/lu";
+import { validateCountry, validateEmail, validateFirstName, validateInstitution, validateLastName } from "@/components/types/validation";
+import { TbWorld } from "react-icons/tb";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Country } from "country-state-city";
 
 export default function RegistrationSection() {
 
+    const benefits = [
+        { icon: FaAward, text: "Certificate of participation or presentation" },
+        { icon: FaUsers, text: "Networking opportunities with academics, researchers, industry professionals and policymakers" },
+        { icon: IoMdBook, text: "Conference proceedings and digital materials" },
+        { icon: MdOutlineRecordVoiceOver, text: "Access to keynote and plenary sessions" },
+        { icon: PiPresentationChartFill, text: "Access to technical paper presentation sessions" },
+        { icon: FaRegCalendarCheck, text: "Conference programme and materials" },
+        { icon: LuCoffee, text: "Refreshments and conference meals, where applicable" },
+        { icon: MdOutlineDisplaySettings, text: "Access to exhibitions, innovation showcases and partner sessions" },
+    ]
+
     const paymentValue = 20000;
     const router = useRouter();
+    const countries = Country.getAllCountries();
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
         email: "",
+        institution: "",
+        country: "",
     });
-    const register = useMutation(api.registration.register);
+    const register = useMutation(api.registration.registerStudent);
     const sendConfirmationEmail = useMutation(api.registration.sendMail);
     const [step, setStep] = useState<1 | 2>(1);
 
@@ -35,12 +55,16 @@ export default function RegistrationSection() {
         firstName: "",
         lastName: "",
         email: "",
+        institution: "",
+        country: "",
     });
 
     const [formTouched, setFormTouched] = useState({
         firstName: false,
         lastName: false,
         email: false,
+        institution: false,
+        country: false,
     });
 
     const resetForm = () => {
@@ -48,46 +72,26 @@ export default function RegistrationSection() {
             firstName: "",
             lastName: "",
             email: "",
+            institution: "",
+            country: ""
         });
 
         setFormErrors({
             firstName: "",
             lastName: "",
             email: "",
+            institution: "",
+            country: "",
         });
 
         setFormTouched({
             firstName: false,
             lastName: false,
             email: false,
+            institution: false,
+            country: false,
         });
     }
-
-    const validateFirstName = (firstName: string): string | null => {
-        if (!firstName.trim()) return "First Name is required";
-        if (firstName.length < 3) return "First Name must be at least 3 characters";
-        if (!/^[a-zA-Z\s\-]+$/.test(firstName)) return "First Name should only contain letters and spaces";
-        return null;
-    };
-
-    const validateLastName = (lastName: string): string | null => {
-        if (!lastName.trim()) return "Last Name is required";
-        if (lastName.length < 3) return "Last Name must be at least 3 characters";
-        if (!/^[a-zA-Z\s\-]+$/.test(lastName)) return "Last Name should only contain letters and spaces";
-        return null;
-    };
-
-    const validateEmail = (email: string): string | null => {
-        if (!email.trim()) return "Email Address is required";
-
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (!emailRegex.test(email))
-            return "Please enter a valid email address";
-
-        return null;
-    };
-
 
     const handleChange = (field: keyof typeof formData, value: string) => {
         setFormData(prev => ({
@@ -112,6 +116,14 @@ export default function RegistrationSection() {
             case "email":
                 error = validateEmail(value) || "";
                 break;
+
+            case "institution":
+                error = validateInstitution(value) || "";
+                break;
+
+            case "country":
+                error = validateCountry(value) || "";
+                break;
         }
 
         setFormErrors(prev => ({
@@ -124,30 +136,36 @@ export default function RegistrationSection() {
         return (
             !validateFirstName(formData.firstName) &&
             !validateLastName(formData.lastName) &&
-            !validateEmail(formData.email)
+            !validateEmail(formData.email) &&
+            !validateInstitution(formData.institution) &&
+            !validateCountry(formData.country)
         );
     };
-
-
 
     const proceed = () => {
         const firstNameError = validateFirstName(formData.firstName);
         const lastNameError = validateLastName(formData.lastName);
         const emailError = validateEmail(formData.email);
+        const institutionError = validateInstitution(formData.institution);
+        const countryError = validateCountry(formData.country);
 
         setFormErrors({
             firstName: firstNameError || "",
             lastName: lastNameError || "",
             email: emailError || "",
+            institution: institutionError || "",
+            country: countryError || "",
         });
 
         setFormTouched({
             firstName: true,
             lastName: true,
             email: true,
+            institution: true,
+            country: true,
         });
 
-        if (firstNameError || lastNameError || emailError) {
+        if (firstNameError || lastNameError || emailError || institutionError || countryError) {
             return;
         }
 
@@ -161,8 +179,8 @@ export default function RegistrationSection() {
                 firstName: formData.firstName,
                 lastName: formData.lastName,
                 email: formData.email,
-                category: "student",
-                amount: 30000,
+                institution: formData.institution,
+                country: formData.country
             })
 
 
@@ -288,6 +306,42 @@ export default function RegistrationSection() {
                                     </div>
 
                                     <div className="space-y-2">
+                                        <label className="text-sm">
+                                            Institution <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={formData.institution}
+                                            onChange={(e) => handleChange("institution", e.target.value)}
+                                            placeholder="Enter first name"
+                                            className={`w-full h-12 border placeholder:text-gray-700 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-600 transition ${formTouched.institution && formErrors.institution ? "border-red-500 focus:ring-red-500" : formTouched.institution && !formErrors.institution && formData.institution ? "border-green-500 focus:ring-green-500"
+                                                : "border-input-border"}`}
+                                        />
+                                        {formTouched.institution && formErrors.institution && (
+                                            <p className="text-red-500 text-sm mt-1">{formErrors.institution}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-2">
+                                                    <label className="text-sm">
+                                                        Country   <span className="text-red-500">*</span>
+                                                    </label>
+                                                    <Select value={formData.country}
+                                                        onValueChange={(value) => handleChange("country", value)}>
+                                                        <SelectTrigger className={`w-full h-10 border placeholder:text-gray-700 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-600 transition ${formTouched.country && formErrors.country ? "border-red-500 focus:ring-red-500" : formTouched.country && !formErrors.country && formData.country ? "border-green-500 focus:ring-green-500" : "border-input-border"}`}>
+                                                            <SelectValue placeholder="Choose Country" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                    
+                                                            <SelectGroup>
+                                                                {countries.map((country) => (
+                                                                    <SelectItem key={country.isoCode} value={country.name}>{country.name}</SelectItem>))}
+                                                            </SelectGroup>
+                                                        </SelectContent>
+                                                    </Select>
+                                                </div>
+
+                                    <div className="space-y-2">
                                         <label className="text-sm font-medium text-slate-700">
                                             Amount <span className="text-slate-400">(NGN)</span>
                                         </label>
@@ -336,6 +390,30 @@ export default function RegistrationSection() {
                                                     </div>
                                                     <span className="text-sm font-medium text-slate-900">
                                                         {formData.email}
+                                                    </span>
+                                                </div>
+
+                                                <div className="flex items-center justify-between p-4 hover:bg-slate-50/50 transition-colors">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="p-1.5 bg-blue-100 rounded-lg">
+                                                            <LuBuilding2 className="w-3.5 h-3.5 text-blue-600" />
+                                                        </div>
+                                                        <span className="text-sm text-slate-500">Institution</span>
+                                                    </div>
+                                                    <span className="text-sm font-medium text-slate-900">
+                                                        {formData.institution}
+                                                    </span>
+                                                </div>
+
+                                                <div className="flex items-center justify-between p-4 hover:bg-slate-50/50 transition-colors">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="p-1.5 bg-blue-100 rounded-lg">
+                                                            <TbWorld className="w-3.5 h-3.5 text-blue-600" />
+                                                        </div>
+                                                        <span className="text-sm text-slate-500">Institution</span>
+                                                    </div>
+                                                    <span className="text-sm font-medium text-slate-900">
+                                                        {formData.country}
                                                     </span>
                                                 </div>
 
@@ -401,15 +479,9 @@ export default function RegistrationSection() {
 
                             <div className="mt-6 space-y-3">
                                 <p className="text-sm font-semibold text-slate-700 mb-3">What's Included:</p>
-                                {[
-                                    { icon: FiUserCheck, text: "Access to Conference Sessions" },
-                                    { icon: FiFileText, text: "Paper in Conference Proceedings" },
-                                    { icon: MdOutlineVerified, text: "Certificate of Presentation" },
-                                    { icon: FiCoffee, text: "Conference Meals & Refreshments" },
-                                    { icon: FiUsers, text: "Networking Opportunities" },
-                                ].map((item, index) => (
+                                {benefits.map((item, index) => (
                                     <div key={index} className="flex items-start gap-3 p-2 rounded-lg hover:bg-blue-50/50 transition-colors">
-                                        <CiCircleCheck className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
+                                        <item.icon className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
                                         <span className="text-sm text-slate-700">{item.text}</span>
                                     </div>
                                 ))}
