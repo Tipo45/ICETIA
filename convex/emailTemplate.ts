@@ -146,7 +146,7 @@ export function ticketEmail({
 </p>
 
 <p>
-  If you have any questions, kindly contact the conference secretariat before the event.
+  If you have any questions, kindly contact support@icetia2026.com.
 </p>
 
 <p>
@@ -185,7 +185,7 @@ Please keep your registration number safe and present your conference ticket (QR
 
 We recommend arriving at least 30 minutes before the event begins to complete registration and seating.
 
-If you have any questions or require assistance, please contact the ICETIA 2026 Organizing Committee.
+If you have any questions or require assistance, please contact support@icetia2026.com.
 
 We look forward to welcoming you and hope you have a rewarding conference experience.
 

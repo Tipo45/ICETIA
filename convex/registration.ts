@@ -163,6 +163,7 @@ export const registerStudent = mutation({
         firstName: v.string(),
         lastName: v.string(),
         email: v.string(),
+        department: v.string(),
         institution: v.string(),
         country: v.string(),
     },
@@ -195,6 +196,7 @@ export const registerStudent = mutation({
             firstName: args.firstName,
             lastName: args.lastName,
             email: args.email,
+            department: args.department,
             institution: args.institution,
             country: args.country,
             category: "student",
@@ -326,6 +328,7 @@ export const getParticipants = query({
     },
 
     handler: async (ctx, args) => {
+
         let participants = await ctx.db
             .query("registrations")
             .withIndex("by_payment_status", q =>
@@ -372,8 +375,15 @@ export const getParticipants = query({
             });
         }
 
-        return participants;
-    },
+        return Promise.all(
+      participants.map(async (participant) => ({
+        ...participant,
+        paperUrl: participant.paperFileId
+          ? await ctx.storage.getUrl(participant.paperFileId)
+          : null,
+      }))
+    );
+  },
 });
 
 export const sendReminder = mutation({

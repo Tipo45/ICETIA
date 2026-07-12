@@ -4,7 +4,7 @@ import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import { Card, CardContent } from "@/components/ui/card";
 import { CiCircleCheck } from "react-icons/ci";
-import { FaAward, FaRegCalendarCheck, FaRegCreditCard, FaUsers } from "react-icons/fa";
+import { FaAward, FaRegBuilding, FaRegCalendarCheck, FaRegCreditCard, FaUsers } from "react-icons/fa";
 import { FiUserCheck, FiUsers, FiFileText, FiCoffee, FiUser, FiMail, FiTag, FiDollarSign, FiEdit2 } from "react-icons/fi";
 import { IoIosInformationCircleOutline, IoMdBook } from "react-icons/io";
 import { MdOutlineDisplaySettings, MdOutlineEventNote, MdOutlineRecordVoiceOver, MdOutlineVerified } from "react-icons/md";
@@ -18,7 +18,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import { PiPresentationChartFill } from "react-icons/pi";
 import { LuBuilding2, LuCoffee } from "react-icons/lu";
-import { validateCountry, validateEmail, validateFirstName, validateInstitution, validateLastName } from "@/components/types/validation";
+import { validateCountry, validateDepartment, validateEmail, validateFirstName, validateInstitution, validateLastName } from "@/components/types/validation";
 import { TbWorld } from "react-icons/tb";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Country } from "country-state-city";
@@ -43,6 +43,7 @@ export default function RegistrationSection() {
         firstName: "",
         lastName: "",
         email: "",
+        department: "",
         institution: "",
         country: "",
     });
@@ -55,6 +56,7 @@ export default function RegistrationSection() {
         firstName: "",
         lastName: "",
         email: "",
+        department: "",
         institution: "",
         country: "",
     });
@@ -63,6 +65,7 @@ export default function RegistrationSection() {
         firstName: false,
         lastName: false,
         email: false,
+        department: false,
         institution: false,
         country: false,
     });
@@ -72,6 +75,7 @@ export default function RegistrationSection() {
             firstName: "",
             lastName: "",
             email: "",
+            department: "",
             institution: "",
             country: ""
         });
@@ -80,6 +84,7 @@ export default function RegistrationSection() {
             firstName: "",
             lastName: "",
             email: "",
+            department: "",
             institution: "",
             country: "",
         });
@@ -88,6 +93,7 @@ export default function RegistrationSection() {
             firstName: false,
             lastName: false,
             email: false,
+            department: false,
             institution: false,
             country: false,
         });
@@ -116,11 +122,11 @@ export default function RegistrationSection() {
             case "email":
                 error = validateEmail(value) || "";
                 break;
-
+            case "department":
+                error = validateDepartment(value) || ""
             case "institution":
                 error = validateInstitution(value) || "";
                 break;
-
             case "country":
                 error = validateCountry(value) || "";
                 break;
@@ -137,6 +143,7 @@ export default function RegistrationSection() {
             !validateFirstName(formData.firstName) &&
             !validateLastName(formData.lastName) &&
             !validateEmail(formData.email) &&
+            !validateDepartment(formData.department) &&
             !validateInstitution(formData.institution) &&
             !validateCountry(formData.country)
         );
@@ -146,6 +153,7 @@ export default function RegistrationSection() {
         const firstNameError = validateFirstName(formData.firstName);
         const lastNameError = validateLastName(formData.lastName);
         const emailError = validateEmail(formData.email);
+        const departmentError = validateDepartment(formData.department);
         const institutionError = validateInstitution(formData.institution);
         const countryError = validateCountry(formData.country);
 
@@ -153,6 +161,7 @@ export default function RegistrationSection() {
             firstName: firstNameError || "",
             lastName: lastNameError || "",
             email: emailError || "",
+            department: departmentError || "",
             institution: institutionError || "",
             country: countryError || "",
         });
@@ -161,11 +170,12 @@ export default function RegistrationSection() {
             firstName: true,
             lastName: true,
             email: true,
+            department: true,
             institution: true,
             country: true,
         });
 
-        if (firstNameError || lastNameError || emailError || institutionError || countryError) {
+        if (firstNameError || lastNameError || emailError || departmentError || institutionError || countryError) {
             return;
         }
 
@@ -179,6 +189,7 @@ export default function RegistrationSection() {
                 firstName: formData.firstName,
                 lastName: formData.lastName,
                 email: formData.email,
+                department: formData.department,
                 institution: formData.institution,
                 country: formData.country
             })
@@ -307,13 +318,30 @@ export default function RegistrationSection() {
 
                                     <div className="space-y-2">
                                         <label className="text-sm">
+                                            Department <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={formData.department}
+                                            onChange={(e) => handleChange("department", e.target.value)}
+                                            placeholder="Enter your department"
+                                            className={`w-full h-12 border placeholder:text-gray-700 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-600 transition ${formTouched.department && formErrors.department ? "border-red-500 focus:ring-red-500" : formTouched.department && !formErrors.department && formData.department ? "border-green-500 focus:ring-green-500"
+                                                : "border-input-border"}`}
+                                        />
+                                        {formTouched.department && formErrors.department && (
+                                            <p className="text-red-500 text-sm mt-1">{formErrors.department}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-sm">
                                             Institution <span className="text-red-500">*</span>
                                         </label>
                                         <input
                                             type="text"
                                             value={formData.institution}
                                             onChange={(e) => handleChange("institution", e.target.value)}
-                                            placeholder="Enter first name"
+                                            placeholder="Enter your institution"
                                             className={`w-full h-12 border placeholder:text-gray-700 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-600 transition ${formTouched.institution && formErrors.institution ? "border-red-500 focus:ring-red-500" : formTouched.institution && !formErrors.institution && formData.institution ? "border-green-500 focus:ring-green-500"
                                                 : "border-input-border"}`}
                                         />
@@ -323,23 +351,23 @@ export default function RegistrationSection() {
                                     </div>
 
                                     <div className="space-y-2">
-                                                    <label className="text-sm">
-                                                        Country   <span className="text-red-500">*</span>
-                                                    </label>
-                                                    <Select value={formData.country}
-                                                        onValueChange={(value) => handleChange("country", value)}>
-                                                        <SelectTrigger className={`w-full h-10 border placeholder:text-gray-700 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-600 transition ${formTouched.country && formErrors.country ? "border-red-500 focus:ring-red-500" : formTouched.country && !formErrors.country && formData.country ? "border-green-500 focus:ring-green-500" : "border-input-border"}`}>
-                                                            <SelectValue placeholder="Choose Country" />
-                                                        </SelectTrigger>
-                                                        <SelectContent>
-                                    
-                                                            <SelectGroup>
-                                                                {countries.map((country) => (
-                                                                    <SelectItem key={country.isoCode} value={country.name}>{country.name}</SelectItem>))}
-                                                            </SelectGroup>
-                                                        </SelectContent>
-                                                    </Select>
-                                                </div>
+                                        <label className="text-sm">
+                                            Country   <span className="text-red-500">*</span>
+                                        </label>
+                                        <Select value={formData.country}
+                                            onValueChange={(value) => handleChange("country", value)}>
+                                            <SelectTrigger className={`w-full h-10 border placeholder:text-gray-700 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-600 transition ${formTouched.country && formErrors.country ? "border-red-500 focus:ring-red-500" : formTouched.country && !formErrors.country && formData.country ? "border-green-500 focus:ring-green-500" : "border-input-border"}`}>
+                                                <SelectValue placeholder="Choose Country" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+
+                                                <SelectGroup>
+                                                    {countries.map((country) => (
+                                                        <SelectItem key={country.isoCode} value={country.name}>{country.name}</SelectItem>))}
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
 
                                     <div className="space-y-2">
                                         <label className="text-sm font-medium text-slate-700">
@@ -396,6 +424,18 @@ export default function RegistrationSection() {
                                                 <div className="flex items-center justify-between p-4 hover:bg-slate-50/50 transition-colors">
                                                     <div className="flex items-center gap-3">
                                                         <div className="p-1.5 bg-blue-100 rounded-lg">
+                                                            <FaRegBuilding className="w-3.5 h-3.5 text-blue-600" />
+                                                        </div>
+                                                        <span className="text-sm text-slate-500">Department</span>
+                                                    </div>
+                                                    <span className="text-sm font-medium text-slate-900">
+                                                        {formData.department}
+                                                    </span>
+                                                </div>
+
+                                                <div className="flex items-center justify-between p-4 hover:bg-slate-50/50 transition-colors">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="p-1.5 bg-blue-100 rounded-lg">
                                                             <LuBuilding2 className="w-3.5 h-3.5 text-blue-600" />
                                                         </div>
                                                         <span className="text-sm text-slate-500">Institution</span>
@@ -410,7 +450,7 @@ export default function RegistrationSection() {
                                                         <div className="p-1.5 bg-blue-100 rounded-lg">
                                                             <TbWorld className="w-3.5 h-3.5 text-blue-600" />
                                                         </div>
-                                                        <span className="text-sm text-slate-500">Institution</span>
+                                                        <span className="text-sm text-slate-500">Country</span>
                                                     </div>
                                                     <span className="text-sm font-medium text-slate-900">
                                                         {formData.country}

@@ -5,12 +5,12 @@ import {
     FiFileText,
     FiGlobe,
     FiMail,
-    FiMapPin,
     FiUser,
     FiUsers,
 } from "react-icons/fi";
 import { RegistrationFormData } from "../types/registration";
 import { LuBuilding2, LuGraduationCap } from "react-icons/lu";
+import { FaRegBuilding } from "react-icons/fa";
 
 type Props = {
     formData: RegistrationFormData;
@@ -72,11 +72,13 @@ export default function ReviewStep({ formData }: Props) {
                     <ReviewRow
                         label="Institution"
                         value={formData.institution}
+                        icon={<LuBuilding2 />}
                     />
 
                     <ReviewRow
                         label="Department"
                         value={formData.department}
+                        icon={<FaRegBuilding />}
                     />
 
                     <ReviewRow

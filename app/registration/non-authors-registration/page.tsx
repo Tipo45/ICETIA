@@ -315,7 +315,7 @@ export default function RegistrationSection() {
                                             type="text"
                                             value={formData.institution}
                                             onChange={(e) => handleChange("institution", e.target.value)}
-                                            placeholder="Enter first name"
+                                            placeholder="Enter your institution"
                                             className={`w-full h-12 border placeholder:text-gray-700 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-600 transition ${formTouched.institution && formErrors.institution ? "border-red-500 focus:ring-red-500" : formTouched.institution && !formErrors.institution && formData.institution ? "border-green-500 focus:ring-green-500"
                                                 : "border-input-border"}`}
                                         />
@@ -412,7 +412,7 @@ export default function RegistrationSection() {
                                                         <div className="p-1.5 bg-blue-100 rounded-lg">
                                                             <TbWorld className="w-3.5 h-3.5 text-blue-600" />
                                                         </div>
-                                                        <span className="text-sm text-slate-500">Institution</span>
+                                                        <span className="text-sm text-slate-500">Country</span>
                                                     </div>
                                                     <span className="text-sm font-medium text-slate-900">
                                                         {formData.country}

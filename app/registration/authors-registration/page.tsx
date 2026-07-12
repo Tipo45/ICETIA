@@ -19,7 +19,7 @@ import { BsClockHistory } from "react-icons/bs";
 import { CiCircleCheck } from "react-icons/ci";
 import { FaAward, FaRegCalendarCheck, FaRegCreditCard, FaUsers } from "react-icons/fa";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
-import { FiCoffee, FiFileText, FiUserCheck, FiUsers } from "react-icons/fi";
+import { FiUserCheck } from "react-icons/fi";
 import { IoIosInformationCircleOutline, IoMdBook } from "react-icons/io";
 import { MdOutlineDisplaySettings, MdOutlineEventNote, MdOutlineRecordVoiceOver, MdOutlineVerified } from "react-icons/md";
 import { LuCoffee, LuSaveAll } from "react-icons/lu";

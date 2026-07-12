@@ -13,15 +13,15 @@ import { toast } from "sonner";
 
 export default function ParticipantsPage() {
   const [searchInput, setSearchInput] = useState("");
-const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("");
 
-useEffect(() => {
-  const timer = setTimeout(() => {
-    setSearch(searchInput);
-  }, 400);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearch(searchInput);
+    }, 400);
 
-  return () => clearTimeout(timer);
-}, [searchInput]);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
   const [category, setCategory] = useState<
     "author" | "participant" | "student" | undefined
   >();
@@ -43,8 +43,8 @@ useEffect(() => {
   const participantsList = participants ?? [];
 
   const totalParticipants = participantsList.reduce((total, participant) => {
-  return total + 1 + (participant.coAuthors?.length ?? 0);
-}, 0);
+    return total + 1 + (participant.coAuthors?.length ?? 0);
+  }, 0);
 
   const sendReminder = useMutation(api.registration.sendReminder);
 
@@ -70,11 +70,13 @@ useEffect(() => {
     }
   };
 
-{participants === undefined && (
-  <div className="text-sm text-slate-500">
-    Updating results...
-  </div>
-)}
+  {
+    participants === undefined && (
+      <div className="text-sm text-slate-500">
+        Updating results...
+      </div>
+    )
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-8 space-y-6">
@@ -221,6 +223,7 @@ useEffect(() => {
                   <th className="px-5 py-4">Amount</th>
                   <th className="px-5 py-4">Paid At</th>
                   <th className="px-5 py-4">Co-Authors</th>
+                  <th className="px-5 py-4">Paper</th>
                   <th className="px-5 py-4 text-center">Action</th>
 
                 </tr>
@@ -280,49 +283,64 @@ useEffect(() => {
                     </td>
 
                     <td className="px-5 py-5">
-  <HoverCard>
-    <HoverCardTrigger asChild>
-      <span className="cursor-pointer text-blue-600 hover:underline">
-        {participant.coAuthors?.length
-          ? participant.coAuthors.length
-          : "-"}
-      </span>
-    </HoverCardTrigger>
+                      <HoverCard>
+                        <HoverCardTrigger asChild>
+                          <span className="cursor-pointer text-blue-600 hover:underline">
+                            {participant.coAuthors?.length
+                              ? participant.coAuthors.length
+                              : "-"}
+                          </span>
+                        </HoverCardTrigger>
 
-    {participant.coAuthors && participant.coAuthors.length > 0 && (
-      <HoverCardContent side="right" className="w-72">
-        <div className="space-y-2">
-          <h4 className="font-semibold text-sm">
-            Co-Authors ({participant.coAuthors.length})
-          </h4>
+                        {participant.coAuthors && participant.coAuthors.length > 0 && (
+                          <HoverCardContent side="right" className="w-72">
+                            <div className="space-y-2">
+                              <h4 className="font-semibold text-sm">
+                                Co-Authors ({participant.coAuthors.length})
+                              </h4>
 
-          {participant.coAuthors.map((author, i) => (
-            <div
-              key={i}
-              className="border-b last:border-0 pb-2 last:pb-0"
-            >
-              <p className="font-medium">
-                {author.lastName}, {author.firstName}
-              </p>
+                              {participant.coAuthors.map((author, i) => (
+                                <div
+                                  key={i}
+                                  className="border-b last:border-0 pb-2 last:pb-0"
+                                >
+                                  <p className="font-medium">
+                                    {author.lastName}, {author.firstName}
+                                  </p>
 
-              {author.email && (
-                <p className="text-xs text-slate-500">
-                  {author.email}
-                </p>
-              )}
+                                  {author.email && (
+                                    <p className="text-xs text-slate-500">
+                                      {author.email}
+                                    </p>
+                                  )}
 
-              {author.institution && (
-                <p className="text-xs text-slate-500">
-                  {author.institution}
-                </p>
-              )}
-            </div>
-          ))}
-        </div>
-      </HoverCardContent>
-    )}
-  </HoverCard>
-</td>
+                                  {author.institution && (
+                                    <p className="text-xs text-slate-500">
+                                      {author.institution}
+                                    </p>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          </HoverCardContent>
+                        )}
+                      </HoverCard>
+                    </td>
+
+                    <td className="px-5 py-5">
+                      {participant.paperUrl ? (
+                        <a
+                          href={participant.paperUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline"
+                        >
+                          View Paper
+                        </a>
+                      ) : (
+                        "-"
+                      )}
+                    </td>
 
                     <td className="px-5 py-5 text-center">
 

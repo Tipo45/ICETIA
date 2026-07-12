@@ -67,14 +67,13 @@ export default function PaperUploadStep({
 
         const allowedTypes = [
             "application/pdf",
-            "application/msword",
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         ];
 
         if (!allowedTypes.includes(file.type)) {
             setFormErrors((prev) => ({
                 ...prev,
-                paperFile: "Only PDF, DOC and DOCX files are allowed.",
+                paperFile: "Only PDF files are allowed.",
             }));
 
             return;
@@ -117,7 +116,7 @@ export default function PaperUploadStep({
                     </h3>
 
                     <p className="text-sm text-slate-500 mt-2">
-                        PDF, DOC or DOCX
+                        PDF
                     </p>
 
                     <p className="text-xs text-slate-400 mt-1">
@@ -127,7 +126,7 @@ export default function PaperUploadStep({
                     <input
                         id="paper-upload"
                         type="file"
-                        accept=".pdf,.doc,.docx"
+                        accept=".pdf,application/pdf"
                         className="hidden"
                         onChange={handleFileChange}
                     />
@@ -165,7 +164,7 @@ export default function PaperUploadStep({
                     </h4>
 
                     <ul className="mt-2 text-sm text-amber-700 space-y-1 list-disc ml-5">
-                        <li>Only PDF, DOC and DOCX files are accepted.</li>
+                        <li>Only PDF files are accepted.</li>
                         <li>Maximum file size is <strong>5 MB</strong>.</li>
                         <li>Ensure this is the final camera-ready version.</li>
                         <li>The uploaded file should match the paper title submitted during registration.</li>
