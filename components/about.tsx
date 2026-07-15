@@ -11,10 +11,10 @@ export default function About() {
                         Maiden Edition
                     </div>
                     <h1 className="text-4xl xl:text-5xl lg:text-6xl font-bold text-slate-900 mb-4 tracking-tight">
-                        About <span className="text-blue-600">ICETIA 2026</span>
+                        About <span className="text-blue-600">CASCADE 2026</span>
                     </h1>
                     <p className="text-lg xl:text-xl text-slate-600 max-w-3xl mx-auto">
-                        The First International Conference on Emerging Technologies, Innovation and Applications
+                        The First International Conference on Cybersecurity, Artificial Intelligence, Smart Systems, Computing, Analytics, Data and Emerging Technologies
                     </p>
                 </div>
 
@@ -24,7 +24,7 @@ export default function About() {
                 <div className="space-y-8">
                     <div className="bg-white rounded-2xl shadow-md border border-slate-200/60 p-6 lg:p-8 xl:p-10 hover:shadow-lg transition-shadow">
                         <p className="text-base lg:text-lg text-slate-700 leading-relaxed">
-                            <span className="font-semibold text-blue-600">ICETIA 2026</span> is an academic and professional gathering proposed by the
+                            <span className="font-semibold text-blue-600">CASCADE 2026</span> is an academic and professional gathering proposed by the
                             <span className="font-medium text-slate-900"> Department of Computer Science and Informatics, Federal University Otuoke</span>.
                             The conference is designed to provide a platform for researchers, academics, industry professionals, innovators,
                             policymakers, postgraduate students, and technology practitioners to exchange knowledge, present research findings,
@@ -34,7 +34,7 @@ export default function About() {
 
                     <div className="bg-white rounded-2xl shadow-md border border-slate-200/60 p-6 lg:p-8 xl:p-10 hover:shadow-lg transition-shadow">
                         <p className="text-base lg:text-lg text-slate-700 leading-relaxed">
-                            ICETIA 2026 seeks to promote scholarly dialogue and practical engagement on the role of emerging technologies
+                            CASCADE 2026 seeks to promote scholarly dialogue and practical engagement on the role of emerging technologies
                             in addressing contemporary societal, industrial, educational, economic, and developmental challenges. The conference
                             will focus on innovative research, practical applications, and interdisciplinary collaborations in areas such as:
                         </p>
@@ -63,7 +63,7 @@ export default function About() {
 
                     <div className="bg-white rounded-2xl shadow-md border border-slate-200/60 p-6 lg:p-8 xl:p-10 hover:shadow-lg transition-shadow">
                         <p className="text-base lg:text-lg text-slate-700 leading-relaxed">
-                            As the maiden edition, ICETIA 2026 aims to establish a strong foundation for an internationally recognised
+                            As the maiden edition, CASCADE 2026 aims to establish a strong foundation for an internationally recognised
                             conference series that will contribute to research excellence, technological advancement, innovation, and
                             sustainable development. The conference will also create opportunities for networking, academic collaboration,
                             industry partnership, and the dissemination of impactful research from Nigeria, Africa, and the global community.
@@ -77,7 +77,7 @@ export default function About() {
                         </h2>
                         <p className="text-base lg:text-lg text-slate-700 leading-relaxed">
                             Through keynote presentations, technical paper sessions, panel discussions, workshops, and exhibitions,
-                            ICETIA 2026 will encourage critical conversations on the future of emerging technologies and their applications
+                            CASCADE 2026 will encourage critical conversations on the future of emerging technologies and their applications
                             across diverse sectors.
                         </p>
                         <div className="grid grid-cols-2 xl:grid-cols-3 gap-3 mt-6">
@@ -103,7 +103,7 @@ export default function About() {
                 {/* Footer CTA */}
                 <div className="mt-12 text-center">
                     <p className="text-sm text-slate-500">
-                        Join us in shaping the future of technology at <span className="font-medium text-slate-700">ICETIA 2026</span>
+                        Join us in shaping the future of technology at <span className="font-medium text-slate-700">CASCADE 2026</span>
                     </p>
                 </div>
             </div>

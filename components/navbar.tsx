@@ -17,11 +17,11 @@ export default function Navbar() {
   const navItems = [
     { name: "About", href: "/#about" },
     { name: "Committees", href: "/committees" },
-    { name: "Call for Papers", href: "#cfp" },
-    { name: "Tracks", href: "#tracks" },
+    { name: "Call for Papers", href: "/#cfp" },
+    { name: "Tracks", href: "/#tracks" },
     { name: "Program", href: "/program" },
     { name: "Sponsorship", href: "/sponsorship" },
-    { name: "Contact", href: "/contact" },
+    { name: "Contact", href: "/#footer" },
   ];
   const router = useRouter();
 
@@ -34,11 +34,10 @@ export default function Navbar() {
       <div className="container mx-auto flex h-20 items-center justify-between px-2">
         <Link href="/" className="max-w-sm">
           <h1 className="font-bold text-sm lg:text-lg text-blue-900">
-            ICETIA 2026
+            CASCADE 2026
           </h1>
           <p className="text-xs lg:text-md text-muted-foreground">
-            International Conference on Emerging Technologies,
-            Innovation and Application
+            International Conference on Cybersecurity, Artificial Intelligence, Smart Systems, Computing, Analytics, Data and Emerging Technologies
           </p>
         </Link>
 

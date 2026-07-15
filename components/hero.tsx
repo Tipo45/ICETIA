@@ -30,7 +30,7 @@ export default function Hero() {
             animate={{ opacity: 1 }}
           >
             <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm">
-              ICETIA 2026
+              CASCADE 2026
             </span>
           </motion.div>
 
@@ -40,8 +40,7 @@ export default function Hero() {
             transition={{ delay: .2 }}
             className="mt-8 text-4xl font-bold leading-tight lg:text-6xl"
           >
-            International Conference on Emerging Technologies,
-            Innovation and Application
+            International Conference on Cybersecurity, Artificial Intelligence, Smart Systems, Computing, Analytics, Data and Emerging Technologies
           </motion.h1>
 
           <motion.p

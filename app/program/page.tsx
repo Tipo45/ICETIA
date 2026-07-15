@@ -89,7 +89,11 @@ export default function ProgrammePage() {
     const router = useRouter();
     
     const handleRegistrationNavigation = () => {
-      router.push("/registration")
+      router.push("/#registration")
+    }
+
+    const handleSubmitPaperButton  = () => {
+      router.push("/registration/authors-registration")
     }
 
   return (
@@ -101,7 +105,7 @@ export default function ProgrammePage() {
         <div className="container mx-auto px-6 text-center">
 
           <span className="uppercase tracking-widest text-blue-200">
-            ICETIA 2026
+            CASCADE 2026
           </span>
 
           <h1 className="mt-6 text-5xl font-bold">
@@ -109,7 +113,7 @@ export default function ProgrammePage() {
           </h1>
 
           <p className="max-w-3xl mx-auto mt-6 text-blue-100 leading-8">
-            ICETIA 2026 has been carefully designed to foster
+            CASCADE 2026 has been carefully designed to foster
             collaboration, showcase innovative research, promote
             knowledge exchange and strengthen partnerships among
             academia, industry and government.
@@ -252,7 +256,7 @@ export default function ProgrammePage() {
         <div className="container mx-auto px-6 text-center">
 
           <h2 className="text-4xl font-bold">
-            Join ICETIA 2026
+            Join CASCADE 2026
           </h2>
 
           <p className="max-w-2xl mx-auto mt-6 text-blue-100">
@@ -268,6 +272,7 @@ export default function ProgrammePage() {
             </Button>
 
             <Button
+            onClick={handleSubmitPaperButton}
               size="lg"
               variant="secondary"
             >

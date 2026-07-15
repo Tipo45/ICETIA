@@ -105,7 +105,7 @@ export default function AuthorsRegistrationPage() {
         paperFile: false,
     });
 
-    const paymentValue = 30000;
+    const paymentValue = 40000;
     const router = useRouter();
     const [step, setStep] = useState(1);
 

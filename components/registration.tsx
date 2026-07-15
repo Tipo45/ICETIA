@@ -1,8 +1,5 @@
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
-import { it } from "node:test";
-import { BsFileText } from "react-icons/bs";
 import { CiCircleCheck } from "react-icons/ci";
 import { FaAward, FaRegCalendarCheck, FaUsers } from "react-icons/fa";
 import { IoIosInformationCircleOutline, IoMdBook } from "react-icons/io";
@@ -13,21 +10,21 @@ import { PiPresentationChartFill } from "react-icons/pi";
 const categories = [
     {
         title: "Authors",
-        price: "₦30,000",
+        price: "₦40,000",
         description:
             "Presenting authors with accepted papers.",
         href: "/registration/authors-registration"
     },
     {
         title: "Non-authors/Participants",
-        price: "₦30,000",
+        price: "₦40,000",
         description:
             "Industry professionals and attendees.",
         href: "/registration/non-authors-registration"
     },
     {
         title: "Students",
-        price: "₦20,000",
+        price: "₦35,000",
         description:
             "Undergraduate and postgraduate students.",
         href: "/registration/students-registration"
@@ -62,7 +59,7 @@ export default function RegistrationCategories() {
                     <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
                         All authors, co-authors, non-authors, presenters, participants, postgraduate students,
                         undergraduate students, industry representatives and invited guests are required to register
-                        for the First International Conference on Emerging Technologies, Innovation and Applications (ICETIA 2026).
+                        for the First International Conference on Cybersecurity, Artificial Intelligence, Smart Systems, Computing, Analytics, Data and Emerging Technologies (CASCADE 2026).
                     </p>
                     <p className="mt-4 text-muted-foreground leading-relaxed">
                         Registration will provide access to the conference sessions, keynote presentations, technical paper presentations,

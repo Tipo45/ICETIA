@@ -39,7 +39,7 @@ const benefits = [
 
 export default function RegistrationSection() {
 
-    const paymentValue = 30000;
+    const paymentValue = 40000;
     const router = useRouter();
     const countries = Country.getAllCountries();
     const [formData, setFormData] = useState({

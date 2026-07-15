@@ -1,30 +1,37 @@
 import { FaCalendar } from "react-icons/fa";
 
-
 const dates = [
   {
+    title: "Conference Website Launch & Call for Papers",
+    date: "2nd July 2026",
+  },
+  {
     title: "Paper Submission Opens",
-    date: "TBA",
+    date: "3rd July 2026",
   },
   {
     title: "Paper Submission Deadline",
-    date: "TBA",
+    date: "September 2026",
   },
   {
     title: "Notification of Acceptance",
-    date: "TBA",
+    date: "October 2026",
   },
   {
-    title: "Camera Ready Submission",
-    date: "TBA",
+    title: "Author Registration Opens",
+    date: "October 2026",
+  },
+  {
+    title: "Camera-Ready Paper Submission",
+    date: "Late October 2026",
   },
   {
     title: "Author Registration Deadline",
-    date: "TBA",
+    date: "Early November 2026",
   },
   {
     title: "Conference Dates",
-    date: "24 - 25 November 2026",
+    date: "25 – 27 November 2026",
   },
 ];
 
@@ -32,41 +39,46 @@ export default function ImportantDates() {
   return (
     <section
       id="dates"
-      className="py-24"
+      className="bg-slate-50 py-24"
     >
       <div className="container mx-auto px-6">
         <div className="text-center">
-          <span className="uppercase tracking-wider text-blue-700 font-semibold">
-            Timeline
+          <span className="uppercase tracking-widest text-blue-700 font-semibold">
+            Conference Timeline
           </span>
 
           <h2 className="mt-4 text-4xl font-bold">
             Important Dates
           </h2>
+
+          <p className="mt-4 max-w-2xl mx-auto text-slate-600">
+            Please note that these dates are provisional and may be updated
+            following approval by the Conference Organising Committee.
+          </p>
         </div>
 
-        <div className="mt-16 max-w-4xl mx-auto">
+        <div className="mt-16 max-w-5xl mx-auto">
           {dates.map((item, index) => (
             <div
               key={item.title}
               className="flex gap-6"
             >
               <div className="flex flex-col items-center">
-                <div className="rounded-full bg-blue-700 p-3 text-white">
+                <div className="rounded-full bg-blue-700 p-3 text-white shadow-lg">
                   <FaCalendar size={18} />
                 </div>
 
                 {index !== dates.length - 1 && (
-                  <div className="w-px h-20 bg-blue-200" />
+                  <div className="w-1 h-24 bg-blue-200 rounded-full" />
                 )}
               </div>
 
-              <div className="pb-10">
-                <h3 className="font-semibold text-lg">
+              <div className="flex-1 rounded-2xl border bg-white p-6 shadow-sm hover:shadow-md transition">
+                <h3 className="font-semibold text-lg text-slate-900">
                   {item.title}
                 </h3>
 
-                <p className="text-muted-foreground">
+                <p className="mt-2 text-blue-700 font-medium">
                   {item.date}
                 </p>
               </div>
