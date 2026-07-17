@@ -60,7 +60,7 @@ ${index + 1}. ${author.firstName} ${author.lastName}
   return `
 Dear ${firstName || 'Participant'},
 
-Thank you for registering for ICETIA 2026. We are excited to have you join us for this International Conference on Emerging Technologies, Innovation, and Application.
+Thank you for registering for CASCADE 2026. We are excited to have you join us for the first International Conference on Cybersecurity, Artificial Intelligence, Smart Systems, Computing, Analytics, Data and Emerging Technologies.
 
 Registration Details:
 - Name: ${firstName} ${lastName}
@@ -72,12 +72,12 @@ ${coAuthorSection}
 
 You will receive your ticket and further instructions via email shortly. Please ensure to check your inbox and spam folder.
 
-For more information, please visit our website or contact us at support@icetia2026.com.
+For more information, please visit our website or contact us at support@cascade2026.com.
 
 We look forward to welcoming you to the conference!
 
 Best regards,
-The ICETIA 2026 Team
+CASCADE 2026 Organizing Committee
 `
 }
 
@@ -87,13 +87,13 @@ export function ticketEmail({
   qrCode,
 }: TicketEmailProps) {
   return `
-  <h2>Your ICETIA 2026 Conference Ticket</h2>
+  <h2>Your CASCADE 2026 Conference Ticket</h2>
 
 <p>Dear ${firstName},</p>
 
 <p>
   Thank you for successfully registering for
-  <strong>ICETIA 2026</strong>. We are delighted to welcome you to the conference.
+  <strong>CASCADE 2026</strong>. We are delighted to welcome you to the conference.
 </p>
 
 <hr>
@@ -101,7 +101,7 @@ export function ticketEmail({
 <h3>Conference Details</h3>
 
 <p>
-  <strong>📅 Date:</strong> 24-25 November, 2026
+  <strong>📅 Date:</strong> 25-27 November, 2026
 </p>
 
 <p>
@@ -146,16 +146,16 @@ export function ticketEmail({
 </p>
 
 <p>
-  If you have any questions, kindly contact support@icetia2026.com.
+  If you have any questions, kindly contact support@cascade2026.com.
 </p>
 
 <p>
-  We look forward to welcoming you to <strong>ICETIA 2026</strong>.
+  We look forward to welcoming you to <strong>CASCADE 2026</strong>.
 </p>
 
 <p>
   Best regards,<br/>
-  <strong>ICETIA 2026 Organizing Committee</strong>
+  <strong>CASCADE 2026 Organizing Committee</strong>
 </p>`;
 }
 
@@ -166,16 +166,13 @@ export function reminderEmail({
   return `
  Dear ${firstName},
 
-This is a friendly reminder that you are successfully registered for the International Conference on Emerging Trends in Information Technology and Artificial Intelligence (ICETIA 2026).
+This is a friendly reminder that you are successfully registered for the International Conference on Cybersecurity, Artificial Intelligence, Smart Systems, Computing, Analytics, Data and Emerging Technologies (CASCADE 2026).
 
 Conference Details
 ──────────────────────────
-📅 Date: 24-25 November, 2026
+📅 Date: 25-27 November, 2026
 🕘 Time: TBA
-📍 Venue:
-TBA,
-Federal University Otuoke, Ogbia,
-Bayelsa State, Nigeria
+📍 Venue: TBA, Federal University Otuoke, Ogbia, Bayelsa State, Nigeria
 
 Your Registration Details
 ──────────────────────────
@@ -185,11 +182,11 @@ Please keep your registration number safe and present your conference ticket (QR
 
 We recommend arriving at least 30 minutes before the event begins to complete registration and seating.
 
-If you have any questions or require assistance, please contact support@icetia2026.com.
+If you have any questions or require assistance, please contact support@cascade2026.com.
 
 We look forward to welcoming you and hope you have a rewarding conference experience.
 
 Best regards,
 
-ICETIA 2026 Organizing Committee`
+CASCADE 2026 Organizing Committee`
 }
