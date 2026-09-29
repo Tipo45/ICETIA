@@ -47,7 +47,7 @@ export const registerAuthor = mutation({
     },
 
     handler: async (ctx, args) => {
-        const registrationNumber = `ICETIA2026-${crypto
+        const registrationNumber = `ICETIA2027-${crypto
             .randomUUID()
             .slice(0, 8)
             .toUpperCase()}`;
@@ -114,7 +114,7 @@ export const registerParticipant = mutation({
     },
     handler: async (ctx, args) => {
 
-        const registrationNumber = `ICETIA2026-${crypto
+        const registrationNumber = `ICETIA2027-${crypto
             .randomUUID()
             .slice(0, 8)
             .toUpperCase()}`;
@@ -169,7 +169,7 @@ export const registerStudent = mutation({
     },
     handler: async (ctx, args) => {
 
-        const registrationNumber = `ICETIA2026-${crypto
+        const registrationNumber = `ICETIA2027-${crypto
             .randomUUID()
             .slice(0, 8)
             .toUpperCase()}`;
@@ -235,7 +235,7 @@ export const sendMail = mutation({
             throw new ConvexError("No registration found for this email.");
         }
 
-        const subject = "ICETIA 2026 Registration Confirmation";
+        const subject = "ICETIA 2027 Registration Confirmation";
 
         const body = registrationConfirmationEmail({
             firstName: existing.firstName,
@@ -292,7 +292,7 @@ export const sendConferenceTicket = mutation({
                 registration.registrationNumber
             )}`;
 
-        const subject = "Your ICETIA 2026 Conference Ticket";
+        const subject = "Your ICETIA 2027 Conference Ticket";
 
         const body = ticketEmail({
             firstName: registration.firstName,
@@ -407,7 +407,7 @@ export const sendReminder = mutation({
             throw new ConvexError("No registration found for this email.");
         }
 
-        const subject = "ICETIA 2026 Conference Reminder";
+        const subject = "ICETIA 2027 Conference Reminder";
 
         const body = reminderEmail({
             firstName: existing.firstName,

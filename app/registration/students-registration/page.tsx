@@ -545,7 +545,7 @@ export default function RegistrationSection() {
                                         Important: Student Registration
                                     </h4>
                                     <p className="text-sm text-muted-foreground leading-relaxed mt-1">
-                                        A discounted registration fee of ₦20,000 is available for students. This category is open to undergraduate and postgraduate students who wish to attend, present papers, participate in workshops or engage with the academic and professional activities of the conference.
+                                        A discounted registration fee of ₦{paymentValue.toLocaleString()} is available for students. This category is open to undergraduate and postgraduate students who wish to attend, present papers, participate in workshops or engage with the academic and professional activities of the conference.
                                     </p>
                                     <div className="mt-4 p-4 bg-red-50 border-2 border-red-200 rounded-xl flex items-start gap-3">
                                         <IoIosInformationCircleOutline className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />

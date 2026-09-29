@@ -28,7 +28,7 @@ export default function PersonalInfoStep({ formData,
     setFormTouched,
 }: Props) {
 
-    const paymentValue = 30000;
+    const paymentValue = 40000;
 
     const handleChange = (field: keyof typeof formData, value: string) => {
         setFormData(prev => ({

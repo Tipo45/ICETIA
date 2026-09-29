@@ -105,7 +105,7 @@ export default function ProgrammePage() {
         <div className="container mx-auto px-6 text-center">
 
           <span className="uppercase tracking-widest text-blue-200">
-            CASCADE 2026
+            ICETIA 2027
           </span>
 
           <h1 className="mt-6 text-5xl font-bold">
@@ -113,7 +113,7 @@ export default function ProgrammePage() {
           </h1>
 
           <p className="max-w-3xl mx-auto mt-6 text-blue-100 leading-8">
-            CASCADE 2026 has been carefully designed to foster
+            ICETIA 2027 has been carefully designed to foster
             collaboration, showcase innovative research, promote
             knowledge exchange and strengthen partnerships among
             academia, industry and government.
@@ -256,7 +256,7 @@ export default function ProgrammePage() {
         <div className="container mx-auto px-6 text-center">
 
           <h2 className="text-4xl font-bold">
-            Join CASCADE 2026
+            Join ICETIA 2027
           </h2>
 
           <p className="max-w-2xl mx-auto mt-6 text-blue-100">

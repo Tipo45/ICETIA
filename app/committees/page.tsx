@@ -106,7 +106,7 @@ export default function CommitteesPage() {
                 <div className="container mx-auto px-6 text-center">
 
                     <span className="uppercase tracking-[0.3em] text-blue-200">
-                        CASCADE 2026
+                        ICETIA 2027
                     </span>
 
                     <h1 className="mt-6 text-5xl font-bold">
@@ -114,7 +114,7 @@ export default function CommitteesPage() {
                     </h1>
 
                     <p className="mt-6 max-w-3xl mx-auto text-blue-100 leading-8">
-                        CASCADE 2026 is guided by distinguished academics,
+                        ICETIA 2027 is guided by distinguished academics,
                         researchers and professionals dedicated to ensuring
                         the successful planning and delivery of the conference.
                     </p>

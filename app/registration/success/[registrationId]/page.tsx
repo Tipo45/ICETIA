@@ -26,7 +26,7 @@ export default function RegistrationSuccessPage() {
                     <p className="mt-3 text-slate-600 text-lg leading-relaxed">
                         Thank you for registering for
                         <span className="font-semibold text-blue-700">
-                            {" "}ICETIA 2026
+                            {" "}ICETIA 2027
                         </span>.
                     </p>
                 </div>

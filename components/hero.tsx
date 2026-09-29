@@ -30,7 +30,7 @@ export default function Hero() {
             animate={{ opacity: 1 }}
           >
             <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm">
-              CASCADE 2026
+              ICETIA 2027
             </span>
           </motion.div>
 
@@ -40,7 +40,7 @@ export default function Hero() {
             transition={{ delay: .2 }}
             className="mt-8 text-4xl font-bold leading-tight lg:text-6xl"
           >
-            International Conference on Cybersecurity, Artificial Intelligence, Smart Systems, Computing, Analytics, Data and Emerging Technologies
+            International Conference on Emerging Technologies, Innovation and Applications
           </motion.h1>
 
           <motion.p
@@ -57,16 +57,11 @@ export default function Hero() {
             <div className="flex items-center gap-2">
               <IoCalendarNumber size={20} />
               <span>
-                24th – 25th November, 2026
+                24th – 25th November, 2027
               </span>
             </div>
 
-            <div className="flex items-center gap-2">
-              <FaRegBuilding size={20} />
-              <span>
-                Department of Computer Science and Informatics
-              </span>
-            </div>
+           
           </div>
 
           <div className="mt-12 flex flex-wrap justify-center gap-4">

@@ -59,7 +59,7 @@ export default function RegistrationCategories() {
                     <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
                         All authors, co-authors, non-authors, presenters, participants, postgraduate students,
                         undergraduate students, industry representatives and invited guests are required to register
-                        for the First International Conference on Cybersecurity, Artificial Intelligence, Smart Systems, Computing, Analytics, Data and Emerging Technologies (CASCADE 2026).
+                        for the First International Conference on Emerging Technologies, Innovation and Applications (ICETIA 2027).
                     </p>
                     <p className="mt-4 text-muted-foreground leading-relaxed">
                         Registration will provide access to the conference sessions, keynote presentations, technical paper presentations,

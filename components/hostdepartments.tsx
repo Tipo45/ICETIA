@@ -14,11 +14,11 @@ export default function HostDepartment() {
           </h2>
 
           <h3 className="mt-4 text-2xl font-semibold">
-            Department of Computer Science and Informatics
+            Federal University Otuoke
           </h3>
 
           <p className="mt-6 text-muted-foreground leading-8">
-            The Department of Computer Science and Informatics, Federal University Otuoke, Ogbia, Bayelsa State
+            Federal University Otuoke, Ogbia, Bayelsa State
             is committed to advancing research, innovation,
             and digital transformation through academic
             excellence, collaborative research, and industry

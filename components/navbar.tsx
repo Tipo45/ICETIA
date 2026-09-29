@@ -34,10 +34,10 @@ export default function Navbar() {
       <div className="container mx-auto flex h-20 items-center justify-between px-2">
         <Link href="/" className="max-w-sm">
           <h1 className="font-bold text-sm lg:text-lg text-blue-900">
-            CASCADE 2026
+            ICETIA 2027
           </h1>
           <p className="text-xs lg:text-md text-muted-foreground">
-            International Conference on Cybersecurity, Artificial Intelligence, Smart Systems, Computing, Analytics, Data and Emerging Technologies
+            International Conference on Emerging Technologies, Innovation and Applications
           </p>
         </Link>
 

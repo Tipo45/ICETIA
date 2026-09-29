@@ -28,7 +28,7 @@ export default function CallForPapers() {
           </h2>
 
           <p className="mt-6 max-w-3xl text-slate-200 leading-8">
-            CASCADE 2026 invites researchers, academics,
+            ICETIA 2027 invites researchers, academics,
             practitioners, and industry experts to submit
             original and unpublished research papers that
             contribute to advancing emerging technologies,

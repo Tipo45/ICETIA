@@ -9,16 +9,16 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-8 xl:grid-cols-4">
           <div>
             <h3 className="font-bold text-2xl">
-              CASCADE 2026
+              ICETIA 2027
             </h3>
 
             <p className="mt-4 text-slate-400 leading-7">
-              International Conference on Cybersecurity, Artificial Intelligence, Smart Systems, Computing, Analytics, Data and Emerging Technologies
+              International Conference on Emerging Technologies, Innovation and Applications
             </p>
 
             <div className="mt-6 flex items-center gap-2 text-sm text-slate-400">
               <LuCalendarDays className="h-4 w-4 text-blue-500" />
-              <span>24–25 November, 2026</span>
+              <span>April, 2027</span>
             </div>
 
 
@@ -107,10 +107,10 @@ export default function Footer() {
               © {new Date().getFullYear()} Tipotek. All Rights Reserved.
             </p>
 
-            <p>
+            {/* <p>
               Powered by the Department of Computer Science &
               Informatics, Federal University Otuoke.
-            </p>
+            </p> */}
 
           </div>
 
