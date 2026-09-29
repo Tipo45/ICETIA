@@ -3,35 +3,35 @@ import { FaCalendar } from "react-icons/fa";
 const dates = [
   {
     title: "Conference Website Launch & Call for Papers",
-    date: "TBA",
+    date: "November - December 2026",
   },
   {
     title: "Paper Submission Opens",
-    date: "TBA",
+    date: "January 2027",
   },
   {
     title: "Paper Submission Deadline",
-    date: "TBA",
+    date: "February 2027",
   },
   {
     title: "Notification of Acceptance",
-    date: "TBA",
+    date: "March 2027",
   },
   {
     title: "Author Registration Opens",
-    date: "TBA",
+    date: "March 2027",
   },
   {
     title: "Camera-Ready Paper Submission",
-    date: "TBA",
+    date: "Mid-March 2027",
   },
   {
     title: "Author Registration Deadline",
-    date: "TBA",
+    date: "Late March 2027",
   },
   {
     title: "Conference Dates",
-    date: "April 2027",
+    date: "28th - 30th April 2027",
   },
 ];
 

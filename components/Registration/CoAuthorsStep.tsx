@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { LuPlus } from "react-icons/lu";
 import { Country } from "country-state-city";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Degree, RegistrationFormData, RegistrationFormErrors, RegistrationFormTouched } from "../types/registration";

@@ -36,7 +36,7 @@ export default function RegistrationSection() {
         { icon: MdOutlineDisplaySettings, text: "Access to exhibitions, innovation showcases and partner sessions" },
     ]
 
-    const paymentValue = 35000;
+    const paymentValue = 30000;
     const router = useRouter();
     const countries = Country.getAllCountries();
     const [formData, setFormData] = useState({

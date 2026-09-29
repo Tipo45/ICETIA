@@ -7,6 +7,7 @@ import RegistrationCategories from "@/components/registration";
 import HostDepartment from "@/components/hostdepartments";
 import Footer from "@/components/footer";
 import About from "@/components/about";
+import Gallery from "@/components/gallery";
 
 
 export default function HomePage() {
@@ -17,6 +18,8 @@ export default function HomePage() {
       <Hero />
 
       <About />
+
+      <Gallery />
 
       <CallForPapers />
 

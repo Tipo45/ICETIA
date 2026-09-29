@@ -92,8 +92,8 @@ export default function Footer() {
                 <li>GLO</li>
                 <li>Bayelsa State Government</li>
                 <li>NDDC</li>
-                <li></li>
-                <li></li>
+                <li>UBA</li>
+                <li>Airtel Nigeria</li>
               </ul>
             </div>
           </div>

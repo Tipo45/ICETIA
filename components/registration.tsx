@@ -24,7 +24,7 @@ const categories = [
     },
     {
         title: "Students",
-        price: "₦35,000",
+        price: "₦30,000",
         description:
             "Undergraduate and postgraduate students.",
         href: "/registration/students-registration"

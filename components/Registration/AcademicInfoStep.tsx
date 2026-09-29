@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Degree, RegistrationFormData, RegistrationFormErrors, RegistrationFormTouched } from "../types/registration";
 import { Country } from "country-state-city";

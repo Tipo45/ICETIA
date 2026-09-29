@@ -1,6 +1,5 @@
-import { useState } from "react";
-import { Degree, RegistrationFormData, RegistrationFormErrors, RegistrationFormTouched } from "../types/registration";
-import { FaArrowRightLong } from "react-icons/fa6";
+
+import { RegistrationFormData, RegistrationFormErrors, RegistrationFormTouched } from "../types/registration";
 import { validateEmail, validateFirstName, validateLastName } from "../types/validation";
 
 type Props = {
