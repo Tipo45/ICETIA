@@ -63,7 +63,7 @@ export default function Gallery() {
         {/* Gallery Grid */}
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:gap-6">
 
-          {galleryImages.map((image, index) => (
+          {galleryImages.slice(0, 3).map((image, index) => (
             <div
               key={image.src}
               className={`group relative overflow-hidden rounded-2xl ${

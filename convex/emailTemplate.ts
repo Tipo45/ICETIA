@@ -101,7 +101,7 @@ export function ticketEmail({
 <h3>Conference Details</h3>
 
 <p>
-  <strong>📅 Date:</strong> April, 2027
+  <strong>📅 Date:</strong> 28th - 30th April, 2027
 </p>
 
 <p>
@@ -170,7 +170,7 @@ This is a friendly reminder that you are successfully registered for the Interna
 
 Conference Details
 ──────────────────────────
-📅 Date: April, 2027
+📅 Date: 28th - 30th April, 2027
 🕘 Time: TBA
 📍 Venue: TBA, Federal University Otuoke, Ogbia, Bayelsa State, Nigeria
 

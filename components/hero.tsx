@@ -47,13 +47,34 @@ export default function Hero() {
               stopOnInteraction: false,
             }),
           ]}
-          className="h-full w-full"
+          className="
+    relative
+    h-180
+    w-full
+    lg:h-170
+    tablet:h-162.5
+    xl:h-175
+"
         >
-          <CarouselContent className="ml-0 h-full">
+          <CarouselContent className="
+    ml-0
+    h-180
+    lg:h-170
+    tablet:h-162.5
+    xl:h-175
+">
             {heroImages.map((image, index) => (
               <CarouselItem
                 key={image}
-                className="relative h-full basis-full pl-0"
+                className="
+    relative
+    h-180
+    basis-full
+    pl-0
+    lg:h-170
+    tablet:h-162.5
+    xl:h-175
+"
               >
                 <Image
                   src={image}
@@ -79,7 +100,7 @@ export default function Hero() {
       <div className="absolute inset-0 z-10 bg-linear-to-br from-slate-950/60 via-blue-950/50 to-blue-800/20" />
 
       {/* Hero Content */}
-      <div className="relative z-20 flex min-h-175 items-center lg:min-h-[650px] xl:h-full xl:min-h-0">
+      <div className="relative z-20 flex min-h-175 items-center lg:min-h-162.5 xl:h-full xl:min-h-0">
         <div className="container mx-auto px-5 py-16 lg:px-6 lg:py-20 xl:py-24">
           <div className="mx-auto max-w-5xl text-center text-white">
 
