@@ -1,44 +1,76 @@
-"use client"
+"use client";
 
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
-import { Card, CardContent } from "@/components/ui/card";
-import { CiCircleCheck } from "react-icons/ci";
-import { FaAward, FaRegBuilding, FaRegCalendarCheck, FaRegCreditCard, FaUsers } from "react-icons/fa";
-import { FiUserCheck, FiUsers, FiFileText, FiCoffee, FiUser, FiMail, FiTag, FiDollarSign, FiEdit2 } from "react-icons/fi";
-import { IoIosInformationCircleOutline, IoMdBook } from "react-icons/io";
-import { MdOutlineDisplaySettings, MdOutlineEventNote, MdOutlineRecordVoiceOver, MdOutlineVerified } from "react-icons/md";
-import { BsClockHistory } from "react-icons/bs";
-import { RiSecurePaymentLine } from "react-icons/ri";
-import { toast } from "sonner";
 import { useState } from "react";
-import { api } from "@/convex/_generated/api";
-import { useMutation } from "convex/react";
-import { FaArrowRightLong } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
-import { PiPresentationChartFill } from "react-icons/pi";
-import { LuBuilding2, LuCoffee } from "react-icons/lu";
-import { validateCountry, validateDepartment, validateEmail, validateFirstName, validateInstitution, validateLastName } from "@/components/types/validation";
-import { TbWorld } from "react-icons/tb";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useMutation } from "convex/react";
+import { toast } from "sonner";
 import { Country } from "country-state-city";
 
-export default function RegistrationSection() {
+import { api } from "@/convex/_generated/api";
 
-    const benefits = [
-        { icon: FaAward, text: "Certificate of participation or presentation" },
-        { icon: FaUsers, text: "Networking opportunities with academics, researchers, industry professionals and policymakers" },
-        { icon: IoMdBook, text: "Conference proceedings and digital materials" },
-        { icon: MdOutlineRecordVoiceOver, text: "Access to keynote and plenary sessions" },
-        { icon: PiPresentationChartFill, text: "Access to technical paper presentation sessions" },
-        { icon: FaRegCalendarCheck, text: "Conference programme and materials" },
-        { icon: LuCoffee, text: "Refreshments and conference meals, where applicable" },
-        { icon: MdOutlineDisplaySettings, text: "Access to exhibitions, innovation showcases and partner sessions" },
-    ]
+import {
+    validateCountry,
+    validateDepartment,
+    validateEmail,
+    validateFirstName,
+    validateInstitution,
+    validateLastName,
+} from "@/components/types/validation";
+
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+
+import {
+    FiArrowLeft,
+    FiArrowRight,
+    FiCheck,
+    FiEdit2,
+    FiLoader,
+    FiMail,
+    FiUser,
+} from "react-icons/fi";
+
+import {
+    LuBuilding2,
+    LuCalendarDays,
+    LuCheck,
+    LuCircleDollarSign,
+    LuCoffee,
+    LuCreditCard,
+    LuFileText,
+    LuGlobe,
+    LuInfo,
+    LuLockKeyhole,
+    LuPresentation,
+    LuUsers,
+} from "react-icons/lu";
+
+import { MdOutlineEventNote } from "react-icons/md";
+
+export default function RegistrationSection() {
+    const router = useRouter();
+
+    const countries = Country.getAllCountries();
 
     const paymentValue = 30000;
-    const router = useRouter();
-    const countries = Country.getAllCountries();
+
+    const register = useMutation(api.registration.registerStudent);
+    const sendConfirmationEmail = useMutation(
+        api.registration.sendMail
+    );
+
+    const [step, setStep] = useState<1 | 2>(1);
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
@@ -47,10 +79,6 @@ export default function RegistrationSection() {
         institution: "",
         country: "",
     });
-    const register = useMutation(api.registration.registerStudent);
-    const sendConfirmationEmail = useMutation(api.registration.sendMail);
-    const [step, setStep] = useState<1 | 2>(1);
-
 
     const [formErrors, setFormErrors] = useState({
         firstName: "",
@@ -70,6 +98,33 @@ export default function RegistrationSection() {
         country: false,
     });
 
+    const benefits = [
+        {
+            icon: LuFileText,
+            text: "Conference proceedings and digital materials",
+        },
+        {
+            icon: LuPresentation,
+            text: "Access to technical paper presentation sessions",
+        },
+        {
+            icon: LuUsers,
+            text: "Networking with researchers, academics and industry professionals",
+        },
+        {
+            icon: LuCalendarDays,
+            text: "Conference programme and materials",
+        },
+        {
+            icon: LuCoffee,
+            text: "Refreshments and conference meals, where applicable",
+        },
+        {
+            icon: LuPresentation,
+            text: "Keynote, plenary and technical sessions",
+        },
+    ];
+
     const resetForm = () => {
         setFormData({
             firstName: "",
@@ -77,7 +132,7 @@ export default function RegistrationSection() {
             email: "",
             department: "",
             institution: "",
-            country: ""
+            country: "",
         });
 
         setFormErrors({
@@ -97,15 +152,18 @@ export default function RegistrationSection() {
             institution: false,
             country: false,
         });
-    }
+    };
 
-    const handleChange = (field: keyof typeof formData, value: string) => {
-        setFormData(prev => ({
+    const handleChange = (
+        field: keyof typeof formData,
+        value: string
+    ) => {
+        setFormData((prev) => ({
             ...prev,
             [field]: value,
         }));
 
-        setFormTouched(prev => ({
+        setFormTouched((prev) => ({
             ...prev,
             [field]: true,
         }));
@@ -116,23 +174,29 @@ export default function RegistrationSection() {
             case "firstName":
                 error = validateFirstName(value) || "";
                 break;
+
             case "lastName":
                 error = validateLastName(value) || "";
                 break;
+
             case "email":
                 error = validateEmail(value) || "";
                 break;
+
             case "department":
-                error = validateDepartment(value) || ""
+                error = validateDepartment(value) || "";
+                break;
+
             case "institution":
                 error = validateInstitution(value) || "";
                 break;
+
             case "country":
                 error = validateCountry(value) || "";
                 break;
         }
 
-        setFormErrors(prev => ({
+        setFormErrors((prev) => ({
             ...prev,
             [field]: error,
         }));
@@ -150,12 +214,23 @@ export default function RegistrationSection() {
     };
 
     const proceed = () => {
-        const firstNameError = validateFirstName(formData.firstName);
-        const lastNameError = validateLastName(formData.lastName);
-        const emailError = validateEmail(formData.email);
-        const departmentError = validateDepartment(formData.department);
-        const institutionError = validateInstitution(formData.institution);
-        const countryError = validateCountry(formData.country);
+        const firstNameError =
+            validateFirstName(formData.firstName);
+
+        const lastNameError =
+            validateLastName(formData.lastName);
+
+        const emailError =
+            validateEmail(formData.email);
+
+        const departmentError =
+            validateDepartment(formData.department);
+
+        const institutionError =
+            validateInstitution(formData.institution);
+
+        const countryError =
+            validateCountry(formData.country);
 
         setFormErrors({
             firstName: firstNameError || "",
@@ -175,7 +250,14 @@ export default function RegistrationSection() {
             country: true,
         });
 
-        if (firstNameError || lastNameError || emailError || departmentError || institutionError || countryError) {
+        if (
+            firstNameError ||
+            lastNameError ||
+            emailError ||
+            departmentError ||
+            institutionError ||
+            countryError
+        ) {
             return;
         }
 
@@ -183,7 +265,7 @@ export default function RegistrationSection() {
     };
 
     const registerParticipant = async () => {
-
+        setIsSubmitting(true);
         try {
             const result = await register({
                 firstName: formData.firstName,
@@ -191,441 +273,764 @@ export default function RegistrationSection() {
                 email: formData.email,
                 department: formData.department,
                 institution: formData.institution,
-                country: formData.country
-            })
-
-
+                country: formData.country,
+            });
 
             await sendConfirmationEmail({
                 registrationId: result.registrationId,
             });
-            toast.success("Registered Succesfully");
+
+            toast.success("Registered successfully");
+
             setTimeout(() => {
-                router.push(`/registration/success/${result.registrationId}`);
+                router.push(
+                    `/registration/success/${result.registrationId}`
+                );
             }, 1000);
+
+            setIsSubmitting(false);
             resetForm();
         } catch (error: any) {
+            setIsSubmitting(false);
             toast.error(
-                error.data ??
-                error.message ??
+                error?.data ??
+                error?.message ??
                 "Something went wrong. Please try again."
             );
         }
     };
 
+    const inputClass = (
+        field: keyof typeof formData
+    ) => `
+        w-full h-12 rounded-none border bg-white px-4
+        text-sm text-slate-900 outline-none transition
+        placeholder:text-slate-400
+        focus:border-blue-600 focus:ring-1 focus:ring-blue-600
+        ${formTouched[field] && formErrors[field]
+            ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+            : formTouched[field] &&
+                !formErrors[field] &&
+                formData[field]
+                ? "border-green-500"
+                : "border-slate-300"
+        }
+    `;
+
     return (
-        <section className="min-h-screen bg-linear-to-b from-slate-50 via-white to-slate-50">
+        <main className="min-h-screen bg-white">
             <Navbar />
 
-            <div className="container mx-auto px-4 py-12">
-                {/* Hero Header */}
-                <div className="text-center max-w-4xl mx-auto mb-12 lg:mb-16">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-700 text-sm font-medium mb-4">
-                        <MdOutlineEventNote className="w-4 h-4" />
-                        Registration Portal
-                    </div>
-                    <h1 className="text-4xl lg:text-6xl font-bold text-slate-900 mb-4 tracking-tight">
-                        Student <span className="text-blue-700">Registration</span>
-                    </h1>
-                    {/* <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-                        Authors whose papers have been accepted must complete registration
-                        before the camera-ready deadline.
-                    </p> */}
-                    <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm text-slate-600">
-                        <span className="flex items-center gap-2">
-                            <BsClockHistory className="w-4 h-4 text-amber-600" />
-                            Deadline: <span className="font-semibold text-amber-700">TBA</span>
-                        </span>
-                        <span className="hidden lg:inline text-slate-300">|</span>
-                        <span className="flex items-center gap-2">
-                            <MdOutlineVerified className="w-4 h-4 text-green-600" />
-                            Status: <span className="font-semibold text-green-700">Open</span>
-                        </span>
-                    </div>
-                </div>
+            {/* HERO */}
+            <section className="border-b border-slate-200 bg-[#061426] text-white">
+                <div className="mx-auto max-w-7xl px-6 py-14 lg:px-10 lg:py-16 xl:py-20">
+                    <div className="max-w-4xl">
+                        <div className="mb-5 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-blue-300">
+                            <MdOutlineEventNote className="text-base" />
+                            ICETIA 2027 · Registration Portal
+                        </div>
 
-                {/* Main Content Grid */}
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 xl:gap-8">
+                        <h1 className="max-w-3xl text-4xl font-semibold tracking-tight lg:text-5xl xl:text-6xl">
+                            Student
+                            <span className="text-blue-400">
+                                {" "}Registration
+                            </span>
+                        </h1>
 
-                    <div className="">
-                        <div className="rounded-3xl border-2 border-slate-200/60 shadow-xl hover:shadow-2xl transition-shadow duration-300 overflow-hidden">
-                            <div className="p-6 lg:p-10">
-                                <div className="mb-8">
-                                    <div className="flex items-center gap-3 mb-2">
-                                        <div className="p-2 bg-blue-100 rounded-xl">
-                                            <FiUserCheck className="w-6 h-6 text-blue-700" />
-                                        </div>
-                                        <h3 className="text-2xl lg:text-3xl font-bold text-slate-900">
-                                            Registration Information
-                                        </h3>
-                                    </div>
-                                    {step === 1 ? (<p className="text-muted-foreground ml-12">
-                                        Complete the form below to begin your conference registration.
-                                    </p>) : (<p className="text-muted-foreground ml-12">Review Your Details</p>)}
-                                </div>
+                        <p className="mt-5 max-w-2xl text-sm leading-7 text-slate-300 lg:text-base">
+                            Register as a student participant for the
+                            International Conference on Emerging Technologies,
+                            Innovation and Applications.
+                        </p>
 
-                                {step === 1 && (<div className="flex flex-col gap-6 mt-8">
-                                    <div className="space-y-2">
-                                        <label className="text-sm">
-                                            First Name <span className="text-red-500">*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={formData.firstName}
-                                            onChange={(e) => handleChange("firstName", e.target.value)}
-                                            placeholder="Enter first name"
-                                            className={`w-full h-12 border placeholder:text-gray-700 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-600 transition ${formTouched.firstName && formErrors.firstName ? "border-red-500 focus:ring-red-500" : formTouched.firstName && !formErrors.firstName && formData.firstName ? "border-green-500 focus:ring-green-500"
-                                                : "border-input-border"}`}
-                                        />
-                                        {formTouched.firstName && formErrors.firstName && (
-                                            <p className="text-red-500 text-sm mt-1">{formErrors.firstName}</p>
-                                        )}
-                                    </div>
+                        <div className="mt-8 flex flex-wrap gap-x-8 gap-y-4 border-t border-white/10 pt-6 text-xs text-slate-300">
+                            <div className="flex items-center gap-2">
+                                <LuCalendarDays className="text-blue-400" />
+                                <span>28–30 April, 2027</span>
+                            </div>
 
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-                                            Last Name <span className="text-red-500">*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={formData.lastName}
-                                            onChange={(e) => handleChange("lastName", e.target.value)}
-                                            placeholder="Enter last name"
-                                            className={`w-full h-12 border placeholder:text-gray-700 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-600 transition ${formTouched.lastName && formErrors.lastName ? "border-red-500 focus:ring-red-500" : formTouched.lastName && !formErrors.lastName && formData.lastName ? "border-green-500 focus:ring-green-500"
-                                                : "border-input-border"}`}
-                                        />
-                                        {formTouched.lastName && formErrors.lastName && (
-                                            <p className="text-red-500 text-sm mt-1">{formErrors.lastName}</p>
-                                        )}
-                                    </div>
+                            <div className="flex items-center gap-2">
+                                <LuCircleDollarSign className="text-blue-400" />
+                                <span>
+                                    Student fee: ₦
+                                    {paymentValue.toLocaleString()}
+                                </span>
+                            </div>
 
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-                                            Email Address <span className="text-red-500">*</span>
-                                        </label>
-                                        <input
-                                            type="email"
-                                            value={formData.email}
-                                            onChange={(e) => handleChange("email", e.target.value)}
-                                            placeholder="Enter email address"
-                                            className={`w-full h-12 border placeholder:text-gray-700 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-600 transition ${formTouched.email && formErrors.email ? "border-red-500 focus:ring-red-500" : formTouched.email && !formErrors.email && formData.email ? "border-green-500 focus:ring-green-500"
-                                                : "border-input-border"}`}
-                                        />
-                                        {formTouched.email && formErrors.email && (
-                                            <p className="text-red-500 text-sm mt-1">{formErrors.email}</p>
-                                        )}
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        <label className="text-sm">
-                                            Department <span className="text-red-500">*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={formData.department}
-                                            onChange={(e) => handleChange("department", e.target.value)}
-                                            placeholder="Enter your department"
-                                            className={`w-full h-12 border placeholder:text-gray-700 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-600 transition ${formTouched.department && formErrors.department ? "border-red-500 focus:ring-red-500" : formTouched.department && !formErrors.department && formData.department ? "border-green-500 focus:ring-green-500"
-                                                : "border-input-border"}`}
-                                        />
-                                        {formTouched.department && formErrors.department && (
-                                            <p className="text-red-500 text-sm mt-1">{formErrors.department}</p>
-                                        )}
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        <label className="text-sm">
-                                            Institution <span className="text-red-500">*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={formData.institution}
-                                            onChange={(e) => handleChange("institution", e.target.value)}
-                                            placeholder="Enter your institution"
-                                            className={`w-full h-12 border placeholder:text-gray-700 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-600 transition ${formTouched.institution && formErrors.institution ? "border-red-500 focus:ring-red-500" : formTouched.institution && !formErrors.institution && formData.institution ? "border-green-500 focus:ring-green-500"
-                                                : "border-input-border"}`}
-                                        />
-                                        {formTouched.institution && formErrors.institution && (
-                                            <p className="text-red-500 text-sm mt-1">{formErrors.institution}</p>
-                                        )}
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        <label className="text-sm">
-                                            Country   <span className="text-red-500">*</span>
-                                        </label>
-                                        <Select value={formData.country}
-                                            onValueChange={(value) => handleChange("country", value)}>
-                                            <SelectTrigger className={`w-full h-10 border placeholder:text-gray-700 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-600 transition ${formTouched.country && formErrors.country ? "border-red-500 focus:ring-red-500" : formTouched.country && !formErrors.country && formData.country ? "border-green-500 focus:ring-green-500" : "border-input-border"}`}>
-                                                <SelectValue placeholder="Choose Country" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-
-                                                <SelectGroup>
-                                                    {countries.map((country) => (
-                                                        <SelectItem key={country.isoCode} value={country.name}>{country.name}</SelectItem>))}
-                                                </SelectGroup>
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-medium text-slate-700">
-                                            Amount <span className="text-slate-400">(NGN)</span>
-                                        </label>
-                                        <div className="flex items-center border-2 border-slate-200 rounded-xl bg-slate-50 overflow-hidden focus-within:ring-2 focus-within:ring-blue-600 focus-within:border-transparent">
-                                            <span className="flex items-center justify-center w-12 h-12 bg-slate-100 text-slate-600 font-bold border-r border-slate-200">
-                                                ₦
-                                            </span>
-                                            <input
-                                                type="text"
-                                                value={paymentValue.toLocaleString()}
-                                                disabled
-                                                className="flex-1 h-12 px-3 bg-transparent text-slate-900 font-medium cursor-not-allowed outline-none"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="flex gap-4 mt-6">
-                                        <button onClick={proceed} disabled={!isRegFormValid()} className="flex justify-center items-center gap-2.5 mt-10 px-6 py-3.5 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl w-full text-base text-white font-semibold shadow-lg hover:shadow-blue-200/50 transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
-                                            <span>Proceed</span>
-                                            <FaArrowRightLong className="text-xl" />
-                                        </button>
-                                    </div>
-                                </div>)}
-                                {step === 2 && (
-                                    <div>
-                                        <div className="bg-white rounded-2xl border-2 border-slate-200/60 overflow-hidden shadow-sm">
-                                            <div className="divide-y divide-slate-100">
-                                                <div className="flex items-center justify-between p-4 hover:bg-slate-50/50 transition-colors">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="p-1.5 bg-blue-100 rounded-lg">
-                                                            <FiUser className="w-3.5 h-3.5 text-blue-600" />
-                                                        </div>
-                                                        <span className="text-sm text-slate-500">Full Name</span>
-                                                    </div>
-                                                    <span className="text-sm font-medium text-slate-900">
-                                                        {formData.firstName} {formData.lastName}
-                                                    </span>
-                                                </div>
-
-                                                <div className="flex items-center justify-between p-4 hover:bg-slate-50/50 transition-colors">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="p-1.5 bg-blue-100 rounded-lg">
-                                                            <FiMail className="w-3.5 h-3.5 text-blue-600" />
-                                                        </div>
-                                                        <span className="text-sm text-slate-500">Email</span>
-                                                    </div>
-                                                    <span className="text-sm font-medium text-slate-900">
-                                                        {formData.email}
-                                                    </span>
-                                                </div>
-
-                                                <div className="flex items-center justify-between p-4 hover:bg-slate-50/50 transition-colors">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="p-1.5 bg-blue-100 rounded-lg">
-                                                            <FaRegBuilding className="w-3.5 h-3.5 text-blue-600" />
-                                                        </div>
-                                                        <span className="text-sm text-slate-500">Department</span>
-                                                    </div>
-                                                    <span className="text-sm font-medium text-slate-900">
-                                                        {formData.department}
-                                                    </span>
-                                                </div>
-
-                                                <div className="flex items-center justify-between p-4 hover:bg-slate-50/50 transition-colors">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="p-1.5 bg-blue-100 rounded-lg">
-                                                            <LuBuilding2 className="w-3.5 h-3.5 text-blue-600" />
-                                                        </div>
-                                                        <span className="text-sm text-slate-500">Institution</span>
-                                                    </div>
-                                                    <span className="text-sm font-medium text-slate-900">
-                                                        {formData.institution}
-                                                    </span>
-                                                </div>
-
-                                                <div className="flex items-center justify-between p-4 hover:bg-slate-50/50 transition-colors">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="p-1.5 bg-blue-100 rounded-lg">
-                                                            <TbWorld className="w-3.5 h-3.5 text-blue-600" />
-                                                        </div>
-                                                        <span className="text-sm text-slate-500">Country</span>
-                                                    </div>
-                                                    <span className="text-sm font-medium text-slate-900">
-                                                        {formData.country}
-                                                    </span>
-                                                </div>
-
-                                                <div className="flex items-center justify-between p-4 hover:bg-slate-50/50 transition-colors">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="p-1.5 bg-blue-100 rounded-lg">
-                                                            <FiTag className="w-3.5 h-3.5 text-blue-600" />
-                                                        </div>
-                                                        <span className="text-sm text-slate-500">Category</span>
-                                                    </div>
-                                                    <span className="text-sm font-medium text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
-                                                        Student
-                                                    </span>
-                                                </div>
-
-                                                <div className="flex items-center justify-between p-4 bg-linear-to-r from-blue-50/30 to-white hover:bg-blue-50/50 transition-colors">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="p-1.5 bg-blue-200 rounded-lg">
-                                                            <FiDollarSign className="w-3.5 h-3.5 text-blue-700" />
-                                                        </div>
-                                                        <span className="text-sm font-semibold text-slate-700">Total Amount</span>
-                                                    </div>
-                                                    <span className="text-xl font-bold text-blue-700">
-                                                        ₦{paymentValue.toLocaleString()}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="flex px-8 gap-4 mt-6">
-                                            <button onClick={() => setStep(1)} className="flex justify-center items-center gap-2.5 mt-10 px-6 py-3.5 bg-gray-400 rounded-xl w-full text-base text-white font-semibold shadow-lg hover:shadow-gray-200/50 transition-all duration-300 cursor-pointer">
-                                                <span>Edit Details </span>
-                                                <FiEdit2 className="w-3.5 h-3.5" />
-                                            </button>
-                                        </div>
-                                        <div className="flex gap-4 mt-6">
-                                            <button onClick={registerParticipant} disabled={!isRegFormValid()} className="flex justify-center items-center gap-2.5 mt-10 px-6 py-3.5 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl w-full text-base text-white font-semibold shadow-lg hover:shadow-blue-200/50 transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
-                                                <span>Make Payment</span>
-                                                <RiSecurePaymentLine className="text-xl" />
-                                            </button>
-                                        </div>
-                                    </div>
-                                )}
-
-
+                            <div className="flex items-center gap-2">
+                                <LuGlobe className="text-blue-400" />
+                                <span>Federal University Otuoke</span>
                             </div>
                         </div>
                     </div>
-
-
-                    <Card className="sticky top-24 rounded-3xl border-2 border-blue-200/60 shadow-xl bg-linear-to-br from-white to-blue-50/30 overflow-hidden">
-                        <CardContent className="p-6">
-                            <div className="text-center">
-                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold mb-4">
-                                    <FiUserCheck className="w-3 h-3" />
-                                    Student Package
-                                </div>
-                                <p className="text-sm text-muted-foreground">Registration Fee</p>
-                                <p className="text-5xl lg:text-6xl font-bold text-blue-700 mt-1">
-                                    ₦{paymentValue.toLocaleString()}
-                                </p>
-                                <div className="mt-2 h-px bg-linear-to-r from-transparent via-blue-200 to-transparent"></div>
-                            </div>
-
-                            <div className="mt-6 space-y-3">
-                                <p className="text-sm font-semibold text-slate-700 mb-3">What's Included:</p>
-                                {benefits.map((item, index) => (
-                                    <div key={index} className="flex items-start gap-3 p-2 rounded-lg hover:bg-blue-50/50 transition-colors">
-                                        <item.icon className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
-                                        <span className="text-sm text-slate-700">{item.text}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </CardContent>
-                    </Card>
-
-
                 </div>
+            </section>
 
-                {/* Important Information Section */}
-                <div className="container mx-auto px-6 mt-16">
-                    <Card className="hover:shadow-lg transition-shadow duration-300 border-2 border-red-100/60 rounded-3xl overflow-hidden">
-                        <CardContent className="p-6">
-                            <div className="flex items-start gap-4">
-                                <div className="p-3 bg-red-100 rounded-2xl shrink-0">
-                                    <IoIosInformationCircleOutline className="w-6 h-6 text-red-600" />
+            {/* MAIN */}
+            <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-14 xl:py-16">
+                <div className="grid gap-10 xl:grid-cols-[minmax(0,1.25fr)_380px] xl:gap-16">
+
+                    {/* REGISTRATION FORM */}
+                    <div>
+                        {/* STEPPER */}
+                        <div className="mb-10 flex items-center">
+                            <div className="flex items-center gap-3">
+                                <div
+                                    className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold ${step === 1
+                                            ? "bg-blue-600 text-white"
+                                            : "bg-green-600 text-white"
+                                        }`}
+                                >
+                                    {step === 1 ? "01" : <FiCheck />}
                                 </div>
+
                                 <div>
-                                    <h4 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                                        Important: Student Registration
-                                    </h4>
-                                    <p className="text-sm text-muted-foreground leading-relaxed mt-1">
-                                        A discounted registration fee of ₦{paymentValue.toLocaleString()} is available for students. This category is open to undergraduate and postgraduate students who wish to attend, present papers, participate in workshops or engage with the academic and professional activities of the conference.
+                                    <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                        Step 01
                                     </p>
-                                    <div className="mt-4 p-4 bg-red-50 border-2 border-red-200 rounded-xl flex items-start gap-3">
-                                        <IoIosInformationCircleOutline className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
-                                        <p className="text-sm text-red-700 font-medium">
-                                            Students may be required to provide valid institutional identification during registration or payment confirmation.
-                                        </p>
-                                    </div>
+                                    <p className="text-sm font-semibold text-slate-900">
+                                        Your details
+                                    </p>
                                 </div>
                             </div>
-                        </CardContent>
-                    </Card>
-                </div>
 
-                {/* Payment & General Info Grid */}
-                <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <Card className="border-2 border-blue-100/60 hover:shadow-xl transition-shadow duration-300 rounded-3xl overflow-hidden">
-                        <CardContent className="p-6">
-                            <div className="flex items-center gap-3 mb-4">
-                                <div className="p-3 bg-blue-100 rounded-2xl">
-                                    <FaRegCreditCard className="w-6 h-6 text-blue-700" />
+                            <div className="mx-5 h-px flex-1 bg-slate-200" />
+
+                            <div className="flex items-center gap-3">
+                                <div
+                                    className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold ${step === 2
+                                            ? "bg-blue-600 text-white"
+                                            : "bg-slate-100 text-slate-400"
+                                        }`}
+                                >
+                                    02
                                 </div>
-                                <h4 className="text-xl font-bold text-slate-900">Payment & Confirmation</h4>
+
+                                <div>
+                                    <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                        Step 02
+                                    </p>
+                                    <p
+                                        className={`text-sm font-semibold ${step === 2
+                                                ? "text-slate-900"
+                                                : "text-slate-400"
+                                            }`}
+                                    >
+                                        Review & register
+                                    </p>
+                                </div>
                             </div>
-                            <p className="text-sm text-muted-foreground leading-relaxed">
-                                All registration payments must be completed through the official conference payment portal.
-                                Confirmation of registration will be sent via email upon successful payment.
-                                Please ensure you keep a copy of your payment receipt for reference.
-                            </p>
-                            <div className="mt-4 p-4 bg-blue-50 border-2 border-blue-200 rounded-xl">
-                                <p className="text-sm text-blue-800">
-                                    <span className="font-semibold">🎯 Early Bird Registration:</span> Register before TBA to enjoy special rates.
+                        </div>
+
+                        <div className="border border-slate-200">
+                            {/* FORM HEADER */}
+                            <div className="border-b border-slate-200 px-5 py-6 lg:px-8">
+                                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.15em] text-blue-600">
+                                    Registration information
+                                </p>
+
+                                <h2 className="text-2xl font-semibold tracking-tight text-slate-900 lg:text-3xl">
+                                    {step === 1
+                                        ? "Tell us about yourself"
+                                        : "Review your registration"}
+                                </h2>
+
+                                <p className="mt-2 text-sm leading-6 text-slate-500">
+                                    {step === 1
+                                        ? "Complete the required information below to continue."
+                                        : "Check your information carefully before completing registration."}
                                 </p>
                             </div>
-                        </CardContent>
-                    </Card>
 
-                    <Card className="border-2 border-green-100/60 hover:shadow-xl transition-shadow duration-300 rounded-3xl overflow-hidden">
-                        <CardContent className="p-6">
-                            <div className="flex items-center gap-3 mb-4">
-                                <div className="p-3 bg-green-100 rounded-2xl">
-                                    <IoIosInformationCircleOutline className="w-6 h-6 text-green-700" />
+                            {step === 1 && (
+                                <div className="space-y-7 p-5 lg:p-8">
+
+                                    {/* NAME */}
+                                    <div className="grid gap-6 lg:grid-cols-2">
+                                        <div>
+                                            <label className="mb-2 block text-sm font-medium text-slate-800">
+                                                First Name{" "}
+                                                <span className="text-red-500">
+                                                    *
+                                                </span>
+                                            </label>
+
+                                            <input
+                                                type="text"
+                                                value={formData.firstName}
+                                                onChange={(e) =>
+                                                    handleChange(
+                                                        "firstName",
+                                                        e.target.value
+                                                    )
+                                                }
+                                                placeholder="Enter first name"
+                                                className={inputClass(
+                                                    "firstName"
+                                                )}
+                                            />
+
+                                            {formTouched.firstName &&
+                                                formErrors.firstName && (
+                                                    <p className="mt-2 text-xs text-red-500">
+                                                        {
+                                                            formErrors.firstName
+                                                        }
+                                                    </p>
+                                                )}
+                                        </div>
+
+                                        <div>
+                                            <label className="mb-2 block text-sm font-medium text-slate-800">
+                                                Last Name{" "}
+                                                <span className="text-red-500">
+                                                    *
+                                                </span>
+                                            </label>
+
+                                            <input
+                                                type="text"
+                                                value={formData.lastName}
+                                                onChange={(e) =>
+                                                    handleChange(
+                                                        "lastName",
+                                                        e.target.value
+                                                    )
+                                                }
+                                                placeholder="Enter last name"
+                                                className={inputClass(
+                                                    "lastName"
+                                                )}
+                                            />
+
+                                            {formTouched.lastName &&
+                                                formErrors.lastName && (
+                                                    <p className="mt-2 text-xs text-red-500">
+                                                        {
+                                                            formErrors.lastName
+                                                        }
+                                                    </p>
+                                                )}
+                                        </div>
+                                    </div>
+
+                                    {/* EMAIL */}
+                                    <div>
+                                        <label className="mb-2 block text-sm font-medium text-slate-800">
+                                            Email Address{" "}
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
+                                        </label>
+
+                                        <div className="relative">
+                                            <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+
+                                            <input
+                                                type="email"
+                                                value={formData.email}
+                                                onChange={(e) =>
+                                                    handleChange(
+                                                        "email",
+                                                        e.target.value
+                                                    )
+                                                }
+                                                placeholder="Enter your email address"
+                                                className={`${inputClass(
+                                                    "email"
+                                                )} pl-11`}
+                                            />
+                                        </div>
+
+                                        {formTouched.email &&
+                                            formErrors.email && (
+                                                <p className="mt-2 text-xs text-red-500">
+                                                    {formErrors.email}
+                                                </p>
+                                            )}
+                                    </div>
+
+                                    {/* DEPARTMENT + INSTITUTION */}
+                                    <div className="grid gap-6 lg:grid-cols-2">
+                                        <div>
+                                            <label className="mb-2 block text-sm font-medium text-slate-800">
+                                                Department{" "}
+                                                <span className="text-red-500">
+                                                    *
+                                                </span>
+                                            </label>
+
+                                            <input
+                                                type="text"
+                                                value={formData.department}
+                                                onChange={(e) =>
+                                                    handleChange(
+                                                        "department",
+                                                        e.target.value
+                                                    )
+                                                }
+                                                placeholder="e.g. Computer Science"
+                                                className={inputClass(
+                                                    "department"
+                                                )}
+                                            />
+
+                                            {formTouched.department &&
+                                                formErrors.department && (
+                                                    <p className="mt-2 text-xs text-red-500">
+                                                        {
+                                                            formErrors.department
+                                                        }
+                                                    </p>
+                                                )}
+                                        </div>
+
+                                        <div>
+                                            <label className="mb-2 block text-sm font-medium text-slate-800">
+                                                Institution{" "}
+                                                <span className="text-red-500">
+                                                    *
+                                                </span>
+                                            </label>
+
+                                            <input
+                                                type="text"
+                                                value={formData.institution}
+                                                onChange={(e) =>
+                                                    handleChange(
+                                                        "institution",
+                                                        e.target.value
+                                                    )
+                                                }
+                                                placeholder="Enter your institution"
+                                                className={inputClass(
+                                                    "institution"
+                                                )}
+                                            />
+
+                                            {formTouched.institution &&
+                                                formErrors.institution && (
+                                                    <p className="mt-2 text-xs text-red-500">
+                                                        {
+                                                            formErrors.institution
+                                                        }
+                                                    </p>
+                                                )}
+                                        </div>
+                                    </div>
+
+                                    {/* COUNTRY */}
+                                    <div>
+                                        <label className="mb-2 block text-sm font-medium text-slate-800">
+                                            Country{" "}
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
+                                        </label>
+
+                                        <Select
+                                            value={formData.country}
+                                            onValueChange={(value) =>
+                                                handleChange(
+                                                    "country",
+                                                    value
+                                                )
+                                            }
+                                        >
+                                            <SelectTrigger
+                                                className={`h-12 w-full rounded-none border bg-white px-4 ${formTouched.country &&
+                                                        formErrors.country
+                                                        ? "border-red-500"
+                                                        : formTouched.country &&
+                                                            !formErrors.country &&
+                                                            formData.country
+                                                            ? "border-green-500"
+                                                            : "border-slate-300"
+                                                    }`}
+                                            >
+                                                <SelectValue placeholder="Choose your country" />
+                                            </SelectTrigger>
+
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    {countries.map(
+                                                        (country) => (
+                                                            <SelectItem
+                                                                key={
+                                                                    country.isoCode
+                                                                }
+                                                                value={
+                                                                    country.name
+                                                                }
+                                                            >
+                                                                {
+                                                                    country.name
+                                                                }
+                                                            </SelectItem>
+                                                        )
+                                                    )}
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+
+                                        {formTouched.country &&
+                                            formErrors.country && (
+                                                <p className="mt-2 text-xs text-red-500">
+                                                    {formErrors.country}
+                                                </p>
+                                            )}
+                                    </div>
+
+                                    {/* FEE */}
+                                    <div className="border border-slate-200 bg-slate-50 p-5">
+                                        <div className="flex items-center justify-between gap-4">
+                                            <div>
+                                                <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                                    Registration fee
+                                                </p>
+                                                <p className="mt-1 text-sm text-slate-700">
+                                                    Student category
+                                                </p>
+                                            </div>
+
+                                            <p className="text-2xl font-semibold text-slate-900">
+                                                ₦
+                                                {paymentValue.toLocaleString()}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <button
+                                        onClick={proceed}
+                                        disabled={!isRegFormValid()}
+                                        className="flex h-12 w-full items-center justify-center gap-3 bg-blue-600 px-6 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
+                                    >
+                                        Continue to review
+                                        <FiArrowRight />
+                                    </button>
                                 </div>
-                                <h4 className="text-xl font-bold text-slate-900">What's Included</h4>
-                            </div>
-                            <div className="space-y-3">
-                                <h5 className="font-semibold text-sm text-slate-900 flex items-center gap-2">
-                                    <FiUserCheck className="w-4 h-4 text-blue-600" />
-                                    Technical Session Registration Fee Includes:
-                                </h5>
-                                <ul className="space-y-2">
-                                    {[
-                                        "Participation in all technical sessions of the conference program",
-                                        "Inclusion of a paper in the conference proceedings (Authors only)",
-                                        "All meals during the course of the conference",
-                                        "Conference accessories",
-                                        "Conference Soft Proceedings"
-                                    ].map((item, index) => (
-                                        <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
-                                            <CiCircleCheck className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
-                                            <span>{item}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
+                            )}
 
-                {/* Footer CTA */}
-                <div className="mt-12 text-center">
-                    <p className="text-sm text-slate-500">
-                        Have questions about registration?{" "}
-                        <a href="/contact" className="text-blue-600 hover:underline font-medium hover:text-blue-800 transition-colors">
-                            Contact our support team
-                        </a>
-                    </p>
+                            {/* STEP 2 */}
+                            {step === 2 && (
+                                <div className="p-5 lg:p-8">
+                                    <div className="divide-y divide-slate-200 border border-slate-200">
+                                        <ReviewRow
+                                            icon={<FiUser />}
+                                            label="Full Name"
+                                            value={`${formData.firstName} ${formData.lastName}`}
+                                        />
+
+                                        <ReviewRow
+                                            icon={<FiMail />}
+                                            label="Email"
+                                            value={formData.email}
+                                        />
+
+                                        <ReviewRow
+                                            icon={<LuBuilding2 />}
+                                            label="Department"
+                                            value={formData.department}
+                                        />
+
+                                        <ReviewRow
+                                            icon={<LuBuilding2 />}
+                                            label="Institution"
+                                            value={formData.institution}
+                                        />
+
+                                        <ReviewRow
+                                            icon={<LuGlobe />}
+                                            label="Country"
+                                            value={formData.country}
+                                        />
+
+                                        <div className="flex flex-col gap-3 bg-slate-50 px-5 py-5 lg:flex-row lg:items-center lg:justify-between">
+                                            <div>
+                                                <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                                    Registration category
+                                                </p>
+                                                <p className="mt-1 text-sm font-semibold text-slate-900">
+                                                    Student
+                                                </p>
+                                            </div>
+
+                                            <p className="text-2xl font-semibold text-blue-600">
+                                                ₦
+                                                {paymentValue.toLocaleString()}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="mt-6 flex flex-col gap-3 lg:flex-row">
+                                        <button
+                                            onClick={() => setStep(1)}
+                                            className="flex h-12 flex-1 items-center justify-center gap-2 border border-slate-300 px-6 text-sm font-semibold text-slate-700 transition hover:border-slate-500 hover:bg-slate-50"
+                                        >
+                                            <FiArrowLeft />
+                                            Edit details
+                                        </button>
+
+                                        <button
+                                            onClick={
+                                                registerParticipant
+                                            }
+                                            disabled={
+                                                !isRegFormValid() || isSubmitting
+                                            }
+                                            className="flex h-12 flex-1 items-center justify-center gap-2 bg-blue-600 px-6 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
+                                        >
+                                            {isSubmitting ? (
+                                                <span className="flex items-center gap-2">
+                                                    <FiLoader className="animate-spin" />Submitting...
+                                                </span>
+                                            ) : (
+                                                <span className="flex items-center gap-2">
+                                                    Complete registration
+                                                    <LuCreditCard />
+                                                </span>
+                                            )}
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* SECURITY NOTE */}
+                        <div className="mt-5 flex items-start gap-3 border-t border-slate-200 pt-5">
+                            <LuLockKeyhole className="mt-0.5 shrink-0 text-slate-400" />
+
+                            <p className="text-xs leading-5 text-slate-500">
+                                Your registration information is used for
+                                conference registration and confirmation
+                                purposes. Please ensure the details provided
+                                are accurate.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* SIDEBAR */}
+                    <aside className="xl:sticky xl:top-24 xl:self-start">
+
+                        {/* PRICE */}
+                        <div className="bg-[#061426] p-6 text-white lg:p-7">
+                            <div className="mb-6 flex items-center justify-between">
+                                <div>
+                                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-300">
+                                        Student package
+                                    </p>
+
+                                    <p className="mt-2 text-sm text-slate-300">
+                                        Conference registration
+                                    </p>
+                                </div>
+
+                                <div className="flex h-10 w-10 items-center justify-center border border-white/10 bg-white/5">
+                                    <FiUser />
+                                </div>
+                            </div>
+
+                            <div className="border-t border-white/10 pt-6">
+                                <p className="text-xs uppercase tracking-wider text-slate-400">
+                                    Registration fee
+                                </p>
+
+                                <p className="mt-1 text-4xl font-semibold tracking-tight lg:text-5xl">
+                                    ₦
+                                    {paymentValue.toLocaleString()}
+                                </p>
+                            </div>
+
+                            <div className="mt-6 border-t border-white/10 pt-5">
+                                <div className="flex items-center gap-2 text-xs text-slate-300">
+                                    <LuCalendarDays className="text-blue-400" />
+                                    28–30 April, 2027
+                                </div>
+
+                                <div className="mt-3 flex items-center gap-2 text-xs text-slate-300">
+                                    <LuGlobe className="text-blue-400" />
+                                    Federal University Otuoke
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* BENEFITS */}
+                        <div className="border-x border-b border-slate-200 p-6 lg:p-7">
+                            <div className="mb-6">
+                                <p className="text-xs font-semibold uppercase tracking-[0.15em] text-blue-600">
+                                    What's included
+                                </p>
+
+                                <h3 className="mt-2 text-xl font-semibold tracking-tight text-slate-900">
+                                    Student registration benefits
+                                </h3>
+                            </div>
+
+                            <div className="space-y-5">
+                                {benefits.map((item, index) => {
+                                    const Icon = item.icon;
+
+                                    return (
+                                        <div
+                                            key={index}
+                                            className="flex items-start gap-3"
+                                        >
+                                            <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center bg-blue-50 text-blue-600">
+                                                <Icon className="text-sm" />
+                                            </div>
+
+                                            <p className="text-sm leading-5 text-slate-600">
+                                                {item.text}
+                                            </p>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        {/* IMPORTANT */}
+                        <div className="mt-5 border border-amber-200 bg-amber-50 p-5">
+                            <div className="flex items-start gap-3">
+                                <LuInfo className="mt-0.5 shrink-0 text-amber-600" />
+
+                                <div>
+                                    <p className="text-sm font-semibold text-amber-900">
+                                        Student verification
+                                    </p>
+
+                                    <p className="mt-1 text-xs leading-5 text-amber-800">
+                                        Students may be required to provide
+                                        valid institutional identification
+                                        during registration or payment
+                                        confirmation.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
                 </div>
-            </div>
+            </section>
+
+            {/* GENERAL INFORMATION */}
+            <section className="border-y border-slate-200 bg-slate-50">
+                <div className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-14">
+                    <div className="grid gap-8 lg:grid-cols-2">
+
+                        <div className="border border-slate-200 bg-white p-6 lg:p-8">
+                            <div className="mb-5 flex items-center gap-3">
+                                <div className="flex h-10 w-10 items-center justify-center bg-blue-50 text-blue-600">
+                                    <LuCreditCard />
+                                </div>
+
+                                <div>
+                                    <p className="text-xs font-semibold uppercase tracking-wider text-blue-600">
+                                        Payment
+                                    </p>
+
+                                    <h3 className="text-lg font-semibold text-slate-900">
+                                        Payment & confirmation
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <p className="text-sm leading-6 text-slate-600">
+                                Registration payments must be completed through
+                                the official conference payment portal.
+                                Confirmation of registration will be sent via
+                                email upon successful payment.
+                            </p>
+
+                            <div className="mt-5 border-l-2 border-blue-600 bg-blue-50 px-4 py-3">
+                                <p className="text-xs leading-5 text-blue-800">
+                                    Please retain your payment receipt for
+                                    future reference.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="border border-slate-200 bg-white p-6 lg:p-8">
+                            <div className="mb-5 flex items-center gap-3">
+                                <div className="flex h-10 w-10 items-center justify-center bg-green-50 text-green-600">
+                                    <LuCheck />
+                                </div>
+
+                                <div>
+                                    <p className="text-xs font-semibold uppercase tracking-wider text-green-600">
+                                        Participation
+                                    </p>
+
+                                    <h3 className="text-lg font-semibold text-slate-900">
+                                        What's included
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <ul className="space-y-3">
+                                {[
+                                    "Participation in technical sessions",
+                                    "Conference proceedings for registered authors",
+                                    "Conference meals, where applicable",
+                                    "Conference accessories",
+                                    "Digital conference proceedings",
+                                ].map((item, index) => (
+                                    <li
+                                        key={index}
+                                        className="flex items-start gap-3 text-sm text-slate-600"
+                                    >
+                                        <LuCheck className="mt-0.5 shrink-0 text-green-600" />
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* CTA */}
+            <section className="mx-auto max-w-7xl px-6 py-12 text-center lg:px-10 lg:py-14">
+                <p className="text-sm text-slate-500">
+                    Have questions about registration?
+                </p>
+
+                <a
+                    href="/contact"
+                    className="mt-2 inline-flex items-center gap-2 text-sm font-semibold text-blue-600 transition hover:text-blue-800"
+                >
+                    Contact the conference support team
+                    <FiArrowRight />
+                </a>
+            </section>
 
             <Footer />
-        </section>
+        </main>
+    );
+}
+
+function ReviewRow({
+    icon,
+    label,
+    value,
+}: {
+    icon: React.ReactNode;
+    label: string;
+    value: string;
+}) {
+    return (
+        <div className="flex flex-col gap-2 px-5 py-5 lg:flex-row lg:items-center lg:justify-between lg:gap-8">
+            <div className="flex items-center gap-3">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center bg-blue-50 text-blue-600">
+                    {icon}
+                </div>
+
+                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                    {label}
+                </span>
+            </div>
+
+            <span className="break-all text-sm font-medium text-slate-900 lg:text-right">
+                {value}
+            </span>
+        </div>
     );
 }

@@ -9,53 +9,91 @@ import PersonalInfoStep from "@/components/Registration/PersonalInfoStep";
 import ProgressStepper from "@/components/Registration/ProgressStepper";
 import ReviewStep from "@/components/Registration/ReviewStep";
 import { Degree, RegistrationFormData } from "@/components/types/registration";
-import { validateCountry, validateDegree, validateDepartment, validateEmail, validateFirstName, validateInstitution, validateLastName, validatePaperFile, validatePaperTitle } from "@/components/types/validation";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+    validateCountry,
+    validateDegree,
+    validateDepartment,
+    validateEmail,
+    validateFirstName,
+    validateInstitution,
+    validateLastName,
+    validatePaperFile,
+    validatePaperTitle,
+} from "@/components/types/validation";
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { BsClockHistory } from "react-icons/bs";
-import { CiCircleCheck } from "react-icons/ci";
-import { FaAward, FaRegCalendarCheck, FaRegCreditCard, FaUsers } from "react-icons/fa";
-import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
-import { FiUserCheck } from "react-icons/fi";
-import { IoIosInformationCircleOutline, IoMdBook } from "react-icons/io";
-import { MdOutlineDisplaySettings, MdOutlineEventNote, MdOutlineRecordVoiceOver, MdOutlineVerified } from "react-icons/md";
-import { LuCoffee, LuSaveAll } from "react-icons/lu";
 import { toast } from "sonner";
+
+import {
+    BsClockHistory,
+} from "react-icons/bs";
+
+import {
+    FaArrowLeftLong,
+    FaArrowRightLong,
+} from "react-icons/fa6";
+
+import {
+    FaAward,
+    FaRegCalendarCheck,
+    FaUsers,
+} from "react-icons/fa";
+
+import {
+    FiBookOpen,
+    FiCheckCircle,
+    FiFileText,
+    FiUserCheck,
+} from "react-icons/fi";
+
+import {
+    IoIosInformationCircleOutline,
+} from "react-icons/io";
+
+import {
+    LuArrowUpRight,
+    LuBadgeCheck,
+    LuBuilding2,
+    LuCoffee,
+    LuGraduationCap,
+    LuSaveAll,
+} from "react-icons/lu";
+
+import {
+    MdOutlineDisplaySettings,
+    MdOutlineRecordVoiceOver,
+} from "react-icons/md";
+
 import { PiPresentationChartFill } from "react-icons/pi";
 
 export default function AuthorsRegistrationPage() {
+    const router = useRouter();
 
-    const benefits = [
-    { icon: FaAward, text: "Certificate of participation or presentation" },
-    { icon: FaUsers, text: "Networking opportunities with academics, researchers, industry professionals and policymakers" },
-    { icon: IoMdBook, text: "Conference proceedings and digital materials" },
-    { icon: MdOutlineRecordVoiceOver, text: "Access to keynote and plenary sessions" },
-    { icon: PiPresentationChartFill, text: "Access to technical paper presentation sessions" },
-    { icon: FaRegCalendarCheck, text: "Conference programme and materials" },
-    { icon: LuCoffee, text: "Refreshments and conference meals, where applicable" },
-    { icon: MdOutlineDisplaySettings, text: "Access to exhibitions, innovation showcases and partner sessions" },
-]
+    const paymentValue = 40000;
+    const totalSteps = 5;
+
+    const [step, setStep] = useState(1);
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const register = useMutation(api.registration.registerAuthor);
     const sendConfirmationEmail = useMutation(api.registration.sendMail);
-    const generateUploadUrl = useMutation(api.registration.generateUploadUrl);
+    const generateUploadUrl = useMutation(
+        api.registration.generateUploadUrl
+    );
+
     const [formData, setFormData] = useState<RegistrationFormData>({
         firstName: "",
         lastName: "",
         email: "",
-
         institution: "",
         country: "",
         department: "",
         degree: "",
-
         paperTitle: "",
-
         coAuthors: [],
-
         paperFile: null,
     });
 
@@ -77,7 +115,7 @@ export default function AuthorsRegistrationPage() {
                 country: "",
                 department: "",
                 degree: "",
-            }
+            },
         ],
         paperFile: "",
     });
@@ -100,16 +138,45 @@ export default function AuthorsRegistrationPage() {
                 country: false,
                 department: false,
                 degree: false,
-            }
+            },
         ],
         paperFile: false,
     });
 
-    const paymentValue = 40000;
-    const router = useRouter();
-    const [step, setStep] = useState(1);
-
-    const totalSteps = 5;
+    const benefits = [
+        {
+            icon: FaAward,
+            text: "Certificate of participation or presentation",
+        },
+        {
+            icon: FaUsers,
+            text: "Networking with academics, researchers, industry professionals and policymakers",
+        },
+        {
+            icon: FiBookOpen,
+            text: "Conference proceedings and digital materials",
+        },
+        {
+            icon: MdOutlineRecordVoiceOver,
+            text: "Access to keynote and plenary sessions",
+        },
+        {
+            icon: PiPresentationChartFill,
+            text: "Access to technical paper presentation sessions",
+        },
+        {
+            icon: FaRegCalendarCheck,
+            text: "Conference programme and materials",
+        },
+        {
+            icon: LuCoffee,
+            text: "Refreshments and conference meals, where applicable",
+        },
+        {
+            icon: MdOutlineDisplaySettings,
+            text: "Access to exhibitions, innovation showcases and partner sessions",
+        },
+    ];
 
     const isPersonalInfoRegFormValid = () => {
         return (
@@ -197,7 +264,6 @@ export default function AuthorsRegistrationPage() {
     };
 
     const registerParticipant = async () => {
-
         if (!formData.degree) {
             toast.error("Please select your degree.");
             return;
@@ -205,24 +271,31 @@ export default function AuthorsRegistrationPage() {
 
         let storageId;
 
-if (formData.paperFile) {
-    const postUrl = await generateUploadUrl();
-
-    const result = await fetch(postUrl, {
-        method: "POST",
-        headers: {
-            "Content-Type": formData.paperFile.type,
-        },
-        body: formData.paperFile,
-    });
-
-    const { storageId: uploadedStorageId } = await result.json();
-
-    storageId = uploadedStorageId;
-}
-
+        setIsSubmitting(true);
 
         try {
+            if (formData.paperFile) {
+                const postUrl = await generateUploadUrl();
+
+                const uploadResult = await fetch(postUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": formData.paperFile.type,
+                    },
+                    body: formData.paperFile,
+                });
+
+                if (!uploadResult.ok) {
+                    throw new Error("Paper upload failed. Please try again.");
+                }
+
+                const {
+                    storageId: uploadedStorageId,
+                } = await uploadResult.json();
+
+                storageId = uploadedStorageId;
+            }
+
             const result = await register({
                 firstName: formData.firstName,
                 lastName: formData.lastName,
@@ -232,117 +305,231 @@ if (formData.paperFile) {
                 degree: formData.degree as Degree,
                 department: formData.department,
                 paperTitle: formData.paperTitle,
-                coAuthors: formData.coAuthors.map(author => ({
+                coAuthors: formData.coAuthors.map((author) => ({
                     ...author,
                     degree: author.degree as Degree,
                 })),
                 paperFileId: storageId,
-
             });
 
             await sendConfirmationEmail({
                 registrationId: result.registrationId,
             });
+
             toast.success("Registration Successful");
 
             setTimeout(() => {
-                router.push(`/registration/success/${result.registrationId}`);
+                router.push(
+                    `/registration/success/${result.registrationId}`
+                );
             }, 1000);
-            // resetForm();
+            setIsSubmitting(false);
         } catch (error: any) {
+            setIsSubmitting(false);
             toast.error(
-                error.data ??
-                error.message ??
-                "Something went wrong. Please try again."
+                error?.data ??
+                    error?.message ??
+                    "Something went wrong. Please try again."
             );
         }
     };
 
     return (
-        <section className="min-h-screen bg-linear-to-b from-slate-50 via-white to-slate-50">
+        <main className="min-h-screen bg-white text-slate-900">
             <Navbar />
-            <div className="container mx-auto px-4 py-12">
-                <div className="text-center max-w-4xl mx-auto mb-12 lg:mb-16">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-700 text-sm font-medium mb-4">
-                        <MdOutlineEventNote className="w-4 h-4" />
-                        Registration Portal
-                    </div>
-                    <h1 className="text-4xl lg:text-6xl font-bold text-slate-900 mb-4 tracking-tight">
-                        Author <span className="text-blue-700">Registration</span>
-                    </h1>
-                    <p className="text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-                        Authors whose papers have been accepted must complete registration
-                        before the camera-ready deadline.
-                    </p>
-                    <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm text-slate-600">
-                        <span className="flex items-center gap-2">
-                            <BsClockHistory className="w-4 h-4 text-amber-600" />
-                            Deadline: <span className="font-semibold text-amber-700">TBA</span>
-                        </span>
-                        <span className="hidden lg:inline text-slate-300">|</span>
-                        <span className="flex items-center gap-2">
-                            <MdOutlineVerified className="w-4 h-4 text-green-600" />
-                            Status: <span className="font-semibold text-green-700">Open</span>
-                        </span>
-                    </div>
-                </div>
 
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 xl:gap-8">
+            {/* Hero */}
+            <section className="border-b border-white/10 bg-[#07111f] text-white">
+                <div className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-14 xl:py-16">
+                    <div className="grid gap-10 xl:grid-cols-[1fr_auto] xl:items-end">
+                        <div>
+                            <div className="mb-5 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-blue-300">
+                                <span className="h-px w-8 bg-blue-400" />
+                                ICETIA 2027
+                                <span className="text-white/30">
+                                    / Registration
+                                </span>
+                            </div>
 
-                    <div className="rounded-3xl border-2 border-slate-200/60 shadow-xl hover:shadow-2xl transition-shadow duration-300 overflow-hidden">
-                        <div className="p-6 lg:p-10">
-                            <div className="mb-8">
-                                <div className="flex items-center gap-3 mb-2">
-                                    <div className="p-2 bg-blue-100 rounded-xl">
-                                        <FiUserCheck className="w-6 h-6 text-blue-700" />
-                                    </div>
-                                    <h3 className="text-2xl lg:text-3xl font-bold text-slate-900">
-                                        Registration Information
-                                    </h3>
-                                </div>
+                            <h1 className="max-w-4xl text-4xl font-semibold tracking-tight lg:text-5xl xl:text-6xl">
+                                Author Registration
+                            </h1>
 
-                                {step === 5 ? (<p className="text-muted-foreground ml-12">Review the information you provided</p>) : (<p className="text-muted-foreground ml-12">
-                                    Complete the form below to begin your conference registration.
-                                </p>)}
+                            <p className="mt-5 max-w-2xl text-base leading-7 text-slate-300 lg:text-lg">
+                                Authors whose papers have been accepted for
+                                presentation must complete registration and
+                                submit the final camera-ready paper.
+                            </p>
+                        </div>
+
+                        <div className="flex flex-wrap gap-3 xl:justify-end">
+                            <div className="border border-white/15 px-4 py-3">
+                                <p className="text-[10px] uppercase tracking-[0.18em] text-slate-400">
+                                    Conference
+                                </p>
+                                <p className="mt-1 text-sm font-medium">
+                                    28–30 April 2027
+                                </p>
+                            </div>
+
+                            <div className="border border-white/15 px-4 py-3">
+                                <p className="text-[10px] uppercase tracking-[0.18em] text-slate-400">
+                                    Registration
+                                </p>
+                                <p className="mt-1 flex items-center gap-2 text-sm font-medium">
+                                    <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                                    Open
+                                </p>
                             </div>
                         </div>
-                        <ProgressStepper step={step} />
-                        {step === 1 && (<PersonalInfoStep
-                            formData={formData}
-                            setFormData={setFormData}
-                            formErrors={formErrors}
-                            setFormErrors={setFormErrors}
-                            formTouched={formTouched}
-                            setFormTouched={setFormTouched}
-                        />)}
-                        {step === 2 && (<AcademicInfoStep
-                            formData={formData}
-                            setFormData={setFormData}
-                            formErrors={formErrors}
-                            setFormErrors={setFormErrors}
-                            formTouched={formTouched}
-                            setFormTouched={setFormTouched}
-                        />)}
-                        {step === 3 && (<CoAuthorsStep formData={formData}
-                            setFormData={setFormData}
-                            formErrors={formErrors}
-                            setFormErrors={setFormErrors}
-                            formTouched={formTouched}
-                            setFormTouched={setFormTouched} />)}
-                        {step === 4 && (<PaperUploadStep formData={formData}
-                            setFormData={setFormData}
-                            formErrors={formErrors}
-                            setFormErrors={setFormErrors}
-                            formTouched={formTouched}
-                            setFormTouched={setFormTouched} />)}
-                        {step === 5 && (<ReviewStep formData={formData} />)}
+                    </div>
+                </div>
+            </section>
 
-                        <div className="flex gap-4 mt-6 px-8 py-4">
+            {/* Metadata */}
+            <section className="border-b border-slate-200 bg-slate-50">
+                <div className="mx-auto grid max-w-7xl grid-cols-2 px-6 lg:px-10 tablet:grid-cols-4">
+                    <div className="border-r border-slate-200 px-4 py-5 lg:px-6">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                            Category
+                        </p>
+                        <p className="mt-1 text-sm font-semibold">
+                            Author
+                        </p>
+                    </div>
+
+                    <div className="border-r border-slate-200 px-4 py-5 lg:px-6">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                            Fee
+                        </p>
+                        <p className="mt-1 text-sm font-semibold">
+                            ₦{paymentValue.toLocaleString()}
+                        </p>
+                    </div>
+
+                    <div className="border-r border-slate-200 px-4 py-5 lg:px-6">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                            Deadline
+                        </p>
+                        <p className="mt-1 flex items-center gap-2 text-sm font-semibold">
+                            <BsClockHistory className="text-blue-600" />
+                            TBA
+                        </p>
+                    </div>
+
+                    <div className="px-4 py-5 lg:px-6">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                            Location
+                        </p>
+                        <p className="mt-1 text-sm font-semibold">
+                            Federal University Otuoke
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            {/* Main registration area */}
+            <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10 lg:py-14 xl:py-16">
+                <div className="grid gap-10 xl:grid-cols-[minmax(0,1.35fr)_380px]">
+                    {/* Form */}
+                    <div className="border border-slate-200 bg-white">
+                        <div className="border-b border-slate-200 px-6 py-6 lg:px-8">
+                            <div className="flex items-start justify-between gap-5">
+                                <div>
+                                    <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-blue-600">
+                                        <FiUserCheck />
+                                        Registration Form
+                                    </div>
+
+                                    <h2 className="text-2xl font-semibold tracking-tight lg:text-3xl">
+                                        {step === 5
+                                            ? "Review your details"
+                                            : "Complete your registration"}
+                                    </h2>
+
+                                    <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
+                                        {step === 5
+                                            ? "Check your information carefully before submitting your registration."
+                                            : "Complete each section before proceeding to the next step."}
+                                    </p>
+                                </div>
+
+                                <div className="hidden text-right tablet:block">
+                                    <p className="text-[10px] uppercase tracking-[0.18em] text-slate-400">
+                                        Step
+                                    </p>
+                                    <p className="mt-1 text-xl font-semibold">
+                                        {String(step).padStart(2, "0")}
+                                        <span className="text-slate-300">
+                                            {" "}
+                                            / {String(totalSteps).padStart(2, "0")}
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="border-b border-slate-200 bg-slate-50/70 px-6 py-5 lg:px-8">
+                            <ProgressStepper step={step} />
+                        </div>
+
+                        <div>
+                            {step === 1 && (
+                                <PersonalInfoStep
+                                    formData={formData}
+                                    setFormData={setFormData}
+                                    formErrors={formErrors}
+                                    setFormErrors={setFormErrors}
+                                    formTouched={formTouched}
+                                    setFormTouched={setFormTouched}
+                                />
+                            )}
+
+                            {step === 2 && (
+                                <AcademicInfoStep
+                                    formData={formData}
+                                    setFormData={setFormData}
+                                    formErrors={formErrors}
+                                    setFormErrors={setFormErrors}
+                                    formTouched={formTouched}
+                                    setFormTouched={setFormTouched}
+                                />
+                            )}
+
+                            {step === 3 && (
+                                <CoAuthorsStep
+                                    formData={formData}
+                                    setFormData={setFormData}
+                                    formErrors={formErrors}
+                                    setFormErrors={setFormErrors}
+                                    formTouched={formTouched}
+                                    setFormTouched={setFormTouched}
+                                />
+                            )}
+
+                            {step === 4 && (
+                                <PaperUploadStep
+                                    formData={formData}
+                                    setFormData={setFormData}
+                                    formErrors={formErrors}
+                                    setFormErrors={setFormErrors}
+                                    formTouched={formTouched}
+                                    setFormTouched={setFormTouched}
+                                />
+                            )}
+
+                            {step === 5 && (
+                                <ReviewStep formData={formData} />
+                            )}
+                        </div>
+
+                        {/* Navigation */}
+                        <div className="flex flex-col-reverse gap-3 border-t border-slate-200 bg-slate-50/60 px-6 py-5 tablet:flex-row lg:px-8">
                             {step > 1 && (
                                 <button
                                     type="button"
                                     onClick={previousStep}
-                                    className="flex justify-center items-center gap-2.5 mt-10 px-6 py-3.5 bg-slate-100 hover:bg-slate-200 rounded-xl w-full text-base font-semibold transition"
+                                    className="flex min-h-12 w-full items-center justify-center gap-2 border border-slate-300 bg-white px-5 text-sm font-semibold text-slate-700 transition hover:border-slate-500 hover:bg-slate-50 tablet:w-auto tablet:min-w-36"
                                 >
                                     <FaArrowLeftLong />
                                     Back
@@ -354,144 +541,243 @@ if (formData.paperFile) {
                                     type="button"
                                     onClick={nextStep}
                                     disabled={!isCurrentStepValid()}
-                                    className="flex justify-center items-center gap-2.5 mt-10 px-6 py-3.5 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl w-full text-base text-white font-semibold shadow-lg hover:shadow-blue-200/50 transition-all disabled:cursor-not-allowed disabled:opacity-50"
+                                    className="flex min-h-12 flex-1 items-center justify-center gap-2 bg-[#07111f] px-6 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
                                 >
-                                    Proceed
+                                    Continue
                                     <FaArrowRightLong />
                                 </button>
                             ) : (
                                 <button
                                     type="button"
                                     onClick={registerParticipant}
-                                    className="flex justify-center items-center gap-2.5 mt-10 px-6 py-3.5 bg-linear-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 rounded-xl w-full text-base text-white font-semibold shadow-lg"
+                                    disabled={isSubmitting}
+                                    className="flex min-h-12 flex-1 items-center justify-center gap-2 bg-blue-600 px-6 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
                                 >
-                                    Register
-                                    <LuSaveAll />
+                                    {isSubmitting ? (
+                                        <span className="flex items-center gap-2">
+                                            <span className="h-4 w-4 animate-spin rounded-full border-2 border-t-white border-b-white" />
+                                            Processing...
+                                        </span>
+                                    ) : (
+                                        <span className="flex items-center gap-2">
+                                            Complete Registration
+                                            <LuSaveAll />
+                                        </span>
+                                    )}
                                 </button>
                             )}
                         </div>
                     </div>
-                    <Card className="sticky top-24 rounded-3xl border-2 border-blue-200/60 shadow-xl bg-linear-to-br from-white to-blue-50/30 overflow-hidden">
-                        <CardContent className="p-6">
-                            <div className="text-center">
-                                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold mb-4">
-                                    <FiUserCheck className="w-3 h-3" />
-                                    Author Package
+
+                    {/* Package sidebar */}
+                    <aside className="self-start xl:sticky xl:top-24">
+                        <div className="bg-[#07111f] p-6 text-white lg:p-7">
+                            <div className="flex items-center justify-between gap-4">
+                                <div>
+                                    <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-300">
+                                        Registration Package
+                                    </p>
+
+                                    <h3 className="mt-2 text-2xl font-semibold">
+                                        Author
+                                    </h3>
                                 </div>
-                                <p className="text-sm text-muted-foreground">Registration Fee</p>
-                                <p className="text-5xl lg:text-6xl font-bold text-blue-700 mt-1">
+
+                                <LuBadgeCheck className="h-7 w-7 text-blue-300" />
+                            </div>
+
+                            <div className="mt-7 border-y border-white/10 py-6">
+                                <p className="text-xs uppercase tracking-[0.16em] text-slate-400">
+                                    Registration Fee
+                                </p>
+
+                                <p className="mt-2 text-4xl font-semibold tracking-tight">
                                     ₦{paymentValue.toLocaleString()}
                                 </p>
-                                <div className="mt-2 h-px bg-linear-to-r from-transparent via-blue-200 to-transparent"></div>
                             </div>
 
-                            <div className="mt-6 space-y-3">
-                                <p className="text-sm font-semibold text-slate-700 mb-3">What's Included:</p>
-                                {benefits.map((item, index) => (
-                                    <div key={index} className="flex items-start gap-3 p-2 rounded-lg hover:bg-blue-50/50 transition-colors">
-                                        <item.icon className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
-                                        <span className="text-sm text-slate-700">{item.text}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
-
-            </div>
-
-            <div className="container mx-auto px-6 mt-16">
-                <Card className="hover:shadow-lg transition-shadow duration-300 border-2 border-red-100/60 rounded-3xl overflow-hidden">
-                    <CardContent className="p-6">
-                        <div className="flex items-start gap-4">
-                            <div className="p-3 bg-red-100 rounded-2xl shrink-0">
-                                <IoIosInformationCircleOutline className="w-6 h-6 text-red-600" />
-                            </div>
-                            <div>
-                                <h4 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                                    Important: Author Registration
-                                </h4>
-                                <p className="text-sm text-muted-foreground leading-relaxed mt-1">
-                                    Authors whose papers are accepted for presentation are expected to complete registration
-                                    before the camera-ready submission deadline. Each accepted paper must have at least one
-                                    registered author who will present the paper during the conference.
+                            <div className="mt-6">
+                                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
+                                    Included
                                 </p>
-                                <div className="mt-4 p-4 bg-red-50 border-2 border-red-200 rounded-xl flex items-start gap-3">
-                                    <IoIosInformationCircleOutline className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
-                                    <p className="text-sm text-red-700 font-medium">
-                                        Papers without completed registration by the stated deadline may not be included in
-                                        the final conference programme or proceedings.
+
+                                <div className="space-y-4">
+                                    {benefits.map((item, index) => {
+                                        const Icon = item.icon;
+
+                                        return (
+                                            <div
+                                                key={index}
+                                                className="flex gap-3"
+                                            >
+                                                <Icon className="mt-0.5 h-4 w-4 shrink-0 text-blue-300" />
+                                                <span className="text-sm leading-5 text-slate-300">
+                                                    {item.text}
+                                                </span>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="border border-t-0 border-slate-200 bg-slate-50 p-5">
+                            <div className="flex gap-3">
+                                <LuGraduationCap className="mt-0.5 h-5 w-5 shrink-0 text-blue-600" />
+
+                                <div>
+                                    <p className="text-sm font-semibold">
+                                        Accepted paper
+                                    </p>
+
+                                    <p className="mt-1 text-xs leading-5 text-slate-500">
+                                        Author registration is intended for
+                                        accepted papers and includes submission
+                                        of the camera-ready version.
                                     </p>
                                 </div>
                             </div>
                         </div>
-                    </CardContent>
-                </Card>
-            </div>
+                    </aside>
+                </div>
+            </section>
 
-            <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Card className="border-2 border-blue-100/60 hover:shadow-xl transition-shadow duration-300 rounded-3xl overflow-hidden">
-                    <CardContent className="p-6">
-                        <div className="flex items-center gap-3 mb-4">
-                            <div className="p-3 bg-blue-100 rounded-2xl">
-                                <FaRegCreditCard className="w-6 h-6 text-blue-700" />
-                            </div>
-                            <h4 className="text-xl font-bold text-slate-900">Payment & Confirmation</h4>
+            {/* Important information */}
+            <section className="mx-auto max-w-7xl px-6 pb-12 lg:px-10 lg:pb-14">
+                <div className="border border-amber-200 bg-amber-50/70">
+                    <div className="grid gap-6 p-6 lg:grid-cols-[auto_1fr] lg:p-8">
+                        <div className="flex h-11 w-11 items-center justify-center border border-amber-200 bg-white">
+                            <IoIosInformationCircleOutline className="h-6 w-6 text-amber-600" />
                         </div>
-                        <p className="text-sm text-muted-foreground leading-relaxed">
-                            All registration payments must be completed through the official conference payment portal.
-                            Confirmation of registration will be sent via email upon successful payment.
-                            Please ensure you keep a copy of your payment receipt for reference.
+
+                        <div>
+                            <div className="flex items-center gap-2">
+                                <h3 className="text-lg font-semibold text-slate-900">
+                                    Important: Author Registration
+                                </h3>
+                            </div>
+
+                            <p className="mt-2 max-w-4xl text-sm leading-6 text-slate-600">
+                                Authors whose papers are accepted for
+                                presentation are expected to complete
+                                registration before the camera-ready
+                                submission deadline. Each accepted paper must
+                                have at least one registered author who will
+                                present the paper during the conference.
+                            </p>
+
+                            <div className="mt-5 border-l-2 border-amber-400 pl-4">
+                                <p className="text-sm font-medium leading-6 text-amber-800">
+                                    Papers without completed registration by
+                                    the stated deadline may not be included in
+                                    the final conference programme or
+                                    proceedings.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Information blocks */}
+            <section className="mx-auto max-w-7xl px-6 pb-14 lg:px-10 xl:pb-16">
+                <div className="grid gap-6 lg:grid-cols-2">
+                    <div className="border border-slate-200 p-6 lg:p-7">
+                        <div className="flex items-center gap-3">
+                            <div className="flex h-10 w-10 items-center justify-center bg-slate-100">
+                                <LuBuilding2 className="h-5 w-5 text-blue-600" />
+                            </div>
+
+                            <div>
+                                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+                                    Payment
+                                </p>
+                                <h3 className="mt-1 text-lg font-semibold">
+                                    Payment & Confirmation
+                                </h3>
+                            </div>
+                        </div>
+
+                        <p className="mt-5 text-sm leading-6 text-slate-600">
+                            All registration payments must be completed
+                            through the official conference payment portal.
+                            Confirmation of registration will be sent via
+                            email upon successful payment. Please keep a copy
+                            of your payment receipt for reference.
                         </p>
-                        <div className="mt-4 p-4 bg-blue-50 border-2 border-blue-200 rounded-xl">
+
+                        <div className="mt-5 border border-blue-100 bg-blue-50 p-4">
                             <p className="text-sm text-blue-800">
-                                <span className="font-semibold">🎯 Early Bird Registration:</span> Register before TBA to enjoy special rates.
+                                <span className="font-semibold">
+                                    Early-bird registration:
+                                </span>{" "}
+                                Details will be announced.
                             </p>
                         </div>
-                    </CardContent>
-                </Card>
+                    </div>
 
-                <Card className="border-2 border-green-100/60 hover:shadow-xl transition-shadow duration-300 rounded-3xl overflow-hidden">
-                    <CardContent className="p-6">
-                        <div className="flex items-center gap-3 mb-4">
-                            <div className="p-3 bg-green-100 rounded-2xl">
-                                <IoIosInformationCircleOutline className="w-6 h-6 text-green-700" />
+                    <div className="border border-slate-200 p-6 lg:p-7">
+                        <div className="flex items-center gap-3">
+                            <div className="flex h-10 w-10 items-center justify-center bg-slate-100">
+                                <FiCheckCircle className="h-5 w-5 text-emerald-600" />
                             </div>
-                            <h4 className="text-xl font-bold text-slate-900">What's Included</h4>
-                        </div>
-                        <div className="space-y-3">
-                            <h5 className="font-semibold text-sm text-slate-900 flex items-center gap-2">
-                                <FiUserCheck className="w-4 h-4 text-blue-600" />
-                                Technical Session Registration Fee Includes:
-                            </h5>
-                            <ul className="space-y-2">
-                                {[
-                                    "Participation in all technical sessions of the conference program",
-                                    "Inclusion of a paper in the conference proceedings (Authors only)",
-                                    "All meals during the course of the conference",
-                                    "Conference accessories",
-                                    "Conference Soft Proceedings"
-                                ].map((item, index) => (
-                                    <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
-                                        <CiCircleCheck className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
-                                        <span>{item}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </CardContent>
-                </Card>
-            </div>
-            <div className="my-12 text-center">
-                <p className="text-sm text-slate-500">
-                    Have questions about registration?{" "}
-                    <a href="/contact" className="text-blue-600 hover:underline font-medium hover:text-blue-800 transition-colors">
-                        Contact our support team
-                    </a>
-                </p>
-            </div>
-            <Footer />
-        </section>
 
+                            <div>
+                                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+                                    Included
+                                </p>
+                                <h3 className="mt-1 text-lg font-semibold">
+                                    Registration Benefits
+                                </h3>
+                            </div>
+                        </div>
+
+                        <ul className="mt-5 space-y-3">
+                            {[
+                                "Participation in all technical sessions of the conference programme",
+                                "Inclusion of the accepted paper in the conference proceedings",
+                                "Conference meals, where applicable",
+                                "Conference accessories",
+                                "Conference soft proceedings",
+                            ].map((item, index) => (
+                                <li
+                                    key={index}
+                                    className="flex items-start gap-3 text-sm leading-5 text-slate-600"
+                                >
+                                    <FiCheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                                    {item}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            {/* Support */}
+            <section className="border-t border-slate-200">
+                <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-8 lg:flex-row lg:items-center lg:justify-between lg:px-10">
+                    <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
+                            Registration Support
+                        </p>
+
+                        <p className="mt-1 text-sm text-slate-600">
+                            Have questions about the author registration
+                            process?
+                        </p>
+                    </div>
+
+                    <a
+                        href="/contact"
+                        className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 transition hover:text-blue-800"
+                    >
+                        Contact support
+                        <LuArrowUpRight className="h-4 w-4" />
+                    </a>
+                </div>
+            </section>
+
+            <Footer />
+        </main>
     );
 }

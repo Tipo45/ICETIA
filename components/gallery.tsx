@@ -2,16 +2,16 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { LuImages, LuArrowRight } from "react-icons/lu";
+import { LuArrowUpRight, LuImages } from "react-icons/lu";
 
 const galleryImages = [
   {
-    src: "/images/FUO4.jpg",
+    src: "/images/FUO1.jpg",
     alt: "Federal University Otuoke campus",
     title: "Federal University Otuoke",
   },
   {
-    src: "/images/FUO1.jpg",
+    src: "/images/FUO3.1.jpg",
     alt: "Academic event at Federal University Otuoke",
     title: "Academic Excellence",
   },
@@ -41,72 +41,118 @@ export default function Gallery() {
   const router = useRouter();
 
   return (
-    <section id="gallery" className="bg-white py-24">
-      <div className="container mx-auto px-6">
+    <section
+      id="gallery"
+      className="border-b border-slate-200 bg-slate-50"
+    >
+      <div className="container mx-auto px-5 py-4 lg:px-8 lg:py-6 xl:px-10 xl:py-10">
 
-        {/* Section Header */}
-        <div className="mb-12 text-center">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700">
-            <LuImages className="h-4 w-4" />
-            Conference Gallery
+        {/* Header */}
+        <div className="mb-8 flex flex-col gap-5 lg:mb-10 lg:flex-row lg:items-end lg:justify-between">
+
+          <div>
+            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">
+              <LuImages className="h-4 w-4" />
+              Conference Gallery
+            </div>
+
+            <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-950 lg:text-4xl xl:text-5xl">
+              Moments from{" "}
+              <span className="text-blue-600">ICETIA.</span>
+            </h2>
           </div>
 
-          <h2 className="text-4xl font-bold tracking-tight text-slate-900 lg:text-5xl">
-            Moments from <span className="text-blue-600">ICETIA</span>
-          </h2>
+          <div className="flex items-end justify-between gap-6 lg:max-w-sm">
+            <p className="text-sm leading-6 text-slate-500 lg:text-right">
+              A glimpse into the people, places and ideas surrounding
+              ICETIA 2027.
+            </p>
+          </div>
 
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-slate-600">
-            Explore highlights, moments and activities from ICETIA 2027.
-          </p>
         </div>
 
-        {/* Gallery Grid */}
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:gap-6">
+        {/* Gallery */}
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
 
-          {galleryImages.slice(0, 3).map((image, index) => (
-            <div
-              key={image.src}
-              className={`group relative overflow-hidden rounded-2xl ${
-                index === 0
-                  ? "col-span-2 row-span-2 min-h-87.5 md:min-h-[500px]"
-                  : "min-h-50 md:min-h-[240px]"
-              }`}
-            >
-              <Image
-                src={image.src}
-                alt={image.title}
-                fill
-                sizes={
-                  index === 0
-                    ? "(max-width: 768px) 100vw, 66vw"
-                    : "(max-width: 768px) 50vw, 33vw"
-                }
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
+          {/* Large Image */}
+          <div className="group relative col-span-2 row-span-2 min-h-80 overflow-hidden rounded-2xl lg:min-h-125">
+            <Image
+              src={galleryImages[0].src}
+              alt={galleryImages[0].alt}
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
 
-              {/* Image Overlay */}
-              <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            <div className="absolute inset-0 bg-linear-to-t from-slate-950/70 via-transparent to-transparent" />
 
-              {/* Image Title */}
-              {/* <div className="absolute bottom-0 left-0 right-0 translate-y-4 p-5 text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                <p className="text-sm font-medium">
-                  {image.title}
-                </p>
-              </div> */}
+            <div className="absolute bottom-0 left-0 p-5 lg:p-6">
+              <p className="text-xs font-medium uppercase tracking-widest text-blue-300">
+                Federal University Otuoke
+              </p>
+
+              <h3 className="mt-1 text-lg font-semibold text-white lg:text-xl">
+                {galleryImages[0].title}
+              </h3>
             </div>
-          ))}
+          </div>
+
+          {/* Image 2 */}
+          <div className="group relative min-h-40 overflow-hidden rounded-2xl lg:min-h-61.5">
+            <Image
+              src={galleryImages[1].src}
+              alt={galleryImages[1].alt}
+              fill
+              sizes="(max-width: 1024px) 50vw, 25vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+
+            <div className="absolute inset-0 bg-linear-to-t from-slate-950/60 via-transparent to-transparent" />
+
+            <div className="absolute bottom-0 left-0 p-4">
+              <p className="text-sm font-semibold text-white">
+                {galleryImages[1].title}
+              </p>
+            </div>
+          </div>
+
+          {/* Image 3 */}
+          <div className="group relative min-h-40 overflow-hidden rounded-2xl lg:min-h-61.5">
+            <Image
+              src={galleryImages[2].src}
+              alt={galleryImages[2].alt}
+              fill
+              sizes="(max-width: 1024px) 50vw, 25vw"
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+
+            <div className="absolute inset-0 bg-linear-to-t from-slate-950/60 via-transparent to-transparent" />
+
+            <div className="absolute bottom-0 left-0 p-4">
+              <p className="text-sm font-semibold text-white">
+                {galleryImages[2].title}
+              </p>
+            </div>
+          </div>
 
         </div>
 
-        {/* See More Button */}
-        <div className="mt-12 flex justify-center">
+        {/* Bottom CTA */}
+        <div className="mt-7 flex items-center justify-between border-t border-slate-200 pt-6">
+
+          <p className="hidden text-sm text-slate-500 lg:block">
+            Explore more moments from ICETIA 2027.
+          </p>
+
           <button
             onClick={() => router.push("/gallery")}
-            className="group inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-3 font-medium text-white transition-all duration-300 hover:bg-blue-700 hover:shadow-lg"
+            className="group inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-800 transition-all duration-200 hover:border-blue-600 hover:text-blue-600 lg:ml-auto"
           >
-            See More Gallery
-            <LuArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+            View Full Gallery
+
+            <LuArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </button>
+
         </div>
 
       </div>

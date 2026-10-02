@@ -4,10 +4,11 @@ import CallForPapers from "@/components/call-for-papers";
 import ConferenceTracks from "@/components/conference-tracks";
 import ImportantDates from "@/components/important-dates";
 import RegistrationCategories from "@/components/registration";
-import HostDepartment from "@/components/hostdepartments";
+import HostInstitution from "@/components/hostinstitution";
 import Footer from "@/components/footer";
 import About from "@/components/about";
 import Gallery from "@/components/gallery";
+
 
 
 export default function HomePage() {
@@ -29,7 +30,7 @@ export default function HomePage() {
 
       <RegistrationCategories />
 
-      <HostDepartment />
+      <HostInstitution />
 
       <Footer />
     </main>

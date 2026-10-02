@@ -1,41 +1,65 @@
+"use client";
 
-import { RegistrationFormData, RegistrationFormErrors, RegistrationFormTouched } from "../types/registration";
-import { validateEmail, validateFirstName, validateLastName } from "../types/validation";
+import {
+    RegistrationFormData,
+    RegistrationFormErrors,
+    RegistrationFormTouched,
+} from "../types/registration";
+import {
+    validateEmail,
+    validateFirstName,
+    validateLastName,
+} from "../types/validation";
+
+import {
+    FiMail,
+    FiUser,
+} from "react-icons/fi";
+
+import {
+    LuBadgeCheck,
+} from "react-icons/lu";
 
 type Props = {
     formData: RegistrationFormData;
+
     setFormData: React.Dispatch<
         React.SetStateAction<RegistrationFormData>
     >;
 
     formErrors: RegistrationFormErrors;
+
     setFormErrors: React.Dispatch<
         React.SetStateAction<RegistrationFormErrors>
     >;
 
     formTouched: RegistrationFormTouched;
+
     setFormTouched: React.Dispatch<
         React.SetStateAction<RegistrationFormTouched>
     >;
 };
 
-export default function PersonalInfoStep({ formData,
+export default function PersonalInfoStep({
+    formData,
     setFormData,
     formErrors,
     setFormErrors,
     formTouched,
     setFormTouched,
 }: Props) {
-
     const paymentValue = 40000;
 
-    const handleChange = (field: keyof typeof formData, value: string) => {
-        setFormData(prev => ({
+    const handleChange = (
+        field: keyof typeof formData,
+        value: string
+    ) => {
+        setFormData((prev) => ({
             ...prev,
             [field]: value,
         }));
 
-        setFormTouched(prev => ({
+        setFormTouched((prev) => ({
             ...prev,
             [field]: true,
         }));
@@ -46,98 +70,173 @@ export default function PersonalInfoStep({ formData,
             case "firstName":
                 error = validateFirstName(value) || "";
                 break;
+
             case "lastName":
                 error = validateLastName(value) || "";
                 break;
+
             case "email":
                 error = validateEmail(value) || "";
                 break;
         }
 
-        setFormErrors(prev => ({
+        setFormErrors((prev) => ({
             ...prev,
             [field]: error,
         }));
     };
 
+    const inputClass = (field: "firstName" | "lastName" | "email") => {
+        const hasError =
+            formTouched[field] && formErrors[field];
+
+        const isValid =
+            formTouched[field] &&
+            !formErrors[field] &&
+            formData[field];
+
+        return `h-12 w-full border bg-white px-4 text-sm outline-none transition placeholder:text-slate-400 ${
+            hasError
+                ? "border-red-400 focus:border-red-500"
+                : isValid
+                ? "border-emerald-400 focus:border-emerald-500"
+                : "border-slate-200 focus:border-blue-600"
+        }`;
+    };
+
     return (
-        <div className="flex flex-col gap-6 px-8 py-4">
-            {/* <h2 className="text-xl font-bold">Personal Information</h2> */}
-            <div className="space-y-2">
-                <label className="text-sm">
-                    First Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                    type="text"
-                    value={formData.firstName}
-                    onChange={(e) => handleChange("firstName", e.target.value)}
-                    placeholder="Enter first name"
-                    className={`w-full h-10 border placeholder:text-gray-700 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-600 transition ${formTouched.firstName && formErrors.firstName ? "border-red-500 focus:ring-red-500" : formTouched.firstName && !formErrors.firstName && formData.firstName ? "border-green-500 focus:ring-green-500"
-                        : "border-input-border"}`}
-                />
-                {formTouched.firstName && formErrors.firstName && (
-                    <p className="text-red-500 text-sm mt-1">{formErrors.firstName}</p>
-                )}
+        <div className="space-y-7 px-6 py-7 lg:px-8 lg:py-8">
+            <div className="border-b border-slate-200 pb-5">
+                <div className="flex items-center gap-3">
+                    <div className="flex h-9 w-9 items-center justify-center bg-slate-100">
+                        <FiUser className="h-4 w-4 text-blue-600" />
+                    </div>
+
+                    <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+                            Step 01
+                        </p>
+
+                        <h3 className="mt-1 text-lg font-semibold">
+                            Personal information
+                        </h3>
+                    </div>
+                </div>
+
+                <p className="mt-4 text-sm leading-6 text-slate-500">
+                    Enter the personal details that should appear on your
+                    conference registration record.
+                </p>
             </div>
 
-            <div className="space-y-2">
-                <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-                    Last Name <span className="text-red-500">*</span>
-                </label>
-                <input
-                    type="text"
-                    value={formData.lastName}
-                    onChange={(e) => handleChange("lastName", e.target.value)}
-                    placeholder="Enter last name"
-                    className={`w-full h-10 border placeholder:text-gray-700 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-600 transition ${formTouched.lastName && formErrors.lastName ? "border-red-500 focus:ring-red-500" : formTouched.lastName && !formErrors.lastName && formData.lastName ? "border-green-500 focus:ring-green-500"
-                        : "border-input-border"}`}
-                />
-                {formTouched.lastName && formErrors.lastName && (
-                    <p className="text-red-500 text-sm mt-1">{formErrors.lastName}</p>
-                )}
-            </div>
+            <div className="grid gap-6 tablet:grid-cols-2">
+                <div className="space-y-2">
+                    <label className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-600">
+                        First Name{" "}
+                        <span className="text-red-500">*</span>
+                    </label>
 
-            <div className="space-y-2">
-                <label className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-                    Email Address <span className="text-red-500">*</span>
-                </label>
-                <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => handleChange("email", e.target.value)}
-                    placeholder="Enter email address"
-                    className={`w-full h-10 border placeholder:text-gray-700 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-600 transition ${formTouched.email && formErrors.email ? "border-red-500 focus:ring-red-500" : formTouched.email && !formErrors.email && formData.email ? "border-green-500 focus:ring-green-500"
-                        : "border-input-border"}`}
-                />
-                {formTouched.email && formErrors.email && (
-                    <p className="text-red-500 text-sm mt-1">{formErrors.email}</p>
-                )}
-            </div>
-
-            <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-700">
-                    Amount <span className="text-slate-400">(NGN)</span>
-                </label>
-                <div className="flex items-center border-2 border-slate-200 rounded-xl bg-slate-50 overflow-hidden focus-within:ring-2 focus-within:ring-blue-600 focus-within:border-transparent">
-                    <span className="flex items-center justify-center w-12 h-10 bg-slate-100 text-slate-600 font-bold border-r border-slate-200">
-                        ₦
-                    </span>
                     <input
                         type="text"
-                        value={paymentValue.toLocaleString()}
-                        disabled
-                        className="flex-1 h-10 px-3 bg-transparent text-slate-900 font-medium cursor-not-allowed outline-none"
+                        value={formData.firstName}
+                        onChange={(e) =>
+                            handleChange(
+                                "firstName",
+                                e.target.value
+                            )
+                        }
+                        placeholder="Enter first name"
+                        className={inputClass("firstName")}
                     />
+
+                    {formTouched.firstName &&
+                        formErrors.firstName && (
+                            <p className="text-xs text-red-500">
+                                {formErrors.firstName}
+                            </p>
+                        )}
+                </div>
+
+                <div className="space-y-2">
+                    <label className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-600">
+                        Last Name{" "}
+                        <span className="text-red-500">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        value={formData.lastName}
+                        onChange={(e) =>
+                            handleChange(
+                                "lastName",
+                                e.target.value
+                            )
+                        }
+                        placeholder="Enter last name"
+                        className={inputClass("lastName")}
+                    />
+
+                    {formTouched.lastName &&
+                        formErrors.lastName && (
+                            <p className="text-xs text-red-500">
+                                {formErrors.lastName}
+                            </p>
+                        )}
                 </div>
             </div>
 
-            {/* <div className="flex gap-4 mt-6">
+            <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-600">
+                    Email Address{" "}
+                    <span className="text-red-500">*</span>
+                </label>
 
-                <button disabled={!isRegFormValid()} className="flex justify-center items-center gap-2.5 mt-10 px-6 py-3.5 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-xl w-full text-base text-white font-semibold shadow-lg hover:shadow-blue-200/50 transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
-                    <span>Proceed</span>
-                    <FaArrowRightLong className="text-xl" />
-                </button>
-            </div> */}
+                <div className="relative">
+                    <FiMail className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+
+                    <input
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) =>
+                            handleChange(
+                                "email",
+                                e.target.value
+                            )
+                        }
+                        placeholder="Enter email address"
+                        className={`${inputClass(
+                            "email"
+                        )} pl-11`}
+                    />
+                </div>
+
+                {formTouched.email &&
+                    formErrors.email && (
+                        <p className="text-xs text-red-500">
+                            {formErrors.email}
+                        </p>
+                    )}
+            </div>
+
+            <div className="border border-slate-200 bg-slate-50 p-5">
+                <div className="flex items-start justify-between gap-5">
+                    <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">
+                            Registration Fee
+                        </p>
+
+                        <p className="mt-2 text-2xl font-semibold tracking-tight">
+                            ₦{paymentValue.toLocaleString()}
+                        </p>
+
+                        <p className="mt-1 text-xs leading-5 text-slate-500">
+                            Author registration category.
+                        </p>
+                    </div>
+
+                    <LuBadgeCheck className="h-6 w-6 text-blue-600" />
+                </div>
+            </div>
         </div>
-    )
+    );
 }

@@ -1,12 +1,15 @@
+"use client";
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { LuArrowDownRight, LuLayers3 } from "react-icons/lu";
 
 const tracks = [
-    {
+  {
     title: "Cybersecurity, Privacy & Digital Trust",
     topics: [
       "Cybersecurity and Information Assurance",
@@ -37,7 +40,6 @@ const tracks = [
       "Expert Systems and Knowledge-Based Systems",
       "Reinforcement Learning and Autonomous Intelligence",
       "Explainable AI and Trustworthy AI",
-      "AI Ethics, Governance and Responsible Innovation",
       "AI Ethics, Governance and Responsible Innovation",
       "AI for Education, Healthcare, Agriculture, Finance and Governance",
       "Human-Centred AI and AI-Human Collaboration",
@@ -120,7 +122,7 @@ const tracks = [
     topics: [
       "Emerging Trends in Computer Science and Informatics",
       "Digital Transformation in Education, Healthcare, Business and Government",
-      "Technology Innovation for Sustainable Developmen",
+      "Technology Innovation for Sustainable Development",
       "ICT for Development and Digital Inclusion",
       "Technology Entrepreneurship and Start-up Innovation",
       "Innovation Management and Technology Policy",
@@ -171,45 +173,86 @@ export default function ConferenceTracks() {
   return (
     <section
       id="tracks"
-      className="py-24 bg-slate-50"
+      className="border-b border-slate-200 bg-white"
     >
-      <div className="container mx-auto px-6 max-w-5xl">
-        <div className="text-center">
-          <span className="uppercase tracking-wider text-blue-700 font-semibold">
-            Conference Tracks
-          </span>
+      <div className="container mx-auto px-5 py-4 lg:px-8 lg:py-6 xl:px-10 xl:py-10">
+        {/* Header */}
+        <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+          <div>
+            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">
+              <LuLayers3 className="h-4 w-4" />
+              Conference Tracks
+            </div>
 
-          <h2 className="mt-4 text-4xl font-bold">
-            Explore Research Areas
-          </h2>
+            <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-950 lg:text-4xl xl:text-5xl">
+              Explore the research
+              <span className="text-blue-600"> landscape.</span>
+            </h2>
+          </div>
+
+          <p className="max-w-2xl text-sm leading-7 text-slate-500 lg:justify-self-end lg:text-base lg:leading-8">
+            ICETIA 2027 welcomes original research and applied work across
+            emerging technologies, intelligent systems, digital
+            transformation and interdisciplinary technology applications.
+          </p>
         </div>
 
-        <Accordion
-          type="single"
-          collapsible
-          className="mt-12"
-        >
-          {tracks.map((track) => (
-            <AccordionItem
-              value={track.title}
-              key={track.title}
-            >
-              <AccordionTrigger className="text-lg">
-                {track.title}
-              </AccordionTrigger>
+        {/* Track list */}
+        <div className="mt-10 border-t border-slate-200 lg:mt-12">
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full"
+          >
+            {tracks.map((track, index) => (
+              <AccordionItem
+                value={track.title}
+                key={track.title}
+                className="border-b border-slate-200"
+              >
+                <AccordionTrigger className="group py-5 text-left hover:no-underline lg:py-6">
+                  <div className="flex items-center gap-4 pr-4 lg:gap-6">
+                    <span className="w-7 shrink-0 text-xs font-semibold tracking-wider text-slate-400 lg:w-10">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
 
-              <AccordionContent>
-                <ul className="grid grid-cols-2 gap px-6">
-                  {track.topics.map((topic) => (
-                    <li key={topic} className="text-base">
-                      • {topic}
-                    </li>
-                  ))}
-                </ul>
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+                    <span className="text-base font-semibold text-slate-900 transition-colors group-hover:text-blue-600 lg:text-lg">
+                      {track.title}
+                    </span>
+                  </div>
+                </AccordionTrigger>
+
+                <AccordionContent className="pb-7 pl-11 pr-4 lg:pl-16 lg:pr-12">
+                  <div className="grid gap-x-8 gap-y-3 lg:grid-cols-2">
+                    {track.topics.map((topic, topicIndex) => (
+                      <div
+                        key={`${track.title}-${topicIndex}`}
+                        className="flex items-start gap-3 text-sm leading-6 text-slate-600"
+                      >
+                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
+                        <span>{topic}</span>
+                      </div>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+
+        {/* Bottom note */}
+        <div className="mt-8 flex flex-col gap-4 border-t border-slate-200 pt-6 lg:flex-row lg:items-center lg:justify-between">
+          <p className="max-w-2xl text-xs leading-5 text-slate-500 lg:text-sm">
+            Contributions may address theoretical research, applied studies,
+            emerging technologies, practical implementations or
+            interdisciplinary approaches.
+          </p>
+
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-blue-600">
+            <span>09 Research Tracks</span>
+            <LuArrowDownRight className="h-4 w-4" />
+          </div>
+        </div>
       </div>
     </section>
   );

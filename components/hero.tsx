@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { IoCalendarSharp } from "react-icons/io5";
+import { LuArrowUpRight } from "react-icons/lu";
 import { useRouter } from "next/navigation";
 
 const heroImages = [
@@ -33,10 +34,10 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-180 overflow-hidden lg:min-h-170 tablet:min-h-162.5 xl:h-175 xl:min-h-0">
+    <section className="relative overflow-hidden bg-slate-950 text-white">
 
       {/* Background Carousel */}
-      <div className="absolute inset-0 h-full w-full">
+      <div className="absolute inset-0">
         <Carousel
           opts={{
             loop: true,
@@ -47,34 +48,13 @@ export default function Hero() {
               stopOnInteraction: false,
             }),
           ]}
-          className="
-    relative
-    h-180
-    w-full
-    lg:h-170
-    tablet:h-162.5
-    xl:h-175
-"
+          className="h-150 w-full lg:h-155 xl:h-165"
         >
-          <CarouselContent className="
-    ml-0
-    h-180
-    lg:h-170
-    tablet:h-162.5
-    xl:h-175
-">
+          <CarouselContent className="ml-0 h-150 lg:h-155 xl:h-165">
             {heroImages.map((image, index) => (
               <CarouselItem
                 key={image}
-                className="
-    relative
-    h-180
-    basis-full
-    pl-0
-    lg:h-170
-    tablet:h-162.5
-    xl:h-175
-"
+                className="relative h-150 basis-full pl-0 lg:h-155 xl:h-165"
               >
                 <Image
                   src={image}
@@ -88,93 +68,152 @@ export default function Hero() {
             ))}
           </CarouselContent>
 
-          {/* Previous */}
-          <CarouselPrevious className="left-3 z-30 border-white/20 bg-black/30 text-white backdrop-blur-sm hover:bg-white/20 hover:text-white lg:left-5" />
+          <CarouselPrevious className="left-4 z-30 h-9 w-9 border-white/20 bg-black/20 text-white backdrop-blur-md hover:bg-white/20 hover:text-white lg:left-6" />
 
-          {/* Next */}
-          <CarouselNext className="right-3 z-30 border-white/20 bg-black/30 text-white backdrop-blur-sm hover:bg-white/20 hover:text-white lg:right-5" />
+          <CarouselNext className="right-4 z-30 h-9 w-9 border-white/20 bg-black/20 text-white backdrop-blur-md hover:bg-white/20 hover:text-white lg:right-6" />
         </Carousel>
       </div>
 
-      {/* Overlay */}
-      <div className="absolute inset-0 z-10 bg-linear-to-br from-slate-950/60 via-blue-950/50 to-blue-800/20" />
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-slate-950/70" />
+
+      {/* Subtle blue gradient */}
+      <div className="absolute inset-0 bg-linear-to-r from-slate-950 via-slate-950/75 to-blue-950/30" />
 
       {/* Hero Content */}
-      <div className="relative z-20 flex min-h-175 items-center lg:min-h-162.5 xl:h-full xl:min-h-0">
-        <div className="container mx-auto px-5 py-16 lg:px-6 lg:py-20 xl:py-24">
-          <div className="mx-auto max-w-5xl text-center text-white">
+      <div className="relative z-20 flex min-h-150 items-center lg:min-h-155 xl:min-h-165">
+        <div className="container mx-auto px-5 py-12 lg:px-8 lg:py-16 xl:px-10">
 
-            {/* Conference Badge */}
+          <div className="max-w-4xl">
+
+            {/* Eyebrow */}
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mb-5"
             >
-              <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs backdrop-blur-sm lg:text-sm">
-                ICETIA 2027
+              <span className="inline-flex items-center gap-2 border-l-2 border-blue-500 pl-3 text-xs font-semibold uppercase tracking-[0.18em] text-blue-300 lg:text-sm">
+                International Conference · 2027
               </span>
             </motion.div>
 
             {/* Heading */}
             <motion.h1
-              initial={{ y: 40, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="mt-5 text-3xl font-bold leading-tight lg:mt-6 lg:text-4xl xl:mt-8 xl:text-6xl"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15, duration: 0.6 }}
+              className="max-w-4xl text-4xl font-bold leading-[1.05] tracking-tight lg:text-5xl xl:text-7xl"
             >
-              International Conference on Emerging Technologies, Innovation
-              and Applications
+              Emerging Technologies.
+              <br />
+              <span className="text-blue-400">
+                Innovation & Applications.
+              </span>
             </motion.h1>
 
             {/* Description */}
             <motion.p
-              initial={{ y: 40, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="mx-auto mt-5 max-w-3xl text-sm leading-relaxed text-slate-200 lg:mt-6 lg:text-lg xl:mt-8 xl:text-xl"
+              initial={{ opacity: 0, y: 25 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              className="mt-6 max-w-2xl text-sm leading-7 text-slate-300 lg:text-base xl:text-lg xl:leading-8"
             >
-              Advancing Emerging Technologies, Innovations and Applications
-              for Sustainable Digital Transformation.
+              The International Conference on Emerging Technologies,
+              Innovation and Applications brings researchers, academics,
+              industry professionals and technology practitioners together
+              to explore ideas shaping the future of digital transformation.
             </motion.p>
 
             {/* Date */}
             <motion.div
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="mt-6 flex flex-wrap justify-center gap-4 lg:mt-8 xl:mt-10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.45, duration: 0.5 }}
+              className="mt-6 flex items-center gap-2 text-sm font-medium text-white lg:text-base"
             >
-              <div className="flex items-center gap-2 text-sm lg:text-base">
-                <IoCalendarSharp size={18} />
-                <span>28th – 30th April, 2027</span>
-              </div>
+              <IoCalendarSharp className="h-5 w-5 text-blue-400" />
+
+              <span>28 – 30 April, 2027</span>
+
+              <span className="mx-1 text-slate-500">•</span>
+
+              <span className="text-slate-300">
+                Federal University Otuoke
+              </span>
             </motion.div>
 
             {/* Buttons */}
             <motion.div
-              initial={{ y: 30, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.8 }}
-              className="mt-7 flex flex-col items-center justify-center gap-3 lg:mt-8 lg:flex-row lg:gap-4 xl:mt-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.5 }}
+              className="mt-8 flex flex-col gap-3 lg:flex-row lg:items-center"
             >
               <Button
                 size="lg"
                 onClick={handleCFPButton}
-                className="w-full lg:w-auto"
+                className="group h-11 rounded-full bg-blue-600 px-6 text-sm font-semibold hover:bg-blue-500"
               >
-                Submit Paper
+                Submit a Paper
+
+                <LuArrowUpRight className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </Button>
 
               <Button
-                variant="secondary"
+                variant="outline"
                 size="lg"
                 onClick={handleRegButton}
-                className="w-full lg:w-auto"
+                className="h-11 rounded-full border-white/30 bg-white/5 px-6 text-sm font-semibold text-white backdrop-blur-sm hover:bg-white hover:text-slate-950"
               >
                 Register Now
               </Button>
             </motion.div>
 
           </div>
+        </div>
+      </div>
+
+      {/* Bottom information strip */}
+      <div className="relative z-20 border-t border-white/10 bg-slate-950/50 backdrop-blur-md">
+        <div className="container mx-auto grid grid-cols-2 px-5 lg:grid-cols-4 lg:px-8 xl:px-10">
+
+          <div className="border-r border-white/10 px-4 py-4 first:pl-0">
+            <p className="text-[10px] font-medium uppercase tracking-widest text-slate-500">
+              Edition
+            </p>
+            <p className="mt-1 text-sm font-semibold text-white">
+              Maiden Edition
+            </p>
+          </div>
+
+          <div className="border-r-0 px-4 py-4 lg:border-r lg:border-white/10">
+            <p className="text-[10px] font-medium uppercase tracking-widest text-slate-500">
+              Location
+            </p>
+            <p className="mt-1 text-sm font-semibold text-white">
+              Bayelsa State, Nigeria
+            </p>
+          </div>
+
+          <div className="hidden border-r border-white/10 px-4 py-4 lg:block">
+            <p className="text-[10px] font-medium uppercase tracking-widest text-slate-500">
+              Focus
+            </p>
+            <p className="mt-1 text-sm font-semibold text-white">
+              Technology & Innovation
+            </p>
+          </div>
+
+          <div className="hidden px-4 py-4 lg:block">
+            <p className="text-[10px] font-medium uppercase tracking-widest text-slate-500">
+              Institution
+            </p>
+            <p className="mt-1 text-sm font-semibold text-white">
+              Federal University Otuoke
+            </p>
+          </div>
+
         </div>
       </div>
     </section>

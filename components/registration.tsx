@@ -1,157 +1,253 @@
-import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import { CiCircleCheck } from "react-icons/ci";
 import { FaAward, FaRegCalendarCheck, FaUsers } from "react-icons/fa";
-import { IoIosInformationCircleOutline, IoMdBook } from "react-icons/io";
-import { LuCoffee } from "react-icons/lu";
-import { MdOutlineDisplaySettings, MdOutlineRecordVoiceOver } from "react-icons/md";
+import {
+  IoIosInformationCircleOutline,
+  IoMdBook,
+} from "react-icons/io";
+import { LuArrowUpRight, LuCoffee } from "react-icons/lu";
+import {
+  MdOutlineDisplaySettings,
+  MdOutlineRecordVoiceOver,
+} from "react-icons/md";
 import { PiPresentationChartFill } from "react-icons/pi";
 
 const categories = [
-    {
-        title: "Authors",
-        price: "₦40,000",
-        description:
-            "Presenting authors with accepted papers.",
-        href: "/registration/authors-registration"
-    },
-    {
-        title: "Non-authors/Participants",
-        price: "₦40,000",
-        description:
-            "Industry professionals and attendees.",
-        href: "/registration/non-authors-registration"
-    },
-    {
-        title: "Students",
-        price: "₦30,000",
-        description:
-            "Undergraduate and postgraduate students.",
-        href: "/registration/students-registration"
-    },
+  {
+    number: "01",
+    title: "Authors",
+    price: "₦40,000",
+    description: "For presenting authors with accepted papers.",
+    href: "/registration/authors-registration",
+  },
+  {
+    number: "02",
+    title: "Non-authors / Participants",
+    price: "₦40,000",
+    description: "For industry professionals and conference attendees.",
+    href: "/registration/non-authors-registration",
+  },
+  {
+    number: "03",
+    title: "Students",
+    price: "₦30,000",
+    description: "For undergraduate and postgraduate students.",
+    href: "/registration/students-registration",
+  },
 ];
 
 const benefits = [
-    { icon: FaAward, text: "Certificate of participation or presentation" },
-    { icon: FaUsers, text: "Networking opportunities with academics, researchers, industry professionals and policymakers" },
-    { icon: IoMdBook, text: "Conference proceedings and digital materials" },
-    { icon: MdOutlineRecordVoiceOver, text: "Access to keynote and plenary sessions" },
-    { icon: PiPresentationChartFill, text: "Access to technical paper presentation sessions" },
-    { icon: FaRegCalendarCheck, text: "Conference programme and materials" },
-    { icon: LuCoffee, text: "Refreshments and conference meals, where applicable" },
-    { icon: MdOutlineDisplaySettings, text: "Access to exhibitions, innovation showcases and partner sessions" },
+  {
+    icon: FaAward,
+    text: "Certificate of participation or presentation",
+  },
+  {
+    icon: FaUsers,
+    text: "Networking with academics, researchers, industry professionals and policymakers",
+  },
+  {
+    icon: IoMdBook,
+    text: "Conference proceedings and digital materials",
+  },
+  {
+    icon: MdOutlineRecordVoiceOver,
+    text: "Access to keynote and plenary sessions",
+  },
+  {
+    icon: PiPresentationChartFill,
+    text: "Access to technical paper presentation sessions",
+  },
+  {
+    icon: FaRegCalendarCheck,
+    text: "Conference programme and materials",
+  },
+  {
+    icon: LuCoffee,
+    text: "Refreshments and conference meals, where applicable",
+  },
+  {
+    icon: MdOutlineDisplaySettings,
+    text: "Access to exhibitions, innovation showcases and partner sessions",
+  },
 ];
 
 export default function RegistrationCategories() {
-    return (
-        <section
-            id="registration"
-            className="py-24 bg-slate-50"
-        >
-            <div className="container mx-auto px-6">
-                <div className="text-center max-w-4xl mx-auto mb-16">
-                    <span className="inline-block px-4 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold tracking-wider uppercase">
-                        Registration
-                    </span>
-                    <h2 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900">
-                        Conference Registration
-                    </h2>
-                    <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
-                        All authors, co-authors, non-authors, presenters, participants, postgraduate students,
-                        undergraduate students, industry representatives and invited guests are required to register
-                        for the First International Conference on Emerging Technologies, Innovation and Applications (ICETIA 2027).
-                    </p>
-                    <p className="mt-4 text-muted-foreground leading-relaxed">
-                        Registration will provide access to the conference sessions, keynote presentations, technical paper presentations,
-                        panel discussions, workshops, conference materials and other approved conference activities.
-                    </p>
-                    <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-3">
-                        <IoIosInformationCircleOutline className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-                        <p className="text-sm text-amber-800">
-                            <span className="font-semibold">Important:</span> At least one author of each accepted paper must complete
-                            registration within the specified deadline for the paper to be included in the final conference programme and
-                            considered for presentation and publication in the conference proceedings.
-                        </p>
-                    </div>
-                </div>
-                <div className="text-center">
-                    <h2 className="mt-4 text-2xl font-bold">
-                        Registration Categories
-                    </h2>
+  return (
+    <section
+      id="registration"
+      className="border-b border-slate-200 bg-white"
+    >
+      <div className="container mx-auto px-5 py-4 lg:px-8 lg:py-6 xl:px-10 xl:py-10">
 
-                    <p className="mt-4 text-muted-foreground">
-                        Choose the category that best matches your participation.
-                    </p>
-                </div>
-
-                <div className="mt-16 grid grid-cols-2 xl:grid-cols-3 gap-8">
-                    {categories.map((item) => (
-                        <Card
-                            key={item.title}
-                            className="hover:shadow-xl transition"
-                        >
-                            <CardContent className="p-8">
-                                <h3 className="text-xl lg:text-2xl font-bold wrap-break-word">
-                                    {item.title}
-                                </h3>
-
-                                <div className="mt-4 text-2xl lg:text-3xl font-bold text-blue-700">
-                                    {item.price}
-                                </div>
-
-                                <p className="mt-4 text-muted-foreground">
-                                    {item.description}
-                                </p>
-
-                                <button className="bg-black text-white mt-12 w-full px-2 py-3 rounded-xl cursor-pointer">
-                                    <Link href={item.href}>
-                                        Choose Category
-                                    </Link>
-                                </button>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
-
-                <div className="mt-16 bg-white rounded-2xl shadow-lg border border-slate-200/60 overflow-hidden">
-                    <div className="p-6 lg:p-8 xl:p-10">
-                        <div className="flex items-start gap-3 mb-6">
-                            <div className="p-2 bg-blue-100 rounded-lg shrink-0">
-                                <CiCircleCheck className="w-6 h-6 text-blue-700" />
-                            </div>
-                            <div>
-                                <p className="text-base sm:text-lg font-semibold text-slate-900">
-                                    What's Included?
-                                </p>
-                                <p className="text-sm text-muted-foreground mt-0.5">
-                                    Registered participants will be entitled to the following:
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-2 lg:grid-cols-1 gap-3 mt-10">
-                            {benefits.map((benefit, index) => (
-                                <div
-                                    key={index}
-                                    className="flex items-start gap-3 p-3 rounded-xl bg-slate-50 hover:bg-blue-50 transition-colors group"
-                                >
-                                    <benefit.icon className="w-5 h-5 text-blue-600 shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
-                                    <span className="text-sm text-slate-700 leading-relaxed">
-                                        {benefit.text}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
-                {/* Additional Info */}
-                <div className="mt-8 text-center">
-                    <p className="text-sm text-slate-500">
-                        Have questions about registration? <a href="#" className="text-blue-600 hover:underline font-medium">Contact us</a>
-                    </p>
-                </div>
+        {/* Header */}
+        <div className="grid gap-7 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">
+              Registration
             </div>
-        </section>
-    );
+
+            <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-950 lg:text-4xl xl:text-5xl">
+              Join the
+              <span className="text-blue-600"> conference.</span>
+            </h2>
+          </div>
+
+          <div className="max-w-2xl lg:justify-self-end">
+            <p className="text-sm leading-7 text-slate-600 lg:text-base lg:leading-8">
+              All authors, co-authors, participants, presenters, students,
+              industry representatives and invited guests are required to
+              register for ICETIA 2027.
+            </p>
+
+            <p className="mt-4 text-sm leading-7 text-slate-500">
+              Registration provides access to conference sessions, keynote
+              presentations, technical papers, panel discussions, workshops,
+              conference materials and other approved activities.
+            </p>
+          </div>
+        </div>
+
+        {/* Important notice */}
+        <div className="mt-8 flex items-start gap-3 border border-amber-200 bg-amber-50 px-5 py-4 lg:mt-10">
+          <IoIosInformationCircleOutline className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
+
+          <p className="text-xs leading-6 text-amber-800 lg:text-sm">
+            <span className="font-semibold">Important:</span>{" "}
+            At least one author of each accepted paper must complete
+            registration within the specified deadline for the paper to be
+            included in the final conference programme and considered for
+            presentation and publication in the conference proceedings.
+          </p>
+        </div>
+
+        {/* Registration categories */}
+        <div className="mt-12 lg:mt-14">
+          <div className="flex flex-col gap-2 border-b border-slate-200 pb-5 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
+                Registration Categories
+              </p>
+
+              <h3 className="mt-2 text-2xl font-bold tracking-tight text-slate-950 lg:text-3xl">
+                Choose your participation
+              </h3>
+            </div>
+
+            <p className="text-sm text-slate-500">
+              Select the category that best matches your role.
+            </p>
+          </div>
+
+          <div className="grid border-l border-slate-200 lg:grid-cols-3">
+            {categories.map((item) => (
+              <div
+                key={item.title}
+                className="group border-b border-r border-slate-200 p-6 lg:min-h-70 lg:p-7 xl:p-8"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold tracking-widest text-slate-400">
+                    {item.number}
+                  </span>
+
+                  <span className="h-2 w-2 rounded-full bg-blue-500 opacity-60 transition-opacity group-hover:opacity-100" />
+                </div>
+
+                <h4 className="mt-8 max-w-xs text-xl font-bold tracking-tight text-slate-950 lg:text-2xl">
+                  {item.title}
+                </h4>
+
+                <p className="mt-3 max-w-sm text-sm leading-6 text-slate-500">
+                  {item.description}
+                </p>
+
+                <div className="mt-7 flex items-end justify-between gap-4">
+                  <div>
+                    <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-400">
+                      Registration Fee
+                    </p>
+
+                    <p className="mt-1 text-2xl font-bold text-blue-600">
+                      {item.price}
+                    </p>
+                  </div>
+
+                  <Link
+                    href={item.href}
+                    className="group/link flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-700 transition-all duration-200 hover:border-blue-600 hover:bg-blue-600 hover:text-white"
+                    aria-label={`Choose ${item.title}`}
+                  >
+                    <LuArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* What's included */}
+        <div className="mt-12 border-t border-slate-200 pt-10 lg:mt-14 lg:pt-12">
+          <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:gap-14">
+            <div>
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+                <CiCircleCheck className="h-6 w-6" />
+              </div>
+
+              <p className="mt-5 text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">
+                What's Included
+              </p>
+
+              <h3 className="mt-3 text-2xl font-bold tracking-tight text-slate-950 lg:text-3xl">
+                Your registration
+                <br />
+                comes with access.
+              </h3>
+
+              <p className="mt-4 max-w-sm text-sm leading-6 text-slate-500">
+                Registered participants will be entitled to the following
+                conference experiences and materials.
+              </p>
+            </div>
+
+            <div className="grid border-t border-slate-200 lg:grid-cols-2 lg:border-l lg:border-t-0">
+              {benefits.map((benefit, index) => {
+                const Icon = benefit.icon;
+
+                return (
+                  <div
+                    key={index}
+                    className={`flex items-start gap-3 border-b border-slate-200 p-4 lg:p-5 ${
+                      index % 2 === 0
+                        ? "lg:border-r"
+                        : ""
+                    }`}
+                  >
+                    <Icon className="mt-0.5 h-5 w-5 shrink-0 text-blue-600" />
+
+                    <span className="text-sm leading-6 text-slate-600">
+                      {benefit.text}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Contact */}
+        <div className="mt-8 flex flex-col gap-2 border-t border-slate-200 pt-6 lg:flex-row lg:items-center lg:justify-between">
+          <p className="text-sm text-slate-500">
+            Have questions about registration?
+          </p>
+
+          <Link
+            href="/contact"
+            className="group inline-flex items-center gap-2 text-sm font-semibold text-blue-600"
+          >
+            Contact the conference team
+            <LuArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
 }
