@@ -70,14 +70,14 @@ export default function GalleryPage() {
               </div>
 
               <h1 className="mt-4 max-w-3xl text-4xl font-bold leading-tight tracking-tight lg:text-5xl xl:text-6xl">
-                Conference
-                <span className="text-blue-400"> Gallery.</span>
+                Gallery
+                <span className="text-blue-400">. </span>
               </h1>
             </div>
 
             <div>
               <p className="max-w-2xl text-sm leading-7 text-slate-400 lg:text-base lg:leading-8">
-                Explore the places, people, ideas and moments surrounding
+                Explore 
                 ICETIA 2027 at Federal University Otuoke.
               </p>
             </div>

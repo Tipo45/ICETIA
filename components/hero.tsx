@@ -13,6 +13,7 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import { IoCalendarSharp } from "react-icons/io5";
 import { LuArrowUpRight } from "react-icons/lu";
+import { TiVideo } from "react-icons/ti";
 import { useRouter } from "next/navigation";
 
 const heroImages = [
@@ -141,6 +142,10 @@ export default function Hero() {
               <span className="text-slate-300">
                 Federal University Otuoke
               </span>
+
+              <span className="mx-1 text-slate-500">•</span>
+              <TiVideo className="h-5 w-5 text-blue-400" />
+              <span> Hybrid Event</span>
             </motion.div>
 
             {/* Buttons */}

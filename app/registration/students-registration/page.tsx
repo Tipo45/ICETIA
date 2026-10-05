@@ -50,6 +50,7 @@ import {
     LuInfo,
     LuLockKeyhole,
     LuPresentation,
+    LuRefreshCw,
     LuUsers,
 } from "react-icons/lu";
 
@@ -765,7 +766,7 @@ export default function RegistrationSection() {
                                     <div className="mt-6 flex flex-col gap-3 lg:flex-row">
                                         <button
                                             onClick={() => setStep(1)}
-                                            className="flex h-12 flex-1 items-center justify-center gap-2 border border-slate-300 px-6 text-sm font-semibold text-slate-700 transition hover:border-slate-500 hover:bg-slate-50"
+                                            className="flex h-12 flex-1 items-center justify-center gap-2 border border-slate-300 px-6 py-4 rounded-md text-sm font-semibold text-slate-700 transition hover:border-slate-500 hover:bg-slate-50"
                                         >
                                             <FiArrowLeft />
                                             Edit details
@@ -778,7 +779,7 @@ export default function RegistrationSection() {
                                             disabled={
                                                 !isRegFormValid() || isSubmitting
                                             }
-                                            className="flex h-12 flex-1 items-center justify-center gap-2 bg-blue-600 px-6 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
+                                            className="flex h-12 flex-1 items-center justify-center gap-2 bg-blue-600 px-6 py-4 rounded-md text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
                                         >
                                             {isSubmitting ? (
                                                 <span className="flex items-center gap-2">
@@ -986,6 +987,46 @@ export default function RegistrationSection() {
                     </div>
                 </div>
             </section>
+
+            {/* REFUND POLICY */}
+<section className="border-b border-slate-200 bg-white">
+    <div className="mx-auto max-w-7xl px-6 py-10 lg:px-10 lg:py-12">
+        <div className="border border-slate-200 bg-slate-50 p-6 lg:p-8">
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+                <div className="flex items-start gap-4">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center bg-blue-50 text-blue-600">
+                        <LuRefreshCw className="text-lg" />
+                    </div>
+
+                    <div>
+                        <p className="text-xs font-semibold uppercase tracking-[0.15em] text-blue-600">
+                            Refund & Cancellation
+                        </p>
+
+                        <h3 className="mt-1 text-xl font-semibold tracking-tight text-slate-900">
+                            Registration refund policy
+                        </h3>
+
+                        <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+                            Registration fees are subject to the official
+                            ICETIA 2027 Refund & Cancellation Policy. Please
+                            review the policy carefully before completing your
+                            registration and payment.
+                        </p>
+                    </div>
+                </div>
+
+                <a
+                    href="/registration/refund-policy"
+                    className="inline-flex shrink-0 items-center justify-center gap-2 border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-blue-600 hover:text-blue-600"
+                >
+                    View full refund policy
+                    <FiArrowRight />
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
 
             {/* CTA */}
             <section className="mx-auto max-w-7xl px-6 py-12 text-center lg:px-10 lg:py-14">

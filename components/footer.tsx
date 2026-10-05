@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   LuArrowUpRight,
@@ -38,30 +39,55 @@ export default function Footer() {
 
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-xl font-bold tracking-tight">
-                ICETIA
-              </h3>
+  <div className="flex items-center gap-3">
+    <Image
+      src="/images/logo.jpg"
+      alt="ICETIA Logo"
+      width={40}
+      height={40}
+      className="h-10 w-10 shrink-0 object-contain"
+    />
 
-              <span className="rounded-full bg-blue-600 px-2 py-0.5 text-[10px] font-bold tracking-wide text-white">
-                2027
-              </span>
-            </div>
+    <div className="flex items-center gap-2">
+      <h3 className="text-xl font-bold tracking-tight">
+        ICETIA
+      </h3>
 
-            <p className="mt-4 max-w-sm text-sm leading-7 text-slate-400">
-              International Conference on Emerging Technologies,
-              Innovation and Applications.
-            </p>
+      <span className="rounded-full bg-blue-600 px-2 py-0.5 text-[10px] font-bold tracking-wide text-white">
+        2027
+      </span>
+    </div>
+  </div>
 
-            <div className="mt-6 flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-slate-500">
-              <LuCalendarDays className="h-4 w-4 text-blue-500" />
-              28 – 30 April, 2027
-            </div>
+  <p className="mt-4 max-w-sm text-sm leading-7 text-slate-400">
+    International Conference on Emerging Technologies,
+    Innovation and Applications.
+  </p>
 
-            <p className="mt-3 text-xs text-slate-600">
-              Federal University Otuoke · Bayelsa State, Nigeria
-            </p>
-          </div>
+  <div className="mt-6 flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-slate-500">
+    <LuCalendarDays className="h-4 w-4 text-blue-500" />
+    28 – 30 April, 2027
+  </div>
+
+  <Link
+  href="https://fuotuoke.edu.ng/"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="mt-3 inline-flex items-center gap-2 text-xs text-slate-600 transition-colors hover:text-blue-500"
+>
+  <Image
+    src="/images/FUO-Logo.png"
+    alt="Federal University Otuoke Logo"
+    width={32}
+    height={32}
+    className="h-8 w-8 shrink-0 object-contain"
+  />
+
+  <span>
+    Federal University Otuoke · Bayelsa State, Nigeria
+  </span>
+</Link>
+</div>
 
           {/* Quick links */}
           <div>
@@ -104,7 +130,9 @@ export default function Footer() {
                 <LuMail className="h-4 w-4 shrink-0 text-blue-500" />
 
                 <span className="text-slate-500">
-                  Conference email coming soon
+                  icetia2027@fuotuoke.edu.ng
+                  <br />
+                  conference.icetia@fuotuoke.edu.ng
                 </span>
               </div>
 

@@ -328,8 +328,8 @@ export default function AuthorsRegistrationPage() {
             setIsSubmitting(false);
             toast.error(
                 error?.data ??
-                    error?.message ??
-                    "Something went wrong. Please try again."
+                error?.message ??
+                "Something went wrong. Please try again."
             );
         }
     };
@@ -424,6 +424,39 @@ export default function AuthorsRegistrationPage() {
                         <p className="mt-1 text-sm font-semibold">
                             Federal University Otuoke
                         </p>
+                    </div>
+                </div>
+            </section>
+
+            {/* AUTHOR / CO-AUTHOR REGISTRATION NOTICE */}
+            <section className="border-b border-blue-100 bg-blue-50/50">
+                <div className="mx-auto max-w-7xl px-6 py-5 lg:px-10">
+                    <div className="flex items-start gap-4">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-white text-blue-600 shadow-sm">
+                            <FaUsers className="h-4 w-4" />
+                        </div>
+
+                        <div>
+                            <p className="text-sm font-semibold text-slate-900">
+                                Registration for Authors & Co-Authors
+                            </p>
+
+                            <p className="mt-1 max-w-4xl text-sm leading-6 text-slate-600">
+                                This registration is for authors of accepted papers.
+                                Co-authors who wish to attend or participate in the
+                                conference must be associated with an accepted paper and
+                                attached to the corresponding registered author.
+                            </p>
+
+                            <div className="mt-3 border-l-2 border-blue-500 pl-4">
+                                <p className="text-xs font-medium leading-5 text-blue-800">
+                                    If you are a non-author participant or co-author,
+                                    please ensure that you are listed under an accepted
+                                    paper and associated with a registered author before
+                                    completing your registration.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -529,7 +562,7 @@ export default function AuthorsRegistrationPage() {
                                 <button
                                     type="button"
                                     onClick={previousStep}
-                                    className="flex min-h-12 w-full items-center justify-center gap-2 border border-slate-300 bg-white px-5 text-sm font-semibold text-slate-700 transition hover:border-slate-500 hover:bg-slate-50 tablet:w-auto tablet:min-w-36"
+                                    className="flex min-h-12 w-full items-center justify-center gap-2 border border-slate-300 bg-white px-5 rounded-md text-sm font-semibold text-slate-700 transition hover:border-slate-500 hover:bg-slate-50 tablet:w-auto tablet:min-w-36"
                                 >
                                     <FaArrowLeftLong />
                                     Back
@@ -541,7 +574,7 @@ export default function AuthorsRegistrationPage() {
                                     type="button"
                                     onClick={nextStep}
                                     disabled={!isCurrentStepValid()}
-                                    className="flex min-h-12 flex-1 items-center justify-center gap-2 bg-[#07111f] px-6 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
+                                    className="flex min-h-12 flex-1 items-center justify-center gap-2 bg-[#07111f] px-6 rounded-md text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
                                 >
                                     Continue
                                     <FaArrowRightLong />
@@ -551,7 +584,7 @@ export default function AuthorsRegistrationPage() {
                                     type="button"
                                     onClick={registerParticipant}
                                     disabled={isSubmitting}
-                                    className="flex min-h-12 flex-1 items-center justify-center gap-2 bg-blue-600 px-6 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
+                                    className="flex min-h-12 flex-1 items-center justify-center gap-2 bg-blue-600 px-6 rounded-md text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
                                 >
                                     {isSubmitting ? (
                                         <span className="flex items-center gap-2">
@@ -658,20 +691,21 @@ export default function AuthorsRegistrationPage() {
                             </div>
 
                             <p className="mt-2 max-w-4xl text-sm leading-6 text-slate-600">
-                                Authors whose papers are accepted for
-                                presentation are expected to complete
-                                registration before the camera-ready
-                                submission deadline. Each accepted paper must
-                                have at least one registered author who will
-                                present the paper during the conference.
+                                Authors whose papers are accepted for presentation are expected to
+                                complete registration before the camera-ready submission deadline.
+                                Each accepted paper must have at least one registered author who will
+                                present the paper during the conference. Co-authors who wish to
+                                participate or register separately must be associated with the accepted
+                                paper and linked to a registered author.
                             </p>
 
                             <div className="mt-5 border-l-2 border-amber-400 pl-4">
                                 <p className="text-sm font-medium leading-6 text-amber-800">
-                                    Papers without completed registration by
-                                    the stated deadline may not be included in
-                                    the final conference programme or
-                                    proceedings.
+                                    Papers without completed author registration by the stated deadline
+                                    may not be included in the final conference programme or proceedings.
+                                    Non-author co-authors should ensure that their registration is
+                                    properly linked to the corresponding accepted paper and registered
+                                    author.
                                 </p>
                             </div>
                         </div>
@@ -749,6 +783,41 @@ export default function AuthorsRegistrationPage() {
                                 </li>
                             ))}
                         </ul>
+                    </div>
+
+                    <div className="mt-6 border border-slate-200 bg-slate-50 p-6 lg:p-7">
+                        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+                            <div className="flex items-start gap-4">
+                                <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-blue-50 text-blue-600">
+                                    <BsClockHistory className="h-5 w-5" />
+                                </div>
+
+                                <div>
+                                    <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-blue-600">
+                                        Refund & Cancellation
+                                    </p>
+
+                                    <h3 className="mt-1 text-lg font-semibold">
+                                        Registration Refund Policy
+                                    </h3>
+
+                                    <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
+                                        Author registration fees are subject to the official
+                                        ICETIA 2027 Refund & Cancellation Policy. Please review
+                                        the policy carefully before completing your registration
+                                        and payment.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <a
+                                href="/registration/refund-policy"
+                                className="inline-flex shrink-0 items-center justify-center gap-2 border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-blue-600 hover:text-blue-600"
+                            >
+                                View full refund policy
+                                <LuArrowUpRight className="h-4 w-4" />
+                            </a>
+                        </div>
                     </div>
                 </div>
             </section>

@@ -8,6 +8,9 @@ import HostInstitution from "@/components/hostinstitution";
 import Footer from "@/components/footer";
 import About from "@/components/about";
 import Gallery from "@/components/gallery";
+import PublicationOpportunities from "@/components/publication";
+import KeynotePage from "@/components/keynote";
+import WhyICETIA from "@/components/WhyICETIA";
 
 
 
@@ -20,13 +23,19 @@ export default function HomePage() {
 
       <About />
 
+      <WhyICETIA />
+
       <Gallery />
 
       <CallForPapers />
 
       <ConferenceTracks />
 
+      <KeynotePage />
+
       <ImportantDates />
+
+      <PublicationOpportunities />
 
       <RegistrationCategories />
 

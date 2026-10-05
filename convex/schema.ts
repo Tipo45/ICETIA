@@ -81,5 +81,11 @@ export default defineSchema({
         to: v.string(),
         subject: v.string(),
         body: v.string(),
-    })
+    }),
+
+    admins: defineTable({
+    email: v.string(),
+    passwordHash: v.string(),
+})
+    .index("by_email", ["email"]),
 })

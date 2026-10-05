@@ -17,6 +17,7 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
 import { Country } from "country-state-city";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   LuCalendarDays,
@@ -34,6 +35,7 @@ import { toast } from "sonner";
 export default function ParticipantsPage() {
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
+  const router = useRouter();
 
   const [category, setCategory] = useState<
     "author" | "participant" | "student" | undefined
@@ -105,8 +107,8 @@ export default function ParticipantsPage() {
     } catch (error: any) {
       toast.error(
         error?.data ??
-          error?.message ??
-          "Failed to send reminder email."
+        error?.message ??
+        "Failed to send reminder email."
       );
     } finally {
       setSendingId(null);
@@ -159,6 +161,13 @@ export default function ParticipantsPage() {
                   : totalParticipants}
               </p>
             </div>
+
+            <Button
+              onClick={() => router.push("/admin-login")}
+              className="h-auto bg-red-600 rounded-2xl px-5 py-3 text-xs font-semibold uppercase tracking-wide text-white hover:bg-red-700"
+            >
+              Logout
+            </Button>
           </div>
         </div>
 
@@ -292,9 +301,9 @@ export default function ParticipantsPage() {
               onValueChange={(value) =>
                 setCategory(
                   value as
-                    | "author"
-                    | "participant"
-                    | "student"
+                  | "author"
+                  | "participant"
+                  | "student"
                 )
               }
             >
@@ -528,15 +537,14 @@ export default function ParticipantsPage() {
 
                           <td className="px-5 py-4 align-top">
                             <span
-                              className={`inline-flex items-center border px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.08em] ${
-                                participant.category ===
-                                "author"
+                              className={`inline-flex items-center border px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.08em] ${participant.category ===
+                                  "author"
                                   ? "border-blue-200 bg-blue-50 text-blue-700"
                                   : participant.category ===
                                     "student"
-                                  ? "border-purple-200 bg-purple-50 text-purple-700"
-                                  : "border-slate-200 bg-slate-50 text-slate-600"
-                              }`}
+                                    ? "border-purple-200 bg-purple-50 text-purple-700"
+                                    : "border-slate-200 bg-slate-50 text-slate-600"
+                                }`}
                             >
                               {participant.category}
                             </span>
@@ -575,8 +583,8 @@ export default function ParticipantsPage() {
 
                                 {participant.paidAt
                                   ? new Date(
-                                      participant.paidAt
-                                    ).toLocaleDateString()
+                                    participant.paidAt
+                                  ).toLocaleDateString()
                                   : "Confirmed"}
                               </p>
                             </div>
@@ -586,7 +594,7 @@ export default function ParticipantsPage() {
 
                           <td className="px-5 py-4 align-top">
                             {participant.coAuthors &&
-                            participant.coAuthors.length > 0 ? (
+                              participant.coAuthors.length > 0 ? (
                               <HoverCard>
                                 <HoverCardTrigger asChild>
                                   <button className="inline-flex items-center gap-1.5 border border-blue-100 bg-blue-50 px-2.5 py-1.5 text-xs font-semibold text-blue-700 transition hover:bg-blue-100">
@@ -693,7 +701,7 @@ export default function ParticipantsPage() {
                               <LuSend className="mr-2 h-3.5 w-3.5" />
 
                               {sendingId ===
-                              participant._id
+                                participant._id
                                 ? "Sending..."
                                 : "Reminder"}
                             </Button>

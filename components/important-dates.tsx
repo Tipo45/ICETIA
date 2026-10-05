@@ -2,32 +2,28 @@ import { LuArrowDownRight, LuCalendarDays } from "react-icons/lu";
 
 const dates = [
   {
-    title: "Conference Website Launch & Call for Papers",
-    date: "November – December 2026",
+    title: "Conference Website Launch",
+    date: "5 October 2026",
   },
   {
-    title: "Paper Submission Opens",
-    date: "January 2027",
+    title: "Call for Papers Opens",
+    date: "1 November 2026",
   },
   {
-    title: "Paper Submission Deadline",
-    date: "February 2027",
+    title: "Full Paper Submission Deadline",
+    date: "15 February 2027",
   },
   {
     title: "Notification of Acceptance",
-    date: "March 2027",
+    date: "15 March 2027",
   },
   {
-    title: "Author Registration Opens",
-    date: "March 2027",
-  },
-  {
-    title: "Camera-Ready Paper Submission",
-    date: "Mid-March 2027",
+    title: "Camera-Ready Paper Submission Deadline",
+    date: "25 March 2027",
   },
   {
     title: "Author Registration Deadline",
-    date: "Late March 2027",
+    date: "31 March 2027",
   },
   {
     title: "Conference Dates",

@@ -68,9 +68,9 @@ export default function About() {
                   ICETIA 2027
                 </span>{" "}
                 is a hybrid international academic conference hosted by{" "}
-                <span className="font-semibold text-blue-600">
+                <a href="https://fuotuoke.edu.ng/" className="font-semibold text-blue-600 hover:underline">
                   Federal University Otuoke, Nigeria.
-                </span>{" "}
+                </a>{" "}
                 Scheduled for 28–30 April 2027, the maiden edition provides a
                 platform for presenting research findings, exchanging ideas,
                 developing collaborations and examining how emerging

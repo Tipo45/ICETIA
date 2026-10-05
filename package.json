@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@convex-dev/resend": "^0.2.5",
+    "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cn": "^0.4.0",

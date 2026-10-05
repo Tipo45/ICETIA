@@ -53,19 +53,18 @@ export default function Gallery() {
           <div>
             <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">
               <LuImages className="h-4 w-4" />
-              Conference Gallery
+              Gallery
             </div>
 
             <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-950 lg:text-4xl xl:text-5xl">
-              Moments from{" "}
-              <span className="text-blue-600">ICETIA.</span>
+              Host{" "}
+              <span className="text-blue-600">Institution & Venue.</span>
             </h2>
           </div>
 
           <div className="flex items-end justify-between gap-6 lg:max-w-sm">
             <p className="text-sm leading-6 text-slate-500 lg:text-right">
-              A glimpse into the people, places and ideas surrounding
-              ICETIA 2027.
+              A glimpse of Federal University Otuoke, the host environment for ICETIA 2027.
             </p>
           </div>
 

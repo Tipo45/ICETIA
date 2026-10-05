@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation, query } from "./_generated/server";
+import { internalMutation, internalQuery, mutation, query } from "./_generated/server";
 import { ConvexError } from "convex/values";
 import { Resend } from "@convex-dev/resend";
 import { api, components } from "./_generated/api";
@@ -420,5 +420,45 @@ export const sendReminder = mutation({
             subject: subject,
             text: body,
         });
+    },
+});
+
+export const createAdmin = internalMutation({
+    args: {
+        email: v.string(),
+        passwordHash: v.string(),
+    },
+
+    handler: async (ctx, args) => {
+        const existingAdmin = await ctx.db
+            .query("admins")
+            .withIndex("by_email", (q) =>
+                q.eq("email", args.email)
+            )
+            .unique();
+
+        if (existingAdmin) {
+            throw new Error("An admin with this email already exists");
+        }
+
+        return await ctx.db.insert("admins", {
+            email: args.email,
+            passwordHash: args.passwordHash,
+        });
+    },
+});
+
+export const getAdminByEmail = internalQuery({
+    args: {
+        email: v.string(),
+    },
+
+    handler: async (ctx, args) => {
+        return await ctx.db
+            .query("admins")
+            .withIndex("by_email", (q) =>
+                q.eq("email", args.email)
+            )
+            .unique();
     },
 });
