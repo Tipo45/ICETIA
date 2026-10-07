@@ -127,7 +127,6 @@ const items = [
       </div>
     ),
   },
-
   {
     value: "submission-guidelines",
     trigger: "Submission Guidelines",
