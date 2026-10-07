@@ -7,15 +7,72 @@ import {
   LuMapPin,
   LuPhone,
 } from "react-icons/lu";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible";
 
 const quickLinks = [
   { name: "About", href: "/#about" },
-  { name: "Committees", href: "/committees" },
-  { name: "Call For Papers", href: "/#cfp" },
-  { name: "Tracks", href: "/#tracks" },
-  { name: "Program", href: "/program" },
-  { name: "Registration", href: "/#registration" },
+  { name: "Registration", href: "/registration" },
 ];
+
+const programItems = [
+  {
+    name: "Accepted Papers",
+    href: "/program/accepted-papers"
+  },
+  {
+    name: "Workshop",
+    href: "/program/workshop"
+  },
+  {
+    name: "Keynotes",
+    href: "/program/keynotes"
+  }
+]
+
+const committeeItems = [
+  {
+    name: "Steering Committee",
+    href: "/committees/steering-committee",
+  },
+  {
+    name: "Organsing committee",
+    href: "/committees/organising-committee",
+  },
+  {
+    name: "Technical Programme Commitee",
+    href: "/committees/technical-programme-committee",
+  },
+  {
+    name: "Specialised Committee",
+    href: "/committees/specialised-committe",
+  },
+];
+
+const forAuthorItems = [
+    {
+      name: "Camera Ready Paper",
+      href: "/conference/for-auhtors/camera-ready-papers",
+    },
+    {
+      name: "Call For Papers",
+      href: "/conference/for-authors/call-for-papers",
+    },
+    {
+      name: "Call For Workshop Papers",
+      href: "/conference/for-authors/call-for-workshop-papers",
+    },
+  ];
+
+  const locationItems = [
+    {
+      name: "Venue",
+      href: "/location/venue"
+    },
+    {
+      name: "Visa",
+      href: "/location/visa"
+    }
+  ]
 
 const sponsors = [
   "MTN",
@@ -39,55 +96,55 @@ export default function Footer() {
 
           {/* Brand */}
           <div>
-  <div className="flex items-center gap-3">
-    <Image
-      src="/images/logo.jpg"
-      alt="ICETIA Logo"
-      width={40}
-      height={40}
-      className="h-10 w-10 shrink-0 object-contain"
-    />
+            <div className="flex items-center gap-3">
+              <Image
+                src="/images/logo-no-bg.png"
+                alt="ICETIA Logo"
+                width={60}
+                height={60}
+                className="h-20 w-20 shrink-0 object-contain"
+              />
 
-    <div className="flex items-center gap-2">
-      <h3 className="text-xl font-bold tracking-tight">
-        ICETIA
-      </h3>
+              <div className="flex items-center gap-2">
+                <h3 className="text-xl font-bold tracking-tight">
+                  ICETIA
+                </h3>
 
-      <span className="rounded-full bg-blue-600 px-2 py-0.5 text-[10px] font-bold tracking-wide text-white">
-        2027
-      </span>
-    </div>
-  </div>
+                <span className="rounded-full bg-blue-600 px-2 py-0.5 text-[10px] font-bold tracking-wide text-white">
+                  2027
+                </span>
+              </div>
+            </div>
 
-  <p className="mt-4 max-w-sm text-sm leading-7 text-slate-400">
-    International Conference on Emerging Technologies,
-    Innovation and Applications.
-  </p>
+            <p className="mt-4 max-w-sm text-sm leading-7 text-slate-400">
+              International Conference on Emerging Technologies,
+              Innovation and Applications.
+            </p>
 
-  <div className="mt-6 flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-slate-500">
-    <LuCalendarDays className="h-4 w-4 text-blue-500" />
-    28 – 30 April, 2027
-  </div>
+            <div className="mt-6 flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-slate-500">
+              <LuCalendarDays className="h-4 w-4 text-blue-500" />
+              28 – 30 April, 2027
+            </div>
 
-  <Link
-  href="https://fuotuoke.edu.ng/"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="mt-3 inline-flex items-center gap-2 text-xs text-slate-600 transition-colors hover:text-blue-500"
->
-  <Image
-    src="/images/FUO-Logo.png"
-    alt="Federal University Otuoke Logo"
-    width={32}
-    height={32}
-    className="h-8 w-8 shrink-0 object-contain"
-  />
+            <Link
+              href="https://fuotuoke.edu.ng/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-flex items-center gap-2 text-xs text-slate-600 transition-colors hover:text-blue-500"
+            >
+              <Image
+                src="/images/FUO-Logo.png"
+                alt="Federal University Otuoke Logo"
+                width={32}
+                height={32}
+                className="h-8 w-8 shrink-0 object-contain"
+              />
 
-  <span>
-    Federal University Otuoke · Bayelsa State, Nigeria
-  </span>
-</Link>
-</div>
+              <span>
+                Federal University Otuoke · Bayelsa State, Nigeria
+              </span>
+            </Link>
+          </div>
 
           {/* Quick links */}
           <div>
@@ -96,7 +153,7 @@ export default function Footer() {
             </h4>
 
             <nav className="mt-5 flex flex-col gap-3">
-              {quickLinks.map((link) => (
+              {quickLinks.slice(0).map((link) => (
                 <Link
                   key={link.name}
                   href={link.href}
@@ -105,6 +162,85 @@ export default function Footer() {
                   {link.name}
                 </Link>
               ))}
+
+              <Collapsible>
+                <CollapsibleTrigger className="text-sm text-slate-400 hover:text-white">Program</CollapsibleTrigger>
+                <CollapsibleContent className="pb-3">
+                  <div className="ml-3 border-l border-slate-200">
+                    {programItems.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className="block px-4 py-2.5 text-sm text-slate-500 transition-colors hover:text-white"
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+
+              <Collapsible>
+                <CollapsibleTrigger className="text-sm text-slate-400 hover:text-white">Committees</CollapsibleTrigger>
+                <CollapsibleContent className="pb-3">
+                  <div className="ml-3 border-l border-slate-200">
+                    {committeeItems.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className="block px-4 py-2.5 text-sm text-slate-500 transition-colors hover:text-white"
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+
+              <Collapsible>
+                <CollapsibleTrigger className="text-sm text-slate-400 hover:text-white">For Authors</CollapsibleTrigger>
+                <CollapsibleContent className="pb-3">
+                  <div className="ml-3 border-l border-slate-200">
+                    {forAuthorItems.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className="block px-4 py-2.5 text-sm text-slate-500 transition-colors hover:text-white"
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+
+
+              {quickLinks.slice(3).map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className="w-fit text-sm text-slate-400 transition-colors hover:text-white"
+                >
+                  {link.name}
+                </Link>
+              ))}
+
+              <Collapsible>
+                <CollapsibleTrigger className="text-sm text-slate-400 hover:text-white">Location</CollapsibleTrigger>
+                <CollapsibleContent className="pb-3">
+                  <div className="ml-3 border-l border-slate-200">
+                    {locationItems.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className="block px-4 py-2.5 text-sm text-slate-500 transition-colors hover:text-white"
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
             </nav>
           </div>
 
@@ -130,9 +266,7 @@ export default function Footer() {
                 <LuMail className="h-4 w-4 shrink-0 text-blue-500" />
 
                 <span className="text-slate-500">
-                  icetia2027@fuotuoke.edu.ng
-                  <br />
-                  conference.icetia@fuotuoke.edu.ng
+                  info@icetiaconference.org
                 </span>
               </div>
 

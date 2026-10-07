@@ -14,17 +14,17 @@ import {
 const keynoteSpeakers = [
   {
     id: 1,
-    name: "John Doe",
+    name: "Dr. Balota",
     role: "AI Researcher",
-    institution: "Federal University Otuoke",
-    country: "Nigeria",
-    image: "/images/keynote-speaker-1.jpg",
+    institution: "Teesside University",
+    country: "United Kingdom",
+    image: "/images/keynote_1.jpg",
     topic: "TBA",
-    bio: "A brief biography of the keynote speaker will appear here. Add the speaker's academic background, professional experience, research interests, achievements, and contributions to the field.",
+    bio: "Dr. Balota is a lecturer in Computer Science and he has vast experience in IT Consultancy, he holds a doctorate (PhD) in Computer Science and Engineering and currently worksa as a lecturer in Computer Science at Teesside University",
     expertise: [
-      "TBA",
-      "TBa",
-      "TBb",
+      "IoT",
+      "Wireless Sensor Networks",
+      "Data Capture and Monitoring",
     ],
   },
   {
@@ -105,13 +105,6 @@ export default function KeynotePage() {
             </p>
 
             <div className="mt-10 flex flex-wrap gap-4">
-              <Link
-                href="#speakers"
-                className="inline-flex items-center gap-2 bg-blue-600 px-6 py-3 text-sm font-semibold transition-all hover:bg-blue-500"
-              >
-                Meet the Speakers
-                <ArrowRight className="h-4 w-4" />
-              </Link>
 
               <Link
                 href="/registration"
@@ -242,7 +235,7 @@ export default function KeynotePage() {
                 <div className="my-6 h-px bg-white/10" />
 
                 <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-                  Keynote Address
+                  Keynote Topic
                 </p>
 
                 <h4 className="mt-2 text-base font-semibold leading-6 text-white">

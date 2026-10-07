@@ -105,7 +105,7 @@ export default function ProgrammePage() {
   const router = useRouter();
 
   const handleRegistrationNavigation = () => {
-    router.push("/#registration");
+    router.push("/registration");
   };
 
   const handleSubmitPaperButton = () => {

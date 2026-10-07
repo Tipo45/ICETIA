@@ -1,4 +1,5 @@
 import { LuArrowDownRight, LuSparkles } from "react-icons/lu";
+import ImportantDates from "./important-dates";
 
 const focusAreas = [
   "Cybersecurity",
@@ -59,7 +60,7 @@ export default function About() {
         </div>
 
         {/* Main Introduction */}
-        <div className="mt-12 border-t border-slate-200 pt-10 lg:mt-14 lg:pt-12">
+        <div className="mt-12 mb-4 border-t border-slate-200 pt-10 lg:mt-14 lg:pt-12">
           <div className="grid gap-10 lg:grid-cols-[1.4fr_0.8fr] lg:gap-16">
 
             <div>
@@ -124,6 +125,8 @@ export default function About() {
 
           </div>
         </div>
+
+        <ImportantDates />
 
         {/* Research Focus */}
         <div className="mt-14 border-t border-slate-200 pt-10 lg:mt-16 lg:pt-12">

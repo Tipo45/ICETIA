@@ -31,7 +31,7 @@ export default function Hero() {
   };
 
   const handleRegButton = () => {
-    router.push("/#registration");
+    router.push("/registration");
   };
 
   return (

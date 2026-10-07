@@ -5,88 +5,157 @@ import { useRouter } from "next/navigation";
 import {
   LuArrowDownRight,
   LuArrowUpRight,
-  LuBookOpen,
   LuCalendarDays,
   LuCheck,
-  LuChevronDown,
-  LuClipboardCheck,
   LuFileCheck,
   LuFileText,
-  LuGlobe,
-  LuMail,
-  LuPresentation,
-  LuScanSearch,
-  LuShieldCheck,
-  LuSparkles,
   LuUsers,
 } from "react-icons/lu";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
-const submissionDetails = [
+
+const dates = [
   {
-    icon: LuFileText,
-    title: "Paper Types Accepted",
-    description:
-      "Full research papers presenting original theoretical, empirical, applied or interdisciplinary work related to the conference themes.",
+    title: "Full Paper Submission Deadline",
+    date: "15 February 2027",
   },
   {
-    icon: LuFileCheck,
-    title: "Paper Length",
-    description:
-      "Full papers should follow the official ICETIA 2027 page and word limit. Replace this text with the confirmed requirement before publication.",
+    title: "Notification of Acceptance",
+    date: "15 March 2027",
   },
   {
-    icon: LuBookOpen,
-    title: "Abstract Submission",
-    description:
-      "Abstract-only submissions may be accepted where applicable. Confirm the abstract word limit and whether an abstract can be submitted without a full paper.",
+    title: "Camera-Ready Paper Submission Deadline",
+    date: "25 March 2027",
   },
   {
-    icon: LuClipboardCheck,
-    title: "Formatting Template",
-    description:
-      "All submissions must follow the official ICETIA 2027 formatting template and author guidelines.",
+    title: "Conference Dates",
+    date: "28 – 30 April 2027",
   },
 ];
 
-const reviewDetails = [
+const items = [
   {
-    icon: LuScanSearch,
-    title: "Peer Review",
-    description:
-      "Submissions will undergo academic review based on relevance, originality, methodological quality, clarity and contribution to the conference.",
-  },
-  {
-    icon: LuShieldCheck,
-    title: "Originality & Plagiarism",
-    description:
-      "Submitted work must be original and unpublished. Papers may be screened for plagiarism, duplicate submission and other forms of academic misconduct.",
-  },
-  {
-    icon: LuSparkles,
-    title: "Responsible AI Use",
-    description:
-      "Authors remain responsible for the accuracy, originality and integrity of their submissions. Any AI-assisted content must comply with the final ICETIA 2027 author guidelines.",
-  },
-];
+    value: "scope",
+    trigger: "Scope",
+    content: (
+      <div className="space-y-4 text-sm leading-7 text-slate-400">
+        <p>
+          ICETIA 2027 welcomes original research, innovative applications,
+          emerging technologies and interdisciplinary studies addressing
+          current challenges and opportunities across academia, industry,
+          government and society.
+        </p>
 
-const publicationDetails = [
-  {
-    icon: LuPresentation,
-    title: "Presentation Required",
-    description:
-      "Authors of accepted papers will be expected to present their work at ICETIA 2027 in accordance with the conference presentation guidelines.",
+        <p>
+          Contributions should demonstrate a clear connection to emerging
+          technologies, innovation or their practical applications in
+          advancing research, industry and society.
+        </p>
+      </div>
+    ),
   },
+
   {
-    icon: LuFileCheck,
-    title: "Camera-Ready Paper",
-    description:
-      "Accepted papers must be revised according to reviewer and editorial comments and submitted in the required camera-ready format by the stated deadline.",
+    value: "topic",
+    trigger: "Topics",
+    content: (
+      <div className="grid gap-3 sm:grid-cols-2">
+        {[
+          "Artificial Intelligence & Machine Learning Applications",
+          "Cybersecurity, Privacy & Digital Trust",
+          "Smart Systems, Internet of Things & Intelligent Environments",
+          "Data Science, Analytics & Decision Intelligence",
+          "Cloud Computing, Edge Computing & Digital Infrastructure",
+          "Academic Publishing, Research Visibility & Grant Proposal Development",
+          "Technology Entrepreneurship & Innovation Commercialisation",
+          "Digital Transformation for Education, Governance, Health & Industry",
+        ].map((topic) => (
+          <div
+            key={topic}
+            className="flex items-start gap-3 rounded-lg border border-white/10 bg-white/3 p-4"
+          >
+            <LuCheck className="mt-0.5 h-4 w-4 shrink-0 text-blue-400" />
+
+            <span className="text-xs leading-5 text-slate-400">
+              {topic}
+            </span>
+          </div>
+        ))}
+      </div>
+    ),
   },
+
   {
-    icon: LuGlobe,
-    title: "Publication Pathway",
-    description:
-      "Accepted and presented papers will be considered for the official ICETIA 2027 Book of Abstracts and/or Conference Proceedings.",
+    value: "paper-length",
+    trigger: "Paper Length",
+    content: (
+      <div className="space-y-4 text-sm leading-7 text-slate-400">
+        <p>
+          Full research papers should follow the official ICETIA 2027
+          formatting template and submission requirements.
+        </p>
+
+        <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4">
+          <p className="text-xs leading-6 text-slate-400">
+            The final paper length, formatting specifications and page
+            limitations will be communicated through the official author
+            guidelines and submission template.
+          </p>
+        </div>
+
+        <p className="text-xs leading-6 text-slate-500">
+          Authors should ensure that manuscripts comply with the official
+          template before submission.
+        </p>
+      </div>
+    ),
+  },
+
+  {
+    value: "publication",
+    trigger: "Publication",
+    content: (
+      <div className="">
+        <div className="rounded-lg border border-white/10 bg-white/3 p-4">
+        <p className="text-lg text-white">Accepted and presented papers will be considered for inclusion in the official ICETIA 2027 Book of Abstracts and/or Conference Proceedings. Selected high-quality papers may be invited for further consideration by an approved journal or publication outlet, subject to separate editorial review, quality checks and publication requirements.</p>
+        </div>
+      </div>
+    ),
+  },
+
+  {
+    value: "submission-guidelines",
+    trigger: "Submission Guidelines",
+    content: (
+      <div className="space-y-4">
+        {[
+          "Submissions must be original and unpublished research.",
+          "Manuscripts should follow the official ICETIA 2027 formatting template.",
+          "All authors and institutional affiliations must be correctly stated.",
+          "References and citations should follow the required formatting style.",
+          "Authors should ensure that their submission meets the conference's academic and ethical requirements.",
+          "Any AI-assisted content must comply with the final ICETIA 2027 responsible AI guidelines.",
+          "Accepted authors will be expected to revise and submit a camera-ready version before the stated deadline.",
+          "Authors of accepted papers will be expected to present their work at ICETIA 2027.",
+        ].map((guideline) => (
+          <div
+            key={guideline}
+            className="flex items-start gap-3"
+          >
+            <LuCheck className="mt-1 h-4 w-4 shrink-0 text-blue-400" />
+
+            <span className="text-xs leading-6 text-slate-400">
+              {guideline}
+            </span>
+          </div>
+        ))}
+      </div>
+    ),
   },
 ];
 
@@ -208,277 +277,102 @@ export default function CallForPapers() {
           </div>
         </div>
 
-        {/* =========================================================
-            SUBMISSION REQUIREMENTS
-        ========================================================= */}
-        <div className="mt-16 border-t border-white/10 pt-10 lg:mt-24 lg:pt-14">
-          <div className="max-w-2xl">
-            <div className="flex items-center gap-3">
-              <span className="h-px w-6 bg-blue-500" />
+        <div className="border-y border-slate-200 bg-slate-50 mt-10">
+          <div className="container mx-auto px-5 py-12 lg:px-8 lg:py-16 xl:px-10 xl:py-20">
+            {/* Header */}
+            <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+              <div>
+                <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">
+                  <LuCalendarDays className="h-4 w-4" />
+                  Paper Submission
+                </div>
 
-              <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-400">
-                Submission Requirements
-              </span>
+                <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-950 lg:text-4xl xl:text-5xl">
+                  Important
+                  <span className="text-blue-600"> dates.</span>
+                </h2>
+              </div>
+
+              <p className="max-w-2xl text-sm leading-7 text-slate-500 lg:justify-self-end lg:text-base lg:leading-8">
+                Keep track of the key milestones leading up to ICETIA 2027,
+                from paper submission and review through author registration
+                and the conference itself.
+              </p>
             </div>
 
-            <h3 className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl">
-              Prepare your paper{" "}
-              <span className="text-blue-400">for submission.</span>
-            </h3>
-
-            <p className="mt-4 text-sm leading-7 text-slate-500">
-              Authors should review the requirements below before submitting
-              their work. The official template and final submission
-              specifications will govern all submissions.
-            </p>
-          </div>
-
-          <div className="mt-10 grid gap-px overflow-hidden border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
-            {submissionDetails.map((item) => {
-              const Icon = item.icon;
-
-              return (
+            {/* Timeline grid */}
+            <div className="mt-10 grid border-t border-slate-200 lg:mt-12 lg:grid-cols-2">
+              {dates.map((item, index) => (
                 <div
                   key={item.title}
-                  className="group bg-slate-950 p-6 transition-colors duration-300 hover:bg-slate-900/80 lg:p-7"
+                  className={`group border-b border-slate-200 py-6 lg:px-6 lg:py-7 ${index % 2 === 0
+                    ? "lg:border-r lg:pl-0"
+                    : "lg:pr-0"
+                    }`}
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400">
-                      <Icon className="h-4 w-4" />
+                  <div className="flex gap-5">
+                    {/* Number */}
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300 bg-white text-xs font-bold text-slate-500 transition-colors group-hover:border-blue-500 group-hover:text-blue-600">
+                      {String(index + 1).padStart(2, "0")}
                     </div>
 
-                    <LuArrowUpRight className="h-4 w-4 text-slate-700 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-blue-400" />
-                  </div>
-
-                  <h4 className="mt-7 text-sm font-semibold text-white">
-                    {item.title}
-                  </h4>
-
-                  <p className="mt-3 text-xs leading-6 text-slate-500">
-                    {item.description}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* =========================================================
-            REVIEW PROCESS
-        ========================================================= */}
-        <div className="mt-16 lg:mt-24">
-          <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
-            <div>
-              <div className="flex items-center gap-3">
-                <span className="h-px w-6 bg-blue-500" />
-
-                <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-400">
-                  Review & Integrity
-                </span>
-              </div>
-
-              <h3 className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl">
-                A clear path from{" "}
-                <span className="text-blue-400">submission to decision.</span>
-              </h3>
-
-              <p className="mt-4 text-sm leading-7 text-slate-500">
-                Every submission should meet the conference&apos;s academic,
-                ethical and editorial standards before it can progress toward
-                presentation and publication.
-              </p>
-            </div>
-
-            <div className="divide-y divide-white/10 border-y border-white/10">
-              {reviewDetails.map((item, index) => {
-                const Icon = item.icon;
-
-                return (
-                  <div
-                    key={item.title}
-                    className="group flex gap-5 py-6"
-                  >
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center border border-white/10 bg-white/2 text-blue-400">
-                      <Icon className="h-4 w-4" />
-                    </div>
-
-                    <div className="flex-1">
-                      <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-                        <h4 className="text-sm font-semibold text-white">
-                          {item.title}
-                        </h4>
-
-                        <span className="text-[9px] font-semibold uppercase tracking-[0.16em] text-slate-700">
-                          0{index + 1}
-                        </span>
-                      </div>
-
-                      <p className="mt-2 text-xs leading-6 text-slate-500">
-                        {item.description}
+                    {/* Content */}
+                    <div className="min-w-0">
+                      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-blue-600">
+                        {item.date}
                       </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
 
-        {/* =========================================================
-            PUBLICATION PATHWAY
-        ========================================================= */}
-        <div className="mt-16 lg:mt-24">
-          <div className="border border-blue-500/20 bg-blue-500/3 p-6 sm:p-8 lg:p-10">
-            <div className="grid gap-10 lg:grid-cols-[0.65fr_1.35fr] lg:items-center">
-              <div>
-                <div className="flex items-center gap-3">
-                  <span className="h-px w-6 bg-blue-500" />
-
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-400">
-                    Publication Pathway
-                  </span>
-                </div>
-
-                <h3 className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl">
-                  From conference{" "}
-                  <span className="text-blue-400">to publication.</span>
-                </h3>
-
-                <p className="mt-4 text-sm leading-7 text-slate-500">
-                  Accepted and presented papers will be considered for
-                  inclusion in the official ICETIA 2027 Book of Abstracts
-                  and/or Conference Proceedings.
-                </p>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-3">
-                {publicationDetails.map((item) => {
-                  const Icon = item.icon;
-
-                  return (
-                    <div
-                      key={item.title}
-                      className="border border-white/10 bg-slate-950/70 p-5"
-                    >
-                      <Icon className="h-5 w-5 text-blue-400" />
-
-                      <h4 className="mt-5 text-sm font-semibold text-white">
+                      <h3 className="mt-2 text-base font-semibold leading-6 text-slate-900 lg:text-lg">
                         {item.title}
-                      </h4>
-
-                      <p className="mt-3 text-xs leading-6 text-slate-500">
-                        {item.description}
-                      </p>
+                      </h3>
                     </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="mt-8 border-t border-white/10 pt-6">
-              <p className="text-xs leading-6 text-slate-500">
-                Selected high-quality papers may be invited for further
-                consideration by an approved journal or publication outlet,
-                subject to separate editorial review, quality checks and
-                publication requirements.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* =========================================================
-            SUBMISSION PROCESS
-        ========================================================= */}
-        <div className="mt-16 lg:mt-24">
-          <div className="flex items-center gap-3">
-            <span className="h-px w-6 bg-blue-500" />
-
-            <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-400">
-              Submission Process
-            </span>
-          </div>
-
-          <div className="mt-8 grid gap-4 md:grid-cols-4">
-            {[
-              {
-                number: "01",
-                title: "Prepare",
-                text: "Prepare your manuscript using the official ICETIA 2027 template.",
-              },
-              {
-                number: "02",
-                title: "Submit",
-                text: "Submit your paper through the designated conference submission portal.",
-              },
-              {
-                number: "03",
-                title: "Review",
-                text: "Your submission undergoes academic review and an originality check.",
-              },
-              {
-                number: "04",
-                title: "Present",
-                text: "Accepted authors revise their papers and present at ICETIA 2027.",
-              },
-            ].map((step) => (
-              <div
-                key={step.number}
-                className="border border-white/10 bg-white/1.5 p-6"
-              >
-                <span className="font-mono text-xs text-blue-400">
-                  {step.number}
-                </span>
-
-                <h4 className="mt-5 text-sm font-semibold text-white">
-                  {step.title}
-                </h4>
-
-                <p className="mt-3 text-xs leading-6 text-slate-500">
-                  {step.text}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* =========================================================
-            AUTHOR CHECKLIST
-        ========================================================= */}
-        <div className="mt-16 lg:mt-20">
-          <div className="border-t border-white/10 pt-8">
-            <div className="grid gap-8 lg:grid-cols-[0.6fr_1.4fr] lg:items-center">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
-                  Before You Submit
-                </p>
-
-                <h3 className="mt-3 text-xl font-bold tracking-tight">
-                  Author checklist
-                </h3>
-              </div>
-
-              <div className="grid gap-x-8 gap-y-3 sm:grid-cols-2">
-                {[
-                  "The paper is original and unpublished.",
-                  "The manuscript follows the official template.",
-                  "All authors and affiliations are correctly listed.",
-                  "References and citations are properly formatted.",
-                  "The work complies with the conference AI-use policy.",
-                  "The authors can commit to presentation if accepted.",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    className="flex items-start gap-3 text-xs leading-5 text-slate-500"
-                  >
-                    <LuCheck className="mt-0.5 h-4 w-4 shrink-0 text-blue-400" />
-                    <span>{item}</span>
                   </div>
-                ))}
+                </div>
+              ))}
+            </div>
+
+            {/* Notice */}
+            <div className="mt-8 flex flex-col gap-4 border-t border-slate-200 pt-6 lg:flex-row lg:items-center lg:justify-between">
+              <p className="max-w-3xl text-xs leading-5 text-slate-500 lg:text-sm">
+                These dates are provisional and may be updated following
+                approval by the Conference Organising Committee.
+              </p>
+
+              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-slate-400">
+                <span>ICETIA 2027</span>
+                <LuArrowDownRight className="h-4 w-4 text-blue-600" />
               </div>
             </div>
           </div>
         </div>
 
+        <div className="mt-10 overflow-hidden rounded-xl border border-white/10 bg-[#0b1626]">
+          <Accordion
+            type="single"
+            collapsible
+            className="w-full"
+          >
+            {items.map((item) => (
+              <AccordionItem
+                key={item.value}
+                value={item.value}
+                className="border-b border-white/10 px-5 last:border-b-0 sm:px-6 lg:px-8"
+              >
+                <AccordionTrigger className="py-6 text-left text-sm font-semibold text-white hover:no-underline">
+                  {item.trigger}
+                </AccordionTrigger>
+
+                <AccordionContent className="pb-7">
+                  <div className="max-w-4xl">
+                    {item.content}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+
+        
         {/* =========================================================
             SUBMISSION CTA
         ========================================================= */}

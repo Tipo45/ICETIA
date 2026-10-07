@@ -413,7 +413,7 @@ export default function AuthorsRegistrationPage() {
                         </p>
                         <p className="mt-1 flex items-center gap-2 text-sm font-semibold">
                             <BsClockHistory className="text-blue-600" />
-                            TBA
+                            31 March, 2027
                         </p>
                     </div>
 

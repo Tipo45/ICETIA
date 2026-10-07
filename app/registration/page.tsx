@@ -1,3 +1,5 @@
+import Footer from "@/components/footer";
+import Navbar from "@/components/navbar";
 import Link from "next/link";
 import { CiCircleCheck } from "react-icons/ci";
 import { FaAward, FaRegCalendarCheck, FaUsers } from "react-icons/fa";
@@ -77,9 +79,9 @@ const benefits = [
 export default function RegistrationCategories() {
   return (
     <section
-      id="registration"
       className="border-b border-slate-200 bg-white"
     >
+        <Navbar />
       <div className="container mx-auto px-5 py-4 lg:px-8 lg:py-6 xl:px-10 xl:py-10">
 
         {/* Header */}
@@ -285,6 +287,7 @@ export default function RegistrationCategories() {
           </Link>
         </div>
       </div>
+      <Footer />
     </section>
   );
 }

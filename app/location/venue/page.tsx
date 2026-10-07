@@ -23,7 +23,7 @@ export default function TravelVenue() {
   return (
     <section>
       <Navbar />
-      <main className="min-h-screen bg-slate-950 text-white mb-2">
+      <main className="min-h-screen bg-[#080f1a] text-white mb-2">
       {/* =========================================================
           HERO
       ========================================================= */}
@@ -57,7 +57,7 @@ export default function TravelVenue() {
               transportation guidance and options for participating online.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
+            {/* <div className="mt-8 flex flex-wrap gap-3">
               <a
                 href="#venue"
                 className="inline-flex h-11 items-center gap-2 rounded-full bg-blue-600 px-6 text-sm font-semibold text-white transition-colors hover:bg-blue-500"
@@ -67,12 +67,12 @@ export default function TravelVenue() {
               </a>
 
               <a
-                href="#hybrid"
+                href="/conferences/virtual-participants"
                 className="inline-flex h-11 items-center gap-2 rounded-full border border-white/10 px-6 text-sm font-semibold text-slate-300 transition-colors hover:border-blue-400/30 hover:text-white"
               >
-                Hybrid Participation
+                Virtual Participation
               </a>
-            </div>
+            </div> */}
           </div>
 
           {/* Quick facts */}
@@ -89,7 +89,19 @@ export default function TravelVenue() {
               </p>
             </div>
 
-            <div className="border-b border-white/10 p-5 sm:border-b-0 sm:border-r">
+            <div className="border-b border-white/10 p-5 xl:border-b-0 sm:border-r">
+              <LuBuilding2 className="h-5 w-5 text-blue-400" />
+
+              <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                Venue
+              </p>
+
+              <p className="mt-2 text-sm font-semibold text-white">
+                TBA
+              </p>
+            </div>
+
+            <div className="border-b border-white/10 p-5 xl:border-b-0 sm:border-r">
               <LuMapPin className="h-5 w-5 text-blue-400" />
 
               <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
@@ -121,7 +133,7 @@ export default function TravelVenue() {
       ========================================================= */}
       <section
         id="venue"
-        className="border-b border-white/10 bg-slate-950"
+        className="border-b border-white/10"
       >
         <div className="container mx-auto px-5 py-16 lg:px-8 lg:py-24 xl:px-10">
           <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
@@ -159,6 +171,8 @@ export default function TravelVenue() {
                     </p>
 
                     <p className="mt-1 text-xs leading-5 text-slate-500">
+                      TBA
+                      <br />
                       Federal University Otuoke
                       <br />
                       Otuoke, Ogbia LGA
@@ -267,7 +281,7 @@ export default function TravelVenue() {
 
           <div className="mt-12 grid gap-px overflow-hidden border border-white/10 bg-white/10 md:grid-cols-2">
             {/* By Air */}
-            <div className="bg-slate-950 p-7 lg:p-9">
+            <div className="bg-[#080f1a] p-7 lg:p-9">
               <div className="flex h-11 w-11 items-center justify-center bg-blue-500/10 text-blue-400">
                 <LuPlane className="h-5 w-5" />
               </div>
@@ -296,7 +310,7 @@ export default function TravelVenue() {
             </div>
 
             {/* By Road */}
-            <div className="bg-slate-950 p-7 lg:p-9">
+            <div className="bg-[#080f1a] p-7 lg:p-9">
               <div className="flex h-11 w-11 items-center justify-center bg-blue-500/10 text-blue-400">
                 <LuBus className="h-5 w-5" />
               </div>
@@ -348,9 +362,9 @@ export default function TravelVenue() {
       ========================================================= */}
       <section
         id="accommodation"
-        className="border-b border-white/10 bg-slate-950"
+        className="border-b border-white/10"
       >
-        <div className="container mx-auto px-5 py-16 lg:px-8 lg:py-24 xl:px-10">
+        <div className="container mx-auto px-5 py-8 lg:px-8 lg:py-16 xl:px-10">
           <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr]">
             <div>
               <div className="flex items-center gap-3">
@@ -432,189 +446,12 @@ export default function TravelVenue() {
           </div>
         </div>
       </section>
-
-      {/* =========================================================
-          HYBRID PARTICIPATION
-      ========================================================= */}
-      <section
-        id="hybrid"
-        className="border-b border-white/10 bg-[#080f1a]"
-      >
-        <div className="container mx-auto px-5 py-16 lg:px-8 lg:py-24 xl:px-10">
-          <div className="mx-auto max-w-3xl text-center">
-            <div className="inline-flex items-center gap-2 border border-blue-400/20 bg-blue-400/5 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-400">
-              <LuWifi className="h-3.5 w-3.5" />
-              Hybrid Participation
-            </div>
-
-            <h2 className="mt-5 text-3xl font-bold tracking-tight sm:text-4xl">
-              Participate from{" "}
-              <span className="text-blue-400">
-                anywhere.
-              </span>
-            </h2>
-
-            <p className="mt-5 text-sm leading-7 text-slate-500">
-              ICETIA 2027 may provide online participation options for
-              registered participants who are unable to attend the conference
-              physically.
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            <div className="border border-white/10 bg-slate-950 p-7">
-              <LuLaptop className="h-5 w-5 text-blue-400" />
-
-              <h3 className="mt-6 text-sm font-semibold text-white">
-                Online Presentation
-              </h3>
-
-              <p className="mt-3 text-xs leading-6 text-slate-500">
-                Accepted presenters participating remotely will receive
-                instructions on presentation format, connection details and
-                session timing.
-              </p>
-            </div>
-
-            <div className="border border-white/10 bg-slate-950 p-7">
-              <LuWifi className="h-5 w-5 text-blue-400" />
-
-              <h3 className="mt-6 text-sm font-semibold text-white">
-                Virtual Access
-              </h3>
-
-              <p className="mt-3 text-xs leading-6 text-slate-500">
-                Registered online participants will receive the relevant
-                access information and technical instructions before the
-                conference.
-              </p>
-            </div>
-
-            <div className="border border-white/10 bg-slate-950 p-7">
-              <LuGlobe className="h-5 w-5 text-blue-400" />
-
-              <h3 className="mt-6 text-sm font-semibold text-white">
-                International Participation
-              </h3>
-
-              <p className="mt-3 text-xs leading-6 text-slate-500">
-                International participants who cannot travel to Nigeria may
-                participate remotely where the applicable conference
-                participation option is available.
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-8 border border-white/10 bg-slate-950 p-6">
-            <div className="flex gap-4">
-              <LuCircleHelp className="mt-0.5 h-5 w-5 shrink-0 text-blue-400" />
-
-              <div>
-                <p className="text-sm font-semibold text-white">
-                  Online presentation guidance
-                </p>
-
-                <p className="mt-2 text-xs leading-6 text-slate-500">
-                  Detailed online presentation requirements, supported
-                  platforms, presentation duration and technical checks will
-                  be communicated to accepted presenters before the event.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================
-          VISA
-      ========================================================= */}
-      <section
-        id="visa"
-        className="border-b border-white/10 bg-slate-950"
-      >
-        <div className="container mx-auto px-5 py-16 lg:px-8 lg:py-24 xl:px-10">
-          <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
-            <div>
-              <div className="flex items-center gap-3">
-                <span className="h-px w-7 bg-blue-500" />
-
-                <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-400">
-                  International Participants
-                </span>
-              </div>
-
-              <h2 className="mt-5 text-3xl font-bold tracking-tight sm:text-4xl">
-                Travelling to{" "}
-                <span className="text-blue-400">
-                  Nigeria?
-                </span>
-              </h2>
-
-              <p className="mt-5 text-sm leading-7 text-slate-500">
-                International participants should review Nigerian entry and
-                visa requirements well in advance of their planned travel.
-              </p>
-            </div>
-
-            <div className="border border-white/10 bg-[#080f1a] p-7 lg:p-9">
-              <div className="flex h-11 w-11 items-center justify-center bg-blue-500/10 text-blue-400">
-                <LuShieldCheck className="h-5 w-5" />
-              </div>
-
-              <h3 className="mt-7 text-lg font-semibold text-white">
-                Visa invitation letters
-              </h3>
-
-              <p className="mt-4 text-sm leading-7 text-slate-500">
-                Registered international participants who require supporting
-                documentation for their visa application may request an
-                official conference invitation letter from the ICETIA 2027
-                organizing committee.
-              </p>
-
-              <div className="mt-7 space-y-3">
-                {[
-                  "Complete your conference registration.",
-                  "Provide the required participant and passport information.",
-                  "Request the invitation letter through the designated conference channel.",
-                  "Allow sufficient time for visa processing.",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    className="flex items-start gap-3"
-                  >
-                    <LuCheck className="mt-0.5 h-4 w-4 shrink-0 text-blue-400" />
-
-                    <p className="text-xs leading-5 text-slate-500">
-                      {item}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-7 border-t border-white/10 pt-6">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-600">
-                  Important
-                </p>
-
-                <p className="mt-2 text-xs leading-6 text-slate-500">
-                  An invitation letter supports a conference participant&apos;s
-                  visa application but does not guarantee visa approval.
-                  Participants should verify current Nigerian immigration
-                  requirements with the appropriate official authorities.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* =========================================================
           TRAVEL CHECKLIST
       ========================================================= */}
       <section className="bg-[#080f1a]">
         <div className="container mx-auto px-5 py-16 lg:px-8 lg:py-20 xl:px-10">
-          <div className="border-t border-white/10 pt-8">
+          <div className="">
             <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
