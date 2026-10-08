@@ -104,7 +104,7 @@ export default function Contact() {
                                     href="mailto:info@icetiaconference.org"
                                     className="mt-2 inline-block text-sm font-medium text-blue-400 transition-colors hover:text-blue-300 hover:underline"
                                 >
-                                    info@icetiaconference.org
+                                    conference@icetiaconference.org
                                 </a>
                             </div>
                         </div>
@@ -126,7 +126,7 @@ export default function Contact() {
                                     </p>
 
                                     <p className="mt-2 text-sm font-semibold text-white">
-                                        Dr. Ibibo Teddy Joshua
+                                        Dr. Joshua Teddy Ibibo
                                     </p>
 
                                     <a

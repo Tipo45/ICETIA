@@ -26,7 +26,7 @@ export default function HostInstitution() {
               className="group inline-flex items-center gap-4"
             >
               {/* Logo */}
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white p-2 shadow-sm transition-all duration-300 group-hover:border-blue-200 group-hover:shadow-md sm:h-20 sm:w-20">
+              <div className="flex shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white p-2 shadow-sm transition-all duration-300 group-hover:border-blue-200 group-hover:shadow-md h-20 w-20">
                 <Image
                   src="/images/FUO-Logo.png"
                   alt="Federal University Otuoke Logo"

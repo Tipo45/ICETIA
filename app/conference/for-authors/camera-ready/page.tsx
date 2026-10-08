@@ -137,7 +137,7 @@ export default function CameraReadyPapers() {
                                 </span>
                             </div>
 
-                            <h2 className="mt-5 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                            <h2 className="mt-5 text-3xl font-bold tracking-tight text-white lg:text-4xl">
                                 Important camera-ready
                                 <span className="text-blue-500">
                                     {" "}
@@ -183,7 +183,7 @@ export default function CameraReadyPapers() {
                                 </span>
                             </div>
 
-                            <h2 className="mt-5 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                            <h2 className="mt-5 text-3xl font-bold tracking-tight text-white lg:text-4xl">
                                 How to submit your
                                 <span className="text-blue-500">
                                     {" "}
@@ -281,7 +281,7 @@ export default function CameraReadyPapers() {
                                     </span>
                                 </div>
 
-                                <h2 className="mt-5 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                                <h2 className="mt-5 text-3xl font-bold tracking-tight text-white lg:text-4xl">
                                     Formatting and
                                     <span className="text-blue-500">
                                         {" "}

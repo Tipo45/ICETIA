@@ -403,7 +403,8 @@ export default function AuthorsRegistrationPage() {
                             Fee
                         </p>
                         <p className="mt-1 text-sm font-semibold">
-                            ₦{paymentValue.toLocaleString()}
+                            ₦{(paymentValue - 5000).toLocaleString()} {" "}
+                            <span className="text-slate-400 line-through">₦{paymentValue.toLocaleString()}</span>
                         </p>
                     </div>
 
@@ -624,9 +625,13 @@ export default function AuthorsRegistrationPage() {
                                     Registration Fee
                                 </p>
 
-                                <p className="mt-2 text-4xl font-semibold tracking-tight">
-                                    ₦{paymentValue.toLocaleString()}
-                                </p>
+                                 <p className="mt-1 text-4xl font-semibold tracking-tight lg:text-5xl">
+                            ₦{(paymentValue - paymentValue * 0.125).toLocaleString()} {" "}
+                           <span className="text-md text-slate-400 line-through"> ₦
+                            {paymentValue.toLocaleString()}</span>
+                        </p>
+
+                        <p className="animate-pulse text-blue-500 font-semibold">Early Bird Registration</p>
                             </div>
 
                             <div className="mt-6">

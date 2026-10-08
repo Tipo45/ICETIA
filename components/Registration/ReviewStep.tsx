@@ -234,7 +234,8 @@ export default function ReviewStep({
                         </p>
 
                         <p className="mt-2 text-3xl font-semibold tracking-tight lg:text-4xl">
-                            ₦{paymentValue.toLocaleString()}
+                            ₦ {(paymentValue - paymentValue *0.125).toLocaleString()} {" "}
+                            <span className="text-slate-400 line-through">₦{paymentValue.toLocaleString()}</span>
                         </p>
                     </div>
                 </div>

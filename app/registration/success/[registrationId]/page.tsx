@@ -90,7 +90,7 @@ export default function RegistrationSuccessPage() {
                 </div>
 
                 {/* Buttons */}
-                <div className="mt-10 flex flex-col sm:flex-row gap-4">
+                <div className="mt-10 flex flex-col lg:flex-row gap-4">
 
                     <Link
                         href="/"

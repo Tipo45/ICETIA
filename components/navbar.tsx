@@ -35,10 +35,6 @@ export default function Navbar() {
 
   const conferenceItems = [
     {
-      name: "International Participants",
-      href: "/conference/international-participants",
-    },
-    {
       name: "Virtual Participants",
       href: "/conference/virtual-participants",
     },
@@ -97,7 +93,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 backdrop-blur-md">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4 lg:px-6 xl:h-18">
+      <div className="container mx-auto flex h-20 items-center justify-between px-4 lg:px-6 xl:h-22">
 
         {/* Logo / Conference Name */}
         <Link
@@ -445,15 +441,15 @@ export default function Navbar() {
 
                     <CollapsibleContent className="pb-3">
                       <div className="ml-8 flex flex-col space-y-4 py-2 text-sm text-slate-500">
-                        <Link href="/camera-ready" className="hover:text-blue-500">
+                        <Link href="/conference/for-authors/camera-ready" className="hover:text-blue-500">
                           Camera Ready
                         </Link>
 
-                        <Link href="/call-for-papers" className="hover:text-blue-500">
+                        <Link href="/conference/for-authors/call-for-papers" className="hover:text-blue-500">
                           Call for Papers
                         </Link>
 
-                        <Link href="/call-workshop-papers" className="hover:text-blue-500">
+                        <Link href="/conference/for-authors/call-for-workshop-papers" className="hover:text-blue-500">
                           Call For Workshop Papers
                         </Link>
                       </div>

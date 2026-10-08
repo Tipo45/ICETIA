@@ -340,12 +340,28 @@ export default function RegistrationSection() {
                                 <span>28–30 April, 2027</span>
                             </div>
 
-                            <div className="flex items-center gap-2">
-                                <LuCircleDollarSign className="text-blue-400" />
-                                <span>
-                                    Participant fee: ₦
-                                    {paymentValue.toLocaleString()}
-                                </span>
+                            <div className="flex items-start gap-3">
+                                <LuCircleDollarSign className="mt-1 h-5 w-5 shrink-0 text-blue-400" />
+
+                                <div>
+                                    <p className="text-xs font-semibold uppercase tracking-[0.15em] text-blue-400">
+                                        Early Bird Registration
+                                    </p>
+
+                                    <div className="mt-1 flex items-baseline gap-3">
+                                        <span className="text-2xl font-bold text-white">
+                                            ₦{(paymentValue - paymentValue * 0.125).toLocaleString()}
+                                        </span>
+
+                                        <span className="text-sm text-slate-500 line-through">
+                                            ₦{paymentValue.toLocaleString()}
+                                        </span>
+                                    </div>
+
+                                    <p className="mt-1 text-xs text-slate-400">
+                                        Early bird rate · Limited time
+                                    </p>
+                                </div>
                             </div>
 
                             <div className="flex items-center gap-2">
@@ -368,8 +384,8 @@ export default function RegistrationSection() {
                             <div className="flex items-center gap-3">
                                 <div
                                     className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold ${step === 1
-                                            ? "bg-blue-600 text-white"
-                                            : "bg-green-600 text-white"
+                                        ? "bg-blue-600 text-white"
+                                        : "bg-green-600 text-white"
                                         }`}
                                 >
                                     {step === 1 ? (
@@ -395,8 +411,8 @@ export default function RegistrationSection() {
                             <div className="flex items-center gap-3">
                                 <div
                                     className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold ${step === 2
-                                            ? "bg-blue-600 text-white"
-                                            : "bg-slate-100 text-slate-400"
+                                        ? "bg-blue-600 text-white"
+                                        : "bg-slate-100 text-slate-400"
                                         }`}
                                 >
                                     02
@@ -409,8 +425,8 @@ export default function RegistrationSection() {
 
                                     <p
                                         className={`text-sm font-semibold ${step === 2
-                                                ? "text-slate-900"
-                                                : "text-slate-400"
+                                            ? "text-slate-900"
+                                            : "text-slate-400"
                                             }`}
                                     >
                                         Review & register
@@ -612,13 +628,13 @@ export default function RegistrationSection() {
                                         >
                                             <SelectTrigger
                                                 className={`h-12 w-full rounded-none border bg-white px-4 ${formTouched.country &&
-                                                        formErrors.country
-                                                        ? "border-red-500"
-                                                        : formTouched.country &&
-                                                            !formErrors.country &&
-                                                            formData.country
-                                                            ? "border-green-500"
-                                                            : "border-slate-300"
+                                                    formErrors.country
+                                                    ? "border-red-500"
+                                                    : formTouched.country &&
+                                                        !formErrors.country &&
+                                                        formData.country
+                                                        ? "border-green-500"
+                                                        : "border-slate-300"
                                                     }`}
                                             >
                                                 <SelectValue placeholder="Choose your country" />
@@ -670,8 +686,8 @@ export default function RegistrationSection() {
                                             </div>
 
                                             <p className="text-2xl font-semibold text-slate-900">
-                                                ₦
-                                                {paymentValue.toLocaleString()}
+                                                ₦{(paymentValue - paymentValue * 0.125).toLocaleString()}{" "}
+                                                <span className="text-xs text-slate-400 line-through">{paymentValue.toLocaleString()}</span>
                                             </p>
                                         </div>
                                     </div>
@@ -728,8 +744,9 @@ export default function RegistrationSection() {
                                             </div>
 
                                             <p className="text-2xl font-semibold text-blue-600">
-                                                ₦
-                                                {paymentValue.toLocaleString()}
+                                                ₦{(paymentValue - paymentValue * 0.125).toLocaleString()}{" "}
+                                                <span className="text-xs text-slate-400 line-through">
+                                                    ₦ {paymentValue.toLocaleString()}</span>
                                             </p>
                                         </div>
                                     </div>
@@ -810,9 +827,12 @@ export default function RegistrationSection() {
                                 </p>
 
                                 <p className="mt-1 text-4xl font-semibold tracking-tight lg:text-5xl">
-                                    ₦
-                                    {paymentValue.toLocaleString()}
+                                    ₦{(paymentValue - paymentValue * 0.125).toLocaleString()} {" "}
+                                    <span className="text-md text-slate-400 line-through"> ₦
+                                        {paymentValue.toLocaleString()}</span>
                                 </p>
+
+                                <p className="animate-pulse text-blue-500 font-semibold">Early Bird Registration</p>
                             </div>
 
                             <div className="mt-6 border-t border-white/10 pt-5">
@@ -968,44 +988,44 @@ export default function RegistrationSection() {
             </section>
 
             {/* REFUND POLICY */}
-<section className="border-b border-slate-200 bg-white">
-    <div className="mx-auto max-w-7xl px-6 py-10 lg:px-10 lg:py-12">
-        <div className="border border-slate-200 bg-slate-50 p-6 lg:p-8">
-            <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-                <div className="flex items-start gap-4">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center bg-blue-50 text-blue-600">
-                        <LuRefreshCw className="text-lg" />
-                    </div>
+            <section className="border-b border-slate-200 bg-white">
+                <div className="mx-auto max-w-7xl px-6 py-10 lg:px-10 lg:py-12">
+                    <div className="border border-slate-200 bg-slate-50 p-6 lg:p-8">
+                        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+                            <div className="flex items-start gap-4">
+                                <div className="flex h-11 w-11 shrink-0 items-center justify-center bg-blue-50 text-blue-600">
+                                    <LuRefreshCw className="text-lg" />
+                                </div>
 
-                    <div>
-                        <p className="text-xs font-semibold uppercase tracking-[0.15em] text-blue-600">
-                            Refund & Cancellation
-                        </p>
+                                <div>
+                                    <p className="text-xs font-semibold uppercase tracking-[0.15em] text-blue-600">
+                                        Refund & Cancellation
+                                    </p>
 
-                        <h3 className="mt-1 text-xl font-semibold tracking-tight text-slate-900">
-                            Registration refund policy
-                        </h3>
+                                    <h3 className="mt-1 text-xl font-semibold tracking-tight text-slate-900">
+                                        Registration refund policy
+                                    </h3>
 
-                        <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                            Registration fees are subject to the official
-                            ICETIA 2027 Refund & Cancellation Policy. Please
-                            review the policy carefully before completing your
-                            registration and payment.
-                        </p>
+                                    <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+                                        Registration fees are subject to the official
+                                        ICETIA 2027 Refund & Cancellation Policy. Please
+                                        review the policy carefully before completing your
+                                        registration and payment.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <a
+                                href="/registration/refund-policy"
+                                className="inline-flex shrink-0 items-center justify-center gap-2 border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-blue-600 hover:text-blue-600"
+                            >
+                                View full refund policy
+                                <FiArrowRight />
+                            </a>
+                        </div>
                     </div>
                 </div>
-
-                <a
-                    href="/registration/refund-policy"
-                    className="inline-flex shrink-0 items-center justify-center gap-2 border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-blue-600 hover:text-blue-600"
-                >
-                    View full refund policy
-                    <FiArrowRight />
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
+            </section>
 
             {/* CTA */}
             <section className="mx-auto max-w-7xl px-6 py-12 text-center lg:px-10 lg:py-14">
@@ -1023,7 +1043,7 @@ export default function RegistrationSection() {
             </section>
 
             <Footer />
-        </main>
+        </main >
     );
 }
 

@@ -2,16 +2,9 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import {
-    ArrowRight,
-    CalendarDays,
-    CheckCircle2,
-    ChevronRight,
-    FileText,
-    Search,
-} from "lucide-react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import { LuArrowRight, LuCalendarDays, LuCircleCheck } from "react-icons/lu";
 
 const acceptedPapers = [
     {
@@ -118,18 +111,18 @@ export default function AcceptedPapersPage() {
                         <div className="max-w-4xl">
 
                             <div className="mb-6 inline-flex items-center gap-2 border border-blue-400/20 bg-blue-400/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-300">
-                                <CheckCircle2 className="h-4 w-4" />
+                                <LuCircleCheck className="h-4 w-4" />
                                 Accepted Papers
                             </div>
 
-                            <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+                            <h1 className="text-4xl font-bold leading-tight tracking-tight lg:text-5xl xl:text-6xl">
                                 Research accepted for
                                 <span className="block text-blue-400">
                                     ICETIA 2027.
                                 </span>
                             </h1>
 
-                            <p className="mt-7 max-w-3xl text-base leading-8 text-slate-400 sm:text-lg">
+                            <p className="mt-7 max-w-3xl text-base leading-8 text-slate-400 lg:text-lg">
                                 Explore the research papers accepted for presentation at the
                                 International Conference on Emerging Technologies, Innovation &
                                 Applications.
@@ -137,11 +130,11 @@ export default function AcceptedPapersPage() {
 
                             <div className="mt-8 flex flex-wrap items-center gap-5 text-sm text-slate-500">
                                 <div className="flex items-center gap-2">
-                                    <CalendarDays className="h-4 w-4 text-blue-400" />
+                                    <LuCalendarDays className="h-4 w-4 text-blue-400" />
                                     28–30 April 2027
                                 </div>
 
-                                <span className="hidden text-slate-700 sm:block">•</span>
+                                <span className="text-slate-300 block">•</span>
 
                                 <div>
                                     Federal University Otuoke
@@ -193,11 +186,11 @@ export default function AcceptedPapersPage() {
                             ICETIA 2027
                         </p>
 
-                        <h2 className="mx-auto mt-4 max-w-3xl text-3xl font-bold text-white sm:text-4xl">
+                        <h2 className="mx-auto mt-4 max-w-3xl text-3xl font-bold text-white lg:text-4xl">
                             Present your research at ICETIA 2027.
                         </h2>
 
-                        <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-400 sm:text-base sm:leading-8">
+                        <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-400 lg:text-base lg:leading-8">
                             Share your research, connect with experts, and contribute to
                             conversations shaping emerging technologies and innovation.
                         </p>
@@ -209,7 +202,7 @@ export default function AcceptedPapersPage() {
                                 className="inline-flex items-center gap-2 bg-blue-600 px-7 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-blue-500"
                             >
                                 Submit a Paper
-                                <ArrowRight className="h-4 w-4" />
+                                <LuArrowRight className="h-4 w-4" />
                             </Link>
 
                             <Link

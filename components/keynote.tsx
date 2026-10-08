@@ -2,13 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowRight,
-  CalendarDays,
-  Globe2,
-  Mic2,
-  Sparkles,
-} from "lucide-react";
+import { LuArrowRight, LuCalendarDays, LuGlobe, LuMic, LuSparkles } from "react-icons/lu";
 
 const keynoteSpeakers = [
   {
@@ -19,7 +13,7 @@ const keynoteSpeakers = [
     country: "United Kingdom",
     image: "/images/keynote_1.jpg",
     topic: "TBA",
-    bio: "Dr. Balota Josiah is a Lecturer in Computer Science at Teesside University and an Innovation Technician (Cyber-Physical Systems) at the Industrial Digitalisation Technology Centre (IDTC), specialising in IoT, wireless sensor networks, digital twinning, industrial digitalisation, and networked systems. He will contribute his expertise in IoT, microcontrollers, network connectivity, technical and instructional architecture, and hardware integration** across the project’s training modules and work packages.",
+    bio: "Dr. Balota Josiah is a Lecturer in Computer Science at Teesside University and an Innovation Technician (Cyber-Physical Systems) at the Industrial Digitalisation Technology Centre (IDTC), specialising in IoT, wireless sensor networks, digital twinning, industrial digitalisation, and networked systems. He will contribute his expertise in IoT, microcontrollers, network connectivity, technical and instructional architecture, and hardware integration across the project’s training modules and work packages.",
     expertise: [
       "IoT",
       "Wireless Sensor Networks",
@@ -31,32 +25,19 @@ const keynoteSpeakers = [
   },
   {
     id: 2,
-    name: "Jane Smith",
-    role: "Data Scientist",
-    institution: "University of Lagos",
-    country: "Nigeria",
-    image: "/images/keynote-speaker-2.jpg",
+    name: "Professor Olugbenga Akinade",
+    role: "Professor of Digital Innovation",
+    institution: "Teesside University",
+    country: "United Kingdom",
+    image: "/images/Olugbenga Akinade.jpg",
     topic: "TBc",
-    bio: "A brief biography of the keynote speaker will appear here. Highlight their research, leadership experience, publications, awards, and contributions to technology and society.",
+    bio: "Professor Olugbenga Akinade, Professor of Digital Innovation at Teesside University, United Kingdom. His expertise spans applied artificial intelligence, AI ethics, digital twins, the Internet of Things and immersive technologies. He serves as Technical Lead for the Teesside Digital Trade Testbed, working with industry and regulatory partners to advance digital trade innovation. His research supports digital transformation and sustainability across trade, infrastructure and manufacturing. He has published over 90 journal and conference articles and contributed to research projects with a combined value exceeding £20 million.",
     expertise: [
-      "TBC",
-      "TBa",
-      "TBb",
-    ],
-  },
-  {
-    id: 3,
-    name: "Bob Johnson",
-    role: "Technology Entrepreneur",
-    institution: "Federal University of Agricutlture, Bassambiri",
-    country: "Nigeria",
-    image: "/images/keynote-speaker-3.jpg",
-    topic: "TBD",
-    bio: "A brief biography of the keynote speaker will appear here. Include relevant professional achievements and their impact within the technology ecosystem.",
-    expertise: [
-      "TBD",
-      "TBa",
-      "TBb",
+      "Applied Artificial Intelligence",
+      "AI Ethics",
+      "Digital Twins",
+      "IoT",
+      "Immersive Technologies"
     ],
   },
 ];
@@ -77,18 +58,18 @@ export default function KeynotePage() {
 
           <div className="max-w-4xl">
             <div className="mb-6 inline-flex items-center gap-2 border border-blue-400/20 bg-blue-400/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-300">
-              <Mic2 className="h-4 w-4" />
+              <LuMic className="h-4 w-4" />
               Keynote Speakers
             </div>
 
-            <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-7xl">
+            <h1 className="text-4xl font-bold leading-tight tracking-tight lg:text-5xl xl:text-7xl">
               Voices shaping the
               <span className="block text-blue-400">
                 future of technology.
               </span>
             </h1>
 
-            <p className="mt-7 max-w-3xl text-base leading-8 text-slate-400 sm:text-lg">
+            <p className="mt-7 max-w-3xl text-base leading-8 text-slate-400 lg:text-lg">
               Meet the distinguished scholars, researchers, innovators, and
               technology leaders who will deliver keynote addresses at ICETIA
               2027.
@@ -109,10 +90,10 @@ export default function KeynotePage() {
 
       {/* Conference information */}
       <section className="border-b border-white/10 bg-[#080f1a]">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 divide-y divide-white/10 px-6 sm:grid-cols-3 sm:divide-x sm:divide-y-0 lg:px-8">
-          <div className="flex items-center gap-4 px-0 py-8 sm:px-8">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 divide-y divide-white/10 px-6 lg:px-8">
+          <div className="flex items-center gap-4 px-0 py-8">
             <div className="flex h-11 w-11 shrink-0 items-center justify-center border border-blue-400/20 bg-blue-400/5">
-              <CalendarDays className="h-5 w-5 text-blue-400" />
+              <LuCalendarDays className="h-5 w-5 text-blue-400" />
             </div>
 
             <div>
@@ -125,9 +106,9 @@ export default function KeynotePage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-4 px-0 py-8 sm:px-8">
+          <div className="flex items-center gap-4 px-0 py-8">
             <div className="flex h-11 w-11 shrink-0 items-center justify-center border border-blue-400/20 bg-blue-400/5">
-              <Globe2 className="h-5 w-5 text-blue-400" />
+              <LuGlobe className="h-5 w-5 text-blue-400" />
             </div>
 
             <div>
@@ -140,9 +121,9 @@ export default function KeynotePage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-4 px-0 py-8 sm:px-8">
+          <div className="flex items-center gap-4 px-0 py-8">
             <div className="flex h-11 w-11 shrink-0 items-center justify-center border border-blue-400/20 bg-blue-400/5">
-              <Sparkles className="h-5 w-5 text-blue-400" />
+              <LuSparkles className="h-5 w-5 text-blue-400" />
             </div>
 
             <div>
@@ -167,7 +148,7 @@ export default function KeynotePage() {
             Distinguished Speakers
           </p>
 
-          <h2 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
+          <h2 className="mt-4 text-3xl font-bold tracking-tight text-white lg:text-4xl xl:text-5xl">
             Meet our keynote speakers
           </h2>
 
@@ -197,7 +178,7 @@ export default function KeynotePage() {
 
                 <div className="absolute bottom-5 left-5">
                   <span className="inline-flex items-center gap-2 border border-blue-400/20 bg-slate-950/80 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-blue-300 backdrop-blur-sm">
-                    <Mic2 className="h-3 w-3" />
+                    <LuMic className="h-3 w-3" />
                     Keynote Speaker
                   </span>
                 </div>
@@ -214,7 +195,7 @@ export default function KeynotePage() {
                 </p>
 
                 <div className="mt-3 flex items-start gap-2 text-sm text-slate-500">
-                  <Globe2 className="mt-0.5 h-4 w-4 shrink-0" />
+                  <LuGlobe className="mt-0.5 h-4 w-4 shrink-0" />
                   <span>
                     {speaker.institution}
                     <br />
@@ -258,14 +239,14 @@ export default function KeynotePage() {
           <div className="grid items-center gap-14 lg:grid-cols-[0.85fr_1.15fr]">
             <div>
               <div className="flex h-14 w-14 items-center justify-center border border-blue-400/20 bg-blue-400/5">
-                <Mic2 className="h-6 w-6 text-blue-400" />
+                <LuMic className="h-6 w-6 text-blue-400" />
               </div>
 
               <p className="mt-8 text-xs font-semibold uppercase tracking-[0.2em] text-blue-400">
                 Featured Keynote
               </p>
 
-              <h2 className="mt-4 text-3xl font-bold leading-tight text-white sm:text-4xl">
+              <h2 className="mt-4 text-3xl font-bold leading-tight text-white lg:text-4xl">
                 Shaping the next generation of technological innovation
               </h2>
             </div>
@@ -305,7 +286,7 @@ export default function KeynotePage() {
               More than presentations
             </p>
 
-            <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">
+            <h2 className="mt-4 text-3xl font-bold text-white lg:text-4xl">
               Connect with ideas that move technology forward.
             </h2>
           </div>
@@ -318,7 +299,7 @@ export default function KeynotePage() {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-14 grid gap-5 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {[
             {
               number: "01",
@@ -368,7 +349,7 @@ export default function KeynotePage() {
             ICETIA 2027
           </p>
 
-          <h2 className="mx-auto mt-4 max-w-3xl text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+          <h2 className="mx-auto mt-4 max-w-3xl text-3xl font-bold text-white lg:text-4xl xl:text-5xl">
             Be part of the conversation.
           </h2>
 
@@ -384,7 +365,7 @@ export default function KeynotePage() {
               className="inline-flex items-center gap-2 bg-blue-600 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-blue-500"
             >
               Register for ICETIA 2027
-              <ArrowRight className="h-4 w-4" />
+              <LuArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>

@@ -42,7 +42,7 @@ export default function TravelVenue() {
               </span>
             </div>
 
-            <h1 className="mt-6 text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
+            <h1 className="mt-6 text-4xl font-bold leading-[1.05] tracking-tight lg:text-5xl xl:text-6xl 2xl:text-7xl">
               Plan your journey.
               <br />
               <span className="text-blue-400">
@@ -50,7 +50,7 @@ export default function TravelVenue() {
               </span>
             </h1>
 
-            <p className="mt-6 max-w-2xl text-sm leading-7 text-slate-400 sm:text-base sm:leading-8">
+            <p className="mt-6 max-w-2xl text-sm leading-7 text-slate-400 lg:text-base lg:leading-8">
               Everything you need to plan your participation at the
               International Conference on Emerging Technologies, Innovation
               and Applications. Find venue information, accommodation,
@@ -76,8 +76,8 @@ export default function TravelVenue() {
           </div>
 
           {/* Quick facts */}
-          <div className="mt-14 grid border border-white/10 sm:grid-cols-3">
-            <div className="border-b border-white/10 p-5 sm:border-b-0 sm:border-r">
+          <div className="mt-14 grid border border-white/10 grid-cols-1">
+            <div className="border-b border-white/10 p-5">
               <LuCalendarDays className="h-5 w-5 text-blue-400" />
 
               <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
@@ -89,7 +89,7 @@ export default function TravelVenue() {
               </p>
             </div>
 
-            <div className="border-b border-white/10 p-5 xl:border-b-0 sm:border-r">
+            <div className="border-b border-white/10 p-5">
               <LuBuilding2 className="h-5 w-5 text-blue-400" />
 
               <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
@@ -101,7 +101,7 @@ export default function TravelVenue() {
               </p>
             </div>
 
-            <div className="border-b border-white/10 p-5 xl:border-b-0 sm:border-r">
+            <div className="border-b border-white/10 p-5">
               <LuMapPin className="h-5 w-5 text-blue-400" />
 
               <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
@@ -147,7 +147,7 @@ export default function TravelVenue() {
                 </span>
               </div>
 
-              <h2 className="mt-5 text-3xl font-bold tracking-tight sm:text-4xl">
+              <h2 className="mt-5 text-3xl font-bold tracking-tight lg:text-4xl">
                 Meet us at{" "}
                 <span className="text-blue-400">
                   Federal University Otuoke.
@@ -225,7 +225,7 @@ export default function TravelVenue() {
                 />
               </div>
 
-              <div className="flex flex-col gap-3 border-t border-white/10 p-5 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex gap-3 border-t border-white/10 p-5 flex-row items-center justify-between">
                 <div>
                   <p className="text-sm font-semibold text-white">
                     Federal University Otuoke
@@ -265,7 +265,7 @@ export default function TravelVenue() {
               </span>
             </div>
 
-            <h2 className="mt-5 text-3xl font-bold tracking-tight sm:text-4xl">
+            <h2 className="mt-5 text-3xl font-bold tracking-tight lg:text-4xl">
               Travel to{" "}
               <span className="text-blue-400">
                 Otuoke & Bayelsa.
@@ -375,7 +375,7 @@ export default function TravelVenue() {
                 </span>
               </div>
 
-              <h2 className="mt-5 text-3xl font-bold tracking-tight sm:text-4xl">
+              <h2 className="mt-5 text-3xl font-bold tracking-tight lg:text-4xl">
                 Where to{" "}
                 <span className="text-blue-400">
                   stay.
@@ -403,7 +403,7 @@ export default function TravelVenue() {
               </div>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4 grid-cols-2">
               <div className="border border-white/10 bg-[#080f1a] p-6">
                 <LuBuilding2 className="h-5 w-5 text-blue-400" />
 
@@ -431,7 +431,7 @@ export default function TravelVenue() {
                 </p>
               </div>
 
-              <div className="border border-white/10 bg-[#080f1a] p-6 sm:col-span-2">
+              <div className="border border-white/10 bg-[#080f1a] p-6 col-span-2">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-600">
                   Important
                 </p>
@@ -463,7 +463,7 @@ export default function TravelVenue() {
                 </h2>
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-2 lg:max-w-2xl">
+              <div className="grid gap-3 grid-cols-2 lg:grid-cols-1 lg:max-w-2xl">
                 {[
                   "Confirm your registration.",
                   "Book accommodation early.",
@@ -474,7 +474,7 @@ export default function TravelVenue() {
                 ].map((item) => (
                   <div
                     key={item}
-                    className="flex items-center gap-3 text-xs text-slate-500"
+                    className="flex items-center gap-3 text-sm text-slate-500"
                   >
                     <LuCheck className="h-4 w-4 shrink-0 text-blue-400" />
                     {item}

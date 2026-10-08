@@ -7,7 +7,6 @@ import {
 } from "react-icons/fa";
 import {
   LuCalendarDays,
-  LuCrown,
   LuFileText,
 } from "react-icons/lu";
 import { MemberRow } from "../page";

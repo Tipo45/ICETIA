@@ -226,7 +226,8 @@ export default function PersonalInfoStep({
                         </p>
 
                         <p className="mt-2 text-2xl font-semibold tracking-tight">
-                            ₦{paymentValue.toLocaleString()}
+                            ₦{(paymentValue - paymentValue * 0.125).toLocaleString()} {" "}
+                           <span className=" text-slate-400 line-through"> ₦{paymentValue.toLocaleString()}</span>
                         </p>
 
                         <p className="mt-1 text-xs leading-5 text-slate-500">

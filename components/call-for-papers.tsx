@@ -369,7 +369,7 @@ export default function CallForPapers() {
               <AccordionItem
                 key={item.value}
                 value={item.value}
-                className="border-b border-white/10 px-5 last:border-b-0 sm:px-6 lg:px-8"
+                className="border-b border-white/10 last:border-b-0 px-6 lg:px-8"
               >
                 <AccordionTrigger className="py-6 text-left text-sm font-semibold text-white hover:no-underline">
                   {item.trigger}
@@ -401,7 +401,7 @@ export default function CallForPapers() {
               </p>
             </div>
 
-            <div className="flex flex-col gap-3 sm:flex-row">
+            <div className="flex flex-col gap-3 tablet:flex-row">
               <Button
                 size="lg"
                 onClick={handleCFPButton}

@@ -214,31 +214,37 @@ export default function RegistrationCategories() {
         <th className="border border-slate-200 px-4 py-4 text-center font-semibold text-slate-900">
           Early Bird Author 
           <br />
-          (31 March)
+          (30 November, 2026)
         </th>
 
         <th className="border border-slate-200 px-4 py-4 text-center font-semibold text-slate-900">
           Early Bird Non-author 
           <br />
-          (31 March)
+          (30 November, 2026)
         </th>
 
         <th className="border border-slate-200 px-4 py-4 text-center font-semibold text-slate-900">
           Early Bird Student 
           <br />
-          (31 March)
+          (30 November, 2026)
         </th>
 
         <th className="border border-slate-200 px-4 py-4 text-center font-semibold text-slate-900">
           Late Fee Author 
+          <br />
+          (1 December, 2026)
         </th>
 
         <th className="border border-slate-200 px-4 py-4 text-center font-semibold text-slate-900">
           Late Non-author 
+          <br />
+          (1 December, 2026)
         </th>
 
         <th className="border border-slate-200 px-4 py-4 text-center font-semibold text-slate-900">
           Late Fee Student 
+          <br />
+          (1 December, 2026)
         </th>
       </tr>
     </thead>
@@ -280,27 +286,27 @@ export default function RegistrationCategories() {
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
-          ₦ 95,000
+          $ 95
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
-          ₦ 95,000
+          $ 95
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-400">
-          ₦ —
+          $ —
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
-          ₦ 100,000
+          $ 100
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
-          ₦ 100,000
+          $ 100
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-400">
-          ₦ —
+          $ —
         </td>
       </tr>
     </tbody>

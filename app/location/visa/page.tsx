@@ -125,7 +125,7 @@ export default function Visa() {
                 </span>
             </div>
 
-            <h2 className="mt-5 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            <h2 className="mt-5 text-3xl font-bold tracking-tight text-white lg:text-4xl">
                 Information required for your{" "}
                 <span className="text-blue-500">
                     request.
@@ -253,7 +253,7 @@ export default function Visa() {
                                 Before You Travel
                             </p>
 
-                            <h2 className="mt-3 text-2xl font-bold tracking-tight text-white sm:text-3xl">
+                            <h2 className="mt-3 text-2xl font-bold tracking-tight text-white lg:text-3xl">
                                 Check your visa requirements early.
                             </h2>
 

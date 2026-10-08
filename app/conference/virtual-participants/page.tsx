@@ -1,9 +1,12 @@
+import Footer from "@/components/footer";
+import Navbar from "@/components/navbar";
 import { LuCircleHelp, LuGlobe, LuLaptop, LuWifi } from "react-icons/lu";
 
 
 export default function virtualParticipants () {
     return (
         <section>
+            <Navbar />
              {/* =========================================================
           HYBRID PARTICIPATION
       ========================================================= */}
@@ -17,7 +20,7 @@ export default function virtualParticipants () {
               Hybrid Participation
             </div>
 
-            <h2 className="mt-5 text-3xl font-bold tracking-tight xl:text-4xl">
+            <h2 className="mt-5 text-3xl font-bold tracking-tight xl:text-4xl text-white">
               Participate from{" "}
               <span className="text-blue-400">
                 anywhere.
@@ -94,6 +97,7 @@ export default function virtualParticipants () {
           </div>
         </div>
       </main>
+      <Footer />
         </section>
     )
 }

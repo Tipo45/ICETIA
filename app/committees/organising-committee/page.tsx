@@ -13,9 +13,9 @@ import Image from "next/image";
 const internationalOrganisingCommittee = [
   {
     role: "General Chair",
-    name: "Dr Joshua Ibibo",
+    name: "Dr Joshua Teddy Ibibo",
     href: "https://www.linkedin.com/in/dr-joshua-ibibo-83174b85/",
-    image: "/images/Dr. Josh.jpg",
+    image: "/images/Josh Ibibo.jpeg",
     affiliation: "Teesside University, United Kingdom",
   },
   {
