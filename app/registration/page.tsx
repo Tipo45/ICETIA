@@ -212,33 +212,33 @@ export default function RegistrationCategories() {
         </th>
 
         <th className="border border-slate-200 px-4 py-4 text-center font-semibold text-slate-900">
-          Early Bird Author (₦)
+          Early Bird Author 
           <br />
           (31 March)
         </th>
 
         <th className="border border-slate-200 px-4 py-4 text-center font-semibold text-slate-900">
-          Early Bird Non-author (₦)
+          Early Bird Non-author 
           <br />
           (31 March)
         </th>
 
         <th className="border border-slate-200 px-4 py-4 text-center font-semibold text-slate-900">
-          Early Bird Student (₦)
+          Early Bird Student 
           <br />
           (31 March)
         </th>
 
         <th className="border border-slate-200 px-4 py-4 text-center font-semibold text-slate-900">
-          Late Fee Author (₦)
+          Late Fee Author 
         </th>
 
         <th className="border border-slate-200 px-4 py-4 text-center font-semibold text-slate-900">
-          Late Non-author (₦)
+          Late Non-author 
         </th>
 
         <th className="border border-slate-200 px-4 py-4 text-center font-semibold text-slate-900">
-          Late Fee Student (₦)
+          Late Fee Student 
         </th>
       </tr>
     </thead>
@@ -250,27 +250,27 @@ export default function RegistrationCategories() {
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
-          35,000
+          ₦ 35,000
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
-          35,000
+          ₦ 35,000
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
-          25,000
+          ₦ 25,000
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
-          40,000
+          ₦ 40,000
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
-          40,000
+          ₦ 40,000
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
-          30,000
+          ₦ 30,000
         </td>
       </tr>
 
@@ -280,27 +280,27 @@ export default function RegistrationCategories() {
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
-          95,000
+          ₦ 95,000
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
-          95,000
+          ₦ 95,000
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-400">
-          —
+          ₦ —
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
-          100,000
+          ₦ 100,000
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
-          100,000
+          ₦ 100,000
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-400">
-          —
+          ₦ —
         </td>
       </tr>
     </tbody>
