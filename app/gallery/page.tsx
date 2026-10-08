@@ -17,7 +17,7 @@ const allGalleryImages = [
     title: "Federal University Otuoke",
   },
   {
-    src: "/images/PSC_1695.jpg ",
+    src: "/images/PSC_1695.jpg",
     alt: "Academic Event",
   },
   {
