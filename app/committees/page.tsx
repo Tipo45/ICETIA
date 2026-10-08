@@ -464,7 +464,7 @@ export function MemberRow({
         </p>
       )}
 
-      <a href={href} className="mt-1 text-sm font-semibold leading-6 text-slate-900 hover:text-blue-600">
+      <a href={href} target="blank" className="mt-1 text-sm font-semibold leading-6 text-slate-900 hover:text-blue-600">
         {name}
       </a>
 
@@ -529,7 +529,7 @@ export function CommitteeCard({
                 {committee.chair.role}
               </p>
 
-              <a href={committee.chair.href} className="mt-2 text-sm font-bold text-slate-950 hover:text-blue-500">
+              <a href={committee.chair.href} target="blank" className="mt-2 text-sm font-bold text-slate-950 hover:text-blue-500">
                 {committee.chair.name}
               </a>
 
@@ -547,7 +547,7 @@ export function CommitteeCard({
                 <div className="mt-2 space-y-4">
                   {committee.coChairs.map((member) => (
                     <div key={member.name}>
-                      <a href={member.href} className="text-sm font-semibold text-slate-950 hover:text-blue-500">
+                      <a href={member.href} target="blank" className="text-sm font-semibold text-slate-950 hover:text-blue-500">
                         {member.name}
                       </a>
 
@@ -575,7 +575,7 @@ export function CommitteeCard({
                 <div className="mt-2 grid gap-x-6 tablet:grid-cols-2">
                   {committee.members.map((member) => (
                     <div key={member.name} className="py-2">
-                      <a href={member.href} className="text-sm font-semibold text-slate-950 hover:text-blue-600">
+                      <a href={member.href} target="blank" className="text-sm font-semibold text-slate-950 hover:text-blue-600">
                         {member.name}
                       </a>
 

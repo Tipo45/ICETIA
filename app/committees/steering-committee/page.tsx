@@ -17,7 +17,7 @@ const steeringCommittee = [
   {
     role: "Chair",
     name: "Professor Olugbenga Akinade",
-    href: "Olugbenga Akinade",
+    href: "https://www.linkedin.com/in/ol%C3%BAgb%C3%A9nga-akinad%C3%A9-4b63624a/",
     image: "/images/Olugbenga Akinade.jpg",
     affiliation:
       "Professor of Digital Innovation, Teesside University, United Kingdom",
@@ -208,7 +208,7 @@ export default function CommitteesPage() {
                   {member.role}
                 </p>
 
-                <a href={member.href} className="mt-3 text-xl font-bold leading-tight tracking-tight text-slate-900 transition-colors group-hover:text-white lg:text-2xl">
+                <a href={member.href} target="blank" className="mt-3 text-xl font-bold leading-tight tracking-tight text-slate-900 transition-colors group-hover:text-white lg:text-2xl">
                   {member.name}
                 </a>
 
