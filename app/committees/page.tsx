@@ -1,109 +1,21 @@
 "use client";
 
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
 import {
-  FaUsers,
-  FaUserTie,
   FaMoneyBillWave,
-  FaBullhorn,
   FaBookOpen,
   FaHotel,
   FaClipboardCheck,
   FaLaptop,
 } from "react-icons/fa";
 import {
-  LuArrowUpRight,
   LuBriefcase,
-  LuCalendarDays,
-  LuCircleCheck,
   LuChevronDown,
-  LuCoffee,
-  LuCrown,
-  LuFileText,
-  LuGlobe,
   LuGraduationCap,
   LuMegaphone,
-  LuMonitor,
   LuPresentation,
-  LuShieldCheck,
-  LuUsers,
 } from "react-icons/lu";
 import { useState } from "react";
 
-const steeringCommittee = [
-  {
-    role: "Chair",
-    name: "Professor Olugbenga Akinade",
-    affiliation:
-      "Professor of Digital Innovation, Teesside University, United Kingdom",
-  },
-  {
-    role: "Co-Chair",
-    name: "Dr Josiah Balota",
-    affiliation: "Teesside University, United Kingdom",
-  },
-  {
-    role: "Chief Host",
-    name: "Professor Promise Mebine",
-    affiliation:
-      "Vice-Chancellor, Federal University Otuoke, Nigeria",
-  },
-  {
-    role: "Host",
-    name: "Professor Nateinyin Joy Akporehwe",
-    affiliation:
-      "Deputy Vice-Chancellor, Research and Development (R&D), Federal University Otuoke",
-  },
-  {
-    role: "Member",
-    name: "Professor Johnson Ohakwe",
-    affiliation:
-      "Dean, Faculty of Science, Federal University Otuoke, Nigeria",
-  },
-  {
-    role: "Member",
-    name: "Professor Olufunso O. Abosede",
-    affiliation:
-      "Director of Research, Federal University Otuoke, Nigeria",
-  },
-];
-
-const internationalOrganisingCommittee = [
-  {
-    role: "General Chair",
-    name: "Dr Joshua Ibibo",
-    affiliation: "Teesside University, United Kingdom",
-  },
-  {
-    role: "Co-Chair (Program Chair)",
-    name: "Dr Boye Aziboledia Frederick",
-    affiliation: "Federal University Otuoke, Nigeria",
-  },
-  {
-    role: "Secretary",
-    name: "Dr. (Mrs) Merosobo Lawson-Ikuru",
-    affiliation: "Federal University Otuoke, Nigeria",
-  },
-  {
-    role: "Assistant Secretary",
-    name: "Dr Ibenate Arubere",
-    affiliation: "Federal University Otuoke, Nigeria",
-  },
-];
-
-const secretariat = [
-  {
-    role: "Secretary",
-    name: "Dr. (Mrs) Merosobo Lawson-Ikuru",
-    affiliation: "Federal University Otuoke, Nigeria",
-  },
-  {
-    role: "Assistant Secretary",
-    name: "Dr Ibenate Arubere",
-    affiliation: "Federal University Otuoke, Nigeria",
-  },
-];
 
 const committees = [
   {
@@ -116,12 +28,14 @@ const committees = [
     chair: {
       role: "Chair",
       name: "Dr. Alabere Idayana",
+      href: "https://www.researchgate.net/profile/Idayana-Alabere-2",
       affiliation: "Federal University Otuoke, Nigeria",
     },
     coChairs: [
       {
         role: "Co-Chair & Treasurer",
         name: "Dr Belinda Onyeashie",
+        href: "https://www.linkedin.com/in/dr-belinda-onyeashie-b709a398/",
         affiliation:
           "University of the West of England, United Kingdom",
       },
@@ -129,10 +43,12 @@ const committees = [
     members: [
       {
         name: "Dr. Boye Aziboledia Frederick",
+        href: "https://www.linkedin.com/in/boye-aziboledia-frederick-a00a02297/",
         affiliation: "Federal University Otuoke, Nigeria",
       },
       {
         name: "Dr Ibenate Arubere",
+        href: "https://www.linkedin.com/in/dr-ibenate-arubere-998459bb/",
         affiliation: "Federal University Otuoke, Nigeria",
       },
     ],
@@ -148,45 +64,54 @@ const committees = [
     chair: {
       role: "Chair",
       name: "Dr Oluwaseun Bamgboye",
+      href: "https://www.researchgate.net/profile/Oluwaseun-Bamgboye",
       affiliation: "Edinburgh Napier University, United Kingdom",
     },
     coChairs: [
       {
         role: "Co-Chair",
         name: "Professor Victor Ekong",
+        href: "https://www.linkedin.com/in/victor-ekong-6b2b0227b/",
         affiliation: "University of Uyo, Nigeria",
       },
       {
         role: "Co-Chair",
         name: "Professor Abayomi Jegede",
+        href: "https://www.linkedin.com/in/abayomi-jegede-46131671/",
         affiliation: "Edo State University Iyamho, Nigeria",
       },
     ],
     members: [
       {
         name: "Associate Prof. Godwin A. Thomas",
+        href: "https://scholar.google.com/citations?user=xrLJ2IQAAAAJ&hl=en",
         affiliation: "University of Jos, Nigeria",
       },
       {
         name: "Dr Belinda Onyeashie",
+        href: "https://www.linkedin.com/in/dr-belinda-onyeashie-b709a398/",
         affiliation:
           "University of the West of England, United Kingdom",
       },
       {
         name: "Alams Mammuan",
+        href: "https://www.researchgate.net/profile/Mammuan-Alams",
         affiliation: "Cranfield University, United Kingdom",
       },
       {
         name: "Dr Fekumo Bolouembeledo",
+        href: "https://scholar.google.com/citations?hl=en&user=q8PraKkAAAAJ",
         affiliation: "University of South Africa, Pretoria",
       },
       {
         name: "Faisal A. Garba",
+        href: "https://www.linkedin.com/in/2faisalgama/",
         affiliation:
           "Sa'adatu Rimi College of Education, Nigeria",
       },
       {
         name: "Dr. Ikiomoye Douglas Emmanuel",
+        href: "https://www.linkedin.com/in/ikiomoye-douglas-emmanuel/",
         affiliation: "UGM Manchester, United Kingdom",
       },
     ],
@@ -202,6 +127,7 @@ const committees = [
     chair: {
       role: "Chair",
       name: "Evans Porbeni",
+      href: "https://www.linkedin.com/in/c-itp-evans-porbeni-mcpn-mncs-a5ba3287/",
       affiliation:
         "University of Africa Toru-Orua, Nigeria",
     },
@@ -209,20 +135,24 @@ const committees = [
       {
         role: "Co-Chair",
         name: "Dr. Nwankwe Dimie",
+        href: "https://scholar.google.com/citations?hl=en&user=qTHTr6cAAAAJ",
         affiliation: "Rivers State University, Nigeria",
       },
     ],
     members: [
       {
         name: "Godslight Thomas Sese",
+        href: "https://www.researchgate.net/profile/Godslight-Sese",
         affiliation: "Federal University Otuoke, Nigeria",
       },
       {
         name: "Eleje Chinwendu Best",
+        href: "https://www.researchgate.net/profile/Chinwendu-Best-Eleje",
         affiliation: "Federal University Otuoke, Nigeria",
       },
       {
         name: "Ogolo-Christian Wisdom Amafurotubo",
+        href: "https://www.linkedin.com/in/wisdom-ogolo-christian-906b1a168/",
         affiliation: "Federal University Otuoke, Nigeria",
       },
     ],
@@ -238,56 +168,67 @@ const committees = [
     chair: {
       role: "Chair",
       name: "Dr Goodhead Tomvie Abraham",
+      href: "https://www.linkedin.com/in/goodhead-tomvie-abraham-b7738a2b/",
       affiliation: "Niger Delta University, Nigeria",
     },
     coChairs: [
       {
         role: "Co-Chair",
         name: "Faisal A. Garba",
+        href: "https://www.linkedin.com/in/2faisalgama/",
         affiliation:
           "Sa'adatu Rimi College of Education, Nigeria",
       },
       {
         role: "Co-Chair",
         name: "Dr Fekumo Bolouembeledo",
+        href: "https://scholar.google.com/citations?hl=en&user=q8PraKkAAAAJ",
         affiliation: "University of South Africa, Pretoria",
       },
       {
         role: "Co-Chair",
         name: "Dr. Ikiomoye Douglas Emmanuel",
+        href: "https://www.linkedin.com/in/ikiomoye-douglas-emmanuel/",
         affiliation: "UGM Manchester, United Kingdom",
       },
       {
         role: "Co-Chair",
         name: "Alams Mammuan",
+        href: "https://www.researchgate.net/profile/Mammuan-Alams",
         affiliation: "Cranfield University, United Kingdom",
       },
     ],
     members: [
       {
         name: "Ogolo-Christian Wisdom Amafurotubo",
+        href: "https://www.linkedin.com/in/wisdom-ogolo-christian-906b1a168/",
         affiliation: "Federal University Otuoke, Nigeria",
       },
       {
         name: "Dr. Loveth Eguma Nwabrije",
+        href: "https://www.linkedin.com/in/loveth-nwabrije-27a3041b5/",
         affiliation:
           "Federal College of Education, Omoku, Nigeria",
       },
       {
         name: "Dr Belinda Onyeashie",
+        href: "https://www.linkedin.com/in/dr-belinda-onyeashie-b709a398/",
         affiliation:
           "University of the West of England, United Kingdom",
       },
       {
         name: "Godslight Thomas Sese",
+        href: "https://www.researchgate.net/profile/Godslight-Sese",
         affiliation: "Federal University Otuoke, Nigeria",
       },
       {
         name: "T.K. Waidor",
+        href: "https://scholar.google.com/citations?user=acGWEc8AAAAJ&hl=en",
         affiliation: "University of Africa, Nigeria",
       },
       {
         name: "Dr. Thompson Saghanen",
+        href: "https://caarnjournals.com/ijmter/author/saghanen-thomson-b",
         affiliation: "Elechi Amadi Polytechnic, Nigeria",
       },
     ],
@@ -303,36 +244,43 @@ const committees = [
     chair: {
       role: "Chair",
       name: "Professor Victor Ekong",
+      href: "https://www.linkedin.com/in/victor-ekong-6b2b0227b/",
       affiliation: "University of Uyo, Nigeria",
     },
     coChairs: [
       {
         role: "Co-Chair",
         name: "Professor Abayomi Jegede",
+        href: "https://www.linkedin.com/in/abayomi-jegede-46131671/",
         affiliation: "Edo State University Iyamho, Nigeria",
       },
       {
         role: "Co-Chair",
         name: "Dr. Biralatei James Fawei",
+        href: "https://scholar.google.com/citations?hl=en&user=gYtsfx4AAAAJ",
         affiliation: "Niger Delta University, Nigeria",
       },
       {
         role: "Co-Chair",
         name: "Dr. Ikiomoye Douglas Emmanuel",
+        href: "https://www.linkedin.com/in/ikiomoye-douglas-emmanuel/",
         affiliation: "UGM Manchester, United Kingdom",
       },
     ],
     members: [
       {
-        name: "Dr Oluwaseun Bamgboye",
+        name: "Dr. Oluwaseun Bamgboye",
+        href: "https://www.researchgate.net/profile/Oluwaseun-Bamgboye",
         affiliation: "Edinburgh Napier University, United Kingdom",
       },
       {
         name: "Dr. Boye Aziboledia Frederick",
+        href: "https://www.linkedin.com/in/boye-aziboledia-frederick-a00a02297/",
         affiliation: "Federal University Otuoke, Nigeria",
       },
       {
         name: "Dr Goodhead Tomvie Abraham",
+        href: "https://www.linkedin.com/in/goodhead-tomvie-abraham-b7738a2b/",
         affiliation: "Niger Delta University, Nigeria",
       },
     ],
@@ -348,12 +296,14 @@ const committees = [
     chair: {
       role: "Chair",
       name: "Dr. Shobowole R. Temitope",
+      href: "https://scholar.google.com/citations?user=7THfnLAAAAAJ&hl=en&authuser=3",
       affiliation: "Federal University Otuoke, Nigeria",
     },
     coChairs: [
       {
         role: "Co-Chair",
         name: "Dr. Stella Attah",
+        href: "",
         affiliation:
           "Federal College of Education, Omuku, Nigeria",
       },
@@ -361,14 +311,17 @@ const committees = [
     members: [
       {
         name: "Godslight Thomas Sese",
+        href: "https://www.researchgate.net/profile/Godslight-Sese",
         affiliation: "Federal University Otuoke, Nigeria",
       },
       {
         name: "Banigo Azibator",
+        href: "https://www.researchgate.net/profile/Banigo-Azibator",
         affiliation: "Federal University Otuoke, Nigeria",
       },
       {
         name: "Dr. (Mrs) Loveth Eguma Nwabrije",
+        href: "https://www.linkedin.com/in/loveth-nwabrije-27a3041b5/",
         affiliation:
           "Federal College of Education, Omuku, Nigeria",
       },
@@ -385,6 +338,7 @@ const committees = [
     chair: {
       role: "Chair",
       name: "Dr. Samuel Apigi Ikirigo",
+      href: "https://www.researchgate.net/profile/Samuel-Ikirigo",
       affiliation:
         "Federal University of Agriculture, Nigeria",
     },
@@ -392,20 +346,24 @@ const committees = [
       {
         role: "Co-Chair",
         name: "Dr. Ominini Monima Abiye-suku",
+        href: "https://www.researchgate.net/profile/Ominini-Abiye-Suku",
         affiliation: "Rivers State University, Nigeria",
       },
     ],
     members: [
       {
         name: "Asotekari Angel Jumbo",
+        href: "https://www.researchgate.net/scientific-contributions/Asotekari-Angel-Jombo-2339097255",
         affiliation: "Federal University Otuoke, Nigeria",
       },
       {
         name: "Nataram Adumo",
+        href: "https://www.researchgate.net/profile/Nataram-Odumo",
         affiliation: "Federal University Otuoke, Nigeria",
       },
       {
         name: "Dr. Fortune Baribesia Deedam",
+        href: "https://scholar.google.com/citations?hl=en&user=eS71SOQAAAAJ",
         affiliation: "Rivers State University, Nigeria",
       },
     ],
@@ -421,28 +379,33 @@ const committees = [
     chair: {
       role: "Chair",
       name: "Professor Abayomi Jegede",
+      href: "https://www.linkedin.com/in/abayomi-jegede-46131671/",
       affiliation: "Edo State University Iyamho, Nigeria",
     },
     coChairs: [
       {
         role: "Co-Chair",
         name: "Associate Prof. Godwin A. Thomas",
+        href: "https://scholar.google.com/citations?user=xrLJ2IQAAAAJ&hl=en",
         affiliation: "University of Jos, Nigeria",
       },
       {
         role: "Co-Chair",
         name: "Dr. Biralatei James Fawei",
+        href: "https://scholar.google.com/citations?hl=en&user=gYtsfx4AAAAJ",
         affiliation: "Niger Delta University, Nigeria",
       },
     ],
     members: [
       {
         name: "Dr. Samuel Apigi Ikirigo",
+        href: "https://www.researchgate.net/profile/Samuel-Ikirigo",
         affiliation:
           "Federal University of Agriculture, Nigeria",
       },
       {
         name: "Dr. Thompson Saghanen",
+        href: "https://caarnjournals.com/ijmter/author/saghanen-thomson-b",
         affiliation: "Elechi Amadi Polytechnic, Nigeria",
       },
     ],
@@ -458,56 +421,39 @@ const committees = [
     chair: {
       role: "Coordinator",
       name: "Collins Uchenna Onyegbado",
+      href: "https://www.linkedin.com/in/collins-onyegbado-67109119b/",
       affiliation: "Federal University Otuoke, Nigeria",
     },
     coChairs: [],
     members: [
       {
         name: "Banigo Azibator",
+        href: "https://www.researchgate.net/profile/Banigo-Azibator",
         affiliation: "Federal University Otuoke, Nigeria",
       },
       {
         name: "Ogolo-Christian Wisdom Amafurotubo",
+        href: "https://www.linkedin.com/in/wisdom-ogolo-christian-906b1a168/",
         affiliation: "Federal University Otuoke, Nigeria",
       },
       {
         name: "Ikegwuonu-vic Uzoamaka Hope",
+        href: "",
         affiliation: "Federal University Otuoke, Nigeria",
       },
     ],
   },
 ];
 
-const governanceItems = [
-  {
-    label: "Strategic Leadership",
-    value: "Steering Committee",
-    icon: LuCrown,
-  },
-  {
-    label: "Conference Coordination",
-    value: "International Organising Committee",
-    icon: FaUsers,
-  },
-  {
-    label: "Academic Quality",
-    value: "Technical Programme Committee",
-    icon: LuGraduationCap,
-  },
-  {
-    label: "Conference Delivery",
-    value: "Specialised Committees",
-    icon: LuBriefcase,
-  },
-];
-
 export function MemberRow({
   role,
   name,
+  href,
   affiliation,
 }: {
   role?: string;
   name: string;
+  href: string;
   affiliation: string;
 }) {
   return (
@@ -518,9 +464,9 @@ export function MemberRow({
         </p>
       )}
 
-      <p className="mt-1 text-sm font-semibold leading-6 text-slate-900">
+      <a href={href} className="mt-1 text-sm font-semibold leading-6 text-slate-900 hover:text-blue-600">
         {name}
-      </p>
+      </a>
 
       <p className="mt-1 text-xs leading-5 text-slate-500">
         {affiliation}
@@ -583,9 +529,9 @@ export function CommitteeCard({
                 {committee.chair.role}
               </p>
 
-              <p className="mt-2 text-sm font-bold text-slate-950">
+              <a href={committee.chair.href} className="mt-2 text-sm font-bold text-slate-950 hover:text-blue-500">
                 {committee.chair.name}
-              </p>
+              </a>
 
               <p className="mt-1 text-xs leading-5 text-slate-500">
                 {committee.chair.affiliation}
@@ -601,9 +547,9 @@ export function CommitteeCard({
                 <div className="mt-2 space-y-4">
                   {committee.coChairs.map((member) => (
                     <div key={member.name}>
-                      <p className="text-sm font-semibold text-slate-950">
+                      <a href={member.href} className="text-sm font-semibold text-slate-950 hover:text-blue-500">
                         {member.name}
-                      </p>
+                      </a>
 
                       <p className="mt-1 text-xs leading-5 text-slate-500">
                         {member.affiliation}
@@ -629,9 +575,9 @@ export function CommitteeCard({
                 <div className="mt-2 grid gap-x-6 tablet:grid-cols-2">
                   {committee.members.map((member) => (
                     <div key={member.name} className="py-2">
-                      <p className="text-sm font-semibold text-slate-950">
+                      <a href={member.href} className="text-sm font-semibold text-slate-950 hover:text-blue-600">
                         {member.name}
-                      </p>
+                      </a>
 
                       <p className="mt-1 text-xs leading-5 text-slate-500">
                         {member.affiliation}
@@ -650,319 +596,6 @@ export function CommitteeCard({
 
 export default function CommitteesPage() {
   return (
-    <main className="min-h-screen bg-white text-slate-950">
-      <Navbar />
-
-
-      {/* =========================================================
-          GOVERNANCE OVERVIEW
-      ========================================================= */}
-
-      <section className="border-b border-slate-200 bg-white">
-        <div className="container mx-auto px-5 py-12 lg:px-8 lg:py-14 xl:px-10 xl:py-16">
-          <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end lg:gap-16">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">
-                Governance Structure
-              </p>
-
-              <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-950 lg:text-4xl">
-                Built for
-                <span className="text-blue-600"> collaboration.</span>
-              </h2>
-            </div>
-
-            <p className="max-w-2xl text-sm leading-7 text-slate-500 lg:justify-self-end lg:text-base lg:leading-8">
-              ICETIA 2027 operates through a structured committee system
-              designed to support effective governance, academic quality,
-              financial accountability, operational efficiency and successful
-              conference delivery.
-            </p>
-          </div>
-
-          <div className="mt-10 grid border-l border-t border-slate-200 tablet:grid-cols-2 xl:grid-cols-4">
-            {governanceItems.map((item, index) => {
-              const Icon = item.icon;
-
-              return (
-                <div
-                  key={item.label}
-                  className="group border-b border-r border-slate-200 p-5 transition-colors duration-300 hover:bg-[#07111f] lg:p-6"
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex h-9 w-9 items-center justify-center bg-blue-50 text-blue-600 transition-colors group-hover:bg-blue-600 group-hover:text-white">
-                      <Icon className="h-4 w-4" />
-                    </div>
-
-                    <span className="text-xs font-bold tracking-widest text-slate-300 group-hover:text-slate-600">
-                      0{index + 1}
-                    </span>
-                  </div>
-
-                  <p className="mt-6 text-[10px] font-semibold uppercase tracking-[0.14em] text-blue-600">
-                    {item.label}
-                  </p>
-
-                  <h3 className="mt-2 text-base font-bold text-slate-900 transition-colors group-hover:text-white">
-                    {item.value}
-                  </h3>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================
-          STEERING COMMITTEE
-      ========================================================= */}
-
-      <section className="border-b border-slate-200 bg-white">
-        <div className="container mx-auto px-5 py-14 lg:px-8 lg:py-16 xl:px-10 xl:py-20">
-          <div className="grid gap-6 lg:grid-cols-[0.75fr_1.25fr] lg:items-end">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">
-                Strategic Leadership
-              </p>
-
-              <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-950 lg:text-4xl xl:text-5xl">
-                Steering
-                <span className="text-blue-600"> Committee.</span>
-              </h2>
-            </div>
-
-            <p className="max-w-2xl text-sm leading-7 text-slate-500 lg:justify-self-end lg:text-base lg:leading-8">
-              Providing strategic leadership, institutional oversight and
-              high-level guidance for ICETIA 2027.
-            </p>
-          </div>
-
-          <div className="mt-10 grid border-l border-t border-slate-200 tablet:grid-cols-2 xl:grid-cols-3">
-            {steeringCommittee.map((member, index) => (
-              <div
-                key={member.name}
-                className="group border-b border-r border-slate-200 p-6 transition-colors duration-300 hover:bg-[#07111f] lg:min-h-64 lg:p-7 xl:p-8"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex h-10 w-10 items-center justify-center bg-blue-50 text-blue-600 transition-colors group-hover:bg-blue-600 group-hover:text-white">
-                    <LuCrown className="h-5 w-5" />
-                  </div>
-
-                  <span className="text-xs font-bold tracking-widest text-slate-300 group-hover:text-slate-600">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                </div>
-
-                <p className="mt-8 text-xs font-semibold uppercase tracking-[0.14em] text-blue-600 group-hover:text-blue-400">
-                  {member.role}
-                </p>
-
-                <h3 className="mt-3 text-xl font-bold leading-tight tracking-tight text-slate-900 transition-colors group-hover:text-white lg:text-2xl">
-                  {member.name}
-                </h3>
-
-                <p className="mt-4 text-sm leading-6 text-slate-500 transition-colors group-hover:text-slate-400">
-                  {member.affiliation}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================
-          INTERNATIONAL ORGANISING COMMITTEE
-      ========================================================= */}
-
-      <section className="border-b border-slate-200 bg-slate-50">
-        <div className="container mx-auto px-5 py-14 lg:px-8 lg:py-16 xl:px-10 xl:py-20">
-          <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:items-end lg:gap-16">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">
-                Conference Coordination
-              </p>
-
-              <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-950 lg:text-4xl xl:text-5xl">
-                International
-                <span className="text-blue-600"> Organising.</span>
-              </h2>
-            </div>
-
-            <p className="max-w-2xl text-sm leading-7 text-slate-500 lg:justify-self-end lg:text-base lg:leading-8">
-              The principal coordinating body responsible for the planning,
-              administration and delivery of ICETIA 2027.
-            </p>
-          </div>
-
-          <div className="mt-10 border-t border-slate-200 lg:mt-12">
-            {internationalOrganisingCommittee.map(
-              (member, index) => (
-                <div
-                  key={member.name}
-                  className="group grid gap-5 border-b border-slate-200 py-6 lg:grid-cols-[80px_1fr_1fr] lg:items-center lg:gap-8 lg:py-7"
-                >
-                  <div className="flex items-center gap-4">
-                    <span className="text-xs font-bold tracking-widest text-slate-400">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-
-                    <div className="flex h-9 w-9 items-center justify-center bg-white text-blue-600 transition-colors group-hover:bg-blue-600 group-hover:text-white">
-                      <FaUsers className="h-4 w-4" />
-                    </div>
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.12em] text-blue-600">
-                      {member.role}
-                    </p>
-
-                    <h3 className="mt-2 text-lg font-semibold tracking-tight text-slate-900 lg:text-xl">
-                      {member.name}
-                    </h3>
-                  </div>
-
-                  <p className="text-sm leading-6 text-slate-500 lg:max-w-md">
-                    {member.affiliation}
-                  </p>
-                </div>
-              )
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================
-          SECRETARIAT
-      ========================================================= */}
-
-      <section className="border-b border-slate-200 bg-white">
-        <div className="container mx-auto px-5 py-12 lg:px-8 lg:py-14 xl:px-10 xl:py-16">
-          <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr] lg:items-center lg:gap-16">
-            <div>
-              <div className="flex h-11 w-11 items-center justify-center border border-slate-200 bg-slate-50 text-blue-600">
-                <LuFileText className="h-5 w-5" />
-              </div>
-
-              <p className="mt-5 text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">
-                Administration
-              </p>
-
-              <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-950 lg:text-4xl">
-                Conference
-                <span className="text-blue-600"> Secretariat.</span>
-              </h2>
-            </div>
-
-            <div className="border-t border-slate-200 pt-5 lg:border-l lg:border-t-0 lg:pl-10 lg:pt-0">
-              <div className="grid gap-6 tablet:grid-cols-2">
-                {secretariat.map((member) => (
-                  <MemberRow
-                    key={`${member.role}-${member.name}`}
-                    role={member.role}
-                    name={member.name}
-                    affiliation={member.affiliation}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================
-          SPECIALISED COMMITTEES
-      ========================================================= */}
-
-      <section className="border-b border-slate-200 bg-slate-50">
-        <div className="container mx-auto px-5 py-14 lg:px-8 lg:py-16 xl:px-10 xl:py-20">
-          <div className="grid gap-7 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">
-                Conference Operations
-              </p>
-
-              <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-950 lg:text-4xl xl:text-5xl">
-                Specialised
-                <span className="text-blue-600"> committees.</span>
-              </h2>
-            </div>
-
-            <p className="max-w-2xl text-sm leading-7 text-slate-500 lg:justify-self-end lg:text-base lg:leading-8">
-              Each committee has an assigned operational responsibility,
-              working collaboratively under the conference coordination
-              structure.
-            </p>
-          </div>
-
-          <div className="mt-10 grid gap-4 lg:mt-12 tablet:grid-cols-2">
-            {committees.map((committee) => (
-              <CommitteeCard
-                key={committee.number}
-                committee={committee}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================
-          COORDINATION
-      ========================================================= */}
-
-      <section className="border-b border-slate-200 bg-[#07111f] text-white">
-        <div className="container mx-auto px-5 py-14 lg:px-8 lg:py-16 xl:px-10 xl:py-20">
-          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-16">
-            <div>
-              <div className="flex h-11 w-11 items-center justify-center bg-blue-600 text-white">
-                <LuShieldCheck className="h-5 w-5" />
-              </div>
-
-              <p className="mt-5 text-xs font-semibold uppercase tracking-[0.18em] text-blue-400">
-                Committee Coordination
-              </p>
-
-              <h2 className="mt-3 text-3xl font-bold tracking-tight lg:text-4xl">
-                One structure.
-                <span className="text-blue-400"> Shared responsibility.</span>
-              </h2>
-            </div>
-
-            <div>
-              <p className="max-w-2xl text-sm leading-7 text-slate-400 lg:text-base lg:leading-8">
-                All committees work collaboratively under the coordination
-                of the Local Organising Committee. Committee chairs are
-                expected to develop work plans, assign responsibilities,
-                provide progress updates, maintain records and submit final
-                reports following the conference.
-              </p>
-
-              <div className="mt-7 grid gap-3 tablet:grid-cols-2">
-                {[
-                  "Strategic direction",
-                  "Academic quality",
-                  "Operational delivery",
-                  "Financial accountability",
-                  "Stakeholder engagement",
-                  "Conference reporting",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    className="flex items-center gap-3 border border-white/10 px-4 py-3"
-                  >
-                    <LuCircleCheck className="h-4 w-4 shrink-0 text-blue-400" />
-
-                    <span className="text-xs font-medium text-slate-300">
-                      {item}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <Footer />
-    </main>
+    <></>
   );
 }

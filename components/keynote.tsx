@@ -5,7 +5,6 @@ import Link from "next/link";
 import {
   ArrowRight,
   CalendarDays,
-  ChevronRight,
   Globe2,
   Mic2,
   Sparkles,
@@ -15,16 +14,19 @@ const keynoteSpeakers = [
   {
     id: 1,
     name: "Dr. Balota",
-    role: "AI Researcher",
+    role: "IoT & Cyber-Physical Systems Technical Lead",
     institution: "Teesside University",
     country: "United Kingdom",
     image: "/images/keynote_1.jpg",
     topic: "TBA",
-    bio: "Dr. Balota is a lecturer in Computer Science and he has vast experience in IT Consultancy, he holds a doctorate (PhD) in Computer Science and Engineering and currently worksa as a lecturer in Computer Science at Teesside University",
+    bio: "Dr. Balota is a Lecturer in Computer Science at Teesside University and an Innovation Technician (Cyber-Physical Systems) at the Industrial Digitalisation Technology Centre (IDTC), specialising in IoT, wireless sensor networks, digital twinning, industrial digitalisation, and networked systems. He will contribute his expertise in IoT, microcontrollers, network connectivity, technical and instructional architecture, and hardware integration** across the project’s training modules and work packages.",
     expertise: [
       "IoT",
       "Wireless Sensor Networks",
       "Data Capture and Monitoring",
+      "Digital Twinning",
+      "Industrial Digitalisation",
+      "End-to-end Development Solutions"
     ],
   },
   {
@@ -71,19 +73,7 @@ export default function KeynotePage() {
         <div className="absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-cyan-400/10 blur-3xl" />
 
         <div className="relative mx-auto max-w-7xl px-6 py-24 lg:px-8 lg:py-32">
-          {/* Breadcrumb */}
-          <div className="mb-8 flex items-center gap-2 text-sm text-slate-500">
-            <Link
-              href="/"
-              className="transition-colors hover:text-blue-400"
-            >
-              Home
-            </Link>
-
-            <ChevronRight className="h-4 w-4" />
-
-            <span className="text-slate-300">Keynote Speakers</span>
-          </div>
+          
 
           <div className="max-w-4xl">
             <div className="mb-6 inline-flex items-center gap-2 border border-blue-400/20 bg-blue-400/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-blue-300">
@@ -242,7 +232,7 @@ export default function KeynotePage() {
                   {speaker.topic}
                 </h4>
 
-                <p className="mt-4 line-clamp-4 text-sm leading-7 text-slate-400">
+                <p className="mt-4 text-sm leading-7 text-slate-400">
                   {speaker.bio}
                 </p>
 

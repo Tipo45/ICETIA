@@ -137,11 +137,11 @@ export default function Navbar() {
 
           <div className="shrink-0">
             <Image
-              src="/images/FUO-logo.png"
-              alt="ICETIA Logo"
-              width={40}
-              height={40}
-              className="h-10 w-10 object-contain"
+              src="/images/FUO-Logo.png"
+              alt="Federal University Otuoke Logo"
+              width={32}
+              height={32}
+              className="h-8 w-8 shrink-0 object-contain"
             />
           </div>
 
@@ -165,167 +165,163 @@ export default function Navbar() {
               </NavigationMenuItem>
             ))}
 
-            {/* Conference Dropdown */}
-            <NavigationMenuItem>
-              <NavigationMenuTrigger
-                className="h-10 bg-transparent px-3 text-[13px] font-medium text-slate-600 hover:bg-transparent hover:text-blue-600 focus:bg-transparent data-[state=open]:bg-transparent data-[state=open]:text-blue-600"
-              >
-                Conference
-              </NavigationMenuTrigger>
+            {/* Conference */}
+<div className="group/conference relative">
+  <button
+    type="button"
+    className="inline-flex h-10 items-center justify-center px-3 text-[13px] font-medium text-slate-600 transition-colors duration-200 hover:text-blue-600"
+  >
+    Conference
+  </button>
 
-              <NavigationMenuContent>
-                <div className="w-95 p-3">
-                  <div className="grid gap-1">
+  <div className="absolute left-1/2 top-full z-50 hidden -translate-x-1/2 pt-2 group-hover/conference:block">
+    <div className="w-50 rounded-md border border-slate-200 bg-white p-2 shadow-lg">
+      <div className="grid gap-1">
+        <div className="rounded-md p-2">
+          <div className="mb-2 text-sm font-semibold text-slate-800">
+            For Authors
+          </div>
 
-                    {/* For Authors */}
-                    <div className="rounded-md p-2">
-                      <div className="mb-2 text-sm font-semibold text-slate-800">
-                        For Authors
-                      </div>
+          <div className="ml-3 border-l border-slate-200">
+            <Link
+              href="/conference/for-authors/camera-ready"
+              className="block rounded-md px-4 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-blue-600"
+            >
+              Camera Ready
+            </Link>
 
-                      <div className="ml-3 border-l border-slate-200">
-                        <NavigationMenuLink asChild>
-                          <Link
-                            href="/conference/for-authors/camera-ready"
-                            className="block rounded-md px-4 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-blue-600"
-                          >
-                            Camera Ready
-                          </Link>
-                        </NavigationMenuLink>
+            <Link
+              href="/conference/for-authors/call-for-papers"
+              className="block rounded-md px-4 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-blue-600"
+            >
+              Call For Papers
+            </Link>
 
-                        <NavigationMenuLink asChild>
-                          <Link
-                            href="/conference/for-authors/call-for-papers"
-                            className="block rounded-md px-4 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-blue-600"
-                          >
-                            Call For Papers
-                          </Link>
-                        </NavigationMenuLink>
+            <Link
+              href="/conference/for-authors/call-for-workshop-papers"
+              className="block rounded-md px-4 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-blue-600"
+            >
+              Call For Workshop Papers
+            </Link>
+          </div>
+        </div>
 
-                        <NavigationMenuLink asChild>
-                          <Link
-                            href="/conference/for-authors/call-for-workshop-papers"
-                            className="block rounded-md px-4 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-blue-600"
-                          >
-                            Call For Workshop Papers
-                          </Link>
-                        </NavigationMenuLink>
-                      </div>
-                    </div>
+        {conferenceItems.map((item) => (
+          <Link
+            key={item.name}
+            href={item.href}
+            className="group flex items-center justify-between rounded-md p-2 transition-colors hover:bg-slate-50 text-slate-600 hover:text-blue-600"
+          >
+            <span className="text-sm font-semibold">
+              {item.name}
+            </span>
 
-                    {/* Other Conference Items */}
-                    {conferenceItems.map((item) => (
-                      <NavigationMenuLink key={item.name} asChild>
-                        <Link
-                          href={item.href}
-                          className="group flex items-center justify-between rounded-md p-2 transition-colors hover:bg-slate-50"
-                        >
-                          <span className="text-sm font-semibold text-slate-800 group-hover:text-blue-600">
-                            {item.name}
-                          </span>
+            {/* <LuArrowUpRight className="h-4 w-4 text-slate-300 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-blue-600" /> */}
+          </Link>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
 
-                          <LuArrowUpRight className="h-4 w-4 text-slate-300 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-blue-600" />
-                        </Link>
-                      </NavigationMenuLink>
-                    ))}
 
-                  </div>
-                </div>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
+{/* Committees */}
+<div className="group/committees relative">
+  <button
+    type="button"
+    className="inline-flex h-10 items-center justify-center px-3 text-[13px] font-medium text-slate-600 transition-colors duration-200 hover:text-blue-600"
+  >
+    Committees
+  </button>
 
-            {/* Committee */}
-            <NavigationMenuItem>
-              <NavigationMenuTrigger className="h-10 bg-transparent px-3 text-[13px] font-medium text-slate-600 hover:bg-transparent hover:text-blue-600 focus:bg-transparent data-[state=open]:bg-transparent data-[state=open]:text-blue-600">
-                Committees
-              </NavigationMenuTrigger>
+  <div className="absolute left-1/2 top-full z-50 hidden -translate-x-1/2 pt-2 group-hover/committees:block">
+    <div className="w-50 rounded-md border border-slate-200 bg-white p-2 shadow-lg">
+      <div className="grid gap-1">
+        {committeeItems.map((item) => (
+          <Link
+            key={item.name}
+            href={item.href}
+            className="group block rounded-md p-2 transition-colors hover:bg-slate-50 text-slate-600 hover:text-blue-600"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold">
+                {item.name}
+              </span>
 
-              <NavigationMenuContent>
-                <div className="w-95 p-3">
+              {/* <LuArrowUpRight className="h-4 w-4 text-slate-300 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-blue-600" /> */}
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
 
-                  <div className="grid gap-1">
-                    {committeeItems.map((item) => (
-                      <NavigationMenuLink key={item.name} asChild>
-                        <Link
-                          href={item.href}
-                          className="group block rounded-md p-2 transition-colors hover:bg-slate-50"
-                        >
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm font-semibold text-slate-800 group-hover:text-blue-600">
-                              {item.name}
-                            </span>
 
-                            <LuArrowUpRight className="h-4 w-4 text-slate-300 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-blue-600" />
-                          </div>
-                        </Link>
-                      </NavigationMenuLink>
-                    ))}
-                  </div>
-                </div>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
+{/* Program */}
+<div className="group/program relative">
+  <button
+    type="button"
+    className="inline-flex h-10 items-center justify-center px-3 text-[13px] font-medium text-slate-600 transition-colors duration-200 hover:text-blue-600"
+  >
+    Program
+  </button>
 
-            {/* Program */}
-            <NavigationMenuItem>
-              <NavigationMenuTrigger className="h-10 bg-transparent px-3 text-[13px] font-medium text-slate-600 hover:bg-transparent hover:text-blue-600 focus:bg-transparent data-[state=open]:bg-transparent data-[state=open]:text-blue-600">
-                Program
-              </NavigationMenuTrigger>
+  <div className="absolute left-1/2 top-full z-50 hidden -translate-x-1/2 pt-2 group-hover/program:block">
+    <div className="w-35 rounded-md border border-slate-200 bg-white p-2 shadow-lg">
+      <div className="grid gap-1">
+        {programItems.map((item) => (
+          <Link
+            key={item.name}
+            href={item.href}
+            className="group block rounded-md p-2 transition-colors hover:bg-slate-50 text-slate-600 hover:text-blue-600"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold ">
+                {item.name}
+              </span>
 
-              <NavigationMenuContent>
-                <div className="w-95 p-3">
+              {/* <LuArrowUpRight className="h-4 w-4 text-slate-300 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /> */}
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
 
-                  <div className="grid gap-1">
-                    {programItems.map((item) => (
-                      <NavigationMenuLink key={item.name} asChild>
-                        <Link
-                          href={item.href}
-                          className="group block rounded-md p-2 transition-colors hover:bg-slate-50"
-                        >
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm font-semibold text-slate-800 group-hover:text-blue-600">
-                              {item.name}
-                            </span>
 
-                            <LuArrowUpRight className="h-4 w-4 text-slate-300 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-blue-600" />
-                          </div>
-                        </Link>
-                      </NavigationMenuLink>
-                    ))}
-                  </div>
-                </div>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
+{/* Location */}
+<div className="group/location relative">
+  <button
+    type="button"
+    className="inline-flex h-10 items-center justify-center px-3 text-[13px] font-medium text-slate-600 transition-colors duration-200 hover:text-blue-600"
+  >
+    Location
+  </button>
 
-            {/* Location */}
-            <NavigationMenuItem>
-              <NavigationMenuTrigger className="h-10 bg-transparent px-3 text-[13px] font-medium text-slate-600 hover:bg-transparent hover:text-blue-600 focus:bg-transparent data-[state=open]:bg-transparent data-[state=open]:text-blue-600">
-                Location
-              </NavigationMenuTrigger>
+  <div className="absolute left-1/2 top-full z-50 hidden -translate-x-1/2 group-hover/location:block">
+    <div className="w-20 rounded-md border border-slate-200 bg-white p-2 shadow-lg">
+      <div className="grid gap-1">
+        {locationItems.map((item) => (
+          <Link
+            key={item.name}
+            href={item.href}
+            className="group block rounded-md p-2 transition-colors hover:bg-slate-50 text-slate-600 hover:text-blue-600"
+          >
+            <div className="flex items-center justify-between ">
+              <span className="text-sm font-semibold">
+                {item.name}
+              </span>
 
-              <NavigationMenuContent>
-                <div className="w-95 p-2">
-
-                  <div className="grid gap-1">
-                    {locationItems.map((item) => (
-                      <NavigationMenuLink key={item.name} asChild>
-                        <Link
-                          href={item.href}
-                          className="group block rounded-md p-2 transition-colors hover:bg-slate-50"
-                        >
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm font-semibold text-slate-800 group-hover:text-blue-600">
-                              {item.name}
-                            </span>
-
-                            <LuArrowUpRight className="h-4 w-4 text-slate-300 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-blue-600" />
-                          </div>
-                        </Link>
-                      </NavigationMenuLink>
-                    ))}
-                  </div>
-                </div>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
+              {/* <LuArrowUpRight className="h-4 w-4 text-slate-300 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /> */}
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
 
             {/* Remaining navigation items */}
             {navItems.slice(1).map((item) => (

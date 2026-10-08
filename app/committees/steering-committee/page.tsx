@@ -11,40 +11,53 @@ import {
   LuFileText,
 } from "react-icons/lu";
 import { MemberRow } from "../page";
+import Image from "next/image";
 
 const steeringCommittee = [
   {
     role: "Chair",
     name: "Professor Olugbenga Akinade",
+    href: "Olugbenga Akinade",
+    image: "/images/Olugbenga Akinade.jpg",
     affiliation:
       "Professor of Digital Innovation, Teesside University, United Kingdom",
   },
   {
     role: "Co-Chair",
     name: "Dr Josiah Balota",
+    href: "https://www.linkedin.com/in/josiahspeaks/",
+    image: "/images/keynote_1.jpg",
     affiliation: "Teesside University, United Kingdom",
   },
   {
     role: "Chief Host",
     name: "Professor Promise Mebine",
+    href: "https://scholar.google.com/citations?hl=en&user=jgEx56AAAAAJ",
+    image: "/images/Promise Mebine.jpg",
     affiliation:
       "Vice-Chancellor, Federal University Otuoke, Nigeria",
   },
   {
     role: "Host",
     name: "Professor Nateinyin Joy Akporehwe",
+    href: "https://scholar.google.com/citations?hl=en&user=cSNjRoAAAAAJ",
+    image: "/images/Nateinyin Joy Akporehwe.jpg",
     affiliation:
       "Deputy Vice-Chancellor, Research and Development (R&D), Federal University Otuoke",
   },
   {
     role: "Host",
     name: "Professor Johnson Ohakwe",
+    href: "https://www.researchgate.net/profile/Ohakwe-Johnson",
+    image: "/images/Johnson Ohakwe.jpg",
     affiliation:
       "Dean, Faculty of Science, Federal University Otuoke, Nigeria",
   },
   {
     role: "Host",
     name: "Professor Olufunso O. Abosede",
+    href: "https://scholar.google.com/citations?hl=en&user=MZ7FYG4AAAAJ",
+    image: "/images/Olufunso O. Abosede.jpg",
     affiliation:
       "Director of Research, Federal University Otuoke, Nigeria",
   },
@@ -54,11 +67,13 @@ const secretariat = [
   {
     role: "Secretary",
     name: "Dr. (Mrs) Merosobo Lawson-Ikuru",
+    href: "https://www.linkedin.com/in/merosobo-lawson-ikuru-phd-49609790/",
     affiliation: "Federal University Otuoke, Nigeria",
   },
   {
     role: "Assistant Secretary",
     name: "Dr Ibenate Arubere",
+    href: "https://www.linkedin.com/in/dr-ibenate-arubere-998459bb/",
     affiliation: "Federal University Otuoke, Nigeria",
   },
 ];
@@ -174,8 +189,14 @@ export default function CommitteesPage() {
                 className="group border-b border-r border-slate-200 p-6 transition-colors duration-300 hover:bg-[#07111f] lg:min-h-64 lg:p-7 xl:p-8"
               >
                 <div className="flex items-start justify-between">
-                  <div className="flex h-10 w-10 items-center justify-center bg-blue-50 text-blue-600 transition-colors group-hover:bg-blue-600 group-hover:text-white">
-                    <LuCrown className="h-5 w-5" />
+                  <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-md bg-white">
+                    <Image
+                      src={member.image}
+                      width={64}
+                      height={64}
+                      alt={member.name}
+                      className="h-16 w-16 rounded-md object-cover"
+                    />
                   </div>
 
                   <span className="text-xs font-bold tracking-widest text-slate-300 group-hover:text-slate-600">
@@ -187,9 +208,9 @@ export default function CommitteesPage() {
                   {member.role}
                 </p>
 
-                <h3 className="mt-3 text-xl font-bold leading-tight tracking-tight text-slate-900 transition-colors group-hover:text-white lg:text-2xl">
+                <a href={member.href} className="mt-3 text-xl font-bold leading-tight tracking-tight text-slate-900 transition-colors group-hover:text-white lg:text-2xl">
                   {member.name}
-                </h3>
+                </a>
 
                 <p className="mt-4 text-sm leading-6 text-slate-500 transition-colors group-hover:text-slate-400">
                   {member.affiliation}
@@ -229,6 +250,7 @@ export default function CommitteesPage() {
                     key={`${member.role}-${member.name}`}
                     role={member.role}
                     name={member.name}
+                    href={member.href}
                     affiliation={member.affiliation}
                   />
                 ))}

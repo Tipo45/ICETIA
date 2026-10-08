@@ -64,7 +64,7 @@ const items = [
     value: "topic",
     trigger: "Topics",
     content: (
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-3 grid-cols-2">
         {[
           "Artificial Intelligence & Machine Learning Applications",
           "Cybersecurity, Privacy & Digital Trust",
@@ -101,10 +101,17 @@ const items = [
         </p>
 
         <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4">
-          <p className="text-xs leading-6 text-slate-400">
-            The final paper length, formatting specifications and page
-            limitations will be communicated through the official author
-            guidelines and submission template.
+
+        <div className="space-y-2">
+          <p className="leading-6 text-slate-200">
+          <span className="border-slate-500 rounded-full text-xl" /><span>Full/Regular papers shoul be <span className="font-bold">12-20</span> pages in length. (Excluding appendices, references, appreciation, etc.)</span>
+        </p>
+        <p className="leading-6 text-slate-200">
+          <span className="border-slate-500 rounded-full text-xl" /><span>Short papers should be <span className="font-bold">6-11</span> pages in length. (Excluding appendices, references, appreciation, etc.)</span>
+        </p>
+        </div>
+          <p className="text-xs leading-6 text-slate-400 pt-2">
+            *Please note that additional pages will be subject to an extra charge for each extra page uploaded.
           </p>
         </div>
 
@@ -132,7 +139,18 @@ const items = [
     trigger: "Submission Guidelines",
     content: (
       <div className="space-y-4">
+        <div>
+          <span className="text-sm text-blue-500 font-semibold">How to Submit a Paper</span>
+          <ol className="space-y-2 leading-6 pt-2 text-slate-400">
+            <li>Its is assumed you have already registered, so you will be eligible to access the submission portal</li>
+            <li>Login to your account</li>
+            <li>Select your appropriate track</li>
+            <li>Click the "Upload Paper" and follow the instructions</li>
+          </ol>
+        </div>
+        <span className="ml-1 text-sm text-blue-600">Submission Guidelines</span>
         {[
+          "All papers must be submitted in English.",
           "Submissions must be original and unpublished research.",
           "Manuscripts should follow the official ICETIA 2027 formatting template.",
           "All authors and institutional affiliations must be correctly stated.",
@@ -292,11 +310,7 @@ export default function CallForPapers() {
                 </h2>
               </div>
 
-              <p className="max-w-2xl text-sm leading-7 text-slate-500 lg:justify-self-end lg:text-base lg:leading-8">
-                Keep track of the key milestones leading up to ICETIA 2027,
-                from paper submission and review through author registration
-                and the conference itself.
-              </p>
+              
             </div>
 
             {/* Timeline grid */}
@@ -399,7 +413,7 @@ export default function CallForPapers() {
 
               {/* Replace href with your actual template URL */}
               <a
-                href="/accepted-papers"
+                href="/program/accepted-papers"
                 className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-white/10 px-6 text-sm font-semibold text-slate-300 transition-colors hover:border-blue-400/30 hover:text-white"
               >
                 View Accepted Papers

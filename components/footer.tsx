@@ -266,7 +266,7 @@ export default function Footer() {
                 <LuMail className="h-4 w-4 shrink-0 text-blue-500" />
 
                 <span className="text-slate-500">
-                  info@icetiaconference.org
+                  conference@icetiaconference.org
                 </span>
               </div>
 
@@ -274,7 +274,9 @@ export default function Footer() {
                 <LuPhone className="h-4 w-4 shrink-0 text-blue-500" />
 
                 <span className="text-slate-500">
-                  Contact number coming soon
+                  +2348069225628
+                  <br />
+                  +447377083132
                 </span>
               </div>
             </div>
@@ -316,7 +318,7 @@ export default function Footer() {
           <div className="flex flex-col gap-3 text-xs text-slate-600 lg:flex-row lg:items-center lg:justify-between">
 
             <p>
-              © {new Date().getFullYear()} Tipotek. All Rights Reserved.
+              © {new Date().getFullYear()} ICETIA. All Rights Reserved.
             </p>
 
             <p>

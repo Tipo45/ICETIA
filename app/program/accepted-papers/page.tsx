@@ -114,21 +114,6 @@ export default function AcceptedPapersPage() {
 
                     <div className="relative mx-auto max-w-7xl px-6 py-20 lg:px-8 lg:py-28">
 
-                        {/* Breadcrumb */}
-                        <div className="mb-8 flex items-center gap-2 text-sm text-slate-500">
-                            <Link
-                                href="/"
-                                className="transition-colors hover:text-blue-400"
-                            >
-                                Home
-                            </Link>
-
-                            <ChevronRight className="h-4 w-4" />
-
-                            <span className="text-slate-300">
-                                Accepted Papers
-                            </span>
-                        </div>
 
                         <div className="max-w-4xl">
 

@@ -19,6 +19,7 @@ const categories = [
     number: "01",
     title: "Authors",
     price: "₦40,000",
+    earlyBirdPrice: "₦35,000",
     description:
       "For authors of accepted papers who will participate in and present at the conference.",
     href: "/registration/authors-registration",
@@ -27,6 +28,7 @@ const categories = [
     number: "02",
     title: "Non-authors / Participants",
     price: "₦40,000",
+    earlyBirdPrice: "₦35,000",
     description:
       "For researchers, academics, industry professionals, policymakers and other conference participants.",
     href: "/registration/non-authors-registration",
@@ -35,6 +37,7 @@ const categories = [
     number: "03",
     title: "Students",
     price: "₦30,000",
+    earlyBirdPrice: "₦25,000",
     description:
       "For undergraduate and postgraduate students participating in ICETIA 2027.",
     href: "/registration/students-registration",
@@ -166,27 +169,143 @@ export default function RegistrationCategories() {
                 </p>
 
                 <div className="mt-7 flex items-end justify-between gap-4">
-                  <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-400">
-                      Registration Fee
-                    </p>
+  <div>
+    <p className="text-[10px] font-semibold uppercase tracking-widest text-slate-400">
+      Registration Fee
+    </p>
 
-                    <p className="mt-1 text-2xl font-bold text-blue-600">
-                      {item.price}
-                    </p>
-                  </div>
+    <div className="mt-1 flex items-baseline gap-2">
+      <p className="text-2xl font-bold text-blue-600">
+        {item.earlyBirdPrice}
+      </p>
 
-                  <Link
-                    href={item.href}
-                    className="group/link flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-700 transition-all duration-200 hover:border-blue-600 hover:bg-blue-600 hover:text-white"
-                    aria-label={`Choose ${item.title}`}
-                  >
-                    <LuArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
-                  </Link>
-                </div>
+      <span className="text-xs text-slate-400 line-through">
+        {item.price}
+      </span>
+    </div>
+
+    <p className="mt-1 text-[10px] font-semibold uppercase tracking-widest text-emerald-600">
+      Early Bird
+    </p>
+  </div>
+
+  <Link
+    href={item.href}
+    className="group/link flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300 text-slate-700 transition-all duration-200 hover:border-blue-600 hover:bg-blue-600 hover:text-white"
+    aria-label={`Choose ${item.title}`}
+  >
+    <LuArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5" />
+  </Link>
+</div>
               </div>
             ))}
           </div>
+        </div>
+        
+        <div>
+          <div className="mt-10 w-full overflow-x-auto">
+  <table className="w-full min-w-225 border-collapse border border-slate-200 text-sm">
+    <thead>
+      <tr className="bg-slate-100">
+        <th className="border border-slate-200 px-4 py-4 text-left font-semibold text-slate-900">
+          Participation
+        </th>
+
+        <th className="border border-slate-200 px-4 py-4 text-center font-semibold text-slate-900">
+          Early Bird Author (₦)
+          <br />
+          (31 March)
+        </th>
+
+        <th className="border border-slate-200 px-4 py-4 text-center font-semibold text-slate-900">
+          Early Bird Non-author (₦)
+          <br />
+          (31 March)
+        </th>
+
+        <th className="border border-slate-200 px-4 py-4 text-center font-semibold text-slate-900">
+          Early Bird Student (₦)
+          <br />
+          (31 March)
+        </th>
+
+        <th className="border border-slate-200 px-4 py-4 text-center font-semibold text-slate-900">
+          Late Fee Author (₦)
+        </th>
+
+        <th className="border border-slate-200 px-4 py-4 text-center font-semibold text-slate-900">
+          Late Non-author (₦)
+        </th>
+
+        <th className="border border-slate-200 px-4 py-4 text-center font-semibold text-slate-900">
+          Late Fee Student (₦)
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr className="transition-colors hover:bg-slate-50">
+        <td className="border border-slate-200 px-4 py-4 font-semibold text-slate-800">
+          Physical
+        </td>
+
+        <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
+          35,000
+        </td>
+
+        <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
+          35,000
+        </td>
+
+        <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
+          25,000
+        </td>
+
+        <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
+          40,000
+        </td>
+
+        <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
+          40,000
+        </td>
+
+        <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
+          30,000
+        </td>
+      </tr>
+
+      <tr className="bg-slate-50 transition-colors hover:bg-slate-100">
+        <td className="border border-slate-200 px-4 py-4 font-semibold text-slate-800">
+          Online
+        </td>
+
+        <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
+          95,000
+        </td>
+
+        <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
+          95,000
+        </td>
+
+        <td className="border border-slate-200 px-4 py-4 text-center text-slate-400">
+          —
+        </td>
+
+        <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
+          100,000
+        </td>
+
+        <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
+          100,000
+        </td>
+
+        <td className="border border-slate-200 px-4 py-4 text-center text-slate-400">
+          —
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
         </div>
 
         {/* What's included */}

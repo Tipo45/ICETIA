@@ -8,26 +8,35 @@ import {
 import {
   LuCalendarDays
 } from "react-icons/lu";
+import Image from "next/image";
 
 const internationalOrganisingCommittee = [
   {
     role: "General Chair",
     name: "Dr Joshua Ibibo",
+    href: "https://www.linkedin.com/in/dr-joshua-ibibo-83174b85/",
+    image: "/images/Dr. Josh.jpg",
     affiliation: "Teesside University, United Kingdom",
   },
   {
     role: "Co-Chair (Program Chair)",
     name: "Dr Boye Aziboledia Frederick",
+    href: "https://www.linkedin.com/in/boye-aziboledia-frederick-a00a02297/",
+    image: "/images/boye aziba.jpg",
     affiliation: "Federal University Otuoke, Nigeria",
   },
   {
     role: "Secretary",
     name: "Dr. (Mrs) Merosobo Lawson-Ikuru",
+    href: "https://www.linkedin.com/in/merosobo-lawson-ikuru-phd-49609790/",
+    image: "/images/Merosobo Lawson-Ikuru.jpg",
     affiliation: "Federal University Otuoke, Nigeria",
   },
   {
     role: "Assistant Secretary",
     name: "Dr Ibenate Arubere",
+    href: "https://www.linkedin.com/in/dr-ibenate-arubere-998459bb/",
+    image: "/images/Ibenate Arubere.jpg",
     affiliation: "Federal University Otuoke, Nigeria",
   },
 ];
@@ -147,8 +156,8 @@ export default function CommitteesPage() {
                       {String(index + 1).padStart(2, "0")}
                     </span>
 
-                    <div className="flex h-9 w-9 items-center justify-center bg-white text-blue-600 transition-colors group-hover:bg-blue-600 group-hover:text-white">
-                      <FaUsers className="h-4 w-4" />
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-md bg-white">
+                      <Image src={member.image} width={48} height={48} alt={member.name} className="rounded-md w-12 h-12 object-cover" />
                     </div>
                   </div>
 
@@ -157,9 +166,9 @@ export default function CommitteesPage() {
                       {member.role}
                     </p>
 
-                    <h3 className="mt-2 text-lg font-semibold tracking-tight text-slate-900 lg:text-xl">
+                    <a href={member.href} target="blank" className="mt-2 text-lg font-semibold tracking-tight text-slate-900 lg:text-xl hover:text-blue-500">
                       {member.name}
-                    </h3>
+                    </a>
                   </div>
 
                   <p className="text-sm leading-6 text-slate-500 lg:max-w-md">
