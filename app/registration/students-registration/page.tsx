@@ -268,7 +268,8 @@ export default function RegistrationSection() {
     const registerParticipant = async () => {
         setIsSubmitting(true);
         try {
-            const result = await register({
+
+            const registration = await register({
                 firstName: formData.firstName,
                 lastName: formData.lastName,
                 email: formData.email,
@@ -277,17 +278,42 @@ export default function RegistrationSection() {
                 country: formData.country,
             });
 
-            await sendConfirmationEmail({
-                registrationId: result.registrationId,
+            const registrationId = registration.registrationId;
+
+            const result = await fetch("/api/payment", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: formData.email,
+                    amount: (paymentValue - 5000) * 100,
+                    registrationId,
+                })
             });
 
-            toast.success("Registered successfully");
+            const paystackResult = await result.json();
 
-            setTimeout(() => {
-                router.push(
-                    `/registration/success/${result.registrationId}`
+            if (!result.ok) {
+                throw new Error(
+                    paystackResult?.message || "Payment initialization failed."
                 );
-            }, 1000);
+            }
+
+            if (result.status) {
+                localStorage.setItem("paymentInformation", JSON.stringify({
+                    amount: paymentValue - 5000,
+                    userEmail: formData.email,
+                }))
+            };
+
+            router.push(paystackResult.data.authorization_url);
+
+            // await sendConfirmationEmail({
+            //     registrationId: result.registrationId,
+            // });
+
+            // toast.success("Registered successfully");
 
             setIsSubmitting(false);
             resetForm();

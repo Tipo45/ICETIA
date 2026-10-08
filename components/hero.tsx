@@ -17,10 +17,13 @@ import { TiVideo } from "react-icons/ti";
 import { useRouter } from "next/navigation";
 
 const heroImages = [
-  "/images/FUO1.jpg",
-  "/images/FUO2.1.jpg",
-  "/images/FUO3.1.jpg",
-  "/images/FUO6.1.jpg",
+  "/images/PSC_1788.jpg",
+  "/images/PSC_1731.jpg",
+  "/images/PSC_1716.jpg",
+  "/images/PSC_1706.jpg",
+  "/images/PSC_1695.jpg",
+  "/images/PSC_1816.jpg",
+  "/images/PSC_1809.jpg"
 ];
 
 export default function Hero() {

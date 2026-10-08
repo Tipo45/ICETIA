@@ -12,29 +12,53 @@ import {
 
 const allGalleryImages = [
   {
-    src: "/images/FUO1.jpg",
+    src: "/images/PSC_1788.jpg",
     alt: "Federal University Otuoke campus",
     title: "Federal University Otuoke",
   },
   {
-    src: "/images/FUO2.1.jpg",
-    alt: "Academic event at Federal University Otuoke",
-    title: "Academic Excellence",
+    src: "/images/PSC_1695.jpg ",
+    alt: "Academic Event",
   },
   {
-    src: "/images/FUO3.1.jpg",
-    alt: "Students participating in an academic event",
-    title: "Innovation & Learning",
+    src: "/images/PSC_1731.jpg",
+    alt: "Innovation & Learning",
   },
   {
-    src: "/images/FUO6.1.jpg",
-    alt: "Technology and innovation event",
-    title: "Technology & Innovation",
+    src: "/images/PSC_1716.jpg",
+    alt: "Technology and Innovation",
   },
   {
-    src: "/images/FUO5.1.jpg",
-    alt: "Researchers and academics",
-    title: "Research & Collaboration",
+    src: "/images/PSC_1706.jpg",
+    alt: "Research and Academics",
+  },
+  {
+    src: "/images/PSC_1816.jpg",
+    alt: "Academic Events",
+  },
+  {
+    src: "/images/PSC_1804.jpg",
+    alt: "Innovation & Learning",
+  },
+  {
+    src: "/images/PSC_1794.jpg",
+    alt: "Technology and Innovation event",
+  },
+  {
+    src: "/images/PSC_1809.jpg",
+    alt: "Researchers and Academics",
+  },
+  {
+    src: "/images/PSC_1800.jpg",
+    alt: "Researchers and Academics",
+  },
+  {
+    src: "/images/PSC_1796.jpg",
+    alt: "Researchers and Academics",
+  },
+  {
+    src: "/images/PSC_1780.jpg",
+    alt: "Researchers and Academics",
   },
 ];
 
@@ -140,7 +164,7 @@ export default function GalleryPage() {
               </p>
 
               <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-950 lg:text-3xl">
-                Moments from ICETIA
+                Host Institution
               </h2>
             </div>
 

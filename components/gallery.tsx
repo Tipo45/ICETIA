@@ -6,34 +6,29 @@ import { LuArrowUpRight, LuImages } from "react-icons/lu";
 
 const galleryImages = [
   {
-    src: "/images/FUO1.jpg",
+    src: "/images/PSC_1788.jpg",
     alt: "Federal University Otuoke campus",
     title: "Federal University Otuoke",
   },
   {
-    src: "/images/FUO3.1.jpg",
+    src: "/images/PSC_1706.jpg",
     alt: "Academic event at Federal University Otuoke",
     title: "Academic Excellence",
   },
   {
-    src: "/images/FUO2.1.jpg",
+    src: "/images/PSC_1695.jpg",
     alt: "Students participating in an academic event",
     title: "Innovation & Learning",
   },
   {
-    src: "/images/FUO3.1.jpg",
-    alt: "Technology and innovation event",
-    title: "Technology & Innovation",
+    src: "/images/PSC_1804.jpg",
+    alt: "Students participating in an academic event",
+    title: "Innovation & Learning",
   },
   {
-    src: "/images/FUO5.1.jpg",
-    alt: "Researchers and academics",
-    title: "Research & Collaboration",
-  },
-  {
-    src: "/images/FUO6.1.jpg",
-    alt: "Conference presentation",
-    title: "Knowledge Exchange",
+    src: "/images/PSC_1800.jpg",
+    alt: "Students participating in an academic event",
+    title: "Innovation & Learning",
   },
 ];
 
@@ -97,42 +92,28 @@ export default function Gallery() {
           </div>
 
           {/* Image 2 */}
-          <div className="group relative min-h-40 overflow-hidden rounded-2xl lg:min-h-61.5">
-            <Image
-              src={galleryImages[1].src}
-              alt={galleryImages[1].alt}
-              fill
-              sizes="(max-width: 1024px) 50vw, 25vw"
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-            />
+         {galleryImages.slice(1).map((gallery) => (
+  <div
+    key={gallery.src}
+    className="group relative min-h-40 overflow-hidden rounded-2xl lg:min-h-61.5"
+  >
+    <Image
+      src={gallery.src}
+      alt={gallery.alt}
+      fill
+      sizes="(max-width: 1024px) 50vw, 25vw"
+      className="object-cover transition-transform duration-700 group-hover:scale-105"
+    />
 
-            <div className="absolute inset-0 bg-linear-to-t from-slate-950/60 via-transparent to-transparent" />
+    <div className="absolute inset-0 bg-linear-to-t from-slate-950/60 via-transparent to-transparent" />
 
-            <div className="absolute bottom-0 left-0 p-4">
-              <p className="text-sm font-semibold text-white">
-                {galleryImages[1].title}
-              </p>
-            </div>
-          </div>
-
-          {/* Image 3 */}
-          <div className="group relative min-h-40 overflow-hidden rounded-2xl lg:min-h-61.5">
-            <Image
-              src={galleryImages[2].src}
-              alt={galleryImages[2].alt}
-              fill
-              sizes="(max-width: 1024px) 50vw, 25vw"
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-
-            <div className="absolute inset-0 bg-linear-to-t from-slate-950/60 via-transparent to-transparent" />
-
-            <div className="absolute bottom-0 left-0 p-4">
-              <p className="text-sm font-semibold text-white">
-                {galleryImages[2].title}
-              </p>
-            </div>
-          </div>
+    <div className="absolute bottom-0 left-0 p-4">
+      <p className="text-sm font-semibold text-white">
+        {gallery.title}
+      </p>
+    </div>
+  </div>
+))}
 
         </div>
 
