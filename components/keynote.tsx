@@ -13,13 +13,13 @@ import {
 const keynoteSpeakers = [
   {
     id: 1,
-    name: "Dr. Balota",
+    name: "Dr. Balota Josiah",
     role: "IoT & Cyber-Physical Systems Technical Lead",
     institution: "Teesside University",
     country: "United Kingdom",
     image: "/images/keynote_1.jpg",
     topic: "TBA",
-    bio: "Dr. Balota is a Lecturer in Computer Science at Teesside University and an Innovation Technician (Cyber-Physical Systems) at the Industrial Digitalisation Technology Centre (IDTC), specialising in IoT, wireless sensor networks, digital twinning, industrial digitalisation, and networked systems. He will contribute his expertise in IoT, microcontrollers, network connectivity, technical and instructional architecture, and hardware integration** across the project’s training modules and work packages.",
+    bio: "Dr. Balota Josiah is a Lecturer in Computer Science at Teesside University and an Innovation Technician (Cyber-Physical Systems) at the Industrial Digitalisation Technology Centre (IDTC), specialising in IoT, wireless sensor networks, digital twinning, industrial digitalisation, and networked systems. He will contribute his expertise in IoT, microcontrollers, network connectivity, technical and instructional architecture, and hardware integration** across the project’s training modules and work packages.",
     expertise: [
       "IoT",
       "Wireless Sensor Networks",
