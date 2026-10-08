@@ -69,8 +69,8 @@ export default function WorkShop() {
 
               <div className="mt-9 flex flex-wrap gap-3">
                 <Link
-                  href="/submit-paper"
-                  className="inline-flex items-center gap-2 bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-500"
+                  href="#"
+                  className="inline-flex items-center gap-2 bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-500 opacity-50 cursor-not-allowed"
                 >
                   Submit Workshop Paper
                   <LuArrowUpRight className="h-4 w-4" />
@@ -294,10 +294,10 @@ export default function WorkShop() {
               </p>
             </div>
 
-            <div className="flex-row space-x-2">
+            <div className="flex-row space-y-4 space-x-2">
                 <Link
-              href="/submit-paper"
-              className="inline-flex shrink-0 items-center justify-center gap-2 bg-white px-6 py-3 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-50"
+              href="#"
+              className="inline-flex shrink-0 items-center justify-center gap-2 bg-white px-6 py-3 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-50 opacity-50 cursor-not-allowed"
             >
               Submit Workshop Paper
               <LuSend className="h-4 w-4" />

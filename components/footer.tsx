@@ -21,7 +21,7 @@ const programItems = [
   },
   {
     name: "Workshop",
-    href: "/program/workshop"
+    href: "/program/workshops"
   },
   {
     name: "Keynotes",
@@ -44,14 +44,14 @@ const committeeItems = [
   },
   {
     name: "Specialised Committee",
-    href: "/committees/specialised-committe",
+    href: "/committees/specialised-committee",
   },
 ];
 
 const forAuthorItems = [
     {
-      name: "Camera Ready Paper",
-      href: "/conference/for-auhtors/camera-ready-papers",
+      name: "Camera Ready",
+      href: "/conference/for-authors/camera-ready",
     },
     {
       name: "Call For Papers",
