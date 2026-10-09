@@ -9,12 +9,12 @@ export default async function VerifyPayment({searchParams}:{ searchParams: Promi
   }
 
 
-  const response = await fetch(
-    `http://localhost:3000/api/verify-payment/${reference}`,
-  );
-
   // const response = await fetch(
-  //   `https://icetia.vercel.app/api/verify-payment/${reference}`,   );
+  //   `http://localhost:3000/api/verify-payment/${reference}`,
+  // );
+
+  const response = await fetch(
+    `https://icetia.vercel.app/api/verify-payment/${reference}`,   );
 
   // const response = await fetch(
   //   `https://icetia.org/api/verify-payment/${reference}`,   );

@@ -25,8 +25,8 @@ export async function POST(request: Request) {
                 body: JSON.stringify({
                     email,
                     amount,
-                    callback_url: `http://localhost:3000/registration/verify-payment?registrationId=${registrationId}`,
-                    // callback_url: `http://icetia.vercel.app/registration/verify-payment/${registrationId}`,
+                    // callback_url: `http://localhost:3000/registration/verify-payment?registrationId=${registrationId}`,
+                    callback_url: `http://icetia.vercel.app/registration/verify-payment/${registrationId}`,
                     // callback_url: `http://icetia.org/registration/verify-payment/${registrationId}`,
                 }),
             }
