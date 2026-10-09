@@ -103,7 +103,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="shrink-0">
             <Image
-              src="/images/logo.jpg"
+              src="/images/logo-no-bg.png"
               alt="ICETIA Logo"
               width={40}
               height={40}
@@ -433,7 +433,7 @@ export default function Navbar() {
                 <CollapsibleContent className="pb-3">
 
                   <Collapsible className="ml-3 border-l border-slate-200">
-                    <CollapsibleTrigger className="group flex w-full items-center justify-between px-4 py-2.5 text-md text-slate-700 transition-colors">
+                    <CollapsibleTrigger className="group flex w-full items-center justify-between px-4 py-2.5 text-slate-700 transition-colors">
                       <span>For Authors</span>
 
                       <LuChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />

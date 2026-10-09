@@ -324,7 +324,7 @@ export default function ConferenceTracks() {
 
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-blue-600">
             <span>09 Research Tracks</span>
-            <LuArrowDownRight className="h-4 w-4" />
+            {/* <LuArrowDownRight className="h-4 w-4" /> */}
           </div>
         </div>
       </div>

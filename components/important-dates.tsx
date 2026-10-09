@@ -100,7 +100,7 @@ export default function ImportantDates() {
 
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-slate-400">
             <span>ICETIA 2027</span>
-            <LuArrowDownRight className="h-4 w-4 text-blue-600" />
+            {/* <LuArrowDownRight className="h-4 w-4 text-blue-600" /> */}
           </div>
         </div>
       </div>

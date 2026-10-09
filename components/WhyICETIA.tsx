@@ -32,7 +32,7 @@ export default function WhyICETIA() {
 
   return (
     <section className="border-y border-slate-200 bg-white">
-      <div className="container mx-auto px-5 py-20 lg:px-8 lg:py-28 xl:px-10">
+      <div className="container mx-auto px-5 py-5 lg:px-8 lg:py-8 xl:px-10">
 
         {/* Heading */}
         <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20">
@@ -121,20 +121,20 @@ export default function WhyICETIA() {
         </div>
 
         {/* Closing statement */}
-        <div className="mt-14 flex flex-col gap-6 border-t border-slate-200 pt-8 items-center justify-between">
+        <div className="mt-14 flex flex-col gap-6 border-t border-slate-200 pt-8 items-center lg:items-start">
           <p className="max-w-2xl text-sm leading-7 text-slate-500">
             The 2027 edition is the starting point. Its ambition is to create
             a conference community and intellectual platform that continues to
             grow with each edition.
           </p>
 
-          <Link
-            href="/about"
+          {/* <Link
+            href="/#about"
             className="inline-flex shrink-0 items-center gap-2 text-sm font-semibold text-blue-600 transition-colors hover:text-blue-700"
           >
             Learn more about ICETIA
             <LuArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Link>
+          </Link> */}
         </div>
 
       </div>
