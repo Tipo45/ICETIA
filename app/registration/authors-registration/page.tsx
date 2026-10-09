@@ -296,7 +296,7 @@ export default function AuthorsRegistrationPage() {
                 storageId = uploadedStorageId;
             }
 
-            const result = await register({
+            const registration = await register({
                 firstName: formData.firstName,
                 lastName: formData.lastName,
                 email: formData.email,
@@ -311,6 +311,37 @@ export default function AuthorsRegistrationPage() {
                 })),
                 paperFileId: storageId,
             });
+
+            const registrationId = registration.registrationId;
+
+            const result = await fetch("/api/payment", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: formData.email,
+                    amount: (paymentValue - 5000) * 100,
+                    registrationId,
+                })
+            });
+
+            const paystackResult = await result.json();
+
+            if (!result.ok) {
+                throw new Error(
+                    paystackResult?.message || "Payment initialization failed."
+                );
+            }
+
+            if (result.status) {
+                localStorage.setItem("paymentInformation", JSON.stringify({
+                    amount: paymentValue - 5000,
+                    userEmail: formData.email,
+                }))
+            };
+
+            router.push(paystackResult.data.authorization_url);
 
             // await sendConfirmationEmail({
             //     registrationId: result.registrationId,
