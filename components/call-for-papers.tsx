@@ -17,6 +17,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import ConferenceTracks from "./conference-tracks";
 
 
 const dates = [
@@ -59,37 +60,6 @@ const items = [
       </div>
     ),
   },
-
-  {
-    value: "topic",
-    trigger: "Topics",
-    content: (
-      <div className="grid gap-3 grid-cols-2">
-        {[
-          "Artificial Intelligence & Machine Learning Applications",
-          "Cybersecurity, Privacy & Digital Trust",
-          "Smart Systems, Internet of Things & Intelligent Environments",
-          "Data Science, Analytics & Decision Intelligence",
-          "Cloud Computing, Edge Computing & Digital Infrastructure",
-          "Academic Publishing, Research Visibility & Grant Proposal Development",
-          "Technology Entrepreneurship & Innovation Commercialisation",
-          "Digital Transformation for Education, Governance, Health & Industry",
-        ].map((topic) => (
-          <div
-            key={topic}
-            className="flex items-start gap-3 rounded-lg border border-white/10 bg-white/3 p-4"
-          >
-            <LuCheck className="mt-0.5 h-4 w-4 shrink-0 text-blue-400" />
-
-            <span className="text-xs leading-5 text-slate-400">
-              {topic}
-            </span>
-          </div>
-        ))}
-      </div>
-    ),
-  },
-
   {
     value: "paper-length",
     trigger: "Paper Length",
@@ -122,7 +92,6 @@ const items = [
       </div>
     ),
   },
-
   {
     value: "publication",
     trigger: "Publication",
@@ -357,6 +326,10 @@ export default function CallForPapers() {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="mt-10">
+          <ConferenceTracks />
         </div>
 
         <div className="mt-10 overflow-hidden rounded-xl border border-white/10 bg-[#0b1626]">

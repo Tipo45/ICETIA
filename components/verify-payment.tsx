@@ -26,29 +26,32 @@ export default function PaymentVerification({
 
   const [paymentVerified, setPaymentVerified] = useState(false);
 
+  const trueAmount = amount / 100;
+
   useEffect(() => {
     const paymentInfo = JSON.parse(
-      localStorage.getItem("paymentInfo") || "{}"
+      localStorage.getItem("paymentInformation") || "{}"
     );
+    console.log("Retrieved payment info:", paymentInfo)
 
     if (
-      paymentInfo.amount !== amount / 100 ||
+      paymentInfo.amount !== trueAmount ||
       paymentInfo.userEmail !== email
     ) {
       toast.error("Payment Verification Error");
+      console.error("payment verification unsuccessfull")
     } else {
       toast.success("Payment Verification Successful");
-
-      // Update UI
-      setPaymentVerified(true);
-
-      const timer = setTimeout(() => {
-        router.push(`/registration/success/${registrationId}`);
-      }, 5000);
-
-      return () => clearTimeout(timer);
     }
-  }, [router, amount, email, registrationId]);
+
+
+    setPaymentVerified(true);
+
+    setTimeout(() => {
+      router.push(`/registration/success/${registrationId}`);
+    }, 5000);
+  })
+
 
   return (
     <section>
@@ -61,11 +64,10 @@ export default function PaymentVerification({
           <div className="relative px-6 py-12 text-center lg:px-10 lg:py-14">
             {/* Status Icon */}
             <div
-              className={`mx-auto flex h-20 w-20 items-center justify-center rounded-full border ${
-                paymentVerified
+              className={`mx-auto flex h-20 w-20 items-center justify-center rounded-full border ${paymentVerified
                   ? "border-emerald-400/20 bg-emerald-400/5"
                   : "border-blue-400/20 bg-blue-400/5"
-              }`}
+                }`}
             >
               {paymentVerified ? (
                 <LuCheck className="h-9 w-9 text-emerald-400" />
@@ -84,7 +86,7 @@ export default function PaymentVerification({
             <p className="mx-auto mt-4 max-w-md text-sm leading-6 text-slate-400">
               {paymentVerified ? (
                 <>
-                  Your payment of ₦{amount.toLocaleString()} has been
+                  Your payment of ₦{trueAmount.toLocaleString()} has been
                   successfully verified.
                   <br />
                   <span className="text-slate-500">
@@ -94,7 +96,7 @@ export default function PaymentVerification({
               ) : (
                 <>
                   Please, {email} wait while we confirm your payment of ₦
-                  {amount.toLocaleString()} and complete your registration
+                  {trueAmount.toLocaleString()} and complete your registration
                   for ICETIA 2027.
                 </>
               )}
@@ -122,11 +124,10 @@ export default function PaymentVerification({
               {/* Confirming payment */}
               <div className="flex items-center gap-3 py-4">
                 <div
-                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
-                    paymentVerified
+                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${paymentVerified
                       ? "bg-emerald-400/10"
                       : "bg-blue-400/10"
-                  }`}
+                    }`}
                 >
                   {paymentVerified ? (
                     <LuCheck className="h-4 w-4 text-emerald-400" />
@@ -152,16 +153,14 @@ export default function PaymentVerification({
 
               {/* Registration confirmed */}
               <div
-                className={`flex items-center gap-3 py-4 ${
-                  paymentVerified ? "" : "opacity-50"
-                }`}
+                className={`flex items-center gap-3 py-4 ${paymentVerified ? "" : "opacity-50"
+                  }`}
               >
                 <div
-                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
-                    paymentVerified
+                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${paymentVerified
                       ? "bg-emerald-400/10"
                       : "bg-white/5"
-                  }`}
+                    }`}
                 >
                   {paymentVerified ? (
                     <LuCheck className="h-4 w-4 text-emerald-400" />

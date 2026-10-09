@@ -312,17 +312,10 @@ export default function AuthorsRegistrationPage() {
                 paperFileId: storageId,
             });
 
-            await sendConfirmationEmail({
-                registrationId: result.registrationId,
-            });
+            // await sendConfirmationEmail({
+            //     registrationId: result.registrationId,
+            // });
 
-            toast.success("Registration Successful");
-
-            setTimeout(() => {
-                router.push(
-                    `/registration/success/${result.registrationId}`
-                );
-            }, 1000);
             setIsSubmitting(false);
         } catch (error: any) {
             setIsSubmitting(false);

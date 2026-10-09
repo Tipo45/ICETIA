@@ -266,18 +266,9 @@ export default function RegistrationSection() {
                 country: formData.country,
             });
 
-            await sendConfirmationEmail({
-                registrationId: result.registrationId,
-            });
-
-            toast.success("Registered successfully");
-
-            setTimeout(() => {
-                router.push(
-                    `/registration/success/${result.registrationId}`
-                );
-            }, 1000);
-
+            // await sendConfirmationEmail({
+            //     registrationId: result.registrationId,
+            // });
             setIsSubmitting(false);
             resetForm();
         } catch (error: any) {

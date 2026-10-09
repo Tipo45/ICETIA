@@ -6,7 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { LuArrowDownRight, LuLayers3 } from "react-icons/lu";
+import { LuLayers3 } from "react-icons/lu";
 
 const tracks = [
   {
@@ -249,7 +249,7 @@ export default function ConferenceTracks() {
   return (
     <section
       id="tracks"
-      className="border-b border-slate-200 bg-white"
+      className="border-b border-[#080f1a]/200"
     >
       <div className="container mx-auto px-5 py-4 lg:px-8 lg:py-6 xl:px-10 xl:py-10">
         {/* Header */}
@@ -260,7 +260,7 @@ export default function ConferenceTracks() {
               Conference Tracks
             </div>
 
-            <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-950 lg:text-4xl xl:text-5xl">
+            <h2 className="mt-4 text-3xl font-bold tracking-tight text-white lg:text-4xl xl:text-5xl">
               Explore the research
               <span className="text-blue-600"> landscape.</span>
             </h2>
@@ -290,7 +290,7 @@ export default function ConferenceTracks() {
                       {String(index + 1).padStart(2, "0")}
                     </span>
 
-                    <span className="text-base font-semibold text-slate-900 transition-colors group-hover:text-blue-600 lg:text-lg">
+                    <span className="text-base font-semibold text-white transition-colors group-hover:text-blue-600 lg:text-lg">
                       {track.title}
                     </span>
                   </div>
@@ -301,7 +301,7 @@ export default function ConferenceTracks() {
                     {track.topics.map((topic, topicIndex) => (
                       <div
                         key={`${track.title}-${topicIndex}`}
-                        className="flex items-start gap-3 text-sm leading-6 text-slate-600"
+                        className="flex items-start gap-3 text-sm leading-6 text-slate-400"
                       >
                         <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
                         <span>{topic}</span>

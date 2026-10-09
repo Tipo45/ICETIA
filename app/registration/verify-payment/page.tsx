@@ -4,6 +4,11 @@ import PaymentVerification from "@/components/verify-payment";
 export default async function VerifyPayment({searchParams}:{ searchParams: Promise<{ [key: string]: string }>;}) {
   const { reference, registrationId } = await searchParams;
 
+  if (!reference || !registrationId) {
+    return <p>Missing payment reference or registration ID.</p>;
+  }
+
+
   const response = await fetch(
     `http://localhost:3000/api/verify-payment/${reference}`,
   );

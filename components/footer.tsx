@@ -153,50 +153,8 @@ export default function Footer() {
             </h4>
 
             <nav className="mt-5 flex flex-col gap-3">
-              {quickLinks.slice(0).map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className="w-fit text-sm text-slate-400 transition-colors hover:text-white"
-                >
-                  {link.name}
-                </Link>
-              ))}
 
-              <Collapsible>
-                <CollapsibleTrigger className="text-sm text-slate-400 hover:text-white">Program</CollapsibleTrigger>
-                <CollapsibleContent className="pb-3">
-                  <div className="ml-3 border-l border-slate-200">
-                    {programItems.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className="block px-4 py-2.5 text-sm text-slate-500 transition-colors hover:text-white"
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
-
-              <Collapsible>
-                <CollapsibleTrigger className="text-sm text-slate-400 hover:text-white">Committees</CollapsibleTrigger>
-                <CollapsibleContent className="pb-3">
-                  <div className="ml-3 border-l border-slate-200">
-                    {committeeItems.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className="block px-4 py-2.5 text-sm text-slate-500 transition-colors hover:text-white"
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
-
+              {/* for authors */}
               <Collapsible>
                 <CollapsibleTrigger className="text-sm text-slate-400 hover:text-white">For Authors</CollapsibleTrigger>
                 <CollapsibleContent className="pb-3">
@@ -214,7 +172,44 @@ export default function Footer() {
                 </CollapsibleContent>
               </Collapsible>
 
+              {/* committee */}
+              <Collapsible>
+                <CollapsibleTrigger className="text-sm text-slate-400 hover:text-white">Committees</CollapsibleTrigger>
+                <CollapsibleContent className="pb-3">
+                  <div className="ml-3 border-l border-slate-200">
+                    {committeeItems.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className="block px-4 py-2.5 text-sm text-slate-500 transition-colors hover:text-white"
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
 
+              {/* program */}
+              <Collapsible>
+                <CollapsibleTrigger className="text-sm text-slate-400 hover:text-white">Program</CollapsibleTrigger>
+                <CollapsibleContent className="pb-3">
+                  <div className="ml-3 border-l border-slate-200">
+                    {programItems.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className="block px-4 py-2.5 text-sm text-slate-500 transition-colors hover:text-white"
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+
+
+              {/* about */}
               {quickLinks.slice(3).map((link) => (
                 <Link
                   key={link.name}
@@ -225,6 +220,8 @@ export default function Footer() {
                 </Link>
               ))}
 
+
+              {/* location */}
               <Collapsible>
                 <CollapsibleTrigger className="text-sm text-slate-400 hover:text-white">Location</CollapsibleTrigger>
                 <CollapsibleContent className="pb-3">
@@ -241,6 +238,16 @@ export default function Footer() {
                   </div>
                 </CollapsibleContent>
               </Collapsible>
+
+              {quickLinks.slice(0).map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className="w-fit text-sm text-slate-400 transition-colors hover:text-white"
+                >
+                  {link.name}
+                </Link>
+              ))}
             </nav>
           </div>
 

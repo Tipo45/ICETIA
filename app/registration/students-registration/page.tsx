@@ -313,8 +313,6 @@ export default function RegistrationSection() {
             //     registrationId: result.registrationId,
             // });
 
-            // toast.success("Registered successfully");
-
             setIsSubmitting(false);
             resetForm();
         } catch (error: any) {
