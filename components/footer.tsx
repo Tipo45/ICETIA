@@ -49,30 +49,30 @@ const committeeItems = [
 ];
 
 const forAuthorItems = [
-    {
-      name: "Camera Ready",
-      href: "/conference/for-authors/camera-ready",
-    },
-    {
-      name: "Call For Papers",
-      href: "/conference/for-authors/call-for-papers",
-    },
-    {
-      name: "Call For Workshop Papers",
-      href: "/conference/for-authors/call-for-workshop-papers",
-    },
-  ];
+  {
+    name: "Camera Ready",
+    href: "/conference/for-authors/camera-ready",
+  },
+  {
+    name: "Call For Papers",
+    href: "/conference/for-authors/call-for-papers",
+  },
+  {
+    name: "Call For Workshop Papers",
+    href: "/conference/for-authors/call-for-workshop-papers",
+  },
+];
 
-  const locationItems = [
-    {
-      name: "Venue",
-      href: "/location/venue"
-    },
-    {
-      name: "Visa",
-      href: "/location/visa"
-    }
-  ]
+const locationItems = [
+  {
+    name: "Venue",
+    href: "/location/venue"
+  },
+  {
+    name: "Visa",
+    href: "/location/visa"
+  }
+];
 
 const sponsors = [
   "MTN",
@@ -256,9 +256,13 @@ export default function Footer() {
                 <LuMapPin className="mt-0.5 h-4 w-4 shrink-0 text-blue-500" />
 
                 <p className="leading-6">
+                  Directorate of Research and Quality Assurance
+                  <br />
                   Federal University Otuoke
                   <br />
-                  Ogbia, Bayelsa State, Nigeria
+                  PMB 126 Bayelsa State
+                  <br />
+                  Nigeria
                 </p>
               </div>
 
