@@ -11,7 +11,7 @@ export default async function VerifyPayment({searchParams}:{ searchParams: Promi
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 
-// const siteUrl = "http://localhost:3000";
+// const siteUrl ="http://localhost:3000";
 
   const response = await fetch(
     `${siteUrl}/api/verify-payment/${reference}`,

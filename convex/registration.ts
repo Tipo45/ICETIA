@@ -436,7 +436,7 @@ export const sendReminder = mutation({
         })
 
         await resend.sendEmail(ctx, {
-            from: "icetia <icetia@resend.dev>",
+            from: "icetia <conference@icetiaconference.org>",
             to: registration.email,
             subject: subject,
             text: body,

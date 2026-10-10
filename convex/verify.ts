@@ -263,10 +263,18 @@ const response = await fetch(
   }),
 });
 
+const result = await response.json();
+
 if (!response.ok) {
+  console.error("Resend error:", result);
   const details = await response.text();
-  throw new Error(`Ticket email failed: ${details}`);
+  // throw new Error(`Ticket email failed: ${details}`);
+  throw new Error(
+    `Ticket email failed: ${JSON.stringify(result)}`
+  );
 }
+
+console.log("Resend email response:", result);
 
 // Keep your existing ticketEmailSent update here.
 
