@@ -1,4 +1,4 @@
-type RegistrationConfirmationEmailProps = {
+export type RegistrationConfirmationEmailProps = {
   firstName: string;
   lastName: string;
   email: string;
@@ -16,13 +16,13 @@ type RegistrationConfirmationEmailProps = {
   }[];
 };
 
-type TicketEmailProps = {
+export type TicketEmailProps = {
   firstName: string;
   registrationNumber: string;
   qrCode: string;
 };
 
-type ReminderEmailProps = {
+export type ReminderEmailProps = {
   firstName: string;
   registrationNumber: string;
 }
@@ -37,14 +37,14 @@ export function registrationConfirmationEmail({
 }: RegistrationConfirmationEmailProps): string {
 
   const coAuthorSection =
-  category === "author" &&
-  coAuthors &&
-  coAuthors.length > 0
-    ? `
+    category === "author" &&
+      coAuthors &&
+      coAuthors.length > 0
+      ? `
 Co-Authors
 ${coAuthors
-  .map(
-    (author, index) => `
+        .map(
+          (author, index) => `
 ${index + 1}. ${author.firstName} ${author.lastName}
    Email: ${author.email ?? "-"}
    Institution: ${author.institution ?? "-"}
@@ -52,10 +52,10 @@ ${index + 1}. ${author.firstName} ${author.lastName}
    Department: ${author.department ?? "-"}
    Degree: ${author.degree ?? "-"}
 `
-  )
-  .join("\n")}
+        )
+        .join("\n")}
 `
-    : "";
+      : "";
 
   return `
 Dear ${firstName || 'Participant'},
@@ -132,7 +132,8 @@ export function ticketEmail({
   src="${qrCode}"
   width="220"
   height="220"
-  alt="Conference QR Code"
+  alt="ICETIA 2027 Conference QR Code"
+  style="display:block; width:220px; height:220px;"
 />
 
 <p>

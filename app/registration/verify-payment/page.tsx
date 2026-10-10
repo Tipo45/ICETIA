@@ -8,16 +8,14 @@ export default async function VerifyPayment({searchParams}:{ searchParams: Promi
     return <p>Missing payment reference or registration ID.</p>;
   }
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
-  // const response = await fetch(
-  //   `http://localhost:3000/api/verify-payment/${reference}`,
-  // );
+
+// const siteUrl = "http://localhost:3000";
 
   const response = await fetch(
-    `https://icetia.vercel.app/api/verify-payment/${reference}`,   );
-
-  // const response = await fetch(
-  //   `https://icetia.org/api/verify-payment/${reference}`,   );
+    `${siteUrl}/api/verify-payment/${reference}`,
+  );
 
   const result = await response.json();
   console.log("payment verification result:", result)
@@ -26,7 +24,7 @@ export default async function VerifyPayment({searchParams}:{ searchParams: Promi
 
   return (
     <section>
-      <PaymentVerification reference={reference} amount={result.data.amount} email={result.data.customer.email} registrationId={registrationId}  />
+      <PaymentVerification reference={reference} registrationId={registrationId}  />
     </section>
   );
 }

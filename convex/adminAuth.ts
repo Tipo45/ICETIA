@@ -5,6 +5,7 @@ import { internal } from "./_generated/api";
 import { v } from "convex/values";
 import bcrypt from "bcryptjs";
 import type { Id } from "./_generated/dataModel";
+import { createHash, randomBytes } from "node:crypto";
 
 export const createInitialAdmin = internalAction({
     args: {
@@ -87,6 +88,7 @@ export const loginAdmin = action({
         success: boolean;
         adminId: string;
         email: string;
+        token: string;
     }> => {
         const email = args.email.trim().toLowerCase();
 
@@ -110,10 +112,25 @@ export const loginAdmin = action({
             throw new Error("Invalid email or password");
         }
 
+        const token = randomBytes(32).toString("hex");
+
+        const tokenHash = createHash("sha256")
+            .update(token)
+            .digest("hex");
+
+        const expiresAt = Date.now() + 60 * 60 * 1000;
+
+        await ctx.runMutation(internal.registration.createAdminSession, {
+            adminId: admin._id,
+            tokenHash,
+            expiresAt,
+        });
+
         return {
             success: true,
             adminId: admin._id,
             email: admin.email,
+            token,
         };
     },
 });

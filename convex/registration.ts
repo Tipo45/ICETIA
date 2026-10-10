@@ -214,103 +214,96 @@ export const registerStudent = mutation({
     },
 });
 
-export const sendMail = mutation({
-    args: {
-        registrationId: v.id("registrations"),
-    },
-    handler: async (ctx, args) => {
+// export const sendMail = internalMutation({
+//     args: {
+//         registrationId: v.id("registrations"),
+//     },
+//     handler: async (ctx, args) => {
 
-        const registration = await ctx.db.get(args.registrationId);
+//         const registration = await ctx.db.get(args.registrationId);
 
-        if (!registration) {
-            throw new ConvexError("Registration not found.");
-        }
+//         if (!registration) {
+//             throw new ConvexError("Registration not found.");
+//         }
 
-        const existing = await ctx.db
-            .query("registrations")
-            .withIndex("by_email", q => q.eq("email", registration.email))
-            .unique();
+//         if (registration.confirmationEmailSent) {
+//             return {
+//                 success: true,
+//                 alreadySent: true,
+//             };
+//         }
 
-        if (!existing) {
-            throw new ConvexError("No registration found for this email.");
-        }
+//         const existing = await ctx.db
+//             .query("registrations")
+//             .withIndex("by_email", q => q.eq("email", registration.email))
+//             .unique();
 
-        const subject = "ICETIA 2027 Registration Confirmation";
+//         if (!existing) {
+//             throw new ConvexError("No registration found for this email.");
+//         }
 
-        const body = registrationConfirmationEmail({
-            firstName: existing.firstName,
-            lastName: existing.lastName,
-            email: existing.email,
-            category: existing.category,
-            amountPaid: existing.amount,
-            coAuthors: existing.coAuthors,
-        });
+//         const subject = "ICETIA 2027 Registration Confirmation";
 
-        await resend.sendEmail(ctx, {
-            from: "ICETIA <icetia@resend.dev>",
-            to: registration.email,
-            subject: subject,
-            text: body,
-        });
+//         const body = registrationConfirmationEmail({
+//             firstName: existing.firstName,
+//             lastName: existing.lastName,
+//             email: existing.email,
+//             category: existing.category,
+//             amountPaid: existing.amount,
+//             coAuthors: existing.coAuthors,
+//         });
 
-        await ctx.db.insert("emails", {
-            to: registration.email,
-            subject: subject,
-            body,
-        });
+//         await resend.sendEmail(ctx, {
+//             from: "ICETIA <icetia@resend.dev>",
+//             to: registration.email,
+//             subject: subject,
+//             text: body,
+//         });
 
-        await ctx.db.patch(registration._id, {
-            confirmationEmailSent: true,
-        });
+//         await ctx.db.insert("emails", {
+//             to: registration.email,
+//             subject: subject,
+//             body,
+//         });
 
-        await ctx.scheduler.runAfter(
-            2 * 60 * 1000,
-            api.registration.sendConferenceTicket,
-            {
-                registrationId: registration._id,
-            }
-        );
+//         await ctx.db.patch(registration._id, {
+//             confirmationEmailSent: true,
+//         });
 
-    }
-});
+//         await ctx.scheduler.runAfter(
+//             2 * 60 * 1000,
+//             api.registration.sendConferenceTicket,
+//             {
+//                 registrationId: registration._id,
+//             }
+//         );
 
-export const sendConferenceTicket = mutation({
-    args: {
-        registrationId: v.id("registrations"),
-    },
+//     }
+// });
 
-    handler: async (ctx, args) => {
-        const registration = await ctx.db.get(args.registrationId);
+export const getRegistrationForEmail = internalQuery({
+  args: {
+    registrationId: v.id("registrations"),
+  },
 
+  handler: async (ctx, args) => {
+    const registration = await ctx.db.get(
+      args.registrationId
+    );
 
-        if (!registration) {
-            throw new ConvexError("Registration not found.");
-        }
+    if (!registration) return null;
 
-        const qrCode =
-            `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(
-                registration.registrationNumber
-            )}`;
-
-        const subject = "Your ICETIA 2027 Conference Ticket";
-
-        const body = ticketEmail({
-            firstName: registration.firstName,
-            registrationNumber: registration.registrationNumber,
-            qrCode,
-        });
-
-        await resend.sendEmail(ctx, {
-            from: "ICETIA <icetia@resend.dev>",
-            to: registration.email,
-            subject: subject,
-            html: body,
-        });
-
-        await ctx.db.patch(registration._id, {
-            ticketSent: true,
-        });
-    },
+    return {
+      _id: registration._id,
+      firstName: registration.firstName,
+      lastName: registration.lastName,
+      email: registration.email,
+      category: registration.category,
+      amount: registration.amount,
+      coAuthors: registration.coAuthors,
+      paymentStatus: registration.paymentStatus,
+    };
+  },
 });
 
 export const getParticipants = query({
@@ -376,22 +369,50 @@ export const getParticipants = query({
         }
 
         return Promise.all(
-      participants.map(async (participant) => ({
-        ...participant,
-        paperUrl: participant.paperFileId
-          ? await ctx.storage.getUrl(participant.paperFileId)
-          : null,
-      }))
-    );
-  },
+            participants.map(async (participant) => ({
+                ...participant,
+                paperUrl: participant.paperFileId
+                    ? await ctx.storage.getUrl(participant.paperFileId)
+                    : null,
+            }))
+        );
+    },
 });
 
 export const sendReminder = mutation({
     args: {
         registrationId: v.id("registrations"),
+        token: v.string(),
     },
 
     handler: async (ctx, args) => {
+
+        const tokenHash = await crypto.subtle.digest(
+      "SHA-256",
+      new TextEncoder().encode(args.token)
+    );
+
+    const tokenHashHex = Array.from(new Uint8Array(tokenHash))
+      .map((byte) => byte.toString(16).padStart(2, "0"))
+      .join("");
+
+    const session = await ctx.db
+      .query("adminSessions")
+      .withIndex("by_tokenHash", (q) =>
+        q.eq("tokenHash", tokenHashHex)
+      )
+      .unique();
+
+    if (!session || session.expiresAt <= Date.now()) {
+      throw new ConvexError("Unauthorized: admin login required.");
+    }
+
+    const admin = await ctx.db.get(session.adminId);
+
+    if (!admin) {
+      throw new ConvexError("Unauthorized: admin not found.");
+    }
+
         const registration = await ctx.db.get(args.registrationId);
 
         if (!registration) {
@@ -415,11 +436,13 @@ export const sendReminder = mutation({
         })
 
         await resend.sendEmail(ctx, {
-            from: "ICETIA <icetia@resend.dev>",
+            from: "icetia <icetia@resend.dev>",
             to: registration.email,
             subject: subject,
             text: body,
         });
+
+        return { success: true };
     },
 });
 
@@ -461,4 +484,50 @@ export const getAdminByEmail = internalQuery({
             )
             .unique();
     },
+});
+
+export const createAdminSession = internalMutation({
+  args: {
+    adminId: v.id("admins"),
+    tokenHash: v.string(),
+    expiresAt: v.number(),
+  },
+
+  handler: async (ctx, args) => {
+    return await ctx.db.insert("adminSessions", {
+      adminId: args.adminId,
+      tokenHash: args.tokenHash,
+      expiresAt: args.expiresAt,
+    });
+  },
+});
+
+export const getAdminSessionByTokenHash = internalQuery({
+  args: {
+    tokenHash: v.string(),
+  },
+
+  handler: async (ctx, args) => {
+    const session = await ctx.db
+      .query("adminSessions")
+      .withIndex("by_tokenHash", (q) =>
+        q.eq("tokenHash", args.tokenHash)
+      )
+      .unique();
+
+    if (!session || session.expiresAt <= Date.now()) {
+      return null;
+    }
+
+    const admin = await ctx.db.get(session.adminId);
+
+    if (!admin) {
+      return null;
+    }
+
+    return {
+      adminId: admin._id,
+      email: admin.email,
+    };
+  },
 });

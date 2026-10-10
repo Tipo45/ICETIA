@@ -101,7 +101,15 @@ export default function ParticipantsPage() {
     try {
       setSendingId(registrationId);
 
-      await sendReminder({ registrationId });
+      const token = sessionStorage.getItem("adminToken");
+
+      if (!token) {
+        toast.error("Your admin session has expired. Please log in again.");
+        router.push("/admin-login");
+        return;
+      }
+
+      await sendReminder({ registrationId, token });
 
       toast.success("Reminder email sent successfully.");
     } catch (error: any) {
@@ -113,6 +121,11 @@ export default function ParticipantsPage() {
     } finally {
       setSendingId(null);
     }
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("adminToken");
+    router.push("/admin-login");
   };
 
   return (
@@ -163,7 +176,7 @@ export default function ParticipantsPage() {
             </div>
 
             <Button
-              onClick={() => router.push("/admin-login")}
+              onClick={handleLogout}
               className="h-auto bg-red-600 rounded-2xl px-5 py-3 text-xs font-semibold uppercase tracking-wide text-white hover:bg-red-700"
             >
               Logout
@@ -538,12 +551,12 @@ export default function ParticipantsPage() {
                           <td className="px-5 py-4 align-top">
                             <span
                               className={`inline-flex items-center border px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.08em] ${participant.category ===
-                                  "author"
-                                  ? "border-blue-200 bg-blue-50 text-blue-700"
-                                  : participant.category ===
-                                    "student"
-                                    ? "border-purple-200 bg-purple-50 text-purple-700"
-                                    : "border-slate-200 bg-slate-50 text-slate-600"
+                                "author"
+                                ? "border-blue-200 bg-blue-50 text-blue-700"
+                                : participant.category ===
+                                  "student"
+                                  ? "border-purple-200 bg-purple-50 text-purple-700"
+                                  : "border-slate-200 bg-slate-50 text-slate-600"
                                 }`}
                             >
                               {participant.category}

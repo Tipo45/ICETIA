@@ -7,9 +7,7 @@ import { useRouter } from "next/navigation";
 import { useMutation } from "convex/react";
 import { toast } from "sonner";
 import { Country } from "country-state-city";
-
 import { api } from "@/convex/_generated/api";
-
 import {
     validateCountry,
     validateDepartment,
@@ -18,7 +16,6 @@ import {
     validateInstitution,
     validateLastName,
 } from "@/components/types/validation";
-
 import {
     Select,
     SelectContent,
@@ -27,7 +24,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-
 import {
     FiArrowLeft,
     FiArrowRight,
@@ -37,7 +33,6 @@ import {
     FiMail,
     FiUser,
 } from "react-icons/fi";
-
 import {
     LuBuilding2,
     LuCalendarDays,
@@ -53,8 +48,8 @@ import {
     LuRefreshCw,
     LuUsers,
 } from "react-icons/lu";
-
 import { MdOutlineEventNote } from "react-icons/md";
+
 
 export default function RegistrationSection() {
     const router = useRouter();
@@ -64,9 +59,6 @@ export default function RegistrationSection() {
     const paymentValue = 30000;
 
     const register = useMutation(api.registration.registerStudent);
-    const sendConfirmationEmail = useMutation(
-        api.registration.sendMail
-    );
 
     const [step, setStep] = useState<1 | 2>(1);
 
@@ -294,27 +286,15 @@ export default function RegistrationSection() {
 
             const paystackResult = await result.json();
 
-            if (!result.ok) {
+            if (!result.ok || !paystackResult.status) {
                 throw new Error(
                     paystackResult?.message || "Payment initialization failed."
                 );
             }
 
-            if (result.status) {
-                localStorage.setItem("paymentInformation", JSON.stringify({
-                    amount: paymentValue - 5000,
-                    userEmail: formData.email,
-                }))
-            };
-
             router.push(paystackResult.data.authorization_url);
 
-            // await sendConfirmationEmail({
-            //     registrationId: result.registrationId,
-            // });
-
             setIsSubmitting(false);
-            resetForm();
         } catch (error: any) {
             setIsSubmitting(false);
             toast.error(
@@ -322,6 +302,8 @@ export default function RegistrationSection() {
                 error?.message ??
                 "Something went wrong. Please try again."
             );
+        } finally {
+            resetForm();
         }
     };
 

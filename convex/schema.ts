@@ -84,8 +84,15 @@ export default defineSchema({
     }),
 
     admins: defineTable({
-    email: v.string(),
-    passwordHash: v.string(),
-})
-    .index("by_email", ["email"]),
+        email: v.string(),
+        passwordHash: v.string(),
+    })
+        .index("by_email", ["email"]),
+
+    adminSessions: defineTable({
+        adminId: v.id("admins"),
+        tokenHash: v.string(),
+        expiresAt: v.number(),
+    })
+        .index("by_tokenHash", ["tokenHash"]),
 })

@@ -79,7 +79,6 @@ export default function AuthorsRegistrationPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const register = useMutation(api.registration.registerAuthor);
-    const sendConfirmationEmail = useMutation(api.registration.sendMail);
     const generateUploadUrl = useMutation(
         api.registration.generateUploadUrl
     );
@@ -328,24 +327,13 @@ export default function AuthorsRegistrationPage() {
 
             const paystackResult = await result.json();
 
-            if (!result.ok) {
+            if (!result.ok || !paystackResult.status) {
                 throw new Error(
                     paystackResult?.message || "Payment initialization failed."
                 );
             }
 
-            if (result.status) {
-                localStorage.setItem("paymentInformation", JSON.stringify({
-                    amount: paymentValue - 5000,
-                    userEmail: formData.email,
-                }))
-            };
-
             router.push(paystackResult.data.authorization_url);
-
-            // await sendConfirmationEmail({
-            //     registrationId: result.registrationId,
-            // });
 
             setIsSubmitting(false);
         } catch (error: any) {

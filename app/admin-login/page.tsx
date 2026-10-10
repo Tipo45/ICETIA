@@ -112,6 +112,11 @@ export default function AdminLoginPage() {
         try {
             setIsSubmitting(true);
             const result = await loginAdmin({ email, password });
+            
+            if (result.success) {
+      sessionStorage.setItem("adminToken", result.token);
+            }
+
             const admin = "admin-" + result.adminId.slice(0, 10);
             route.push(`/participants-list/${admin}`);
         } catch (error) {

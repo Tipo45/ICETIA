@@ -12,7 +12,9 @@ import type * as adminAuth from "../adminAuth.js";
 import type * as email from "../email.js";
 import type * as emailTemplate from "../emailTemplate.js";
 import type * as http from "../http.js";
+import type * as payment from "../payment.js";
 import type * as registration from "../registration.js";
+import type * as verify from "../verify.js";
 
 import type {
   ApiFromModules,
@@ -25,7 +27,9 @@ declare const fullApi: ApiFromModules<{
   email: typeof email;
   emailTemplate: typeof emailTemplate;
   http: typeof http;
+  payment: typeof payment;
   registration: typeof registration;
+  verify: typeof verify;
 }>;
 
 /**

@@ -96,10 +96,6 @@ export default function RegistrationSection() {
         api.registration.registerParticipant
     );
 
-    const sendConfirmationEmail = useMutation(
-        api.registration.sendMail
-    );
-
     const [step, setStep] = useState<1 | 2>(1);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -282,26 +278,15 @@ export default function RegistrationSection() {
 
             const paystackResult = await result.json();
 
-            if (!result.ok) {
+            if (!result.ok || !paystackResult.status) {
                 throw new Error(
                     paystackResult?.message || "Payment initialization failed."
                 );
             }
 
-            if (result.status) {
-                localStorage.setItem("paymentInformation", JSON.stringify({
-                    amount: paymentValue - 5000,
-                    userEmail: formData.email,
-                }))
-            };
-
             router.push(paystackResult.data.authorization_url);
 
-            // await sendConfirmationEmail({
-            //     registrationId: result.registrationId,
-            // });
             setIsSubmitting(false);
-            resetForm();
         } catch (error: any) {
             setIsSubmitting(false);
             toast.error(
@@ -309,6 +294,8 @@ export default function RegistrationSection() {
                 error?.message ??
                 "Something went wrong. Please try again."
             );
+        } finally {
+            resetForm();
         }
     };
 

@@ -14,7 +14,6 @@ import {
   LuBriefcase,
   LuCalendarDays,
   LuCircleCheck,
-  LuGraduationCap,
   LuMegaphone,
   LuPresentation,
   LuShieldCheck,
@@ -57,72 +56,8 @@ const committees = [
       },
     ],
   },
-
   {
     number: "05",
-    title: "Technical Programme Committee",
-    shortTitle: "Technical Programme",
-    description:
-      "Coordinates the Call for Papers, peer review, technical tracks, paper decisions, camera-ready submissions and the technical conference programme.",
-    icon: LuGraduationCap,
-    chair: {
-      role: "Chair",
-      name: "Dr Oluwaseun Bamgboye",
-      href: "https://www.researchgate.net/profile/Oluwaseun-Bamgboye",
-      affiliation: "Edinburgh Napier University, United Kingdom",
-    },
-    coChairs: [
-      {
-        role: "Co-Chair",
-        name: "Professor Victor Ekong",
-        href: "https://www.linkedin.com/in/victor-ekong-6b2b0227b/",
-        affiliation: "University of Uyo, Nigeria",
-      },
-      {
-        role: "Co-Chair",
-        name: "Professor Abayomi Jegede",
-        href: "https://www.linkedin.com/in/abayomi-jegede-46131671/",
-        affiliation: "Edo State University Iyamho, Nigeria",
-      },
-    ],
-    members: [
-      {
-        name: "Associate Prof. Godwin A. Thomas",
-        href: "https://scholar.google.com/citations?user=xrLJ2IQAAAAJ&hl=en",
-        affiliation: "University of Jos, Nigeria",
-      },
-      {
-        name: "Dr Belinda Onyeashie",
-        href: "https://www.linkedin.com/in/dr-belinda-onyeashie-b709a398/",
-        affiliation:
-          "University of the West of England, United Kingdom",
-      },
-      {
-        name: "Alams Mammuan",
-        href: "https://www.researchgate.net/profile/Mammuan-Alams",
-        affiliation: "Cranfield University, United Kingdom",
-      },
-      {
-        name: "Dr Fekumo Bolouembeledo",
-        href: "https://scholar.google.com/citations?hl=en&user=q8PraKkAAAAJ",
-        affiliation: "University of South Africa, Pretoria",
-      },
-      {
-        name: "Faisal A. Garba",
-        href: "https://www.linkedin.com/in/2faisalgama/",
-        affiliation:
-          "Sa'adatu Rimi College of Education, Nigeria",
-      },
-      {
-        name: "Dr. Ikiomoye Douglas Emmanuel",
-        href: "https://www.linkedin.com/in/ikiomoye-douglas-emmanuel/",
-        affiliation: "UGM Manchester, United Kingdom",
-      },
-    ],
-  },
-
-  {
-    number: "06",
     title: "Sponsorship, Partnership & Exhibition Committee",
     shortTitle: "Sponsorship & Exhibition",
     description:
@@ -161,9 +96,8 @@ const committees = [
       },
     ],
   },
-
   {
-    number: "07",
+    number: "06",
     title: "Publicity, Media & Website Committee",
     shortTitle: "Publicity, Media & Website",
     description:
@@ -237,9 +171,8 @@ const committees = [
       },
     ],
   },
-
   {
-    number: "08",
+    number: "07",
     title: "Publications & Editorial Committee",
     shortTitle: "Publications & Editorial",
     description:
@@ -289,9 +222,8 @@ const committees = [
       },
     ],
   },
-
   {
-    number: "09",
+    number: "08",
     title: "Logistics, Protocol & Accommodation Committee",
     shortTitle: "Logistics & Protocol",
     description:
@@ -331,9 +263,8 @@ const committees = [
       },
     ],
   },
-
   {
-    number: "10",
+    number: "09",
     title: "Registration & Welfare Committee",
     shortTitle: "Registration & Welfare",
     description:
@@ -372,9 +303,8 @@ const committees = [
       },
     ],
   },
-
   {
-    number: "11",
+    number: "10",
     title: "Workshop & Special Sessions Committee",
     shortTitle: "Workshops & Special Sessions",
     description:
@@ -414,9 +344,8 @@ const committees = [
       },
     ],
   },
-
   {
-    number: "12",
+    number: "11",
     title: "ICT, Virtual Participation & Technical Support Team",
     shortTitle: "ICT & Technical Support",
     description:
