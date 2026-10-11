@@ -40,7 +40,7 @@ export async function POST(request: Request) {
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
-    // const siteUrl = "http://localhost:3000";
+    // const siteUrl = "https://icetiaconference.org";
 
     const response = await fetch(
       "https://api.paystack.co/transaction/initialize",
