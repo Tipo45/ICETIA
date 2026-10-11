@@ -54,6 +54,7 @@ import {
 } from "react-icons/lu";
 
 import { MdOutlineEventNote } from "react-icons/md";
+import { FaTimesCircle } from "react-icons/fa";
 
 const benefits = [
     {
@@ -97,6 +98,10 @@ export default function RegistrationSection() {
     );
 
     const [step, setStep] = useState<1 | 2>(1);
+
+    const [paymentStatus, setPaymentStatus] = useState<
+        "idle" | "pending" | "cancelled"
+    >("idle");
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -252,7 +257,14 @@ export default function RegistrationSection() {
     };
 
     const registerParticipant = async () => {
+
+        const paymentWindow = window.open("about:blank", "_blank");
+
         setIsSubmitting(true);
+        setPaymentStatus("pending");
+
+        let gatewayOpened = false;
+
         try {
             const registration = await register({
                 firstName: formData.firstName,
@@ -284,19 +296,51 @@ export default function RegistrationSection() {
                 );
             }
 
-            router.push(paystackResult.data.authorization_url);
+            if (paymentWindow && !paymentWindow.closed) {
+                paymentWindow.location.href =
+                    paystackResult.data.authorization_url;
+
+                gatewayOpened = true;
+            } else {
+                // Popup blocked or closed: fall back to same-tab checkout.
+                router.push(paystackResult.data.authorization_url);
+                return;
+            }
+
+            // Detect when the Paystack tab is closed.
+            const monitor = window.setInterval(() => {
+                if (paymentWindow.closed) {
+                    window.clearInterval(monitor);
+
+                    setIsSubmitting(false);
+
+                    // This means the gateway was closed, not that
+                    // the transaction is confirmed to have failed.
+                    setPaymentStatus("cancelled");
+
+                    toast.info(
+                        "Payment window closed. Please check your payment status before retrying."
+                    );
+                }
+            }, 1000);
+
+        } catch (error: unknown) {
+            if (paymentWindow && !paymentWindow.closed) {
+                paymentWindow.close();
+            }
 
             setIsSubmitting(false);
-        } catch (error: any) {
-            setIsSubmitting(false);
+            setPaymentStatus("idle");
+
             toast.error(
-                error?.data ??
-                error?.message ??
-                "Something went wrong. Please try again."
+                error instanceof Error
+                    ? error.message
+                    : "Something went wrong. Please try again."
             );
-        } finally {
-            resetForm();
-        }
+        } 
+        // finally {
+        //     resetForm();
+        // }
     };
 
     const inputClass = (
@@ -319,6 +363,46 @@ export default function RegistrationSection() {
     return (
         <main className="min-h-screen bg-white">
             <Navbar />
+
+            {paymentStatus === "cancelled" && (
+                <div className="fixed left-1/2 top-1/2 z-10 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 -translate-y-1/2 animate-in fade-in zoom-in-95 duration-200">
+                    <div className="rounded-2xl border border-amber-200 bg-white p-5 shadow-2xl">
+                        <div className="flex items-start gap-3">
+
+                            <div className="min-w-0 flex-1">
+                                <h2 className="font-semibold text-slate-900">
+                                    Payment window closed
+                                </h2>
+
+                                <p className="mt-1 text-sm leading-5 text-slate-600">
+                                    Your payment may still have succeeded. Verify
+                                    your payment status before trying again.
+                                </p>
+                            </div>
+
+                            <button
+                                type="button"
+                                onClick={() => setPaymentStatus("idle")}
+                                aria-label="Dismiss notification"
+                                className="text-xl leading-none text-slate-400 hover:text-slate-700"
+                            >
+                                <FaTimesCircle />
+                            </button>
+                        </div>
+
+                        <div className="mt-4 flex items-center justify-between gap-3 border-t border-slate-100 pt-3">
+                            <a
+                                href="/contact"
+                                className="text-sm font-medium text-blue-600 hover:text-blue-700"
+                            >
+                                Contact us
+                            </a>
+
+
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* HERO */}
             <section className="border-b border-slate-200 bg-[#061426] text-white">

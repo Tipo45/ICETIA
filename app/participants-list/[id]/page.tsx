@@ -36,6 +36,9 @@ export default function ParticipantsPage() {
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const router = useRouter();
+  const sendConferenceMail = useMutation(api.registration.sendMail);
+  const sendEmailTicket = useMutation(api.registration.sendConferenceTicket);
+  const sendReminder = useMutation(api.registration.sendReminder);
 
   const [category, setCategory] = useState<
     "author" | "participant" | "student" | undefined
@@ -63,8 +66,6 @@ export default function ParticipantsPage() {
       ? new Date(paymentDate).getTime()
       : undefined,
   });
-
-  const sendReminder = useMutation(api.registration.sendReminder);
 
   const participantsList = participants ?? [];
 
@@ -112,6 +113,46 @@ export default function ParticipantsPage() {
       await sendReminder({ registrationId, token });
 
       toast.success("Reminder email sent successfully.");
+    } catch (error: any) {
+      toast.error(
+        error?.data ??
+        error?.message ??
+        "Failed to send reminder email."
+      );
+    } finally {
+      setSendingId(null);
+    }
+  };
+
+  const handleSendConferenceMail = async (
+    registrationId: Id<"registrations">
+  ) => {
+    try {
+      setSendingId(registrationId);
+
+      await sendConferenceMail({ registrationId });
+
+      toast.success("Email sent successfully.");
+    } catch (error: any) {
+      toast.error(
+        error?.data ??
+        error?.message ??
+        "Failed to send reminder email."
+      );
+    } finally {
+      setSendingId(null);
+    }
+  };
+
+  const handleSendConferenceTIcket = async (
+    registrationId: Id<"registrations">
+  ) => {
+    try {
+      setSendingId(registrationId);
+
+      await sendEmailTicket({ registrationId });
+
+      toast.success("Email sent successfully.");
     } catch (error: any) {
       toast.error(
         error?.data ??
@@ -490,7 +531,15 @@ export default function ParticipantsPage() {
                       </th>
 
                       <th className="px-5 py-3 text-right text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400">
-                        Action
+                        Send Reminder Mail
+                      </th>
+
+                      <th className="px-5 py-3 text-right text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400">
+                        Send Confirmation Mail
+                      </th>
+
+                      <th className="px-5 py-3 text-right text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400">
+                        Send Ticket Mail
                       </th>
                     </tr>
                   </thead>
@@ -717,6 +766,54 @@ export default function ParticipantsPage() {
                                 participant._id
                                 ? "Sending..."
                                 : "Reminder"}
+                            </Button>
+                          </td>
+
+                          <td className="px-5 py-4 text-right align-top">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              disabled={
+                                sendingId ===
+                                participant._id
+                              }
+                              onClick={() =>
+                                handleSendConferenceMail(
+                                  participant._id
+                                )
+                              }
+                              className="rounded-none border-slate-200 text-xs"
+                            >
+                              <LuSend className="mr-2 h-3.5 w-3.5" />
+
+                              {sendingId ===
+                                participant._id
+                                ? "Sending..."
+                                : "Conference"}
+                            </Button>
+                          </td>
+
+                          <td className="px-5 py-4 text-right align-top">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              disabled={
+                                sendingId ===
+                                participant._id
+                              }
+                              onClick={() =>
+                                handleSendConferenceTIcket(
+                                  participant._id
+                                )
+                              }
+                              className="rounded-none border-slate-200 text-xs"
+                            >
+                              <LuSend className="mr-2 h-3.5 w-3.5" />
+
+                              {sendingId ===
+                                participant._id
+                                ? "Sending..."
+                                : "Ticket"}
                             </Button>
                           </td>
                         </tr>

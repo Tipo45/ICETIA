@@ -214,72 +214,105 @@ export const registerStudent = mutation({
     },
 });
 
-// export const sendMail = internalMutation({
-//     args: {
-//         registrationId: v.id("registrations"),
-//     },
-//     handler: async (ctx, args) => {
+export const sendMail = mutation({
+    args: {
+        registrationId: v.id("registrations"),
+    },
+    handler: async (ctx, args) => {
 
-//         const registration = await ctx.db.get(args.registrationId);
+        const registration = await ctx.db.get(args.registrationId);
 
-//         if (!registration) {
-//             throw new ConvexError("Registration not found.");
-//         }
+        if (!registration) {
+            throw new ConvexError("Registration not found.");
+        }
 
-//         if (registration.confirmationEmailSent) {
-//             return {
-//                 success: true,
-//                 alreadySent: true,
-//             };
-//         }
+        const existing = await ctx.db
+            .query("registrations")
+            .withIndex("by_email", q => q.eq("email", registration.email))
+            .unique();
 
-//         const existing = await ctx.db
-//             .query("registrations")
-//             .withIndex("by_email", q => q.eq("email", registration.email))
-//             .unique();
+        if (!existing) {
+            throw new ConvexError("No registration found for this email.");
+        }
 
-//         if (!existing) {
-//             throw new ConvexError("No registration found for this email.");
-//         }
+        const subject = "ICETIA 2027 Registration Confirmation";
 
-//         const subject = "ICETIA 2027 Registration Confirmation";
+        const body = registrationConfirmationEmail({
+            firstName: existing.firstName,
+            lastName: existing.lastName,
+            email: existing.email,
+            category: existing.category,
+            amountPaid: existing.amount,
+            coAuthors: existing.coAuthors,
+        });
 
-//         const body = registrationConfirmationEmail({
-//             firstName: existing.firstName,
-//             lastName: existing.lastName,
-//             email: existing.email,
-//             category: existing.category,
-//             amountPaid: existing.amount,
-//             coAuthors: existing.coAuthors,
-//         });
+        await resend.sendEmail(ctx, {
+            from: "icetia <conference@icetiaconference.org>",
+            to: registration.email,
+            subject: subject,
+            text: body,
+        });
 
-//         await resend.sendEmail(ctx, {
-//             from: "ICETIA <icetia@resend.dev>",
-//             to: registration.email,
-//             subject: subject,
-//             text: body,
-//         });
+        // await ctx.db.insert("emails", {
+        //     to: registration.email,
+        //     subject: subject,
+        //     body,
+        // });
 
-//         await ctx.db.insert("emails", {
-//             to: registration.email,
-//             subject: subject,
-//             body,
-//         });
+        // await ctx.db.patch(registration._id, {
+        //     confirmationEmailSent: true,
+        // });
 
-//         await ctx.db.patch(registration._id, {
-//             confirmationEmailSent: true,
-//         });
+        // await ctx.scheduler.runAfter(
+        //     2 * 60 * 1000,
+        //     api.registration.sendConferenceTicket,
+        //     {
+        //         registrationId: registration._id,
+        //     }
+        // );
 
-//         await ctx.scheduler.runAfter(
-//             2 * 60 * 1000,
-//             api.registration.sendConferenceTicket,
-//             {
-//                 registrationId: registration._id,
-//             }
-//         );
+    }
+});
 
-//     }
-// });
+export const sendConferenceTicket = mutation({
+    args: {
+        registrationId: v.id("registrations"),
+    },
+
+    handler: async (ctx, args) => {
+        const registration = await ctx.db.get(args.registrationId);
+
+
+        if (!registration) {
+            throw new ConvexError("Registration not found.");
+        }
+
+        const qrCode =
+            `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(
+                registration.registrationNumber
+            )}`;
+
+        const subject = "Your ICETIA 2027 Conference Ticket";
+
+        const body = ticketEmail({
+            firstName: registration.firstName,
+            registrationNumber: registration.registrationNumber,
+            qrCode,
+        });
+
+        await resend.sendEmail(ctx, {
+            from: "icetia <conference@icetiaconference.org>",
+            to: registration.email,
+            subject: subject,
+            html: body,
+        });
+
+        await ctx.db.patch(registration._id, {
+            ticketSent: true,
+        });
+    },
+});
+
 
 export const getRegistrationForEmail = internalQuery({
   args: {
