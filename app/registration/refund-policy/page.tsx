@@ -18,16 +18,16 @@ const categories = [
     {
         number: "01",
         title: "Authors",
-        price: "₦40,000",
+        price: "₦55,000",
         description: "For presenting authors with accepted papers.",
         href: "/registration/authors-registration",
     },
     {
         number: "02",
-        title: "Non-authors / Participants",
+        title: "Participants",
         price: "₦40,000",
         description: "For industry professionals and conference attendees.",
-        href: "/registration/non-authors-registration",
+        href: "/registration/participants-registration",
     },
     {
         number: "03",

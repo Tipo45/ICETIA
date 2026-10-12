@@ -26,12 +26,12 @@ const categories = [
   },
   {
     number: "02",
-    title: "Non-authors / Participants",
+    title: "Participants",
     price: "₦40,000",
     earlyBirdPrice: "₦35,000",
     description:
       "For researchers, academics, industry professionals, policymakers and other conference participants.",
-    href: "/registration/non-authors-registration",
+    href: "/registration/participants-registration",
   },
   {
     number: "03",
@@ -218,7 +218,7 @@ export default function RegistrationCategories() {
         </th>
 
         <th className="border border-slate-200 px-4 py-4 text-center font-semibold text-slate-900">
-          Early Bird Non-author 
+          Early Bird Participant 
           <br />
           (30 November, 2026)
         </th>
@@ -236,7 +236,7 @@ export default function RegistrationCategories() {
         </th>
 
         <th className="border border-slate-200 px-4 py-4 text-center font-semibold text-slate-900">
-          Late Non-author 
+          Late Participant
           <br />
           (1 December, 2026)
         </th>
@@ -256,7 +256,7 @@ export default function RegistrationCategories() {
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
-          ₦ 35,000
+          ₦ 40,000
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
@@ -268,7 +268,7 @@ export default function RegistrationCategories() {
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
-          ₦ 40,000
+          ₦ 55,000
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">

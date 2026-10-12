@@ -381,12 +381,13 @@ export default function AuthorsRegistrationPage() {
 
             toast.error(
                 error instanceof Error
-                    ? error.message
+                    ? "Email has already been registered"
                     : "Something went wrong. Please try again."
             );
         }
     };
 
+    
     return (
         <main className="min-h-screen bg-white text-slate-900">
             <Navbar />
@@ -544,7 +545,7 @@ export default function AuthorsRegistrationPage() {
 
                             <div className="mt-3 border-l-2 border-blue-500 pl-4">
                                 <p className="text-xs font-medium leading-5 text-blue-800">
-                                    If you are a non-author participant or co-author,
+                                    If you are participant or co-author,
                                     please ensure that you are listed under an accepted
                                     paper and associated with a registered author before
                                     completing your registration.
@@ -800,8 +801,7 @@ export default function AuthorsRegistrationPage() {
                             <div className="mt-5 border-l-2 border-amber-400 pl-4">
                                 <p className="text-sm font-medium leading-6 text-amber-800">
                                     Papers without completed author registration by the stated deadline
-                                    may not be included in the final conference programme or proceedings.
-                                    Non-author co-authors should ensure that their registration is
+                                    may not be included in the final conference programme or proceedings. Co-authors should ensure that their registration is
                                     properly linked to the corresponding accepted paper and registered
                                     author.
                                 </p>

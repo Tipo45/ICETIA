@@ -7,7 +7,7 @@ const dates = [
   },
   {
     title: "Call for Papers Opens",
-    date: "1 November 2026",
+    date: "13 October 2026",
   },
   {
     title: "Full Paper Submission Deadline",

@@ -334,7 +334,7 @@ export default function RegistrationSection() {
 
             toast.error(
                 error instanceof Error
-                    ? error.message
+                    ? "Email Has already been registered"
                     : "Something went wrong. Please try again."
             );
         } 
@@ -414,9 +414,9 @@ export default function RegistrationSection() {
                         </div>
 
                         <h1 className="max-w-4xl text-4xl font-semibold tracking-tight lg:text-5xl xl:text-6xl">
-                            Non-Authors
+                            Participants
                             <span className="text-blue-400">
-                                {" "} / Participants
+                                .
                             </span>
                         </h1>
 
@@ -774,7 +774,7 @@ export default function RegistrationSection() {
                                                 </p>
 
                                                 <p className="mt-1 text-sm text-slate-700">
-                                                    Non-author / Participant
+                                                    Participant
                                                 </p>
                                             </div>
 
@@ -832,7 +832,7 @@ export default function RegistrationSection() {
                                                 </p>
 
                                                 <p className="mt-1 text-sm font-semibold text-slate-900">
-                                                    Non-Author / Participant
+                                                    Participant
                                                 </p>
                                             </div>
 

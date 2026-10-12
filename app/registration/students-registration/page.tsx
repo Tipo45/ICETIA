@@ -389,7 +389,7 @@ export default function RegistrationSection() {
 
             toast.error(
                 error instanceof Error
-                    ? error.message
+                    ? "Email has already been registered"
                     : "Something went wrong. Please try again."
             );
         } 
