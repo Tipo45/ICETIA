@@ -256,7 +256,7 @@ export default function RegistrationCategories() {
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
-          ₦ 40,000
+          ₦ 35,000
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
@@ -268,7 +268,7 @@ export default function RegistrationCategories() {
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
-          ₦ 55,000
+          ₦ 40,000
         </td>
 
         <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
