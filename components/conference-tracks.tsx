@@ -131,7 +131,7 @@ const tracks = [
     ],
   },
   {
-    title: "Software Engineering and Information Systems",
+    title: "Software Development",
     topics: [
       "Software Engineering",
       "Software Architecture",
@@ -148,9 +148,6 @@ const tracks = [
       "User Experience Design",
       "Secure software Development",
       "Open-Source Software",
-      "Information Systems management",
-      "Digital Platforms",
-      "E-government Systems"
     ],
   },
   {

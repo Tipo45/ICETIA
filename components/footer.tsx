@@ -326,11 +326,14 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="mt-12 border-t border-white/10 pt-6">
-          <div className="flex flex-col gap-3 text-xs text-slate-600 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex flex-col gap-3 text-base text-slate-600 lg:flex-row lg:items-center lg:justify-between">
 
-            <p>
+            <div className="space-y-1">
+              <p>
               © {new Date().getFullYear()} ICETIA. All Rights Reserved.
             </p>
+            <p className="text-xs">Developed by <a href="https://techlinkinnovations.com" target="blank">TechLink Innovations</a></p>
+            </div>
 
             <p>
               Hosted by the Federal University Otuoke.
