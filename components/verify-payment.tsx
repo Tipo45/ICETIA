@@ -138,12 +138,12 @@ const paymentVerified = status === "success";
 const isVerifying = status === "verifying";
 const hasError = status === "error";
 
-return ( <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-950 px-4 py-12 sm:px-6">
+return ( <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-950 px-4 py-12 lg:px-6">
 {/* Background decoration */} <div className="pointer-events-none absolute -left-32 -top-32 h-80 w-80 rounded-full bg-blue-500/10 blur-3xl" /> <div className="pointer-events-none absolute -bottom-32 -right-32 h-80 w-80 rounded-full bg-cyan-400/10 blur-3xl" />
 
 ```
   <main className="relative w-full max-w-lg overflow-hidden border border-white/10 bg-[#080f1a] shadow-2xl shadow-black/20">
-    <div className="px-6 py-10 text-center sm:px-10 sm:py-12">
+    <div className="px-6 py-10 text-center lg:px-10 lg:py-12">
       {/* Status icon */}
       <div
         className={`mx-auto flex h-20 w-20 items-center justify-center rounded-full border ${
@@ -164,7 +164,7 @@ return ( <section className="relative flex min-h-screen items-center justify-cen
       </div>
 
       {/* Heading */}
-      <h1 className="mt-7 text-2xl font-bold tracking-tight text-white sm:text-3xl">
+      <h1 className="mt-7 text-2xl font-bold tracking-tight text-white lg:text-3xl">
         {paymentVerified
           ? "Payment Verified Successfully"
           : hasError

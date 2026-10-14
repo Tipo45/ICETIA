@@ -276,9 +276,9 @@ export default function Footer() {
               <div className="flex items-center gap-3">
                 <LuMail className="h-4 w-4 shrink-0 text-blue-500" />
 
-                <span className="text-slate-500">
+                <a href="mailto:conference@icetiaconference.org" className="text-slate-500">
                   conference@icetiaconference.org
-                </span>
+                </a>
               </div>
 
               <div className="flex items-center gap-3">

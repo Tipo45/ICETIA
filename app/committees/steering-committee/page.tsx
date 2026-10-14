@@ -23,7 +23,7 @@ const steeringCommittee = [
   },
   {
     role: "Co-Chair",
-    name: "Dr Josiah Balota",
+    name: "Dr. Josiah Balota",
     href: "https://www.linkedin.com/in/josiahspeaks/",
     image: "/images/keynote_1.jpg",
     affiliation: "Teesside University, United Kingdom",
@@ -40,7 +40,7 @@ const steeringCommittee = [
     role: "Host",
     name: "Professor Nateinyin Joy Akporehwe",
     href: "https://scholar.google.com/citations?hl=en&user=cSNjRoAAAAAJ",
-    image: "/images/Nateinyin Joy Akporehwe.jpg",
+    image: "/images/joy nateinyin dvc.jpeg",
     affiliation:
       "Deputy Vice-Chancellor, Research and Development (R&D), Federal University Otuoke",
   },
@@ -67,12 +67,14 @@ const secretariat = [
     role: "Secretary",
     name: "Dr. (Mrs) Merosobo Lawson-Ikuru",
     href: "https://www.linkedin.com/in/merosobo-lawson-ikuru-phd-49609790/",
+    image: "/images/secretary.jpeg",
     affiliation: "Federal University Otuoke, Nigeria",
   },
   {
     role: "Assistant Secretary",
-    name: "Dr Ibenate Arubere",
+    name: "Dr. Ibenate Arubere",
     href: "https://www.linkedin.com/in/dr-ibenate-arubere-998459bb/",
+    image: "/images/Ibenate Arubere.jpg",
     affiliation: "Federal University Otuoke, Nigeria",
   },
 ];
@@ -188,7 +190,7 @@ export default function CommitteesPage() {
                 className="group border-b border-r border-slate-200 p-6 transition-colors duration-300 hover:bg-[#07111f] lg:min-h-64 lg:p-7 xl:p-8"
               >
                 <div className="flex items-start justify-between">
-                  <div className="relative h-40 w-40 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-200 shadow-md ring-1 ring-slate-200 transition-transform duration-300 group-hover:scale-105">
+                  <div className="relative h-75 w-75 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-200 shadow-md ring-1 ring-slate-200 transition-transform duration-300 group-hover:scale-105">
                     <Image
                       src={member.image}
                       alt={member.name}
@@ -250,6 +252,7 @@ export default function CommitteesPage() {
                     role={member.role}
                     name={member.name}
                     href={member.href}
+                    image={member.image}
                     affiliation={member.affiliation}
                   />
                 ))}

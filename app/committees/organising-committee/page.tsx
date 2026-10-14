@@ -13,7 +13,7 @@ import Image from "next/image";
 const internationalOrganisingCommittee = [
   {
     role: "General Chair",
-    name: "Dr Joshua Teddy Ibibo",
+    name: "Dr. Joshua Teddy Ibibo",
     href: "https://www.linkedin.com/in/dr-joshua-ibibo-83174b85/",
     image: "/images/Josh Ibibo.jpeg",
     affiliation: "Teesside University, United Kingdom",
@@ -34,7 +34,7 @@ const internationalOrganisingCommittee = [
   },
   {
     role: "Assistant Secretary",
-    name: "Dr Ibenate Arubere",
+    name: "Dr. Ibenate Arubere",
     href: "https://www.linkedin.com/in/dr-ibenate-arubere-998459bb/",
     image: "/images/Ibenate Arubere.jpg",
     affiliation: "Federal University Otuoke, Nigeria",
@@ -145,52 +145,51 @@ export default function CommitteesPage() {
           </div>
 
           <div className="mt-10 border-t border-slate-200 lg:mt-12">
-            {internationalOrganisingCommittee.map(
-              (member, index) => (
-              
-<div
-  key={member.name}
-  className="group grid gap-5 border-b border-slate-200 py-6 lg:grid-cols-[180px_1fr_1fr] lg:items-center lg:gap-8 lg:py-7"
->
-  <div className="flex items-center gap-4">
-    <span className="text-xs font-bold tracking-widest text-slate-400">
-      {String(index + 1).padStart(2, "0")}
-    </span>
-
-    <div className="relative h-40 w-40 shrink-0 overflow-hidden rounded-xl bg-slate-200 ring-1 ring-slate-200 transition-transform duration-300 group-hover:scale-105">
-      <Image
-        src={member.image}
-        alt={member.name}
-        fill
-        sizes="(max-width: 640px) 160px, 160px"
-        className="object-cover object-center"
-      />
-    </div>
-  </div>
-
-  <div>
-    <p className="text-xs font-semibold uppercase tracking-[0.12em] text-blue-600">
-      {member.role}
-    </p>
-
-    <a
-      href={member.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="mt-2 inline-block text-lg font-semibold tracking-tight text-slate-900 transition-colors hover:text-blue-500 lg:text-xl"
+  {internationalOrganisingCommittee.map((member, index) => (
+    <div
+      key={member.name}
+      className="group grid grid-cols-1 gap-6 border-b border-slate-200 py-8 lg:grid-cols-2 lg:items-center lg:gap-4 tablet:grid-cols-[320px_1fr_1fr] tablet:gap-10 lg:py-10"
     >
-      {member.name}
-    </a>
-  </div>
+      {/* Member number and profile image */}
+      <div className="flex items-center gap-4">
+        <span className="shrink-0 text-xs font-bold tracking-widest text-slate-400">
+          {String(index + 1).padStart(2, "0")}
+        </span>
 
-  <p className="text-sm leading-6 text-slate-500 lg:max-w-md">
-    {member.affiliation}
-  </p>
+        <div className="relative h-75 w-full max-w-75 shrink-0 overflow-hidden rounded-xl bg-slate-200 shadow-md ring-1 ring-slate-200 transition-transform duration-300 group-hover:scale-[1.02]">
+          <Image
+            src={member.image}
+            alt={member.name}
+            fill
+            sizes="(max-width: 639px) calc(100vw - 64px), 300px"
+            className="object-cover object-center"
+          />
+        </div>
+      </div>
+
+      {/* Role and name */}
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-blue-600">
+          {member.role}
+        </p>
+
+        <a
+          href={member.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-2 inline-block text-xl font-semibold leading-snug tracking-tight text-slate-900 transition-colors hover:text-blue-500"
+        >
+          {member.name}
+        </a>
+      </div>
+
+      {/* Affiliation */}
+      <p className="text-sm leading-7 text-slate-500 lg:max-w-md">
+        {member.affiliation}
+      </p>
+    </div>
+  ))}
 </div>
-
-              )
-            )}
-          </div>
         </div>
       </section>
 

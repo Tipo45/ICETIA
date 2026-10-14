@@ -15,6 +15,7 @@ import {
   LuPresentation,
 } from "react-icons/lu";
 import { useState } from "react";
+import Image from "next/image";
 
 
 const committees = [
@@ -449,31 +450,53 @@ export function MemberRow({
   role,
   name,
   href,
+  image,
   affiliation,
 }: {
   role?: string;
   name: string;
   href: string;
+  image: string;
   affiliation: string;
 }) {
   return (
-    <div className="border-b border-slate-200 py-5 last:border-b-0">
-      {role && (
-        <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-blue-600">
-          {role}
-        </p>
-      )}
+    <div className="group grid grid-cols-1 items-center gap-6 border-b border-slate-200 py-8 last:border-b-0 lg:gap-5">
+  {/* Profile image */}
+  <div className="relative h-70 w-full max-w-70 shrink-0 overflow-hidden rounded-xl bg-slate-200 shadow-md ring-1 ring-slate-200 transition-transform duration-300 group-hover:scale-[1.02]">
+    <Image
+      src={image}
+      alt={name}
+      fill
+      sizes="(max-width: 639px) 100vw, 280px"
+      className="object-cover object-center"
+    />
+  </div>
 
-      <a href={href} target="blank" className="mt-1 text-sm font-semibold leading-6 text-slate-900 hover:text-blue-600">
-        {name}
-      </a>
-
-      <p className="mt-1 text-xs leading-5 text-slate-500">
-        {affiliation}
+  {/* Member details */}
+  <div>
+    {role && (
+      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-600">
+        {role}
       </p>
-    </div>
+    )}
+
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mt-2 inline-block text-lg font-semibold leading-6 text-slate-900 transition-colors hover:text-blue-600 lg:text-xl"
+    >
+      {name}
+    </a>
+
+    <p className="mt-2 text-sm leading-6 text-slate-500">
+      {affiliation}
+    </p>
+  </div>
+</div>
   );
 }
+
 
 export function CommitteeCard({
   committee,
@@ -513,9 +536,8 @@ export function CommitteeCard({
 
           <div className="flex h-8 w-8 shrink-0 items-center justify-center border border-slate-200 text-slate-500">
             <LuChevronDown
-              className={`h-4 w-4 transition-transform duration-300 ${
-                open ? "rotate-180" : ""
-              }`}
+              className={`h-4 w-4 transition-transform duration-300 ${open ? "rotate-180" : ""
+                }`}
             />
           </div>
         </div>
