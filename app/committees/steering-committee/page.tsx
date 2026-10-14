@@ -188,13 +188,13 @@ export default function CommitteesPage() {
                 className="group border-b border-r border-slate-200 p-6 transition-colors duration-300 hover:bg-[#07111f] lg:min-h-64 lg:p-7 xl:p-8"
               >
                 <div className="flex items-start justify-between">
-                  <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-md bg-white">
+                  <div className="relative h-40 w-40 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-200 shadow-md ring-1 ring-slate-200 transition-transform duration-300 group-hover:scale-105">
                     <Image
                       src={member.image}
-                      width={64}
-                      height={64}
                       alt={member.name}
-                      className="h-16 w-16 rounded-md object-cover"
+                      fill
+                      sizes="(max-width: 640px) 96px, 112px"
+                      className="object-cover object-center"
                     />
                   </div>
 

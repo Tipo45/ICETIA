@@ -22,7 +22,7 @@ const internationalOrganisingCommittee = [
     role: "Co-Chair (Program Chair)",
     name: "Dr Boye Aziboledia Frederick",
     href: "https://www.linkedin.com/in/boye-aziboledia-frederick-a00a02297/",
-    image: "/images/boye aziba.jpg",
+    image: "/images/Boye Franklin.jpg",
     affiliation: "Federal University Otuoke, Nigeria",
   },
   {
@@ -147,34 +147,47 @@ export default function CommitteesPage() {
           <div className="mt-10 border-t border-slate-200 lg:mt-12">
             {internationalOrganisingCommittee.map(
               (member, index) => (
-                <div
-                  key={member.name}
-                  className="group grid gap-5 border-b border-slate-200 py-6 lg:grid-cols-[80px_1fr_1fr] lg:items-center lg:gap-8 lg:py-7"
-                >
-                  <div className="flex items-center gap-4">
-                    <span className="text-xs font-bold tracking-widest text-slate-400">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
+              
+<div
+  key={member.name}
+  className="group grid gap-5 border-b border-slate-200 py-6 lg:grid-cols-[180px_1fr_1fr] lg:items-center lg:gap-8 lg:py-7"
+>
+  <div className="flex items-center gap-4">
+    <span className="text-xs font-bold tracking-widest text-slate-400">
+      {String(index + 1).padStart(2, "0")}
+    </span>
 
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-md bg-white">
-                      <Image src={member.image} width={48} height={48} alt={member.name} className="rounded-md w-12 h-12 object-cover" />
-                    </div>
-                  </div>
+    <div className="relative h-40 w-40 shrink-0 overflow-hidden rounded-xl bg-slate-200 ring-1 ring-slate-200 transition-transform duration-300 group-hover:scale-105">
+      <Image
+        src={member.image}
+        alt={member.name}
+        fill
+        sizes="(max-width: 640px) 160px, 160px"
+        className="object-cover object-center"
+      />
+    </div>
+  </div>
 
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.12em] text-blue-600">
-                      {member.role}
-                    </p>
+  <div>
+    <p className="text-xs font-semibold uppercase tracking-[0.12em] text-blue-600">
+      {member.role}
+    </p>
 
-                    <a href={member.href} target="blank" className="mt-2 text-lg font-semibold tracking-tight text-slate-900 lg:text-xl hover:text-blue-500">
-                      {member.name}
-                    </a>
-                  </div>
+    <a
+      href={member.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mt-2 inline-block text-lg font-semibold tracking-tight text-slate-900 transition-colors hover:text-blue-500 lg:text-xl"
+    >
+      {member.name}
+    </a>
+  </div>
 
-                  <p className="text-sm leading-6 text-slate-500 lg:max-w-md">
-                    {member.affiliation}
-                  </p>
-                </div>
+  <p className="text-sm leading-6 text-slate-500 lg:max-w-md">
+    {member.affiliation}
+  </p>
+</div>
+
               )
             )}
           </div>
