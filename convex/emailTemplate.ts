@@ -22,6 +22,11 @@ export type TicketEmailProps = {
   qrCode: string;
 };
 
+export type VerifyIdEmailProps = {
+  registrationNumber: string;
+  otp_code: string;
+}
+
 export type ReminderEmailProps = {
   firstName: string;
   registrationNumber: string;
@@ -72,7 +77,7 @@ ${coAuthorSection}
 
 You will receive your ticket and further instructions via email shortly. Please ensure to check your inbox and spam folder.
 
-For more information, please visit our website or contact us at support@ICETIA2027.com.
+For more information, please visit our website or contact us at conference@icetiaconference.org.
 
 We look forward to welcoming you to the conference!
 
@@ -96,8 +101,6 @@ export function ticketEmail({
   <strong>ICETIA 2027</strong>. We are delighted to welcome you to the conference.
 </p>
 
-<hr>
-
 <h3>Conference Details</h3>
 
 <p>
@@ -114,8 +117,6 @@ export function ticketEmail({
   Federal University Otuoke, Ogbia<br/>
   Bayelsa State, Nigeria
 </p>
-
-<hr>
 
 <h3>Your Registration</h3>
 
@@ -140,14 +141,12 @@ export function ticketEmail({
   This QR code is unique to your registration and will be scanned at the entrance.
 </p>
 
-<hr>
-
 <p>
   Please keep this email safe. It serves as your official conference ticket.
 </p>
 
 <p>
-  If you have any questions, kindly contact support@ICETIA2027.com.
+  If you have any questions, kindly contact conference@icetiaconference.org.
 </p>
 
 <p>
@@ -158,6 +157,30 @@ export function ticketEmail({
   Best regards,<br/>
   <strong>ICETIA 2027 Organizing Committee</strong>
 </p>`;
+}
+
+export function verifyId({
+  registrationNumber,
+  otp_code
+}: VerifyIdEmailProps) {
+  return `
+  Dear Author,
+
+  A request was made to verify your registration ID: ${registrationNumber}, for paper submission at the International Conference on Emerging Technologies and Intelligent Applications (ICETIA 2027).
+  
+  To verify your identity and continue with your paper submission, please use the One-Time Password (OTP) below:
+
+  ${otp_code}
+  
+  This code will expire in 10 minutes. For your security, please do not share it with anyone.
+  
+  If you did not initiate this request, you can safely ignore this email. No changes will be made to your registration.
+
+  Thank you for your interest in ICETIA 2027. We look forward to receiving your research contribution.
+  
+   Best regards,
+  ICETIA 2027 Organizing Committee
+  `
 }
 
 export function reminderEmail({

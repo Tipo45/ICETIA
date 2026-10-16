@@ -25,6 +25,7 @@ export interface RegistrationFormData {
     department: string;
     country: string;
     degree: Degree | "";
+    paperTrack: string;
 
     paperTitle: string;
     
@@ -53,6 +54,7 @@ export interface RegistrationFormErrors {
     department: string;
     country: string;
     degree: string;
+    paperTrack: string;
 
     paperTitle: string;
     
@@ -81,6 +83,7 @@ export interface RegistrationFormTouched {
     department: boolean;
     country: boolean;
     degree: boolean;
+    paperTrack: boolean;
 
     paperTitle: boolean;
     

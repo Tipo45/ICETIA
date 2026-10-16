@@ -57,11 +57,18 @@ export const validateDegree = (
     return "";
 };
 
+export const validatePaperTrack = (paperTrack: string): string | null => {
+
+    if (!paperTrack)
+        return "Paper Track is required.";
+
+    return "";
+};
+
 export const validatePaperTitle = (paperTitle: string): string | null => {
     if (!paperTitle.trim())
         return "Paper Title is required.";
-    if (paperTitle.length < 3) return "Paper Title must be at least 3 characters";
-    if (!/^[a-zA-Z\s\-]+$/.test(paperTitle)) return "Paper Title should only contain letters and spaces";
+    if (paperTitle.length < 10) return "Paper Title must be at least 10 meaningful characters";
     return null;
 };
 
@@ -76,4 +83,12 @@ export const validatePaperFile = (file: File | null) => {
     }
 
     return "";
+};
+
+
+export const validateRegNumber = (regNumber: string): string | null => {
+    if (!regNumber.trim())
+        return "Registration Number is required.";
+    if (regNumber.length < 19 || regNumber.length > 19) return "Registration must be 19 characters";
+    return null;
 };

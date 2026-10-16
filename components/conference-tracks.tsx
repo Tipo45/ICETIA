@@ -6,11 +6,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useRouter } from "next/navigation";
 import { LuLayers3 } from "react-icons/lu";
 
 const tracks = [
   {
     title: "Cybersecurity, Privacy & Digital Trust",
+    href: "/cybersecurity-privacy-&-digital-trust",
     topics: [
       "Cybersecurity and Information Assurance",
       "Network and Systems Security",
@@ -36,6 +38,7 @@ const tracks = [
   },
   {
     title: "Artificial Intelligence and Machine Learning",
+    href: "/artificial-intelligence-&-machine-learning",
     topics: [
       "Artificial Intelligence",
       "Machine Learning",
@@ -63,6 +66,7 @@ const tracks = [
   },
   {
     title: "Smart Systems, Internet of Things and Embedded Computing",
+    href: "smart-systems-internet-of-things-&-embedded-computing",
     topics: [
       "Internet of Things",
       "Industrial Internet of Things",
@@ -87,6 +91,7 @@ const tracks = [
   },
   {
     title: "Computing, Cloud, Edge and Distributed Systems",
+    href: "computing-cloud-edge-&-distributed-systems",
     topics: [
       "Cloud Computing",
       "Edge and Fog Computing",
@@ -108,6 +113,7 @@ const tracks = [
   },
   {
     title: "Data Science, Analytics and Big Data",
+    href: "data-science-analytics-&-big-data",
     topics: [
       "Data Science",
       "Big Data Analytics",
@@ -132,6 +138,7 @@ const tracks = [
   },
   {
     title: "Software Development",
+    href: "software-development",
     topics: [
       "Software Engineering",
       "Software Architecture",
@@ -152,6 +159,7 @@ const tracks = [
   },
   {
     title: "Health Informatics, Digtal Health and Medical Laboratory Technology",
+    href: "health-informatics-digital-health-&-medical-laboratory-technology",
     topics: [
       "Health Informatics",
       "Medical Informatics",
@@ -178,6 +186,7 @@ const tracks = [
   },
   {
     title: "Emerging Technologies and Digital Transformation",
+    href: "emerging-technologies-&-digital-transformation",
     topics: [
       "Blockchain Technologies",
       "Digital Transformation",
@@ -203,6 +212,7 @@ const tracks = [
   },
   {
     title: "Computing for Sustainable Development",
+    href: "computing-for-sustainable-development",
     topics: [
       "ICT for Sustainable Development",
       "Green ICT",
@@ -222,6 +232,7 @@ const tracks = [
   },
   {
     title: "Information Systems, Governance and Society",
+    href: "information-systems-governance-&-society",
     topics: [
       "Digital Governance",
       "E-Government",
@@ -243,6 +254,8 @@ const tracks = [
 ];
 
 export default function ConferenceTracks() {
+
+  const router = useRouter();
   return (
     <section
       id="tracks"
@@ -294,18 +307,28 @@ export default function ConferenceTracks() {
                 </AccordionTrigger>
 
                 <AccordionContent className="pb-7 pl-11 pr-4 lg:pl-16 lg:pr-12">
-                  <div className="grid gap-x-8 gap-y-3 lg:grid-cols-2">
-                    {track.topics.map((topic, topicIndex) => (
-                      <div
-                        key={`${track.title}-${topicIndex}`}
-                        className="flex items-start gap-3 text-sm leading-6 text-slate-400"
-                      >
-                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
-                        <span>{topic}</span>
-                      </div>
-                    ))}
-                  </div>
-                </AccordionContent>
+  <div className="grid gap-x-8 gap-y-3 lg:grid-cols-2">
+    {track.topics.map((topic, topicIndex) => (
+      <div
+        key={`${track.title}-${topicIndex}`}
+        className="flex items-start gap-3 text-sm leading-6 text-slate-400"
+      >
+        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
+        <span>{topic}</span>
+      </div>
+    ))}
+  </div>
+
+  <div className="mt-6">
+    <button
+      type="button"
+      onClick={() => {router.push(`/conference/for-authors/call-for-papers/${track.href}`)}}
+      className="rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+    >
+      Submit Paper
+    </button>
+  </div>
+</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>

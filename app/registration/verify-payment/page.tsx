@@ -13,18 +13,25 @@ export default async function VerifyPayment({searchParams}:{ searchParams: Promi
 
 // const siteUrl ="https://icetiaconference.org";
 
-  const response = await fetch(
-    `${siteUrl}/api/verify-payment/${reference}`,
-  );
+ let verificationResult = null;
 
-  const result = await response.json();
-  console.log("payment verification result:", result)
+  try {
+    const response = await fetch(
+      `${siteUrl}/api/verify-payment/${encodeURIComponent(reference)}`,
+      { cache: "no-store" }
+    );
 
+    verificationResult = await response.json();
+
+    console.log("Payment verification result:", verificationResult);
+  } catch (error) {
+    console.error("Payment verification request failed:", error);
+  }
  
 
   return (
     <section>
-      <PaymentVerification reference={reference} registrationId={registrationId}  />
+      <PaymentVerification reference={reference} registrationId={registrationId} initialResult={verificationResult}  />
     </section>
   );
 }

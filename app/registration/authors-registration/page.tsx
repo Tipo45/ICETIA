@@ -19,6 +19,7 @@ import {
     validateLastName,
     validatePaperFile,
     validatePaperTitle,
+    validatePaperTrack,
 } from "@/components/types/validation";
 import { api } from "@/convex/_generated/api";
 import { useMutation } from "convex/react";
@@ -96,6 +97,7 @@ export default function AuthorsRegistrationPage() {
         country: "",
         department: "",
         degree: "",
+        paperTrack: "",
         paperTitle: "",
         coAuthors: [],
         paperFile: null,
@@ -109,6 +111,7 @@ export default function AuthorsRegistrationPage() {
         country: "",
         department: "",
         degree: "",
+        paperTrack: "",
         paperTitle: "",
         coAuthors: [
             {
@@ -132,6 +135,7 @@ export default function AuthorsRegistrationPage() {
         country: false,
         department: false,
         degree: false,
+        paperTrack: false,
         paperTitle: false,
         coAuthors: [
             {
@@ -196,6 +200,7 @@ export default function AuthorsRegistrationPage() {
             !validateCountry(formData.country) &&
             !validateDepartment(formData.department) &&
             !validateDegree(formData.degree) &&
+            !validatePaperTrack(formData.paperTrack) &&
             !validatePaperTitle(formData.paperTitle)
         );
     };
@@ -311,6 +316,7 @@ export default function AuthorsRegistrationPage() {
                 institution: formData.institution,
                 country: formData.country,
                 degree: formData.degree as Degree,
+                paperTrack: formData.paperTrack,
                 department: formData.department,
                 paperTitle: formData.paperTitle,
                 coAuthors: formData.coAuthors.map((author) => ({

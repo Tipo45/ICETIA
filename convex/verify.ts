@@ -2,10 +2,12 @@
 
 import QRCode from "qrcode";
 
-import { v } from "convex/values";
+import { ConvexError, v } from "convex/values";
 import { internal } from "./_generated/api";
-import { action, internalAction } from "./_generated/server";
-import { registrationConfirmationEmail, ticketEmail } from "./emailTemplate";
+import { action, internalAction, mutation } from "./_generated/server";
+import { registrationConfirmationEmail, ticketEmail, verifyId } from "./emailTemplate";
+import { createHash, randomInt } from "node:crypto";
+import { resend } from "./registration";
 
 // Verify with Paystack first, then update Convex.
 export const verifyAndConfirmPayment = action({
@@ -288,4 +290,27 @@ console.log("Resend email response:", result);
 
     return { success: true };
   },
+});
+
+export const validatePaperSubmissionSession = action({
+    args: {
+        sessionToken: v.string(),
+    },
+
+    handler: async (ctx, args): Promise<{ valid: boolean }> => {
+        if (!args.sessionToken) {
+            return { valid: false };
+        }
+
+        const sessionTokenHash = createHash("sha256")
+            .update(args.sessionToken)
+            .digest("hex");
+
+        const valid = await ctx.runQuery(
+            internal.registration.validatePaperSubmissionSession,
+            { sessionTokenHash }
+        );
+
+        return { valid };
+    },
 });

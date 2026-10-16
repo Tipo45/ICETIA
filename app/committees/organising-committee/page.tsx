@@ -17,6 +17,7 @@ const internationalOrganisingCommittee = [
     href: "https://www.linkedin.com/in/dr-joshua-ibibo-83174b85/",
     image: "/images/Josh Ibibo.jpeg",
     affiliation: "Teesside University, United Kingdom",
+    objectPosition: "center 20%",
   },
   {
     role: "Co-Chair (Program Chair)",
@@ -29,7 +30,7 @@ const internationalOrganisingCommittee = [
     role: "Secretary",
     name: "Dr. (Mrs) Merosobo Lawson-Ikuru",
     href: "https://www.linkedin.com/in/merosobo-lawson-ikuru-phd-49609790/",
-    image: "/images/Merosobo Lawson-Ikuru.jpg",
+    image: "/images/secretary.jpeg",
     affiliation: "Federal University Otuoke, Nigeria",
   },
   {
@@ -144,52 +145,58 @@ export default function CommitteesPage() {
             </p>
           </div>
 
+
           <div className="mt-10 border-t border-slate-200 lg:mt-12">
-  {internationalOrganisingCommittee.map((member, index) => (
-    <div
-      key={member.name}
-      className="group grid grid-cols-1 gap-6 border-b border-slate-200 py-8 lg:grid-cols-2 lg:items-center lg:gap-4 tablet:grid-cols-[320px_1fr_1fr] tablet:gap-10 lg:py-10"
-    >
-      {/* Member number and profile image */}
-      <div className="flex items-center gap-4">
-        <span className="shrink-0 text-xs font-bold tracking-widest text-slate-400">
-          {String(index + 1).padStart(2, "0")}
-        </span>
+            {internationalOrganisingCommittee.map((member, index) => (
+              <div
+                key={member.name}
+                className="group grid grid-cols-1 gap-6 border-b border-slate-200 py-8 lg:grid-cols-1 lg:items-center lg:gap-4 tablet:grid-cols-3 tablet:gap-10 lg:py-10"
+              >
+                {/* Member number and profile image */}
+                <div className="flex items-center gap-4">
+                  <span className="shrink-0 text-xs font-bold tracking-widest text-slate-400">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
 
-        <div className="relative h-75 w-full max-w-75 shrink-0 overflow-hidden rounded-xl bg-slate-200 shadow-md ring-1 ring-slate-200 transition-transform duration-300 group-hover:scale-[1.02]">
-          <Image
-            src={member.image}
-            alt={member.name}
-            fill
-            sizes="(max-width: 639px) calc(100vw - 64px), 300px"
-            className="object-cover object-center"
-          />
-        </div>
-      </div>
+                  <div className="relative aspect-square w-full max-w-75 shrink-0 overflow-hidden rounded-xl bg-slate-200 shadow-md ring-1 ring-slate-200 transition-transform duration-300 group-hover:scale-[1.02]">
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      sizes="(max-width: 639px) calc(100vw - 64px), 300px"
+                      className="object-cover"
+                      style={{
+                        objectPosition:
+                          member.objectPosition ?? "center 10%",
+                      }}
+                    />
+                  </div>
+                </div>
 
-      {/* Role and name */}
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-blue-600">
-          {member.role}
-        </p>
+                {/* Role and name */}
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.12em] text-blue-600">
+                    {member.role}
+                  </p>
 
-        <a
-          href={member.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-2 inline-block text-xl font-semibold leading-snug tracking-tight text-slate-900 transition-colors hover:text-blue-500"
-        >
-          {member.name}
-        </a>
-      </div>
+                  <a
+                    href={member.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 inline-block text-xl font-semibold leading-snug tracking-tight text-slate-900 transition-colors hover:text-blue-500"
+                  >
+                    {member.name}
+                  </a>
+                </div>
 
-      {/* Affiliation */}
-      <p className="text-sm leading-7 text-slate-500 lg:max-w-md">
-        {member.affiliation}
-      </p>
-    </div>
-  ))}
-</div>
+                {/* Affiliation */}
+                <p className="text-sm leading-7 text-slate-500 lg:max-w-md">
+                  {member.affiliation}
+                </p>
+              </div>
+            ))}
+          </div>
+
         </div>
       </section>
 

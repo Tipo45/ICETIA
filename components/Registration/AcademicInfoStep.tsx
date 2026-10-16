@@ -24,6 +24,7 @@ import {
     validateDepartment,
     validateInstitution,
     validatePaperTitle,
+    validatePaperTrack,
 } from "../types/validation";
 
 import {
@@ -65,6 +66,19 @@ export default function AcademicInfoStep({
 }: Props) {
     const countries = Country.getAllCountries();
 
+    const paperTracks = [
+        {name: "Cybersecurity, Privacy & Digital Trust"},
+        {name: "Artificial Intelligence and Machine Learning"},
+        {name: "Smart Systems, Internet of Things and Embedded Computing"},
+        {name: "Computing, Cloud, Edge and Distributed Systems"},
+        {name: "Data Science, Analytics and Big Data"},
+        {name: "Software Development"},
+        {name: "Health Informatics, Digtal Health and Medical Laboratory Technology"},
+        {name: "Emerging Technologies and Digital Transformation"},
+        {name: "Computing for Sustainable Development"},
+        {name: "Information Systems, Governance and Society"},
+    ]
+
     const handleChange = (
         field: keyof typeof formData,
         value: string
@@ -102,6 +116,11 @@ export default function AcademicInfoStep({
                     validateDegree(
                         value as Degree | ""
                     ) || "";
+                break;
+
+                case "paperTrack":
+                    error =
+                    validatePaperTrack(value) || "";
                 break;
 
             case "paperTitle":
@@ -319,6 +338,46 @@ export default function AcademicInfoStep({
                     formErrors.degree && (
                         <p className="text-xs text-red-500">
                             {formErrors.degree}
+                        </p>
+                    )}
+            </div>
+
+            <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-600">
+                    Track{" "}
+                    <span className="text-red-500">*</span>
+                </label>
+
+                <Select
+                value={formData.paperTrack} onValueChange={(value) =>
+                    handleChange("paperTrack", value)
+                }>
+
+                    <SelectTrigger className={`h-12 w-full rounded-none border bg-white px-4 text-sm shadow-none ${
+                            formTouched.paperTrack &&
+                            formErrors.paperTrack
+                                ? "border-red-400"
+                                : formTouched.paperTrack &&
+                                  !formErrors.paperTrack &&
+                                  formData.paperTrack
+                                ? "border-emerald-400"
+                                : "border-slate-200"
+                        }`}>
+                        <SelectValue placeholder="Choose Track" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            {paperTracks.map((paperTrack)=>
+                            <SelectItem key={paperTrack.name} value={paperTrack.name}>{paperTrack.name}</SelectItem>
+                            )}
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+
+                {formTouched.paperTrack &&
+                    formErrors.paperTrack && (
+                        <p className="text-xs text-red-500">
+                            {formErrors.paperTrack}
                         </p>
                     )}
             </div>

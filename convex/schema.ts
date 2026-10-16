@@ -25,6 +25,7 @@ export default defineSchema({
             v.literal("Professor"),
             v.literal("Other")
         )),
+        paperTrack: v.optional(v.string()),
         paperTitle: v.optional(v.string()),
         paperFileId: v.optional(v.id("_storage")),
 
@@ -57,6 +58,7 @@ export default defineSchema({
         confirmationEmailSent: v.boolean(),
     }).index("by_email", ["email"])
         .index("by_registration_number", ["registrationNumber"])
+        .index("by_paper_track", ["paperTrack"])
         .index("by_payment_reference", ["paymentReference"])
         .index("by_payment_status", ["paymentStatus"]),
 
@@ -95,4 +97,83 @@ export default defineSchema({
         expiresAt: v.number(),
     })
         .index("by_tokenHash", ["tokenHash"]),
+
+    submittedPapers: defineTable({
+        registrationId: v.id("registrations"),
+
+        paperTrack: v.string(),
+
+        paperTitle: v.string(),
+
+        abstract: v.optional(v.string()),
+
+        paperFileId: v.optional(v.id("_storage")),
+
+        status: v.union(
+            v.literal("submitted"),
+            v.literal("under_review"),
+            v.literal("accepted"),
+            v.literal("rejected"),
+            v.literal("revision_required")
+        ),
+
+    })
+        .index("by_registration_Id", ["registrationId"])
+        .index("by_paper_track", ["paperTrack"])
+        .index("by_status", ["status"])
+        .index("by_registration_and_track", [
+            "registrationId",
+            "paperTrack",
+        ]),
+
+    submittedWorkShopPapers: defineTable({
+        registrationId: v.id("registrations"),
+
+        paperTrack: v.string(),
+
+        paperTitle: v.string(),
+
+        abstract: v.optional(v.string()),
+
+        paperFileId: v.optional(v.id("_storage")),
+
+        status: v.union(
+            v.literal("submitted"),
+            v.literal("under_review"),
+            v.literal("accepted"),
+            v.literal("rejected"),
+            v.literal("revision_required")
+        ),
+
+    })
+        .index("by_registration_Id", ["registrationId"])
+        .index("by_paper_track", ["paperTrack"])
+        .index("by_status", ["status"])
+        .index("by_registration_and_track", [
+            "registrationId",
+            "paperTrack",
+        ]),
+
+
+    paperSubmissionOtps: defineTable({
+        registrationId: v.id("registrations"),
+        registrationNumber: v.string(),
+        email: v.string(),
+        otpHash: v.string(),
+        expiresAt: v.number(),
+        verified: v.boolean(),
+        attempts: v.number(),
+        createdAt: v.number(),
+    }).index("by_registration", ["registrationId"]),
+
+    
+paperSubmissionSessions: defineTable({
+  registrationId: v.id("registrations"),
+  sessionTokenHash: v.string(),
+  expiresAt: v.number(),
+  createdAt: v.number(),
+}).index("by_registration", ["registrationId"])
+.index("by_session_token_hash", ["sessionTokenHash"]),
+
+
 })

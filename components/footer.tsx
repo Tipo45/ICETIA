@@ -276,7 +276,7 @@ export default function Footer() {
               <div className="flex items-center gap-3">
                 <LuMail className="h-4 w-4 shrink-0 text-blue-500" />
 
-                <a href="mailto:conference@icetiaconference.org" className="text-slate-500">
+                <a href="mailto:conference@icetiaconference.org" className="text-slate-500 transition-colors hover:text-blue-600 hover:underline">
                   conference@icetiaconference.org
                 </a>
               </div>
@@ -285,9 +285,9 @@ export default function Footer() {
                 <LuPhone className="h-4 w-4 shrink-0 text-blue-500" />
 
                 <span className="text-slate-500">
-                  +2348069225628
+                  <a href="tel:+2348069225628" className="transition-colors hover:text-blue-600 hover:underline">+2348069225628</a>
                   <br />
-                  +447377083132
+                  <a href="tel:+447377083132" className="transition-colors hover:text-blue-600 hover:underline">+447377083132</a>
                 </span>
               </div>
             </div>
