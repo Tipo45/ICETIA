@@ -72,6 +72,13 @@ export const validatePaperTitle = (paperTitle: string): string | null => {
     return null;
 };
 
+export const validateAbstract = (abstract: string): string | null => {
+    if (!abstract.trim())
+        return "Abstract is required.";
+    if (abstract.length < 10) return "Abstract must be at least 10 meaningful characters";
+    return null;
+};
+
 
 export const validatePaperFile = (file: File | null) => {
     if (!file) {

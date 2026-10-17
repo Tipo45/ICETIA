@@ -92,3 +92,10 @@ export interface RegistrationFormTouched {
 
     paperFile: boolean;
 }
+
+export interface SubmissionOfPapers {
+    paperTrack: string;
+    paperTitle: string;
+    abstract: string;
+    paperFile: File | null;
+}

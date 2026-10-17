@@ -156,7 +156,7 @@ export default function PaperUploadStep({
                     <input
                         id="paper-upload"
                         type="file"
-                        accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                        accept=".pdf,application/pdf"
                         className="hidden"
                         onChange={handleFileChange}
                     />

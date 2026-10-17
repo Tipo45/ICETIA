@@ -129,6 +129,7 @@ export const verifyPaperSubmissionOtp = action({
         otpHash,
         sessionTokenHash,
         sessionExpiresAt,
+        used: false,
       }
     );
 

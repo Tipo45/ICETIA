@@ -58,7 +58,7 @@ const steeringCommittee = [
     role: "Host",
     name: "Professor Olufunso O. Abosede",
     href: "https://scholar.google.com/citations?hl=en&user=MZ7FYG4AAAAJ",
-    image: "/images/Olufunso O. Abosede.jpg",
+    image: "/images/Abosede.jpeg",
     affiliation:
       "Director of Research, Federal University Otuoke, Nigeria",
       objectPosition: "center 10%",

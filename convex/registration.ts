@@ -569,22 +569,46 @@ export const getAdminSessionByTokenHash = internalQuery({
 
 export const submitPaper = mutation({
     args: {
-        registrationId: v.id("registrations"),
+        registrationNumber: v.string(),
         paperTrack: v.string(),
         paperTitle: v.string(),
         abstract: v.string(),
         paperFileId: v.id("_storage"),
+        sessionToken: v.string(),
     },
 
     handler: async (ctx, args) => {
+
         // 1. Check whether the registration exists
-        const registration = await ctx.db.get(args.registrationId);
+        const registration = await ctx.db.query("registrations")
+            .withIndex("by_registration_number", (q) =>
+                q.eq("registrationNumber", args.registrationNumber)
+            ).unique();
 
         if (!registration) {
             throw new ConvexError(
-                "Invalid registration ID. Please check your registration details."
+                "Invalid registration Number. Please check your registration details."
             );
         }
+
+        const registrationId = registration._id;
+
+        const session = await ctx.db
+            .query("paperSubmissionSessions")
+            .withIndex("by_registration", (q) =>
+                q.eq("registrationId", registrationId)
+            )
+            .unique();
+
+        if (!session || session.expiresAt === Date.now() || session.used === true) {
+            throw new ConvexError(
+                "Your verification session has expired. Please verify your registration again."
+            );
+        }
+
+
+
+
 
         // 2. Check whether the registrant is an author
         if (registration.category !== "author") {
@@ -605,7 +629,7 @@ export const submitPaper = mutation({
             .query("submittedPapers")
             .withIndex("by_registration_and_track", (q) =>
                 q
-                    .eq("registrationId", args.registrationId)
+                    .eq("registrationId", registrationId)
                     .eq("paperTrack", args.paperTrack)
             )
             .first();
@@ -618,12 +642,16 @@ export const submitPaper = mutation({
 
         // 5. Save the paper
         const paperId = await ctx.db.insert("submittedPapers", {
-            registrationId: args.registrationId,
+            registrationId,
             paperTrack: args.paperTrack,
             paperTitle: args.paperTitle,
             abstract: args.abstract,
             paperFileId: args.paperFileId,
             status: "under_review",
+        });
+
+        await ctx.db.patch(session._id, {
+            used: true,
         });
 
         return {
@@ -735,106 +763,108 @@ export const getEligibleRegistration = internalQuery({
 });
 
 export const getRegistrationForOtp = internalQuery({
-  args: {
-    registrationNumber: v.string(),
-  },
-
-  handler: async (ctx, args) => {
-    return await ctx.db
-      .query("registrations")
-      .withIndex("by_registration_number", (q) =>
-        q.eq("registrationNumber", args.registrationNumber)
-      )
-      .unique();
-  },
-});
-
-export const verifyAndCreatePaperSubmissionSession =internalMutation({
     args: {
-      registrationNumber: v.string(),
-      otpHash: v.string(),
-      sessionTokenHash: v.string(),
-      sessionExpiresAt: v.number(),
+        registrationNumber: v.string(),
     },
 
     handler: async (ctx, args) => {
-      const registration = await ctx.db
-        .query("registrations")
-        .withIndex("by_registration_number", (q) =>
-          q.eq("registrationNumber", args.registrationNumber)
-        )
-        .unique();
-
-      if (
-        !registration ||
-        registration.category !== "author" ||
-        registration.paymentStatus !== "paid"
-      ) {
-        return {
-          success: false,
-          message: "Registration is not eligible for paper submission.",
-        };
-      }
-
-      const otpRecord = await ctx.db
-        .query("paperSubmissionOtps")
-        .withIndex("by_registration", (q) =>
-          q.eq("registrationId", registration._id)
-        )
-        .first();
-
-      if (!otpRecord || otpRecord.verified) {
-        return {
-          success: false,
-          message: "No valid pending OTP found. Please request a new code.",
-        };
-      }
-
-      if (otpRecord.expiresAt <= Date.now()) {
-        await ctx.db.delete(otpRecord._id);
-
-        return {
-          success: false,
-          message: "Your OTP has expired. Please request a new code.",
-        };
-      }
-
-      if (otpRecord.attempts >= 5) {
-        await ctx.db.delete(otpRecord._id);
-
-        return {
-          success: false,
-          message: "Too many incorrect attempts. Please request a new code.",
-        };
-      }
-
-      if (otpRecord.otpHash !== args.otpHash) {
-        const attempts = otpRecord.attempts + 1;
-
-        await ctx.db.patch(otpRecord._id, { attempts });
-
-        return {
-          success: false,
-          message:
-            attempts >= 5
-              ? "Too many incorrect attempts. Please request a new code."
-              : `Incorrect OTP. ${5 - attempts} attempt(s) remaining.`,
-        };
-      }
-
-      // OTP is correct. Mark it as used.
-      await ctx.db.patch(otpRecord._id, { verified: true });
-
-      await ctx.db.insert("paperSubmissionSessions", {
-        registrationId: registration._id,
-        sessionTokenHash: args.sessionTokenHash,
-        expiresAt: args.sessionExpiresAt,
-        createdAt: Date.now(),
-      });
-
-      return { success: true };
+        return await ctx.db
+            .query("registrations")
+            .withIndex("by_registration_number", (q) =>
+                q.eq("registrationNumber", args.registrationNumber)
+            )
+            .unique();
     },
-  });
+});
+
+export const verifyAndCreatePaperSubmissionSession = internalMutation({
+    args: {
+        registrationNumber: v.string(),
+        otpHash: v.string(),
+        sessionTokenHash: v.string(),
+        sessionExpiresAt: v.number(),
+        used: v.boolean(),
+    },
+
+    handler: async (ctx, args) => {
+        const registration = await ctx.db
+            .query("registrations")
+            .withIndex("by_registration_number", (q) =>
+                q.eq("registrationNumber", args.registrationNumber)
+            )
+            .unique();
+
+        if (
+            !registration ||
+            registration.category !== "author" ||
+            registration.paymentStatus !== "paid"
+        ) {
+            return {
+                success: false,
+                message: "Registration is not eligible for paper submission.",
+            };
+        }
+
+        const otpRecord = await ctx.db
+            .query("paperSubmissionOtps")
+            .withIndex("by_registration", (q) =>
+                q.eq("registrationId", registration._id)
+            )
+            .first();
+
+        if (!otpRecord || otpRecord.verified) {
+            return {
+                success: false,
+                message: "No valid pending OTP found. Please request a new code.",
+            };
+        }
+
+        if (otpRecord.expiresAt <= Date.now()) {
+            await ctx.db.delete(otpRecord._id);
+
+            return {
+                success: false,
+                message: "Your OTP has expired. Please request a new code.",
+            };
+        }
+
+        if (otpRecord.attempts >= 5) {
+            await ctx.db.delete(otpRecord._id);
+
+            return {
+                success: false,
+                message: "Too many incorrect attempts. Please request a new code.",
+            };
+        }
+
+        if (otpRecord.otpHash !== args.otpHash) {
+            const attempts = otpRecord.attempts + 1;
+
+            await ctx.db.patch(otpRecord._id, { attempts });
+
+            return {
+                success: false,
+                message:
+                    attempts >= 5
+                        ? "Too many incorrect attempts. Please request a new code."
+                        : `Incorrect OTP. ${5 - attempts} attempt(s) remaining.`,
+            };
+        }
+
+        // OTP is correct. Mark it as used.
+        await ctx.db.patch(otpRecord._id, { verified: true });
+
+        await ctx.db.insert("paperSubmissionSessions", {
+            registrationId: registration._id,
+            sessionTokenHash: args.sessionTokenHash,
+            expiresAt: args.sessionExpiresAt,
+            createdAt: Date.now(),
+            used: false,
+        });
+
+        return { success: true };
+    },
+});
 
 export const storePaperSubmissionOtp = internalMutation({
     args: {

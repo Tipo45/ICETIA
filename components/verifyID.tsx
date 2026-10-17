@@ -10,9 +10,11 @@ import VerifyPaperSubmissionOtp from "./verifyPaperSubmissionOtp";
 
 interface Props {
     onVerified: (sessionToken: string) => void;
+    registrationId: string;
+    onRegistrationIdChange: (value: string) => void;
 }
 
-export default function VerifyRegistrationForm({ onVerified }: Props) {
+export default function VerifyRegistrationForm({ onVerified, registrationId, onRegistrationIdChange }: Props) {
     const [registrationNumber, setRegistrationNumber] = useState("");
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
@@ -94,6 +96,7 @@ export default function VerifyRegistrationForm({ onVerified }: Props) {
                     value={registrationNumber}
                     onChange={(e) => {
                         setRegistrationNumber(e.target.value);
+                        onRegistrationIdChange(e.target.value);
                         setMessage("");
                         setError("");
                         setShowOtp(false);

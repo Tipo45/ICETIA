@@ -194,12 +194,12 @@ export default function CallForPapers() {
                 onClick={handleCFPButton}
                 className="group h-11 rounded-full bg-blue-600 px-6 text-sm font-semibold text-white hover:bg-blue-500"
               >
-                Submit a Paper
+                Register for ICETIA 2027
                 <LuArrowUpRight className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </Button>
 
               <span className="text-xs text-slate-500">
-                Accepted authors will be invited to present.
+                Registered and accepted authors will be invited to present.
               </span>
             </div>
           </div>

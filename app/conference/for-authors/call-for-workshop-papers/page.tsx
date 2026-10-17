@@ -13,14 +13,38 @@ import {
 } from "react-icons/lu";
 
 const workshopTopics = [
-  "Artificial Intelligence & Machine Learning Applications",
-  "Cybersecurity, Privacy & Digital Trust",
-  "Smart Systems, Internet of Things & Intelligent Environments",
-  "Data Science, Analytics & Decision Intelligence",
-  "Cloud Computing, Edge Computing & Digital Infrastructure",
-  "Academic Publishing, Research Visibility & Grant Proposal Development",
-  "Technology Entrepreneurship & Innovation Commercialisation",
-  "Digital Transformation for Education, Governance, Health & Industry",
+  {
+    name: "Artificial Intelligence & Machine Learning Applications",
+    href: "/conference/for-authors/call-for-workshop-papers/artificial-intelligence-&-machine-learning-applications"
+  },
+  {
+    name: "Cybersecurity, Privacy & Digital Trust",
+    href: "/conference/for-authors/call-for-workshop-papers/cybersecurity-privacy-&-digital-trust"
+  },
+  {
+    name: "Smart Systems, Internet of Things & Intelligent Environments",
+    href: "/conference/for-authors/call-for-workshop-papers/smart-systems-internet-of-thing-&-intelligent-environments"
+  },
+  {
+    name: "Data Science, Analytics & Decision Intelligence",
+    href: "/conference/for-authors/call-for-workshop-papers/data-science-analytics-&-decision-intelligence"
+  },
+  {
+    name: "Cloud Computing, Edge Computing & Digital Infrastructure",
+    href: "/conference/for-authors/call-for-workshop-papers/cloud-computing-edge-computing-&-digital-infrastructure"
+  },
+  {
+    name: "Academic Publishing, Research Visibility & Grant Proposal Development",
+    href: "/conference/for-authors/call-for-workshop-papers/academic-publishing-research-visibility-&-grant-proposal-development"
+  },
+  {
+    name: "Technology Entrepreneurship & Innovation Commercialisation",
+    href: "/conference/for-authors/call-for-workshop-papers/technology-entrepreneurship-&-innovation-commercialisation"
+  },
+  {
+    name: "Digital Transformation for Education, Governance, Health & Industry",
+    href: "/conference/for-authors/call-for-workshop-papers/digital-transformation-for-education-governance-health-&-industry"
+  }
 ];
 
 const submissionRequirements = [
@@ -69,19 +93,14 @@ export default function WorkShop() {
 
               <div className="mt-9 flex flex-wrap gap-3">
                 <Link
-                  href="#"
-                  className="inline-flex items-center gap-2 bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-500 opacity-50 cursor-not-allowed"
+                  href="/registration"
+                  className="inline-flex items-center gap-2 bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-500"
                 >
-                  Submit Workshop Paper
+                 Register for ICETIA 2027
                   <LuArrowUpRight className="h-4 w-4" />
                 </Link>
 
-                <Link
-                  href="/registration"
-                  className="inline-flex items-center gap-2 border border-white/15 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-white/10"
-                >
-                  Register for ICETIA 2027
-                </Link>
+                
               </div>
             </div>
           </div>
@@ -156,26 +175,34 @@ export default function WorkShop() {
               </p>
             </div>
 
-            <div className="mt-10 grid border-l border-t border-white/10 grid-cols-2 xl:grid-cols-4">
-              {workshopTopics.map((topic, index) => (
-                <div
-                  key={topic}
-                  className="group min-h-40 border-b border-r border-white/10 p-6 transition-colors duration-300 hover:bg-white/3"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-bold tracking-[0.2em] text-slate-600">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
+            <div className="mt-10 grid grid-cols-2 border-l border-t border-white/10 lg:grid-cols-3 xl:grid-cols-4">
+  {workshopTopics.map((topic, index) => (
+    <div
+      key={topic.name}
+      className="group flex min-h-52 flex-col border-b border-r border-white/10 p-6 transition-colors duration-300 hover:bg-white/3 lg:p-7"
+    >
+      <div className="flex items-center justify-between">
+        <span className="text-[10px] font-bold tracking-[0.2em] text-slate-500">
+          {String(index + 1).padStart(2, "0")}
+        </span>
 
-                    <LuCheck className="h-4 w-4 text-blue-400 opacity-60 transition-opacity group-hover:opacity-100" />
-                  </div>
+        <LuCheck className="h-4 w-4 text-blue-400 opacity-60 transition-opacity group-hover:opacity-100" />
+      </div>
 
-                  <p className="mt-8 text-sm font-medium leading-6 text-slate-300 transition-colors group-hover:text-white">
-                    {topic}
-                  </p>
-                </div>
-              ))}
-            </div>
+      <p className="mt-6 flex-1 text-sm font-medium leading-6 text-slate-300 transition-colors group-hover:text-white">
+        {topic.name}
+      </p>
+
+      <a
+        href={topic.href}
+        className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#07111f]"
+      >
+        Submit Paper
+        <LuArrowUpRight className="h-4 w-4" />
+      </a>
+    </div>
+  ))}
+</div>
           </div>
         </section>
 

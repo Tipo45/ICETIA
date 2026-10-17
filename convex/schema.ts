@@ -172,6 +172,7 @@ paperSubmissionSessions: defineTable({
   sessionTokenHash: v.string(),
   expiresAt: v.number(),
   createdAt: v.number(),
+  used: v.boolean(),
 }).index("by_registration", ["registrationId"])
 .index("by_session_token_hash", ["sessionTokenHash"]),
 
