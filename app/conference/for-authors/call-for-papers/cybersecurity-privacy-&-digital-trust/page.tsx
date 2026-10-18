@@ -285,7 +285,7 @@ export default function CybersecurityPage() {
 
                     <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-500 lg:text-base">
                         Submit your research paper for consideration at ICETIA 2027. {" "}
-                        {isVerified === true ? (<>Complete the details below and upload your paper in PDF format.</>) : (<>Verify your Registration Number first</>)}
+                        {isVerified === true ? (<>Complete the details below and upload your paper in PDF or Word format.</>) : (<>Verify your Registration Number first</>)}
                     </p>
                 </div>
 
@@ -337,7 +337,7 @@ export default function CybersecurityPage() {
                                     </label>
 
                                     <input value={registrationNumber}
-                                     className="bg-gray-300 border border-blue-100 rounded-lg p-4 w-full font-semibold" readOnly />
+                                        className="bg-gray-300 border border-blue-100 rounded-lg p-4 w-full font-semibold" readOnly />
                                 </div>
 
                                 <div className="space-y-2">
@@ -347,7 +347,12 @@ export default function CybersecurityPage() {
                                         Paper Track <span className="text-red-600">*</span>
                                     </label>
 
-                                    <input value={track} className="bg-gray-300 border border-blue-100 rounded-lg p-4 w-full font-semibold" readOnly />
+                                    <textarea
+                                        value={track}
+                                        readOnly
+                                        rows={2}
+                                        className="w-full resize-none rounded-lg border border-blue-100 bg-gray-300 p-4 text-sm font-semibold leading-6 text-slate-800 focus:outline-none"
+                                    />
 
                                 </div>
 
@@ -445,9 +450,7 @@ export default function CybersecurityPage() {
                                             </p>
 
                                             <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-                                                <span className="rounded-full border border-blue-200 bg-white px-3 py-1 text-xs font-semibold text-blue-700">
-                                                    PDF only
-                                                </span>
+                                                
                                                 <span className="rounded-full border border-blue-200 bg-white px-3 py-1 text-xs font-semibold text-blue-700">
                                                     Maximum 5 MB
                                                 </span>
@@ -511,7 +514,7 @@ export default function CybersecurityPage() {
                                     </p>
                                     <p className="mt-2 text-sm leading-6 text-slate-500">
                                         Review your paper details carefully. Your uploaded document must
-                                        be a PDF file no larger than 5 MB.
+                                        be a PDF or Word format file no larger than 5 MB.
                                     </p>
                                 </div>
 

@@ -23,7 +23,7 @@ const workshopTopics = [
   },
   {
     name: "Smart Systems, Internet of Things & Intelligent Environments",
-    href: "/conference/for-authors/call-for-workshop-papers/smart-systems-internet-of-thing-&-intelligent-environments"
+    href: "/conference/for-authors/call-for-workshop-papers/smart-systems-internet-of-things-&-intelligent-environments"
   },
   {
     name: "Data Science, Analytics & Decision Intelligence",

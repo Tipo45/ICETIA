@@ -28,7 +28,6 @@ export const registerAuthor = mutation({
         )),
         paperTrack: v.optional(v.string()),
         paperTitle: v.optional(v.string()),
-        paperFileId: v.optional(v.id("_storage")),
         coAuthors: v.optional(v.array(v.object({
             firstName: (v.string()),
             lastName: (v.string()),
@@ -85,7 +84,6 @@ export const registerAuthor = mutation({
             degree: args.degree,
             paperTrack: args.paperTrack,
             paperTitle: args.paperTitle,
-            paperFileId: args.paperFileId,
             coAuthors: args.coAuthors ?? [],
             department: args.department,
             amount,
@@ -606,10 +604,6 @@ export const submitPaper = mutation({
             );
         }
 
-
-
-
-
         // 2. Check whether the registrant is an author
         if (registration.category !== "author") {
             throw new ConvexError(
@@ -664,20 +658,40 @@ export const submitPaper = mutation({
 
 export const submitWorkshopPaper = mutation({
     args: {
-        registrationId: v.id("registrations"),
+        registrationNumber: v.string(),
         paperTrack: v.string(),
         paperTitle: v.string(),
         abstract: v.string(),
         paperFileId: v.id("_storage"),
+        sessionToken: v.string(),
     },
 
     handler: async (ctx, args) => {
+
         // 1. Check whether the registration exists
-        const registration = await ctx.db.get(args.registrationId);
+        const registration = await ctx.db.query("registrations")
+            .withIndex("by_registration_number", (q) =>
+                q.eq("registrationNumber", args.registrationNumber)
+            ).unique();
 
         if (!registration) {
             throw new ConvexError(
-                "Invalid registration ID. Please check your registration details."
+                "Invalid registration Number. Please check your registration details."
+            );
+        }
+
+        const registrationId = registration._id;
+
+        const session = await ctx.db
+            .query("paperSubmissionSessions")
+            .withIndex("by_registration", (q) =>
+                q.eq("registrationId", registrationId)
+            )
+            .unique();
+
+        if (!session || session.expiresAt === Date.now() || session.used === true) {
+            throw new ConvexError(
+                "Your verification session has expired. Please verify your registration again."
             );
         }
 
@@ -700,7 +714,7 @@ export const submitWorkshopPaper = mutation({
             .query("submittedWorkShopPapers")
             .withIndex("by_registration_and_track", (q) =>
                 q
-                    .eq("registrationId", args.registrationId)
+                    .eq("registrationId", registrationId)
                     .eq("paperTrack", args.paperTrack)
             )
             .first();
@@ -713,12 +727,16 @@ export const submitWorkshopPaper = mutation({
 
         // 5. Save the paper
         const paperId = await ctx.db.insert("submittedWorkShopPapers", {
-            registrationId: args.registrationId,
+            registrationId,
             paperTrack: args.paperTrack,
             paperTitle: args.paperTitle,
             abstract: args.abstract,
             paperFileId: args.paperFileId,
             status: "under_review",
+        });
+
+        await ctx.db.patch(session._id, {
+            used: true,
         });
 
         return {

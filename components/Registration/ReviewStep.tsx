@@ -42,7 +42,7 @@ export default function ReviewStep({
 
                     <div>
                         <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">
-                            Step 05
+                            Step 04
                         </p>
 
                         <h3 className="mt-1 text-lg font-semibold">
@@ -116,20 +116,6 @@ export default function ReviewStep({
                     stacked
                 />
 
-                <ReviewRow
-                    label="Uploaded Paper"
-                    value={
-                        formData.paperFile
-                            ? `${formData.paperFile.name} (${(
-                                  formData.paperFile.size /
-                                  1024 /
-                                  1024
-                              ).toFixed(2)} MB)`
-                            : "No file uploaded"
-                    }
-                    icon={<FiFileText />}
-                    stacked
-                />
             </ReviewSection>
 
             {/* Co-authors */}

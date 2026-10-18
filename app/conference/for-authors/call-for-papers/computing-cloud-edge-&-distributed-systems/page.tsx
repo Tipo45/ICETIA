@@ -16,7 +16,7 @@ import { toast } from "sonner";
 
 
 
-export default function CybersecurityPage() {
+export default function ComputingCloudPage() {
 
     const [formData, setFormData] = useState<SubmissionOfPapers>({
         paperTrack: "",
@@ -337,7 +337,7 @@ export default function CybersecurityPage() {
                                     </label>
 
                                     <input value={registrationNumber}
-                                     className="bg-gray-300 border border-blue-100 rounded-lg p-4 w-full font-semibold" readOnly />
+                                        className="bg-gray-300 border border-blue-100 rounded-lg p-4 w-full font-semibold" readOnly />
                                 </div>
 
                                 <div className="space-y-2">
@@ -347,7 +347,12 @@ export default function CybersecurityPage() {
                                         Paper Track <span className="text-red-600">*</span>
                                     </label>
 
-                                    <input value={track} className="bg-gray-300 border border-blue-100 rounded-lg p-4 w-full font-semibold" readOnly />
+                                    <textarea
+                                        value={track}
+                                        readOnly
+                                        rows={2}
+                                        className="w-full resize-none rounded-lg border border-blue-100 bg-gray-300 p-4 text-sm font-semibold leading-6 text-slate-800 focus:outline-none"
+                                    />
 
                                 </div>
 

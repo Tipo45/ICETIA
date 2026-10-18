@@ -4,7 +4,6 @@ import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import AcademicInfoStep from "@/components/Registration/AcademicInfoStep";
 import CoAuthorsStep from "@/components/Registration/CoAuthorsStep";
-import PaperUploadStep from "@/components/Registration/PaperUpload";
 import PersonalInfoStep from "@/components/Registration/PersonalInfoStep";
 import ProgressStepper from "@/components/Registration/ProgressStepper";
 import ReviewStep from "@/components/Registration/ReviewStep";
@@ -17,7 +16,6 @@ import {
     validateFirstName,
     validateInstitution,
     validateLastName,
-    validatePaperFile,
     validatePaperTitle,
     validatePaperTrack,
 } from "@/components/types/validation";
@@ -85,9 +83,6 @@ export default function AuthorsRegistrationPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const register = useMutation(api.registration.registerAuthor);
-    const generateUploadUrl = useMutation(
-        api.registration.generateUploadUrl
-    );
 
     const [formData, setFormData] = useState<RegistrationFormData>({
         firstName: "",
@@ -100,7 +95,6 @@ export default function AuthorsRegistrationPage() {
         paperTrack: "",
         paperTitle: "",
         coAuthors: [],
-        paperFile: null,
     });
 
     const [formErrors, setFormErrors] = useState({
@@ -124,7 +118,6 @@ export default function AuthorsRegistrationPage() {
                 degree: "",
             },
         ],
-        paperFile: "",
     });
 
     const [formTouched, setFormTouched] = useState({
@@ -148,7 +141,6 @@ export default function AuthorsRegistrationPage() {
                 degree: false,
             },
         ],
-        paperFile: false,
     });
 
     const benefits = [
@@ -232,10 +224,6 @@ export default function AuthorsRegistrationPage() {
         });
     };
 
-    const isPaperUploadValid = () => {
-        return !validatePaperFile(formData.paperFile);
-    };
-
     const isCurrentStepValid = () => {
         switch (step) {
             case 1:
@@ -248,9 +236,6 @@ export default function AuthorsRegistrationPage() {
                 return isCoauthorInfoRegFormValid();
 
             case 4:
-                return isPaperUploadValid();
-
-            case 5:
                 return true;
 
             default:
@@ -280,34 +265,12 @@ export default function AuthorsRegistrationPage() {
 
         const paymentWindow = window.open("about:blank", "_blank");
 
-        let storageId;
 
         setIsSubmitting(true);
 
         let gatewayOpened = false;
 
         try {
-            if (formData.paperFile) {
-                const postUrl = await generateUploadUrl();
-
-                const uploadResult = await fetch(postUrl, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": formData.paperFile.type,
-                    },
-                    body: formData.paperFile,
-                });
-
-                if (!uploadResult.ok) {
-                    throw new Error("Paper upload failed. Please try again.");
-                }
-
-                const {
-                    storageId: uploadedStorageId,
-                } = await uploadResult.json();
-
-                storageId = uploadedStorageId;
-            }
 
             const registration = await register({
                 firstName: formData.firstName,
@@ -323,7 +286,6 @@ export default function AuthorsRegistrationPage() {
                     ...author,
                     degree: author.degree as Degree,
                 })),
-                paperFileId: storageId,
             });
 
             const registrationId = registration.registrationId;
@@ -576,13 +538,13 @@ export default function AuthorsRegistrationPage() {
                                     </div>
 
                                     <h2 className="text-2xl font-semibold tracking-tight lg:text-3xl">
-                                        {step === 5
+                                        {step === 4
                                             ? "Review your details"
                                             : "Complete your registration"}
                                     </h2>
 
                                     <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
-                                        {step === 5
+                                        {step === 4
                                             ? "Check your information carefully before submitting your registration."
                                             : "Complete each section before proceeding to the next step."}
                                     </p>
@@ -641,18 +603,8 @@ export default function AuthorsRegistrationPage() {
                                 />
                             )}
 
-                            {step === 4 && (
-                                <PaperUploadStep
-                                    formData={formData}
-                                    setFormData={setFormData}
-                                    formErrors={formErrors}
-                                    setFormErrors={setFormErrors}
-                                    formTouched={formTouched}
-                                    setFormTouched={setFormTouched}
-                                />
-                            )}
 
-                            {step === 5 && (
+                            {step === 4 && (
                                 <ReviewStep formData={formData} />
                             )}
                         </div>

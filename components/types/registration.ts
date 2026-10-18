@@ -31,8 +31,6 @@ export interface RegistrationFormData {
     
 
     coAuthors: CoAuthor[];
-
-    paperFile: File | null;
 }
 
 export interface CoAuthorErrors {
@@ -60,8 +58,6 @@ export interface RegistrationFormErrors {
     
 
     coAuthors: CoAuthorErrors[];
-
-    paperFile: string;
 }
 
 export interface CoAuthorTouched {
@@ -89,8 +85,6 @@ export interface RegistrationFormTouched {
     
 
     coAuthors: CoAuthorTouched[];
-
-    paperFile: boolean;
 }
 
 export interface SubmissionOfPapers {

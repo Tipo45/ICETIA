@@ -162,162 +162,162 @@ export default function Navbar() {
             ))}
 
             {/* Conference */}
-<div className="group/conference relative">
-  <button
-    type="button"
-    className="inline-flex h-10 items-center justify-center px-3 text-[13px] font-medium text-slate-600 transition-colors duration-200 hover:text-blue-600"
-  >
-    Conference
-  </button>
+            <div className="group/conference relative">
+              <button
+                type="button"
+                className="inline-flex h-10 items-center justify-center px-3 text-[13px] font-medium text-slate-600 transition-colors duration-200 hover:text-blue-600"
+              >
+                Conference
+              </button>
 
-  <div className="absolute left-1/2 top-full z-50 hidden -translate-x-1/2 pt-2 group-hover/conference:block">
-    <div className="w-50 rounded-md border border-slate-200 bg-white p-2 shadow-lg">
-      <div className="grid gap-1">
-        <div className="rounded-md p-2">
-          <div className="mb-2 text-sm font-semibold text-slate-800">
-            For Authors
-          </div>
+              <div className="absolute left-1/2 top-full z-50 hidden -translate-x-1/2 pt-2 group-hover/conference:block">
+                <div className="w-50 rounded-md border border-slate-200 bg-white p-2 shadow-lg">
+                  <div className="grid gap-1">
+                    <div className="rounded-md p-2">
+                      <div className="mb-2 text-sm font-semibold text-slate-800">
+                        For Authors
+                      </div>
 
-          <div className="ml-3 border-l border-slate-200">
-            <Link
-              href="/conference/for-authors/camera-ready"
-              className="block rounded-md px-4 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-blue-600"
-            >
-              Camera Ready
-            </Link>
+                      <div className="ml-3 border-l border-slate-200">
+                        <Link
+                          href="/conference/for-authors/camera-ready"
+                          className="block rounded-md px-4 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                        >
+                          Camera Ready
+                        </Link>
 
-            <Link
-              href="/conference/for-authors/call-for-papers"
-              className="block rounded-md px-4 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-blue-600"
-            >
-              Call For Papers
-            </Link>
+                        <Link
+                          href="/conference/for-authors/call-for-papers"
+                          className="block rounded-md px-4 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                        >
+                          Call For Papers
+                        </Link>
 
-            <Link
-              href="/conference/for-authors/call-for-workshop-papers"
-              className="block rounded-md px-4 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-blue-600"
-            >
-              Call For Workshop Papers
-            </Link>
-          </div>
-        </div>
+                        <Link
+                          href="/conference/for-authors/call-for-workshop-papers"
+                          className="block rounded-md px-4 py-2 text-sm text-slate-600 transition-colors hover:bg-slate-50 hover:text-blue-600"
+                        >
+                          Call For Workshop Papers
+                        </Link>
+                      </div>
+                    </div>
 
-        {conferenceItems.map((item) => (
-          <Link
-            key={item.name}
-            href={item.href}
-            className="group flex items-center justify-between rounded-md p-2 transition-colors hover:bg-slate-50 text-slate-600 hover:text-blue-600"
-          >
-            <span className="text-sm font-semibold">
-              {item.name}
-            </span>
+                    {conferenceItems.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className="group flex items-center justify-between rounded-md p-2 transition-colors hover:bg-slate-50 text-slate-600 hover:text-blue-600"
+                      >
+                        <span className="text-sm font-semibold">
+                          {item.name}
+                        </span>
 
-            {/* <LuArrowUpRight className="h-4 w-4 text-slate-300 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-blue-600" /> */}
-          </Link>
-        ))}
-      </div>
-    </div>
-  </div>
-</div>
-
-
-{/* Committees */}
-<div className="group/committees relative">
-  <button
-    type="button"
-    className="inline-flex h-10 items-center justify-center px-3 text-[13px] font-medium text-slate-600 transition-colors duration-200 hover:text-blue-600"
-  >
-    Committees
-  </button>
-
-  <div className="absolute left-1/2 top-full z-50 hidden -translate-x-1/2 pt-2 group-hover/committees:block">
-    <div className="w-50 rounded-md border border-slate-200 bg-white p-2 shadow-lg">
-      <div className="grid gap-1">
-        {committeeItems.map((item) => (
-          <Link
-            key={item.name}
-            href={item.href}
-            className="group block rounded-md p-2 transition-colors hover:bg-slate-50 text-slate-600 hover:text-blue-600"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold">
-                {item.name}
-              </span>
-
-              {/* <LuArrowUpRight className="h-4 w-4 text-slate-300 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-blue-600" /> */}
+                        {/* <LuArrowUpRight className="h-4 w-4 text-slate-300 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-blue-600" /> */}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
-          </Link>
-        ))}
-      </div>
-    </div>
-  </div>
-</div>
 
 
-{/* Program */}
-<div className="group/program relative">
-  <button
-    type="button"
-    className="inline-flex h-10 items-center justify-center px-3 text-[13px] font-medium text-slate-600 transition-colors duration-200 hover:text-blue-600"
-  >
-    Program
-  </button>
+            {/* Committees */}
+            <div className="group/committees relative">
+              <button
+                type="button"
+                className="inline-flex h-10 items-center justify-center px-3 text-[13px] font-medium text-slate-600 transition-colors duration-200 hover:text-blue-600"
+              >
+                Committees
+              </button>
 
-  <div className="absolute left-1/2 top-full z-50 hidden -translate-x-1/2 pt-2 group-hover/program:block">
-    <div className="w-35 rounded-md border border-slate-200 bg-white p-2 shadow-lg">
-      <div className="grid gap-1">
-        {programItems.map((item) => (
-          <Link
-            key={item.name}
-            href={item.href}
-            className="group block rounded-md p-2 transition-colors hover:bg-slate-50 text-slate-600 hover:text-blue-600"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold ">
-                {item.name}
-              </span>
+              <div className="absolute left-1/2 top-full z-50 hidden -translate-x-1/2 pt-2 group-hover/committees:block">
+                <div className="w-50 rounded-md border border-slate-200 bg-white p-2 shadow-lg">
+                  <div className="grid gap-1">
+                    {committeeItems.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className="group block rounded-md p-2 transition-colors hover:bg-slate-50 text-slate-600 hover:text-blue-600"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-semibold">
+                            {item.name}
+                          </span>
 
-              {/* <LuArrowUpRight className="h-4 w-4 text-slate-300 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /> */}
+                          {/* <LuArrowUpRight className="h-4 w-4 text-slate-300 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-blue-600" /> */}
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
-          </Link>
-        ))}
-      </div>
-    </div>
-  </div>
-</div>
 
 
-{/* Location */}
-<div className="group/location relative">
-  <button
-    type="button"
-    className="inline-flex h-10 items-center justify-center px-3 text-[13px] font-medium text-slate-600 transition-colors duration-200 hover:text-blue-600"
-  >
-    Location
-  </button>
+            {/* Program */}
+            <div className="group/program relative">
+              <button
+                type="button"
+                className="inline-flex h-10 items-center justify-center px-3 text-[13px] font-medium text-slate-600 transition-colors duration-200 hover:text-blue-600"
+              >
+                Program
+              </button>
 
-  <div className="absolute left-1/2 top-full z-50 hidden -translate-x-1/2 group-hover/location:block">
-    <div className="w-20 rounded-md border border-slate-200 bg-white p-2 shadow-lg">
-      <div className="grid gap-1">
-        {locationItems.map((item) => (
-          <Link
-            key={item.name}
-            href={item.href}
-            className="group block rounded-md p-2 transition-colors hover:bg-slate-50 text-slate-600 hover:text-blue-600"
-          >
-            <div className="flex items-center justify-between ">
-              <span className="text-sm font-semibold">
-                {item.name}
-              </span>
+              <div className="absolute left-1/2 top-full z-50 hidden -translate-x-1/2 pt-2 group-hover/program:block">
+                <div className="w-35 rounded-md border border-slate-200 bg-white p-2 shadow-lg">
+                  <div className="grid gap-1">
+                    {programItems.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className="group block rounded-md p-2 transition-colors hover:bg-slate-50 text-slate-600 hover:text-blue-600"
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-semibold ">
+                            {item.name}
+                          </span>
 
-              {/* <LuArrowUpRight className="h-4 w-4 text-slate-300 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /> */}
+                          {/* <LuArrowUpRight className="h-4 w-4 text-slate-300 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /> */}
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
-          </Link>
-        ))}
-      </div>
-    </div>
-  </div>
-</div>
+
+
+            {/* Location */}
+            <div className="group/location relative">
+              <button
+                type="button"
+                className="inline-flex h-10 items-center justify-center px-3 text-[13px] font-medium text-slate-600 transition-colors duration-200 hover:text-blue-600"
+              >
+                Location
+              </button>
+
+              <div className="absolute left-1/2 top-full z-50 hidden -translate-x-1/2 group-hover/location:block">
+                <div className="w-20 rounded-md border border-slate-200 bg-white p-2 shadow-lg">
+                  <div className="grid gap-1">
+                    {locationItems.map((item) => (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        className="group block rounded-md p-2 transition-colors hover:bg-slate-50 text-slate-600 hover:text-blue-600"
+                      >
+                        <div className="flex items-center justify-between ">
+                          <span className="text-sm font-semibold">
+                            {item.name}
+                          </span>
+
+                          {/* <LuArrowUpRight className="h-4 w-4 text-slate-300 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /> */}
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
 
             {/* Remaining navigation items */}
             {navItems.slice(1).map((item) => (
@@ -361,7 +361,7 @@ export default function Navbar() {
 
           <SheetContent
             side="left"
-            className="w-[85%] max-w-sm border-r border-slate-200 bg-white px-6"
+            className="flex h-dvh w-[85%] max-w-sm flex-col overflow-hidden border-r border-slate-200 bg-white px-6"
           >
             {/* Mobile Brand */}
             <div className="mt-8 border-b border-slate-200 pb-6">
@@ -408,7 +408,7 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Navigation */}
-            <nav className="mt-6 flex flex-col">
+            <nav className="mt-6 min-h-0 flex-1 overflow-y-auto overscroll-contain flex flex-col">
 
               {navItems.slice(0, 1).map((item) => (
                 <Link
@@ -555,13 +555,15 @@ export default function Navbar() {
             </nav>
 
             {/* Mobile CTA */}
-            <Button
-              onClick={handleRegistrationNavigation}
-              className="mt-7 h-11 w-full rounded-full bg-blue-600 text-sm font-semibold hover:bg-blue-700"
-            >
-              Register Now
-              <LuArrowUpRight className="ml-1 h-4 w-4" />
-            </Button>
+            <div className="shrink-0 border-t border-slate-200 bg-white pb-[max(1rem,env(safe-area-inset-bottom))] pt-4">
+              <Button
+                onClick={handleRegistrationNavigation}
+                className="h-12 w-full rounded-full bg-blue-600 text-sm font-semibold hover:bg-blue-700"
+              >
+                Register Now
+                <LuArrowUpRight className="ml-1 h-4 w-4" />
+              </Button>
+            </div>
           </SheetContent>
         </Sheet>
       </div>
