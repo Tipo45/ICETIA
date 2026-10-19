@@ -40,7 +40,7 @@ export default function AIPage() {
     const generateUploadUrl = useMutation(
         api.registration.generateUploadUrl
     );
-    const [isVerified, setIsVerified] = useState(true);
+    const [isVerified, setIsVerified] = useState(false);
     const [registrationNumber, setRegistrationNumber] = useState("");
     const [isCheckingSession, setIsCheckingSession] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);

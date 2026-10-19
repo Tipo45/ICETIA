@@ -117,10 +117,10 @@ export default function DataSciencePage() {
         }
 
         const allowedTypes = [
-    "application/pdf",
-    "application/msword",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-];
+            "application/pdf",
+            "application/msword",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        ];
 
         if (!allowedTypes.includes(file.type)) {
             setFormErrors((prev) => ({
@@ -451,7 +451,7 @@ export default function DataSciencePage() {
                                             </p>
 
                                             <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-                                                
+
                                                 <span className="rounded-full border border-blue-200 bg-white px-3 py-1 text-xs font-semibold text-blue-700">
                                                     Maximum 5 MB
                                                 </span>

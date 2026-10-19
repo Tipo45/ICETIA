@@ -364,30 +364,15 @@ export default function CallForPapers() {
         ========================================================= */}
         <div className="mt-14 border-t border-white/10 pt-8 lg:mt-20">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-400">
-                Ready to contribute?
-              </p>
-
-              <p className="mt-2 text-sm text-slate-500">
-                Prepare your research and submit your work for consideration.
-              </p>
-            </div>
+            
 
             <div className="flex flex-col gap-3 tablet:flex-row">
-              <Button
-                size="lg"
-                onClick={handleCFPButton}
-                className="group h-11 rounded-full bg-blue-600 px-6 text-sm font-semibold text-white hover:bg-blue-500"
-              >
-                Submit a Paper
-                <LuArrowUpRight className="ml-1 h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-              </Button>
+              
 
               {/* Replace href with your actual template URL */}
               <a
                 href="/program/accepted-papers"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-white/10 px-6 text-sm font-semibold text-slate-300 transition-colors hover:border-blue-400/30 hover:text-white"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-white/10 px-6 text-sm font-semibold text-white transition-colors bg-blue-600 hover:bg-blue-500"
               >
                 View Accepted Papers
                 <LuArrowDownRight className="h-4 w-4" />
