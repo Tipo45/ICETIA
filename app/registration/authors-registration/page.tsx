@@ -72,7 +72,7 @@ export default function AuthorsRegistrationPage() {
     const router = useRouter();
 
     const paymentValue = 40000;
-    const totalSteps = 5;
+    const totalSteps = 4;
 
     const [step, setStep] = useState(1);
 

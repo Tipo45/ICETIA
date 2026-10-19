@@ -6,7 +6,6 @@ const steps = [
     "Personal",
     "Academic",
     "Co-authors",
-    "Paper",
     "Review",
 ];
 
