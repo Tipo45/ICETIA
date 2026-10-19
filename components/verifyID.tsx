@@ -132,6 +132,18 @@ export default function VerifyRegistrationForm({ onVerified, registrationId, onR
                     </p>
                 </div>
 
+                <div className="mt-4 flex items-center gap-2 text-sm leading-6 text-gray-600">
+                    <p>
+                        Don't have a Registration Number? {" "}
+                        <a
+                            href="/registration/authors-registration"
+                            className="font-medium text-blue-600 transition-colors hover:text-blue-700 hover:underline"
+                        >
+                            Register Here
+                        </a>
+                    </p>
+                </div>
+
 
                 {message && (
                     <p
