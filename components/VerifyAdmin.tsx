@@ -29,44 +29,93 @@ export default function VerifyAdminOtp({ adminEmail, onVerified }: Props) {
     const [sessionToken, setSessionToken] = useState("");
     const router = useRouter();
 
+    // const handleSubmit = async () => {
+
+    //     setError("");
+    //     setLoading(true);
+
+    //     try {
+    //         const result = await verifyOtp({
+    //             email: adminEmail,
+    //             otp,
+    //         });
+
+    //         const adminId = `admin-${result.adminId.slice(0, 10)}`;
+
+    //         sessionStorage.setItem(
+    //             "icetia-admin-session",
+    //             result.sessionToken
+    //         );
+
+    //         setSessionToken(result.sessionToken);
+    //         onVerified(result.sessionToken);
+    //         toast.success(result.message);
+    //         router.push(`/participants-list/${adminId}`)
+    //     } catch (err) {
+    //         const rawMessage = err instanceof Error ? err.message : "";
+
+    //         const knownErrors = [
+    //             "Enter a valid 6-digit OTP.",
+    //             "No valid pending OTP found. Please request a new code.",
+    //             "Your OTP has expired. Please request a new code.",
+    //             "Too many incorrect attempts. Please request a new code.",
+    //             "Incorrect OTP.",
+    //             "Registration is not eligible for paper submission.",
+    //         ];
+
+    //         setError(
+    //             knownErrors.find((message) => rawMessage.includes(message)) ??
+    //             "Unable to verify your OTP. Please retry verification again."
+    //         );
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+
     const handleSubmit = async () => {
+    setError("");
+    setLoading(true);
 
-        setError("");
-        setLoading(true);
+    try {
+        const result = await verifyOtp({
+            email: adminEmail,
+            otp,
+        });
 
-        try {
-            const result = await verifyOtp({
-                email: adminEmail,
-                otp,
-            });
+        const adminId = `admin-${result.adminId.slice(0, 10)}`;
 
-            const adminId = `admin-${result.adminId.slice(0, 10)}`;
+        sessionStorage.setItem(
+            "icetia-admin-session",
+            result.sessionToken
+        );
 
+        setSessionToken(result.sessionToken);
 
-            router.push(`/participants-list/${adminId}`)
-            setSessionToken(result.sessionToken);
-            onVerified(result.sessionToken);
-            toast.success(result.message);
-        } catch (err) {
-            const rawMessage = err instanceof Error ? err.message : "";
+        toast.success(result.message);
 
-            const knownErrors = [
-                "Enter a valid 6-digit OTP.",
-                "No valid pending OTP found. Please request a new code.",
-                "Your OTP has expired. Please request a new code.",
-                "Too many incorrect attempts. Please request a new code.",
-                "Incorrect OTP.",
-                "Registration is not eligible for paper submission.",
-            ];
+        router.replace(`/participants-list/${adminId}`);
+    } catch (err) {
+        const rawMessage = err instanceof Error ? err.message : "";
 
-            setError(
-                knownErrors.find((message) => rawMessage.includes(message)) ??
-                "Unable to verify your OTP. Please retry verification again."
-            );
-        } finally {
-            setLoading(false);
-        }
-    };
+        const knownErrors = [
+            "Enter a valid 6-digit OTP.",
+            "No valid pending OTP found. Please request a new code.",
+            "Your OTP has expired. Please request a new code.",
+            "Too many incorrect attempts. Please request a new code.",
+            "Incorrect OTP.",
+            "Registration is not eligible for paper submission.",
+        ];
+
+        setError(
+            knownErrors.find((message) => rawMessage.includes(message)) ??
+            "Unable to verify your OTP. Please retry verification again."
+        );
+        toast.error(knownErrors.find((message) => rawMessage.includes(message)))
+    } finally {
+        setLoading(false);
+        setOtp("");
+    }
+};
 
     return (
         <div>
@@ -141,18 +190,7 @@ export default function VerifyAdminOtp({ adminEmail, onVerified }: Props) {
                 </form>
             </div>
 
-
-            {error && (
-                <p role="alert" className="mt-3 text-sm text-red-600">
-                    {error}
-                </p>
-            )}
-
-            {sessionToken && (
-                <p role="status" className="mt-3 text-sm text-green-700">
-                    Email verified. You can now continue to paper submission.
-                </p>
-            )}
+            
 
         </div>
     )

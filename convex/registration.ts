@@ -1132,6 +1132,29 @@ export const validateAdminLoginSession = internalQuery({
     },
 });
 
+export const getValidAdminSession = internalQuery({
+    args: {
+        sessionTokenHash: v.string(),
+    },
+
+    handler: async (ctx, args) => {
+        const session = await ctx.db
+            .query("adminSessions")
+            .withIndex("by_session_token_hash", (q) =>
+                q.eq("sessionTokenHash", args.sessionTokenHash)
+            )
+            .unique();
+
+        if (!session) return null;
+        if (session.used) return null;
+        if (session.expiresAt <= Date.now()) return null;
+
+        return {
+            adminId: session.adminId,
+        };
+    },
+});
+
 export const revokeAdminSession = internalMutation({
     args: {
         sessionTokenHash: v.string(),
@@ -1146,14 +1169,20 @@ export const revokeAdminSession = internalMutation({
             .unique();
 
         if (!session) {
-            return { success: true };
+            return {
+                success: true,
+                message: "Session already revoked or not found.",
+            };
         }
 
-        await ctx.db.delete(session._id);
+        // Update the existing session document.
         await ctx.db.patch(session._id, {
             used: true,
         });
 
-        return { success: true };
+        return {
+            success: true,
+            message: "Admin session revoked successfully.",
+        };
     },
 });

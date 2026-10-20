@@ -284,25 +284,68 @@ export const verifyAdminOtp = action({
   },
 });
 
-export const logoutAdmin = action({
+export const verifyAdminSession = action({
     args: {
         sessionToken: v.string(),
     },
 
-    handler: async (ctx, args) => {
+    handler: async (ctx, args): Promise<{
+        valid: boolean;
+        adminId?: string;
+    }> => {
         if (!args.sessionToken) {
-            return { success: true };
+            return { valid: false };
         }
 
         const sessionTokenHash = createHash("sha256")
             .update(args.sessionToken)
             .digest("hex");
 
-        await ctx.runMutation(
+        const session = await ctx.runQuery(
+            internal.registration.getValidAdminSession,
+            { sessionTokenHash }
+        );
+
+        if (!session) {
+            return { valid: false };
+        }
+
+        return {
+            valid: true,
+            adminId: session.adminId,
+        };
+    },
+});
+
+export const logoutAdmin = action({
+    args: {
+        sessionToken: v.string(),
+    },
+    handler: async (ctx, args): Promise<{
+      success: boolean;
+        message: string;
+    }> => {
+        if (!args.sessionToken) {
+            throw new ConvexError("No admin session token provided.");
+        }
+
+        const sessionTokenHash = createHash("sha256")
+            .update(args.sessionToken)
+            .digest("hex");
+
+        const result = await ctx.runMutation(
             internal.registration.revokeAdminSession,
             { sessionTokenHash }
         );
 
-        return { success: true };
+        if (!result.success) {
+            throw new ConvexError("Unable to revoke admin session."
+            );
+        }
+
+         return {
+            success: true,
+            message: result.message,
+        };
     },
 });

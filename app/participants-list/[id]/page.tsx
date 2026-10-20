@@ -39,6 +39,9 @@ export default function ParticipantsPage() {
   const sendConferenceMail = useMutation(api.registration.sendMail);
   const sendEmailTicket = useMutation(api.registration.sendConferenceTicket);
   const sendReminder = useMutation(api.registration.sendReminder);
+  const verifySession = useAction(api.paperSubmission.verifyAdminSession);
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [isChecking, setIsChecking] = useState(true);
   const logOutAdmin = useAction(api.paperSubmission.logoutAdmin)
 
   const [category, setCategory] = useState<
@@ -167,21 +170,81 @@ export default function ParticipantsPage() {
 
 
   const handleLogOut = async () => {
-    const sessionToken = sessionStorage.getItem("icetia-admin-session");
+    const sessionToken = sessionStorage.getItem(
+        "icetia-admin-session"
+    );
 
     try {
-      if (sessionToken) {
-        await logOutAdmin({ sessionToken });
+        if (sessionToken) {
+            await logOutAdmin({ sessionToken });
+        }
+    } catch (error) {
+        console.error("Logout error:", error);
+        toast.error("Could not revoke the admin session.");
+        return;
+    }
+
+    toast.success("Logged out successfully")
+
+    sessionStorage.removeItem("icetia-admin-session");
+    router.replace("/admin-login");
+  };
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const checkSession = async () => {
+      const token = sessionStorage.getItem(
+        "icetia-admin-session"
+      );
+
+      if (!token) {
+        router.replace("/admin-login");
+        return;
       }
 
-      sessionStorage.removeItem("icetia-admin-session");
+      try {
+        const result = await verifySession({
+          sessionToken: token,
+        });
 
-      toast.success("Logged out successfully.");
-      router.replace("/admin-login");
-    } catch {
-      toast.error("Unable to complete logout. Please try again.");
-    }
-  };
+        if (cancelled) return;
+
+        if (!result.valid) {
+          sessionStorage.removeItem(
+            "icetia-admin-session"
+          );
+
+          router.replace("/admin-login");
+          return;
+        }
+
+        setIsAuthorized(true);
+      } catch {
+        if (!cancelled) {
+          router.replace("/admin-login");
+        }
+      } finally {
+        if (!cancelled) {
+          setIsChecking(false);
+        }
+      }
+    };
+
+    void checkSession();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [router, verifySession]);
+
+  if (isChecking || !isAuthorized) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <p>Verifying admin access...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50">

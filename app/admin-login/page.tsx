@@ -113,6 +113,7 @@ export default function AdminLoginPage({ onVerified, adminEmail }: Props) {
             toast.error(errorMessage);
         } finally {
             setIsSubmitting(false);
+            
         }
     };
 
