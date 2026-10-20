@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -15,21 +15,27 @@ import { useRouter } from "next/navigation"
 import { useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner"
+import VerifyAdminOtp from "@/components/VerifyAdmin"
 
-export default function AdminLoginPage() {
+interface Props {
+    onVerified: (sessionToken: string) => void;
+    adminEmail: string;
+}
+
+export default function AdminLoginPage({ onVerified, adminEmail }: Props) {
 
     const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [showPassword, setShowPassword] = useState(false)
+    const [message, setMessage] = useState("");
+    const [showOtp, setShowOtp] = useState(false);
+    const [isVerified, setIsVerified] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false)
-    const route = useRouter()
-    const loginAdmin = useAction(api.adminAuth.loginAdmin);
-
+    const RESEND_COOLDOWN = 60;
+    const [resendCountdown, setResendCountdown] = useState(0);
+    const requestOtp = useAction(api.paperSubmission.requestAdminOtp);
+    const [sessionToken, setSessionToken] = useState("");
     const [emailError, setEmailError] = useState("")
-    const [passwordError, setPasswordError] = useState("")
 
-    const [emailTouched, setEmailTouched] = useState(false)
-    const [passwordTouched, setPasswordTouched] = useState(false)
+    const [emailTouched, setEmailTouched] = useState(false);
 
     const validateEmail = (email: string): string | null => {
         const trimmedEmail = email.trim();
@@ -47,34 +53,6 @@ export default function AdminLoginPage() {
         return null;
     };
 
-    const validatePassword = (password: string): string | null => {
-        if (!password) {
-            return "Password is required";
-        }
-
-        if (password.length < 8) {
-            return "Password must be at least 8 characters";
-        }
-
-        if (!/[A-Z]/.test(password)) {
-            return "Password must contain at least one uppercase letter";
-        }
-
-        if (!/[a-z]/.test(password)) {
-            return "Password must contain at least one lowercase letter";
-        }
-
-        if (!/[0-9]/.test(password)) {
-            return "Password must contain at least one number";
-        }
-
-        if (!/[^A-Za-z0-9]/.test(password)) {
-            return "Password must contain at least one special character";
-        }
-
-        return null;
-    };
-
     const handleEmailChange = (value: string) => {
         setEmail(value);
 
@@ -84,49 +62,115 @@ export default function AdminLoginPage() {
         }
     };
 
-    const handlePasswordChange = (value: string) => {
-        setPassword(value);
+    const isFormValid = () => {
+        return (
+            !validateEmail(email)
+        )
 
-        if (passwordTouched) {
-            const error = validatePassword(value);
-            setPasswordError(error || "");
-        }
-    };
+    }
 
-    const isValid =
-        !validateEmail(email) && !validatePassword(password);
-
-    const handleSubmit = async () => {
+    const handleRequestOtp = async (isResend = false) => {
         const emailValidationError = validateEmail(email);
-        const passwordValidationError = validatePassword(password);
 
-        setEmailError(emailValidationError || "");
-        setPasswordError(passwordValidationError || "");
-
+        setMessage("");
         setEmailTouched(true);
-        setPasswordTouched(true);
+        setEmailError(emailValidationError || "");
 
-        if (emailValidationError || passwordValidationError) {
-            return;
-        }
+        if (emailValidationError) return;
+
+        setIsSubmitting(true);
+
         try {
-            setIsSubmitting(true);
-            const result = await loginAdmin({ email, password });
-            
-            if (result.success) {
-      sessionStorage.setItem("adminToken", result.token);
-            }
+            const result = await requestOtp({
+                email: email.trim(),
+            });
 
-            const admin = "admin-" + result.adminId.slice(0, 10);
-            route.push(`/participants-list/${admin}`);
-        } catch (error) {
-            console.error("Login failed:", error);
+            setMessage(result.message);
+            setShowOtp(true);
+            setResendCountdown(RESEND_COOLDOWN);
 
-            toast.error("Invalid email or password, Please check your credentials and try again.");
+            toast.success(result.message);
+        } catch (err) {
+            const rawMessage =
+                err instanceof Error ? err.message : "";
+
+            const knownErrors = [
+                "Please enter your email.",
+                "Admin not found.",
+                "Only authorized admins can access.",
+                "Unable to send the verification email. Please try again.",
+            ];
+
+            const matchedError = knownErrors.find((message) =>
+                rawMessage.includes(message)
+            );
+
+            const errorMessage =
+                matchedError ??
+                "We couldn't process your request. Please try again.";
+
+            setEmailError(errorMessage);
+            toast.error(errorMessage);
         } finally {
             setIsSubmitting(false);
         }
     };
+
+    useEffect(() => {
+        if (resendCountdown <= 0) return;
+
+        const timer = setTimeout(() => {
+            setResendCountdown((prev) => prev - 1);
+        }, 1000);
+
+        return () => clearTimeout(timer);
+    }, [resendCountdown]);
+
+    // const handleSubmit = async () => {
+    //     const emailValidationError = validateEmail(email);
+
+    //     setMessage("")
+    //     setEmailError(emailValidationError || "");
+    //     setShowOtp(false);
+    //     setEmailTouched(true);
+    //     setIsSubmitting(true);
+
+
+    //     if (emailValidationError) {
+    //         return;
+    //     }
+    //     try {
+    //         const result = await requestOtp({ email });
+
+    //         setMessage(result.message);
+    //         setShowOtp(true);
+    //         toast.success(result.message)
+
+    //     } catch (err) {
+    //         const rawMessage =
+    //             err instanceof Error ? err.message : "";
+
+    //         const knownErrors = [
+    //             "Please enter your email.",
+    //             "Admin not found.",
+    //             "Only authorized admins can access.",
+    //             "Unable to send the verification email. Please try again.",
+    //         ];
+
+    //         const matchedError = knownErrors.find((message) =>
+    //             rawMessage.includes(message)
+    //         );
+
+    //         setEmailError(
+    //             matchedError ??
+    //             "We couldn't process your request. Please try again."
+    //         );
+    //     }
+    //     finally {
+    //         setIsSubmitting(false);
+    //     }
+
+    // };
 
     return (
         <main className="min-h-screen bg-[#07111f] text-white">
@@ -279,7 +323,8 @@ export default function AdminLoginPage() {
                         <form
                             onSubmit={(e) => {
                                 e.preventDefault();
-                                handleSubmit();
+                                // handleSubmit();
+                                handleRequestOtp();
                             }}
                             className="space-y-6"
                         >
@@ -293,91 +338,75 @@ export default function AdminLoginPage() {
                                     Email
                                 </label>
 
-                                <div className="relative">
+                                <div className="relative flex items-center">
                                     <MdOutlineEmail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" />
 
                                     <Input
                                         id="email"
                                         value={email}
-                                        onChange={(e) => handleEmailChange(e.target.value)}
+                                        onChange={(e) => {
+                                            handleEmailChange(e.target.value);
+                                            setMessage("");
+                                            setEmailError("");
+                                            setShowOtp(false);
+                                        }}
                                         onBlur={() => {
                                             setEmailTouched(true);
                                             setEmailError(validateEmail(email) || "");
                                         }}
                                         type="email"
-                                        placeholder="Enter your email"
+                                        placeholder="johndoe@email.com"
                                         autoComplete="email"
                                         className={`h-12 rounded-none border-white/10 bg-white/[0.035] pl-11 text-sm text-white placeholder:text-white/25 focus-visible:border-blue-500 focus-visible:ring-1 focus-visible:ring-blue-500/30 ${emailTouched && emailError ? 'border-red-500 focus:ring-red-500' : emailTouched && !emailError ? 'border-blue-500 focus:ring-blue-500' : ''}`}
                                     />
-                                    {emailTouched && emailError && (
-                                        <p className="mt-1 text-sm text-red-500">
-                                            {emailError}
-                                        </p>
-                                    )}
+
                                 </div>
-                            </div>
-
-                            {/* Password */}
-                            <div>
-                                <div className="mb-2.5 flex items-center justify-between">
-                                    <label
-                                        htmlFor="password"
-                                        className="text-xs font-semibold uppercase tracking-[0.12em] text-white/65"
-                                    >
-                                        Password
-                                    </label>
-
-                                    <button
-                                        type="button"
-                                        onClick={() =>
-                                            setShowPassword((prev) => !prev)
-                                        }
-                                        className="text-[11px] font-medium text-blue-400 transition-colors hover:text-blue-300"
-                                    >
-                                        {showPassword
-                                            ? "Hide password"
-                                            : "Show password"}
-                                    </button>
-                                </div>
-
-                                <div className="relative">
-                                    <LuLockKeyhole className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" />
-
-                                    <Input
-                                        id="password"
-                                        type={
-                                            showPassword
-                                                ? "text"
-                                                : "password"
-                                        }
-                                        value={password}
-                                        onChange={(e) => handlePasswordChange(e.target.value)}
-                                        onBlur={() => {
-                                            setPasswordTouched(true);
-                                            setPasswordError(validatePassword(password) || "");
-                                        }}
-                                        placeholder="Enter your password"
-                                        autoComplete="current-password"
-                                        className={`h-12 rounded-none border-white/10 bg-white/[0.035] pl-11 text-sm text-white placeholder:text-white/25 focus-visible:border-blue-500 focus-visible:ring-1 focus-visible:ring-blue-500/30 ${passwordTouched && passwordError ? 'border-red-500 focus:ring-red-500' : passwordTouched && !passwordError ? 'border-blue-500 focus:ring-blue-500' : ''}`}
-                                    />
-                                    {passwordTouched && passwordError && (
-                                        <p className="mt-1 text-sm text-red-500">
-                                            {passwordError}
-                                        </p>
-                                    )}
-                                </div>
+                                {emailTouched && emailError && (
+                                    <p className="mt-1 text-sm text-red-500">
+                                        {emailError}
+                                    </p>
+                                )}
                             </div>
 
                             {/* Submit */}
                             <Button
                                 type="submit"
                                 className="group h-12 w-full rounded-none bg-blue-600 text-sm font-semibold text-white transition-all hover:bg-blue-500 flex items-center justify-center gap-2 px-4 py-3 tracking-[0.12em] uppercase disabled:opacity-40 disabled:cursor-not-allowed"
-                                disabled={!isValid || isSubmitting}
+                                disabled={!isFormValid() || isSubmitting}
                             >
-                                {isSubmitting ? "Signing in..." : (<>Sign In
+                                {isSubmitting ? "Sending..." : (<>Request Otp
                                     <LuArrowRight className="ml-auto h-4 w-4 transition-transform group-hover:translate-x-1" /></>)}
                             </Button>
                         </form>
+
+                        {showOtp && (
+                            <div className="mt-6 space-y-4">
+                                <VerifyAdminOtp
+                                    adminEmail={email}
+                                    onVerified={(token) => {
+                                        setSessionToken(token);
+                                        setIsVerified(true);
+                                        onVerified(token);
+                                    }}
+                                />
+
+                                <div className="text-center text-sm text-black">
+                                    Didn't receive the code?{" "}
+                                    <button
+                                        type="button"
+                                        onClick={() => handleRequestOtp(true)}
+                                        disabled={isSubmitting || resendCountdown > 0}
+                                        className="font-semibold text-blue-400 transition-colors hover:text-blue-300 disabled:cursor-not-allowed disabled:opacity-50"
+                                    >
+                                        {isSubmitting
+                                            ? "Sending..."
+                                            : resendCountdown > 0
+                                                ? `Resend OTP in ${resendCountdown}s`
+                                                : "Resend OTP"}
+                                    </button>
+                                </div>
+                            </div>
+                        )}
 
                         {/* Security note */}
                         <div className="mt-8 border border-white/8 bg-white/2.5 p-4">

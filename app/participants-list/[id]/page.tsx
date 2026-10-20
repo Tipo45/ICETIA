@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/select";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { useMutation, useQuery } from "convex/react";
+import { useAction, useMutation, useQuery } from "convex/react";
 import { Country } from "country-state-city";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -39,6 +39,7 @@ export default function ParticipantsPage() {
   const sendConferenceMail = useMutation(api.registration.sendMail);
   const sendEmailTicket = useMutation(api.registration.sendConferenceTicket);
   const sendReminder = useMutation(api.registration.sendReminder);
+  const logOutAdmin = useAction(api.paperSubmission.logoutAdmin)
 
   const [category, setCategory] = useState<
     "author" | "participant" | "student" | undefined
@@ -164,9 +165,22 @@ export default function ParticipantsPage() {
     }
   };
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("adminToken");
-    router.push("/admin-login");
+
+  const handleLogOut = async () => {
+    const sessionToken = sessionStorage.getItem("icetia-admin-session");
+
+    try {
+      if (sessionToken) {
+        await logOutAdmin({ sessionToken });
+      }
+
+      sessionStorage.removeItem("icetia-admin-session");
+
+      toast.success("Logged out successfully.");
+      router.replace("/admin-login");
+    } catch {
+      toast.error("Unable to complete logout. Please try again.");
+    }
   };
 
   return (
@@ -217,7 +231,7 @@ export default function ParticipantsPage() {
             </div>
 
             <Button
-              onClick={handleLogout}
+              onClick={handleLogOut}
               className="h-auto bg-red-600 rounded-2xl px-5 py-3 text-xs font-semibold uppercase tracking-wide text-white hover:bg-red-700"
             >
               Logout

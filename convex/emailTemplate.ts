@@ -27,6 +27,11 @@ export type VerifyIdEmailProps = {
   otp_code: string;
 }
 
+export type VerifyAdminEmailProps = {
+  email: string;
+  otp_code: string;
+}
+
 export type ReminderEmailProps = {
   firstName: string;
   registrationNumber: string;
@@ -169,6 +174,30 @@ export function verifyId({
   A request was made to verify your registration ID: ${registrationNumber}, for paper submission at the International Conference on Emerging Technologies and Intelligent Applications (ICETIA 2027).
   
   To verify your identity and continue with your paper submission, please use the One-Time Password (OTP) below:
+
+  ${otp_code}
+  
+  This code will expire in 10 minutes. For your security, please do not share it with anyone.
+  
+  If you did not initiate this request, you can safely ignore this email. No changes will be made to your registration.
+
+  Thank you for your interest in ICETIA 2027. We look forward to receiving your research contribution.
+  
+   Best regards,
+  ICETIA 2027 Organizing Committee
+  `
+}
+
+export function verifyAdminEmail({
+  email,
+  otp_code
+}: VerifyAdminEmailProps) {
+  return `
+  Dear Author,
+
+  A request was made to verify your email: ${email}, for admin privileges at the International Conference on Emerging Technologies and Intelligent Applications (ICETIA 2027).
+  
+  To verify your identity and proceed, please use the One-Time Password (OTP) below:
 
   ${otp_code}
   

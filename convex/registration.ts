@@ -431,8 +431,8 @@ export const sendReminder = mutation({
 
         const session = await ctx.db
             .query("adminSessions")
-            .withIndex("by_tokenHash", (q) =>
-                q.eq("tokenHash", tokenHashHex)
+            .withIndex("by_session_token_hash", (q) =>
+                q.eq("sessionTokenHash", tokenHashHex)
             )
             .unique();
 
@@ -482,7 +482,6 @@ export const sendReminder = mutation({
 export const createAdmin = internalMutation({
     args: {
         email: v.string(),
-        passwordHash: v.string(),
     },
 
     handler: async (ctx, args) => {
@@ -499,69 +498,7 @@ export const createAdmin = internalMutation({
 
         return await ctx.db.insert("admins", {
             email: args.email,
-            passwordHash: args.passwordHash,
         });
-    },
-});
-
-export const getAdminByEmail = internalQuery({
-    args: {
-        email: v.string(),
-    },
-
-    handler: async (ctx, args) => {
-        return await ctx.db
-            .query("admins")
-            .withIndex("by_email", (q) =>
-                q.eq("email", args.email)
-            )
-            .unique();
-    },
-});
-
-export const createAdminSession = internalMutation({
-    args: {
-        adminId: v.id("admins"),
-        tokenHash: v.string(),
-        expiresAt: v.number(),
-    },
-
-    handler: async (ctx, args) => {
-        return await ctx.db.insert("adminSessions", {
-            adminId: args.adminId,
-            tokenHash: args.tokenHash,
-            expiresAt: args.expiresAt,
-        });
-    },
-});
-
-export const getAdminSessionByTokenHash = internalQuery({
-    args: {
-        tokenHash: v.string(),
-    },
-
-    handler: async (ctx, args) => {
-        const session = await ctx.db
-            .query("adminSessions")
-            .withIndex("by_tokenHash", (q) =>
-                q.eq("tokenHash", args.tokenHash)
-            )
-            .unique();
-
-        if (!session || session.expiresAt <= Date.now()) {
-            return null;
-        }
-
-        const admin = await ctx.db.get(session.adminId);
-
-        if (!admin) {
-            return null;
-        }
-
-        return {
-            adminId: admin._id,
-            email: admin.email,
-        };
     },
 });
 
@@ -975,5 +912,248 @@ export const validatePaperSubmissionSession = internalQuery({
             registration.category === "author" &&
             registration.paymentStatus === "paid"
         );
+    },
+});
+
+export const getEligibleAdminStatus = internalQuery({
+    args: {
+        email: v.string(),
+    },
+
+    handler: async (ctx, args) => {
+        const adminEmail = await ctx.db
+            .query("admins")
+            .withIndex("by_email", (q) =>
+                q.eq("email", args.email)
+            )
+            .unique();
+
+        if (!adminEmail) {
+            throw new Error("You are not an admin.");
+        }
+
+    
+
+        return {
+            adminId: adminEmail._id,
+            email: adminEmail.email,
+        };
+    },
+});
+
+export const getAdminForOtp = internalQuery({
+    args: {
+        adminEmail: v.string(),
+    },
+
+    handler: async (ctx, args) => {
+        return await ctx.db
+            .query("admins")
+            .withIndex("by_email", (q) =>
+                q.eq("email", args.adminEmail)
+            )
+            .unique();
+    },
+});
+
+export const verifyAndCreateAdminSession = internalMutation({
+    args: {
+        email: v.string(),
+        otpHash: v.string(),
+        sessionTokenHash: v.string(),
+        sessionExpiresAt: v.number(),
+        used: v.boolean(),
+    },
+
+    handler: async (ctx, args) => {
+        const adminEmail = await ctx.db
+            .query("admins")
+            .withIndex("by_email", (q) =>
+                q.eq("email", args.email)
+            )
+            .unique();
+
+        if (
+            !adminEmail
+        ) {
+            return {
+                success: false,
+                message: "You are not an eligible admin",
+            };
+        }
+
+        const otpRecord = await ctx.db
+            .query("adminOtps")
+            .withIndex("by_adminId", (q) =>
+                q.eq("adminId", adminEmail._id)
+            )
+            .first();
+
+        if (!otpRecord || otpRecord.verified) {
+            return {
+                success: false,
+                message: "No valid pending OTP found. Please request a new code.",
+            };
+        }
+
+        if (otpRecord.expiresAt <= Date.now()) {
+            await ctx.db.delete(otpRecord._id);
+
+            return {
+                success: false,
+                message: "Your OTP has expired. Please request a new code.",
+            };
+        }
+
+        if (otpRecord.attempts >= 5) {
+            await ctx.db.delete(otpRecord._id);
+
+            return {
+                success: false,
+                message: "Too many incorrect attempts. Please request a new code.",
+            };
+        }
+
+        if (otpRecord.otpHash !== args.otpHash) {
+            const attempts = otpRecord.attempts + 1;
+
+            await ctx.db.patch(otpRecord._id, { attempts });
+
+            return {
+                success: false,
+                message:
+                    attempts >= 5
+                        ? "Too many incorrect attempts. Please request a new code."
+                        : `Incorrect OTP. ${5 - attempts} attempt(s) remaining.`,
+            };
+        }
+
+        // OTP is correct. Mark it as used.
+        await ctx.db.patch(otpRecord._id, { verified: true });
+
+        await ctx.db.insert("adminSessions", {
+            adminId: adminEmail._id,
+            sessionTokenHash: args.sessionTokenHash,
+            expiresAt: args.sessionExpiresAt,
+            createdAt: Date.now(),
+            used: false,
+        });
+
+        return { success: true,
+            adminId: adminEmail._id
+         };
+    },
+});
+
+export const storeAdminLoginOtp = internalMutation({
+    args: {
+        adminId: v.id("admins"),
+        email: v.string(),
+        otpHash: v.string(),
+        expiresAt: v.number(),
+    },
+
+    handler: async (ctx, args) => {
+        const adminId = await ctx.db.get(args.adminId);
+
+        if (
+            !adminId
+        ) {
+            throw new Error("You are not eligible");
+        }
+
+        // Invalidate existing OTPs for this registration.
+        const existingOtps = await ctx.db
+            .query("adminOtps")
+            .withIndex("by_adminId", (q) =>
+                q.eq("adminId", args.adminId)
+            )
+            .collect();
+
+        for (const otp of existingOtps) {
+            await ctx.db.delete(otp._id);
+        }
+
+        await ctx.db.insert("adminOtps", {
+            adminId: args.adminId,
+            email: args.email,
+            otpHash: args.otpHash,
+            expiresAt: args.expiresAt,
+            verified: false,
+            attempts: 0,
+            createdAt: Date.now(),
+        });
+    },
+});
+
+export const clearAdminOtps = internalMutation({
+    args: {
+        adminId: v.id("admins"),
+    },
+
+    handler: async (ctx, args) => {
+        const existingOtps = await ctx.db
+            .query("adminOtps")
+            .withIndex("by_adminId", (q) =>
+                q.eq("adminId", args.adminId)
+            )
+            .collect();
+
+        for (const otp of existingOtps) {
+            if (!otp.verified) {
+                await ctx.db.delete(otp._id);
+            }
+        }
+    },
+});
+
+export const validateAdminLoginSession = internalQuery({
+    args: {
+        sessionTokenHash: v.string(),
+    },
+
+    handler: async (ctx, args) => {
+        const session = await ctx.db
+            .query("adminSessions")
+            .withIndex("by_session_token_hash", (q) =>
+                q.eq("sessionTokenHash", args.sessionTokenHash)
+            )
+            .unique();
+
+        if (!session || session.expiresAt <= Date.now() || session.used === true) {
+            return false;
+        }
+
+        const admin = await ctx.db.get(session.adminId);
+
+        return Boolean(
+            admin
+        );
+    },
+});
+
+export const revokeAdminSession = internalMutation({
+    args: {
+        sessionTokenHash: v.string(),
+    },
+
+    handler: async (ctx, args) => {
+        const session = await ctx.db
+            .query("adminSessions")
+            .withIndex("by_session_token_hash", (q) =>
+                q.eq("sessionTokenHash", args.sessionTokenHash)
+            )
+            .unique();
+
+        if (!session) {
+            return { success: true };
+        }
+
+        await ctx.db.delete(session._id);
+        await ctx.db.patch(session._id, {
+            used: true,
+        });
+
+        return { success: true };
     },
 });

@@ -14,7 +14,7 @@ import { toast } from "sonner";
 
 interface Props {
     registrationNumber: string;
-     onVerified: (sessionToken: string) => void;
+    onVerified: (sessionToken: string) => void;
 }
 
 export default function VerifyPaperSubmissionOtp({ registrationNumber, onVerified }: Props) {

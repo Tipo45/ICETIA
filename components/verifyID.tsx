@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { CiCircleQuestion } from "react-icons/ci";
@@ -20,6 +20,8 @@ export default function VerifyRegistrationForm({ onVerified, registrationId, onR
     const [error, setError] = useState("");
     const [showOtp, setShowOtp] = useState(false);
     const [loading, setLoading] = useState(false);
+    const RESEND_COOLDOWN = 60;
+    const [resendCountdown, setResendCountdown] = useState(0);
     const [isVerified, setIsVerified] = useState(false);
     const [sessionToken, setSessionToken] = useState("");
     const requestOtp = useAction(
@@ -34,7 +36,7 @@ export default function VerifyRegistrationForm({ onVerified, registrationId, onR
 
     }
 
-    const handleSubmit = async () => {
+    const handleRequestOtp = async (isResend = false) => {
 
         setMessage("");
         setError("");
@@ -48,6 +50,7 @@ export default function VerifyRegistrationForm({ onVerified, registrationId, onR
 
             setMessage(result.message);
             setShowOtp(true);
+            setResendCountdown(RESEND_COOLDOWN);
             toast.success(result.message)
         }
         catch (err) {
@@ -77,11 +80,21 @@ export default function VerifyRegistrationForm({ onVerified, registrationId, onR
 
     };
 
+    useEffect(() => {
+        if (resendCountdown <= 0) return;
+
+        const timer = setTimeout(() => {
+            setResendCountdown((prev) => prev - 1);
+        }, 1000);
+
+        return () => clearTimeout(timer);
+    }, [resendCountdown]);
+
     return (
         <div>
             <form onSubmit={(e) => {
                 e.preventDefault();
-                handleSubmit();
+                handleRequestOtp();
             }} className="mx-auto w-full max-w-xl">
                 <label
                     htmlFor="registrationNumber"
@@ -163,11 +176,32 @@ export default function VerifyRegistrationForm({ onVerified, registrationId, onR
                     </p>
                 )}
             </form>
-            {showOtp && (<VerifyPaperSubmissionOtp registrationNumber={registrationNumber} onVerified={(token) => {
-                setSessionToken(token);
-                setIsVerified(true);
-                onVerified(token);
-            }} />)}
+
+            {showOtp && (
+                <div className="mt-6 space-y-4">
+                    <VerifyPaperSubmissionOtp registrationNumber={registrationNumber} onVerified={(token) => {
+                        setSessionToken(token);
+                        setIsVerified(true);
+                        onVerified(token);
+                    }} />
+
+                    <div className="text-center text-sm text-black">
+                        Didn't receive the code?{" "}
+                        <button
+                            type="button"
+                            onClick={() => handleRequestOtp(true)}
+                            disabled={loading || resendCountdown > 0}
+                            className="font-semibold text-blue-400 transition-colors hover:text-blue-300 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                            {loading
+                                ? "Sending..."
+                                : resendCountdown > 0
+                                    ? `Resend OTP in ${resendCountdown}s`
+                                    : "Resend OTP"}
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

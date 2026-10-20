@@ -85,19 +85,6 @@ export default defineSchema({
         body: v.string(),
     }),
 
-    admins: defineTable({
-        email: v.string(),
-        passwordHash: v.string(),
-    })
-        .index("by_email", ["email"]),
-
-    adminSessions: defineTable({
-        adminId: v.id("admins"),
-        tokenHash: v.string(),
-        expiresAt: v.number(),
-    })
-        .index("by_tokenHash", ["tokenHash"]),
-
     submittedPapers: defineTable({
         registrationId: v.id("registrations"),
 
@@ -166,15 +153,38 @@ export default defineSchema({
         createdAt: v.number(),
     }).index("by_registration", ["registrationId"]),
 
-    
-paperSubmissionSessions: defineTable({
-  registrationId: v.id("registrations"),
-  sessionTokenHash: v.string(),
-  expiresAt: v.number(),
-  createdAt: v.number(),
-  used: v.boolean(),
-}).index("by_registration", ["registrationId"])
-.index("by_session_token_hash", ["sessionTokenHash"]),
 
+    paperSubmissionSessions: defineTable({
+        registrationId: v.id("registrations"),
+        sessionTokenHash: v.string(),
+        expiresAt: v.number(),
+        createdAt: v.number(),
+        used: v.boolean(),
+    }).index("by_registration", ["registrationId"])
+        .index("by_session_token_hash", ["sessionTokenHash"]),
+
+        admins: defineTable({
+        email: v.string(),
+    })
+        .index("by_email", ["email"]),
+
+    adminOtps: defineTable({
+        adminId: v.id("admins"),
+        email: v.string(),
+        otpHash: v.string(),
+        expiresAt: v.number(),
+        verified: v.boolean(),
+        attempts: v.number(),
+        createdAt: v.number(),
+    }).index("by_adminId", ["adminId"]),
+
+    adminSessions: defineTable({
+        adminId: v.id("admins"),
+        sessionTokenHash: v.string(),
+        expiresAt: v.number(),
+        createdAt: v.number(),
+        used: v.boolean(),
+    }).index("by_admin", ["adminId"])
+        .index("by_session_token_hash", ["sessionTokenHash"]),
 
 })

@@ -6,7 +6,7 @@ import { action } from "./_generated/server";
 import { internal } from "./_generated/api";
 import { v, ConvexError } from "convex/values";
 import { resend } from "./registration";
-import { verifyId } from "./emailTemplate";
+import { verifyAdminEmail, verifyId } from "./emailTemplate";
 
 export const requestPaperSubmissionOtp = action({
   args: {
@@ -145,4 +145,164 @@ export const verifyPaperSubmissionOtp = action({
       sessionToken,
     };
   },
+});
+
+export const requestAdminOtp = action({
+  args: {
+    email: v.string(),
+  },
+
+  handler: async (ctx, args) => {
+    const adminEmail = args.email.trim();
+
+    if (!adminEmail) {
+      throw new ConvexError("Please enter your email.");
+    }
+
+    const admin = await ctx.runQuery(
+      internal.registration.getAdminForOtp,
+      { adminEmail }
+    );
+
+    if (!admin) {
+      throw new ConvexError("Admin not found.");
+    }
+
+    // 3. Generate the OTP and hash it for storage.
+    const otp = randomInt(100000, 1000000).toString();
+
+    const otpHash = createHash("sha256")
+      .update(otp)
+      .digest("hex");
+
+    const expiresAt = Date.now() + 10 * 60 * 1000;
+
+    // 4. Store the OTP against the actual Convex registration ID.
+    await ctx.runMutation(
+      internal.registration.storeAdminLoginOtp,
+      {
+        adminId: admin._id,
+        email: admin.email,
+        otpHash,
+        expiresAt,
+      }
+    );
+
+    // 5. Send the plain OTP to the registered email address.
+    try {
+      const body = verifyAdminEmail({
+        email: admin.email,
+        otp_code: otp,
+      });
+
+      await resend.sendEmail(ctx, {
+        from: "ICETIA <conference@icetiaconference.org>",
+        to: admin.email,
+        subject: "Verify Your email - ICETIA 2027",
+        text: body,
+      });
+    } catch {
+      await ctx.runMutation(
+        internal.registration.clearAdminOtps,
+        { adminId: admin._id }
+      );
+
+      throw new ConvexError(
+        "Unable to send the verification email. Please try again."
+      );
+    }
+
+    return {
+      success: true,
+      message:
+        "A verification code has been sent to your email address.",
+    };
+  },
+});
+
+export const verifyAdminOtp = action({
+  args: {
+    email: v.string(),
+    otp: v.string(),
+  },
+
+   handler: async (
+        ctx,
+        args
+    ): Promise<{
+        success: boolean;
+        message: string;
+        sessionToken: string;
+        adminId: string;
+    }> => {
+    const email = args.email.trim();
+    const otp = args.otp.trim();
+
+    if (!/^\d{6}$/.test(otp)) {
+      throw new ConvexError("Enter a valid 6-digit OTP.");
+    }
+
+    const otpHash = createHash("sha256")
+      .update(otp)
+      .digest("hex");
+
+    // Generate an unpredictable session token.
+    const sessionToken = randomBytes(32).toString("hex");
+    const sessionTokenHash = createHash("sha256")
+      .update(sessionToken)
+      .digest("hex");
+
+    const sessionExpiresAt = Date.now() + 30 * 60 * 1000;
+
+    const result = await ctx.runMutation(
+      internal.registration.verifyAndCreateAdminSession,
+      {
+        email,
+        otpHash,
+        sessionTokenHash,
+        sessionExpiresAt,
+        used: false,
+      }
+    );
+
+    if (!result.success) {
+      throw new ConvexError(
+        result.message ?? "Unable to verify OTP. Please try again."
+      );
+    }
+
+    if (!result.adminId) {
+    throw new ConvexError("Admin ID was not returned after verification.");
+}
+
+    return {
+      success: true,
+      message: "Email verified successfully. You can now proceed.",
+      sessionToken,
+      adminId: result.adminId
+    };
+  },
+});
+
+export const logoutAdmin = action({
+    args: {
+        sessionToken: v.string(),
+    },
+
+    handler: async (ctx, args) => {
+        if (!args.sessionToken) {
+            return { success: true };
+        }
+
+        const sessionTokenHash = createHash("sha256")
+            .update(args.sessionToken)
+            .digest("hex");
+
+        await ctx.runMutation(
+            internal.registration.revokeAdminSession,
+            { sessionTokenHash }
+        );
+
+        return { success: true };
+    },
 });
