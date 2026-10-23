@@ -59,8 +59,10 @@ const submissionRequirements = [
 export default function WorkShop() {
   return (
     <section>
-      <PublicationHeader />
-      <Navbar />
+      <div className="sticky top-0 z-50">
+        <PublicationHeader />
+        <Navbar />
+      </div>
 
       <main className="bg-slate-950">
         {/* Hero */}
@@ -99,7 +101,7 @@ export default function WorkShop() {
                   href="/registration"
                   className="inline-flex items-center gap-2 bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-500"
                 >
-                 Register for ICETIA 2027
+                  Register for ICETIA 2027
                   <LuArrowUpRight className="h-4 w-4" />
                 </Link>
 
@@ -109,11 +111,11 @@ export default function WorkShop() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-transparent border border-white/15 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/5"
                 >
-                 Submit Workshop Paper
+                  Submit Workshop Paper
                   <LuSend className="h-4 w-4" />
                 </Link>
 
-                
+
               </div>
             </div>
           </div>
@@ -189,33 +191,33 @@ export default function WorkShop() {
             </div>
 
             <div className="mt-10 grid grid-cols-2 border-l border-t border-white/10 lg:grid-cols-3 xl:grid-cols-4">
-  {workshopTopics.map((topic, index) => (
-    <div
-      key={topic.name}
-      className="group flex min-h-52 flex-col border-b border-r border-white/10 p-6 transition-colors duration-300 hover:bg-white/3 lg:p-7"
-    >
-      <div className="flex items-center justify-between">
-        <span className="text-[10px] font-bold tracking-[0.2em] text-slate-500">
-          {String(index + 1).padStart(2, "0")}
-        </span>
+              {workshopTopics.map((topic, index) => (
+                <div
+                  key={topic.name}
+                  className="group flex min-h-52 flex-col border-b border-r border-white/10 p-6 transition-colors duration-300 hover:bg-white/3 lg:p-7"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-bold tracking-[0.2em] text-slate-500">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
 
-        <LuCheck className="h-4 w-4 text-blue-400 opacity-60 transition-opacity group-hover:opacity-100" />
-      </div>
+                    <LuCheck className="h-4 w-4 text-blue-400 opacity-60 transition-opacity group-hover:opacity-100" />
+                  </div>
 
-      <p className="mt-6 flex-1 text-sm font-medium leading-6 text-slate-300 transition-colors group-hover:text-white">
-        {topic.name}
-      </p>
+                  <p className="mt-6 flex-1 text-sm font-medium leading-6 text-slate-300 transition-colors group-hover:text-white">
+                    {topic.name}
+                  </p>
 
-      {/* <a
+                  {/* <a
         href={topic.href}
         className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#07111f]"
       >
         Submit Paper
         <LuArrowUpRight className="h-4 w-4" />
       </a> */}
-    </div>
-  ))}
-</div>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -275,7 +277,7 @@ export default function WorkShop() {
               </h2>
             </div>
 
-            <div className="mt-12 grid border-l border-t border-white/10 md:grid-cols-3">
+            <div className="mt-12 grid border-l border-t border-white/10 grid-cols-3">
               {[
                 {
                   number: "01",
@@ -335,22 +337,22 @@ export default function WorkShop() {
             </div>
 
             <div className="flex-row space-y-4 space-x-2">
-                <Link
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex shrink-0 items-center justify-center gap-2 bg-white px-6 py-3 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-50"
-            >
-              Submit Workshop Paper
-              <LuSend className="h-4 w-4" />
-            </Link>
-            <Link
-              href="/program/workshops"
-              className="inline-flex shrink-0 items-center justify-center gap-2 bg-[#080f1a] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#080f1a]/90"
-            >
-              View Workshop Papers
-              <LuArrowUpRight className="h-4 w-4" />
-            </Link>
+              <Link
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex shrink-0 items-center justify-center gap-2 bg-white px-6 py-3 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-50"
+              >
+                Submit Workshop Paper
+                <LuSend className="h-4 w-4" />
+              </Link>
+              <Link
+                href="/program/workshops"
+                className="inline-flex shrink-0 items-center justify-center gap-2 bg-[#080f1a] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#080f1a]/90"
+              >
+                View Workshop Papers
+                <LuArrowUpRight className="h-4 w-4" />
+              </Link>
             </div>
           </div>
         </section>

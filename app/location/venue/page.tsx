@@ -280,7 +280,7 @@ export default function TravelVenue() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-px overflow-hidden border border-white/10 bg-white/10 md:grid-cols-2">
+          <div className="mt-12 grid gap-px overflow-hidden border border-white/10 bg-white/10 grid-cols-2">
             {/* By Air */}
             <div className="bg-[#080f1a] p-7 lg:p-9">
               <div className="flex h-11 w-11 items-center justify-center bg-blue-500/10 text-blue-400">

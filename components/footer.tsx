@@ -75,12 +75,22 @@ const locationItems = [
 ];
 
 const sponsors = [
-  "MTN",
-  "GLO",
-  "Bayelsa State Government",
-  "NDDC",
-  "UBA",
-  "Airtel Nigeria",
+  {
+    name: "EAI",
+    href: "https://eai.eu"
+  },
+  {
+    name: "EAI CORE",
+    href: "https://compse-conf.eai-conferences.org/2016/media/uploads/EAI%20CORE%20Proceedigns.pdf"
+  },
+  {
+    name: "EAI UDL",
+    href: "https://eudl.eu/"
+  },
+  {
+    name: "Arthur Press",
+    href: "#"
+  }
 ];
 
 export default function Footer() {
@@ -304,23 +314,24 @@ export default function Footer() {
             </p>
 
             <div className="mt-4 flex flex-wrap gap-2">
-              {/* {sponsors.map((sponsor) => (
-                <span
-                  key={sponsor}
+              {sponsors.map((sponsor) => (
+                <a
+                  key={sponsor.name}
+                  href={sponsor.href}
                   className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-400"
                 >
-                  {sponsor}
-                </span>
-              ))} */}
+                  {sponsor.name}
+                </a>
+              ))}
             </div>
 
-            <Link
+            {/* <Link
               href="/sponsorship"
               className="group mt-6 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-blue-400 transition-colors hover:text-blue-300"
             >
               Become a Sponsor
               <LuArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-            </Link>
+            </Link> */}
           </div>
         </div>
 
@@ -330,14 +341,11 @@ export default function Footer() {
 
             <div className="space-y-1">
               <p>
-              © EAI ICETIA 2027. All Rights Reserved.
-            </p>
-            <p className="text-xs">Developed by <a href="https://techlinkinnovations.com" target="blank">TechLink Innovations</a></p>
+                © EAI ICETIA 2027. All Rights Reserved.
+              </p>
             </div>
 
-            <p>
-              Hosted by the Federal University Otuoke.
-            </p>
+            <p className="text-sm">Developed by <a href="https://techlinkinnovations.com" target="blank">TechLink Innovations</a></p>
           </div>
         </div>
       </div>

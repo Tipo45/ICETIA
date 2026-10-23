@@ -78,7 +78,7 @@ export default function Contact() {
             {/* Contact Cards */}
             <div className="bg-[#080f1a]">
                 <div className="container mx-auto max-w-5xl px-5 py-16 lg:px-8 lg:py-20">
-                    <div className="grid gap-6 md:grid-cols-2">
+                    <div className="grid gap-6 grid-cols-2">
 
                         {/* General Contact */}
                         <div className="rounded-lg border border-white/10 bg-[#07111f] p-7 shadow-sm lg:p-8">

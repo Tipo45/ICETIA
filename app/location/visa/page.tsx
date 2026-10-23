@@ -142,7 +142,7 @@ export default function Visa() {
             </p>
         </div>
 
-        <div className="mt-10 grid gap-px overflow-hidden border border-white/10 bg-white/10 md:grid-cols-2">
+        <div className="mt-10 grid gap-px overflow-hidden border border-white/10 bg-white/10 grid-cols-2">
             {[
                 "Full name as it appears on your passport.",
                 "Job title, position or academic status.",

@@ -497,7 +497,7 @@ export default function CallForPapers() {
                 </AccordionTrigger>
 
                 <AccordionContent className="pb-7">
-                  <div className="max-w-4xl">
+                  <div className="">
                     {item.content}
                   </div>
                 </AccordionContent>

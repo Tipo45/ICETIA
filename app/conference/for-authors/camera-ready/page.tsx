@@ -2,56 +2,86 @@ import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import PublicationFooter from "@/components/publicationfooter";
 import PublicationHeader from "@/components/publicationheader";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { FaUsers } from "react-icons/fa";
-import { LuCalendarDays, LuCheck, LuFileText } from "react-icons/lu";
+import { LuCalendarDays, LuDot } from "react-icons/lu";
 
-const requirements = [
-    "At least one author must complete the registration process before the camera-ready paper can be submitted.",
-    "One registration covers one accepted paper.",
-    "Any author of the accepted paper may submit the camera-ready version once the registration requirement has been fulfilled.",
-    "Every author or co-author who wishes to attend the conference in person must register separately.",
-    "At least one full registration is required for each accepted paper.",
-    "Authors must complete the required payment before submitting the camera-ready version.",
-];
 
-const registrationSteps = [
+const items = [
     {
-        number: "01",
-        title: "Complete your registration",
-        content:
-            "At least one author of the accepted paper must complete the conference registration and payment process before the camera-ready submission becomes available.",
+        value: "step-1",
+        trigger: "Step 1: Complete the Registration Process",
+        content: (
+            <div className="space-y-4 text-md leading-7 bg-white/3 text-white p-4 rounded-lg border border-white/10">
+            </div>
+        ),
     },
     {
-        number: "02",
-        title: "Access the submission system",
-        content:
-            "Log in to the ICETIA 2027 paper submission system using the account associated with your accepted paper.",
+        value: "step-2",
+        trigger: "Step 2: Log in to Confy+",
+        content: (
+            <div className="rounded-lg border border-white/10 bg-white/3 p-4">
+                <div className="text-sm text-white leading-7">
+                    <p>Confy+ <a href="https://confyplus.eai.eu/" target="_blank" rel="noopener noreferrer" className="text-blue-600">Click Here</a> to login</p>
+                </div>
+            </div>
+        ),
     },
     {
-        number: "03",
-        title: "Locate your accepted paper",
-        content:
-            "From your submission dashboard, locate the accepted paper for which you want to submit the camera-ready version.",
+        value: "step-3",
+        trigger: "Step 3: Submit Camera-ready",
+        content: (
+            <div className="space-y-4 text-sm leading-7 text-white border p-4 bg-white/3 rounded-lg border-white/10">
+            </div>
+        ),
     },
     {
-        number: "04",
-        title: "Upload the camera-ready version",
-        content:
-            "Select the camera-ready submission option, upload the final version of your paper and any required supplementary files, then complete the submission process.",
+        value: "step-4",
+        trigger: "Step 4: To make changes or re-upload your Camera-ready submission",
+        content: (
+            <div className="space-y-4 bg-white/3 p-4 rounded-lg border border-white/10">
+            </div>
+        ),
     },
-];
-
-const cameraReadyFiles = [
-    "A final PDF version of the accepted paper.",
-    "The editable source files, where required by the conference publication guidelines.",
-    "Any additional files or documents specifically requested by the conference organizers.",
+    {
+        value: "author-s-Kit---instructions-and-templates",
+        trigger: "Author's Kit - Instructions and Templates",
+        content: (
+            <div className="space-y-4 bg-white/3 p-4 rounded-lg border border-white/10 text-white">
+                <p>Papers must be formatted using the Springer LNICST Authors' Kit.</p>
+                <div>
+                    <p>Instructions and templates are available from <a href="https://link.springer.com/series/558/information-for-authors-and-editors" target="_blank" rel="noopener noreferrer" className="text-blue-600">Springer's LNICST homepage</a>:</p>
+                    <ul className="space-y-2 list-disc list-inside marker:text-blue-600">
+                        <li><a href="/templates/EAI-Proceedings-LATEX-Template.zip"
+                            target="_blank" rel="noopener noreferrer"
+                            download="EAI-Proceedings-LATEX-Template.zip" className="text-blue-600">EAI-Proceedings-LATEX-Template(zip)</a></li>
+                        <li><a href="/templates/EAI-Proceedings-DOCX-Template.docx"
+                            target="_blank" rel="noopener noreferrer" className="text-blue-600">EAI-Proceedings-DOCX-Template</a></li>
+                        <li><a href="https://bigiot-edu.eai-conferences.org/2025/wp-content/uploads/sites/948/2024/11/How-to-Write-Good-Alt-Text.pdf" target="_blank" rel="noopener noreferrer" className="text-blue-600">HOW TO WRITE GOOD ALT TEXT (pdf)</a></li>
+                    </ul>
+                    <p className="my-4">
+                        Please make sure that your paper adheres to the format as specified in the instructions and templates.
+                    </p>
+                </div>
+                <div>
+                    <p>When uploading the camera-ready copy of your paper, please be sure to upload both:</p>
+                    <ul className="space-y-2 list-disc list-inside marker:text-blue-600">
+                        <li>a PDF copy of your paper formatted according to the above templates, and</li>
+                        <li>an archive file (e.g. zip, tar.gz) containing the both a PDF copy of your paper and LaTeX or Word source material prepared according to the above guidelines.</li>
+                    </ul>
+                </div>
+            </div>
+        ),
+    },
 ];
 
 export default function CameraReadyPapers() {
     return (
         <section className="bg-[#080f1a]">
-            <PublicationHeader />
-            <Navbar />
+            <div className="sticky top-0 z-50">
+                <PublicationHeader />
+                <Navbar />
+            </div>
 
             <main>
                 {/* Hero */}
@@ -68,7 +98,7 @@ export default function CameraReadyPapers() {
                                     Camera-Ready
                                     <span className="text-blue-400">
                                         {" "}
-                                        Submission
+                                        Submission (Confy+)
                                     </span>
                                 </h1>
                             </div>
@@ -128,221 +158,120 @@ export default function CameraReadyPapers() {
                     </div>
                 </div>
 
-                {/* Important Requirements */}
-                <section className="border-b border-white/10 bg-[#080f1a]">
+                {/* Upload Section */}
+                <section className="border-b border-white/10 bg-[#07111f]">
                     <div className="container mx-auto px-5 py-16 lg:px-8 lg:py-20 xl:px-10">
-                        <div className="max-w-3xl">
-                            <div className="flex items-center gap-3">
-                                <span className="h-px w-7 bg-blue-500" />
+                        <div className="mx-auto max-w-5xl">
+                            {/* Section heading */}
+                            <div className="mb-8 border-l-4 border-[#00D1FF] pl-5">
+                                <h2 className="text-xl font-bold leading-snug text-white lg:text-2xl">
+                                    Uploading the Camera-ready Version in Confy+
+                                </h2>
 
-                                <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-500">
-                                    Before You Submit
-                                </span>
+                                <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-400">
+                                    Please review the following registration requirements
+                                    before uploading your final paper.
+                                </p>
                             </div>
 
-                            <h2 className="mt-5 text-3xl font-bold tracking-tight text-white lg:text-4xl">
-                                Important camera-ready
-                                <span className="text-blue-500">
-                                    {" "}
-                                    requirements.
-                                </span>
-                            </h2>
+                            {/* Requirements */}
+                            <ul className="overflow-hidden rounded-2xl border border-white/10 bg-white/3">
+                                <li className="flex gap-4 p-5">
+                                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#008BFF]/15 text-sm font-bold text-[#00D1FF]">
+                                        01
+                                    </span>
 
-                            <p className="mt-5 text-sm leading-7 text-slate-500">
-                                Authors of accepted papers should ensure that
-                                the following requirements are fulfilled before
-                                attempting to submit the camera-ready version.
-                            </p>
-                        </div>
-
-                        <div className="mt-10 grid gap-px overflow-hidden border border-white/10 bg-white/10 md:grid-cols-2">
-                            {requirements.map((item, index) => (
-                                <div
-                                    key={index}
-                                    className="flex items-start gap-4 bg-[#080f1a] p-6"
-                                >
-                                    <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-500/10">
-                                        <LuCheck className="h-4 w-4 text-blue-400" />
-                                    </div>
-
-                                    <p className="text-sm leading-6 text-slate-400">
-                                        {item}
+                                    <p className="text-sm leading-7 text-slate-300">
+                                        At least one author must complete the registration process before they are given access to upload the Camera-ready version of their paper.
                                     </p>
-                                </div>
-                            ))}
+                                </li>
+
+                                <li className="mx-5 border-t border-white/10" />
+
+                                <li className="flex gap-4 p-5">
+                                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#008BFF]/15 text-sm font-bold text-[#00D1FF]">
+                                        02
+                                    </span>
+
+                                    <p className="text-sm leading-7 text-slate-300">
+                                        One author registration covers 1 paper. The camera-ready upload may be performed by any of the paper’s authors if at least one of them has registered with the full registration fee.
+                                    </p>
+                                </li>
+
+                                <li className="mx-5 border-t border-white/10" />
+
+                                <li className="flex gap-4 p-5">
+                                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#008BFF]/15 text-sm font-bold text-[#00D1FF]">
+                                        03
+                                    </span>
+
+                                    <p className="text-sm leading-7 text-slate-300">
+                                        At least one full registration is required to upload a Camera-ready version.
+                                    </p>
+                                </li>
+
+                                <li className="mx-5 border-t border-white/10" />
+
+                                <li className="flex gap-4 p-5">
+                                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#008BFF]/15 text-sm font-bold text-[#00D1FF]">
+                                        04
+                                    </span>
+
+                                    <p className="text-sm leading-7 text-slate-300">
+                                        Refunds and invoice amendments are subject to a
+                                        processing fee.
+                                    </p>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </section>
 
                 {/* Registration Process */}
-                <section className="border-b border-white/10 bg-[#07111f]">
-                    <div className="container mx-auto px-5 py-16 lg:px-8 lg:py-20 xl:px-10">
-                        <div className="max-w-3xl">
-                            <div className="flex items-center gap-3">
-                                <span className="h-px w-7 bg-blue-500" />
-
-                                <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-500">
-                                    Submission Process
-                                </span>
-                            </div>
-
-                            <h2 className="mt-5 text-3xl font-bold tracking-tight text-white lg:text-4xl">
-                                How to submit your
-                                <span className="text-blue-500">
-                                    {" "}
-                                    camera-ready paper.
-                                </span>
-                            </h2>
-
-                            <p className="mt-5 text-sm leading-7 text-slate-500">
-                                Follow the steps below to prepare and submit
-                                the final version of your accepted paper.
-                            </p>
-                        </div>
-
-                        <div className="mt-10 border-y border-white/10">
-                            {registrationSteps.map((step, index) => (
-                                <div
-                                    key={step.number}
-                                    className={`grid gap-6 py-8 lg:grid-cols-[100px_240px_1fr] lg:items-start ${
-                                        index !== registrationSteps.length - 1
-                                            ? "border-b border-white/10"
-                                            : ""
-                                    }`}
-                                >
-                                    <div>
-                                        <span className="text-3xl font-bold text-blue-500/40">
-                                            {step.number}
-                                        </span>
-                                    </div>
-
-                                    <h3 className="text-base font-semibold text-white">
-                                        {step.title}
-                                    </h3>
-
-                                    <p className="max-w-2xl text-sm leading-7 text-slate-500">
-                                        {step.content}
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* Upload Section */}
                 <section className="border-b border-white/10 bg-[#080f1a]">
                     <div className="container mx-auto px-5 py-16 lg:px-8 lg:py-20 xl:px-10">
-                        <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
-                            <div>
-                                <div className="flex h-12 w-12 items-center justify-center bg-blue-500/10 text-blue-400">
-                                    <LuFileText className="h-5 w-5" />
-                                </div>
-
-                                <h2 className="mt-6 text-3xl font-bold tracking-tight text-white">
-                                    Camera-ready
-                                    <span className="text-blue-500">
-                                        {" "}
-                                        files.
-                                    </span>
+                        <div className="mx-auto max-w-5xl">
+                            {/* Section heading */}
+                            <div className="mb-8 border-l-4 border-[#00D1FF] pl-5">
+                                <h2 className="text-xl font-bold leading-snug text-white lg:text-2xl">
+                                    Registration process Steps:
                                 </h2>
 
-                                <p className="mt-5 text-sm leading-7 text-slate-500">
-                                    Please ensure that your final submission
-                                    contains all files required by the ICETIA
-                                    2027 publication guidelines.
+                                <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-400">
+                                    Please adhere to these steps
+                                    before uploading your final paper.
                                 </p>
                             </div>
+                            <div className="mt-10 overflow-hidden rounded-xl border border-white/10 bg-[#0b1626]">
+                                <Accordion
+                                    type="single"
+                                    collapsible
+                                    defaultValue="step-1"
+                                    className="w-full"
+                                >
+                                    {items.map((item) => (
+                                        <AccordionItem
+                                            key={item.value}
+                                            value={item.value}
+                                            className="border-b border-white/10 last:border-b-0 px-6 lg:px-8"
+                                        >
+                                            <AccordionTrigger className="py-6 text-left text-sm font-semibold text-white hover:no-underline">
+                                                {item.trigger}
+                                            </AccordionTrigger>
 
-                            <div className="border border-white/10 bg-[#07111f]">
-                                {cameraReadyFiles.map((item, index) => (
-                                    <div
-                                        key={index}
-                                        className="flex items-start gap-4 border-b border-white/10 p-6 last:border-b-0"
-                                    >
-                                        <LuCheck className="mt-1 h-4 w-4 shrink-0 text-blue-400" />
-
-                                        <p className="text-sm leading-6 text-slate-400">
-                                            {item}
-                                        </p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {/* Author Kit */}
-                <section className="border-b border-white/10 bg-[#07111f]">
-                    <div className="container mx-auto px-5 py-16 lg:px-8 lg:py-20 xl:px-10">
-                        <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16">
-                            <div>
-                                <div className="flex items-center gap-3">
-                                    <span className="h-px w-7 bg-blue-500" />
-
-                                    <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-500">
-                                        Author&apos;s Kit
-                                    </span>
-                                </div>
-
-                                <h2 className="mt-5 text-3xl font-bold tracking-tight text-white lg:text-4xl">
-                                    Formatting and
-                                    <span className="text-blue-500">
-                                        {" "}
-                                        templates.
-                                    </span>
-                                </h2>
-
-                                <p className="mt-5 text-sm leading-7 text-slate-500">
-                                    Your camera-ready manuscript should follow
-                                    the official formatting requirements and
-                                    template provided by the ICETIA 2027
-                                    organizing committee.
-                                </p>
-                            </div>
-
-                            <div className="border border-white/10 bg-[#080f1a] p-7 lg:p-9">
-                                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-600">
-                                    Author&apos;s Kit
-                                </p>
-
-                                <p className="mt-4 text-sm leading-7 text-slate-500">
-                                    The official paper template, formatting
-                                    instructions and publication guidelines
-                                    will be made available here once finalized
-                                    by the conference organizers.
-                                </p>
-
-                                <div className="mt-6">
-                                    <span className="inline-flex border border-blue-500/20 bg-blue-500/5 px-4 py-2 text-xs font-medium text-blue-400">
-                                        Templates coming soon
-                                    </span>
-                                </div>
+                                            <AccordionContent className="pb-7">
+                                                <div className="">
+                                                    {item.content}
+                                                </div>
+                                            </AccordionContent>
+                                        </AccordionItem>
+                                    ))}
+                                </Accordion>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                {/* Final Notice */}
-                <section className="bg-[#080f1a]">
-                    <div className="container mx-auto px-5 py-16 lg:px-8 lg:py-20 xl:px-10">
-                        <div className="border border-blue-500/20 bg-blue-500/5 p-7 lg:p-9">
-                            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-blue-400">
-                                Important Notice
-                            </p>
-
-                            <p className="mt-4 max-w-4xl text-sm leading-7 text-slate-400">
-                                Authors are advised to carefully review their
-                                final manuscript before submission. Once the
-                                camera-ready deadline has passed, changes to
-                                the submitted paper may no longer be accepted.
-                                Please ensure that all author names,
-                                affiliations, figures, references and other
-                                publication details are accurate before
-                                completing your submission.
-                            </p>
-                        </div>
-                    </div>
-                </section>
             </main>
 
             <PublicationFooter />

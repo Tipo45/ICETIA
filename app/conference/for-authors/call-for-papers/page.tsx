@@ -8,8 +8,10 @@ import PublicationHeader from "@/components/publicationheader";
 export default function callForPapers() {
     return (
         <div>
-            <PublicationHeader />
-            <Navbar />
+            <div className="sticky top-0 z-50">
+                <PublicationHeader />
+                <Navbar />
+            </div>
             <CallForPapers />
             <PublicationFooter />
             <Footer />

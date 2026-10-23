@@ -2,7 +2,7 @@ import Image from "next/image";
 import EAILogo from "../public/images/EAI-Logo.png";
 import EAICore from "../public/images/EAI-Logo-CORE.png";
 import EAIUDL from "../public/images/EAI-Logo-EUDL.png";
-import Springer from "../public/images/springer.png";
+import Atlantispress from "../public/images/atlantis press.jpeg";
 
 const sponsors = [
     {
@@ -78,8 +78,8 @@ export default function Partners() {
                             className="group flex min-h-32 w-full max-w-md items-center justify-center rounded-xl border border-white/10 bg-white/3 p-6 transition-all duration-300 hover:border-blue-500/40 hover:bg-white/6 lg:min-h-36"
                         >
                             <Image
-                                src={Springer}
-                                alt="Springer"
+                                src={Atlantispress}
+                                alt="Atlantis Press"
                                 width={200}
                                 height={100}
                                 className="h-auto max-h-20 w-auto max-w-full object-contain transition-transform duration-300 group-hover:scale-105"

@@ -1,5 +1,6 @@
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
+import Partners from "@/components/Partners";
 import PublicationFooter from "@/components/publicationfooter";
 import {
   LuArrowUpRight,
@@ -227,7 +228,7 @@ export default function Sponsorship() {
       </section>
 
       {/* Sponsorship Package */}
-      <section className="border-b border-slate-200 bg-white">
+      {/* <section className="border-b border-slate-200 bg-white">
         <div className="container mx-auto px-5 py-14 lg:px-8 lg:py-16 xl:px-10 xl:py-20">
 
           <div className="overflow-hidden rounded-2xl bg-slate-950">
@@ -286,7 +287,9 @@ export default function Sponsorship() {
           </div>
 
         </div>
-      </section>
+      </section> */}
+
+      <Partners />
 
       {/* CTA */}
       <section className="bg-slate-50">

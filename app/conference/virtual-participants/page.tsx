@@ -35,7 +35,7 @@ export default function virtualParticipants () {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <div className="mt-12 grid gap-6 grid-cols-3">
             <div className="border border-white/10 bg-[#080f1a] p-7">
               <LuLaptop className="h-5 w-5 text-blue-400" />
 
