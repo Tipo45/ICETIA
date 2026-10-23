@@ -1,5 +1,6 @@
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
+import PublicationFooter from "@/components/publicationfooter";
 import { LuCheck, LuShieldCheck } from "react-icons/lu";
 
 export default function Visa() {
@@ -338,7 +339,7 @@ export default function Visa() {
                     <div className="mt-12 border-t border-white/10 pt-6">
                         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
                             <p className="text-xs uppercase tracking-[0.16em] text-slate-500">
-                                Emerging Technologies · Innovation · Applications
+                                Emerging Technologies · Innovations · Applications
                             </p>
 
                             <p className="text-xs text-slate-600">
@@ -348,6 +349,9 @@ export default function Visa() {
                     </div>
                 </div>
             </div>
+
+
+            <PublicationFooter />
 
             <Footer />
         </section>

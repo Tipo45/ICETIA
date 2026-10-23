@@ -50,7 +50,7 @@ export default function About() {
           <div className="lg:pb-1">
             <p className="max-w-3xl text-base leading-7 text-slate-600 lg:text-lg lg:leading-8">
               The International Conference on Emerging Technologies,
-              Innovation and Applications brings together researchers,
+              Innovations and Applications brings together researchers,
               academics, industry professionals, policymakers, innovators,
               postgraduate students and technology practitioners to exchange
               knowledge and explore emerging developments in digital
@@ -143,7 +143,7 @@ export default function About() {
             </div>
 
             <p className="max-w-xl text-sm leading-6 text-slate-500 lg:text-right">
-              Research, innovation and applications across computing,
+              Research, innovations and applications across computing,
               informatics, digital technologies and interdisciplinary fields.
             </p>
           </div>

@@ -118,7 +118,7 @@ export default function Footer() {
 
             <p className="mt-4 max-w-sm text-sm leading-7 text-slate-400">
               International Conference on Emerging Technologies,
-              Innovation and Applications.
+              Innovations and Applications.
             </p>
 
             <div className="mt-6 flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-slate-500">
@@ -330,7 +330,7 @@ export default function Footer() {
 
             <div className="space-y-1">
               <p>
-              © {new Date().getFullYear()} ICETIA. All Rights Reserved.
+              © EAI ICETIA 2027. All Rights Reserved.
             </p>
             <p className="text-xs">Developed by <a href="https://techlinkinnovations.com" target="blank">TechLink Innovations</a></p>
             </div>

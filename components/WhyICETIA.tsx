@@ -52,7 +52,7 @@ export default function WhyICETIA() {
             <p className="max-w-3xl text-base leading-8 text-slate-600 lg:text-lg lg:leading-9">
               ICETIA 2027 marks the beginning of a new international platform
               for advancing conversations around emerging technologies,
-              innovation and their applications to society.
+              innovations and their applications to society.
             </p>
 
             <p className="mt-5 max-w-3xl text-sm leading-7 text-slate-500 lg:text-base lg:leading-8">

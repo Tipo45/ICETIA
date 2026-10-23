@@ -70,7 +70,7 @@ ${index + 1}. ${author.firstName} ${author.lastName}
   return `
 Dear ${firstName || 'Participant'},
 
-Thank you for registering for ICETIA 2027. We are excited to have you join us for the first International Conference on Emerging Technologies, Innovation and Applications.
+Thank you for registering for ICETIA 2027. We are excited to have you join us for the first International Conference on Emerging Technologies, Innovations and Applications.
 
 Registration Details:
 - Name: ${firstName} ${lastName}
@@ -219,7 +219,7 @@ export function reminderEmail({
   return `
  Dear ${firstName},
 
-This is a friendly reminder that you are successfully registered for the International Conference on Emerging Technologies, Innovation and Applications (ICETIA 2027).
+This is a friendly reminder that you are successfully registered for the International Conference on Emerging Technologies, Innovations and Applications (ICETIA 2027).
 
 Conference Details
 ──────────────────────────

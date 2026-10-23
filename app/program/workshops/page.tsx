@@ -1,5 +1,6 @@
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
+import PublicationFooter from "@/components/publicationfooter";
 import Link from "next/link";
 import { LuCalendarDays, LuCheck, LuGlobe, LuMic, LuSparkles } from "react-icons/lu";
 
@@ -124,6 +125,7 @@ export default function workShop() {
                     </div>
                 </section>
             </main>
+            <PublicationFooter />
             <Footer />
         </section>
     )

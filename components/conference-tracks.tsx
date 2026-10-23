@@ -61,7 +61,7 @@ const tracks = [
       "AI for Agriculture",
       "AI for Finance Services",
       "AI for Public Administration and Governance",
-      
+
     ],
   },
   {
@@ -86,7 +86,7 @@ const tracks = [
       "Intelligent Sensing",
       "Environmental Monitoring",
       "Real-Time Systems",
-      
+
     ],
   },
   {
@@ -307,28 +307,28 @@ export default function ConferenceTracks() {
                 </AccordionTrigger>
 
                 <AccordionContent className="pb-7 pl-11 pr-4 lg:pl-16 lg:pr-12">
-  <div className="grid gap-x-8 gap-y-3 lg:grid-cols-2">
-    {track.topics.map((topic, topicIndex) => (
-      <div
-        key={`${track.title}-${topicIndex}`}
-        className="flex items-start gap-3 text-sm leading-6 text-slate-400"
-      >
-        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
-        <span>{topic}</span>
-      </div>
-    ))}
-  </div>
+                  <div className="grid gap-x-8 gap-y-3 lg:grid-cols-2">
+                    {track.topics.map((topic, topicIndex) => (
+                      <div
+                        key={`${track.title}-${topicIndex}`}
+                        className="flex items-start gap-3 text-sm leading-6 text-slate-400"
+                      >
+                        <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
+                        <span>{topic}</span>
+                      </div>
+                    ))}
+                  </div>
 
-  <div className="mt-6">
-    <button
-      type="button"
-      onClick={() => {router.push(`/conference/for-authors/call-for-papers/${track.href}`)}}
-      className="rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
-    >
-      Submit Paper
-    </button>
-  </div>
-</AccordionContent>
+                  {/* <div className="mt-6">
+                    <button
+                      type="button"
+                      onClick={() => { router.push(`/conference/for-authors/call-for-papers/${track.href}`) }}
+                      className="rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+                    >
+                      Submit Paper
+                    </button>
+                  </div> */}
+                </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>

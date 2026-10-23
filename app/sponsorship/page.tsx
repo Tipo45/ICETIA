@@ -1,5 +1,6 @@
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
+import PublicationFooter from "@/components/publicationfooter";
 import {
   LuArrowUpRight,
   LuBuilding2,
@@ -140,7 +141,7 @@ export default function Sponsorship() {
               <p className="max-w-3xl text-base leading-8 text-slate-600 lg:text-lg">
                 Sponsorship of ICETIA 2027 provides organisations with an
                 opportunity to contribute to a platform dedicated to
-                emerging technologies, innovation and practical applications.
+                emerging technologies, innovations and practical applications.
               </p>
 
               <p className="mt-5 max-w-3xl text-sm leading-7 text-slate-500 lg:text-base">
@@ -312,6 +313,8 @@ export default function Sponsorship() {
 
         </div>
       </section>
+
+      <PublicationFooter />
 
       <Footer />
     </main>

@@ -55,6 +55,7 @@ import {
 
 import { MdOutlineEventNote } from "react-icons/md";
 import { FaTimesCircle } from "react-icons/fa";
+import PublicationFooter from "@/components/publicationfooter";
 
 const benefits = [
     {
@@ -423,7 +424,7 @@ export default function RegistrationSection() {
                         <p className="mt-5 max-w-2xl text-sm leading-7 text-slate-300 lg:text-base">
                             Register to attend and participate in the
                             International Conference on Emerging Technologies,
-                            Innovation and Applications without submitting or
+                            Innovations and Applications without submitting or
                             presenting a paper.
                         </p>
 
@@ -1134,6 +1135,8 @@ export default function RegistrationSection() {
                     <FiArrowRight />
                 </a>
             </section>
+
+            <PublicationFooter />
 
             <Footer />
         </main >

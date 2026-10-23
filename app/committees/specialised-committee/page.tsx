@@ -18,7 +18,8 @@ import {
   LuPresentation,
   LuShieldCheck,
 } from "react-icons/lu";
-import { CommitteeCard } from "../page";
+import { CommitteeCard } from "../../../components/committee";
+import PublicationFooter from "@/components/publicationfooter";
 
 const committees = [
   {
@@ -407,7 +408,7 @@ export default function CommitteesPage() {
                 Meet the committees responsible for the strategic
                 leadership, academic quality, coordination and successful
                 delivery of the First International Conference on Emerging
-                Technologies, Innovation and Applications.
+                Technologies, Innovations and Applications.
               </p>
             </div>
           </div>
@@ -549,6 +550,8 @@ export default function CommitteesPage() {
           </div>
         </div>
       </section>
+
+      <PublicationFooter />
 
       <Footer />
     </section>

@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { LuArrowRight, LuCalendarDays, LuCircleCheck } from "react-icons/lu";
+import PublicationFooter from "@/components/publicationfooter";
 
 const acceptedPapers = [
     {
@@ -124,7 +125,7 @@ export default function AcceptedPapersPage() {
 
                             <p className="mt-7 max-w-3xl text-base leading-8 text-slate-400 lg:text-lg">
                                 Explore the research papers accepted for presentation at the
-                                International Conference on Emerging Technologies, Innovation &
+                                International Conference on Emerging Technologies, Innovations &
                                 Applications.
                             </p>
 
@@ -192,7 +193,7 @@ export default function AcceptedPapersPage() {
 
                         <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-400 lg:text-base lg:leading-8">
                             Share your research, connect with experts, and contribute to
-                            conversations shaping emerging technologies and innovation.
+                            conversations shaping emerging technologies and innovations.
                         </p>
 
                         <div className="mt-8 flex flex-wrap justify-center gap-4">
@@ -217,6 +218,7 @@ export default function AcceptedPapersPage() {
                 </section>
 
             </main>
+            <PublicationFooter />
             <Footer />
         </section>
     );

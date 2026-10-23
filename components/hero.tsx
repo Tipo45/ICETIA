@@ -113,7 +113,7 @@ export default function Hero() {
               Emerging Technologies.
               <br />
               <span className="text-blue-400">
-                Innovation & Applications.
+                Innovations & Applications.
               </span>
             </motion.h1>
 
@@ -125,7 +125,7 @@ export default function Hero() {
               className="mt-6 max-w-2xl text-sm leading-7 text-slate-300 lg:text-base xl:text-lg xl:leading-8"
             >
               The International Conference on Emerging Technologies,
-              Innovation and Applications brings researchers, academics,
+              Innovations and Applications brings researchers, academics,
               industry professionals and technology practitioners together
               to explore ideas shaping the future of digital transformation.
             </motion.p>

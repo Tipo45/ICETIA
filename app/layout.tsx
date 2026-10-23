@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "ICETIA 2027",
   description:
-    "International Conference on Emerging Technologies, Innovation & Applications",
+    "International Conference on Emerging Technologies, Innovations & Applications",
 };
 
 export default function RootLayout({

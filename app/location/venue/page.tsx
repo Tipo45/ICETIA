@@ -2,6 +2,7 @@
 
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
+import PublicationFooter from "@/components/publicationfooter";
 import {
   LuArrowUpRight,
   LuBuilding2,
@@ -52,7 +53,7 @@ export default function TravelVenue() {
 
             <p className="mt-6 max-w-2xl text-sm leading-7 text-slate-400 lg:text-base lg:leading-8">
               Everything you need to plan your participation at the
-              International Conference on Emerging Technologies, Innovation
+              International Conference on Emerging Technologies, Innovations
               and Applications. Find venue information, accommodation,
               transportation guidance and options for participating online.
             </p>
@@ -488,7 +489,7 @@ export default function TravelVenue() {
           <div className="mt-12 border-t border-white/10 pt-6">
             <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
               <p className="text-xs uppercase tracking-[0.16em] text-slate-500">
-                Emerging Technologies · Innovation · Applications
+                Emerging Technologies · Innovations · Applications
               </p>
 
               <p className="text-xs text-slate-600">
@@ -499,6 +500,7 @@ export default function TravelVenue() {
         </div>
       </section>
     </main>
+    <PublicationFooter />
     <Footer />
     </section>
   );

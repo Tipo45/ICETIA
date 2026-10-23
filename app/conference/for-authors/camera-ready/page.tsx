@@ -1,5 +1,7 @@
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
+import PublicationFooter from "@/components/publicationfooter";
+import PublicationHeader from "@/components/publicationheader";
 import { FaUsers } from "react-icons/fa";
 import { LuCalendarDays, LuCheck, LuFileText } from "react-icons/lu";
 
@@ -48,6 +50,7 @@ const cameraReadyFiles = [
 export default function CameraReadyPapers() {
     return (
         <section className="bg-[#080f1a]">
+            <PublicationHeader />
             <Navbar />
 
             <main>
@@ -341,6 +344,8 @@ export default function CameraReadyPapers() {
                     </div>
                 </section>
             </main>
+
+            <PublicationFooter />
 
             <Footer />
         </section>

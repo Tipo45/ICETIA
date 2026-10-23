@@ -240,7 +240,7 @@ export default function AdminLoginPage({ onVerified, adminEmail }: Props) {
 
                             <p className="mt-6 max-w-xl text-sm leading-7 text-white/55 2xl:text-base">
                                 Administrative access for the International
-                                Conference on Emerging Technologies, Innovation
+                                Conference on Emerging Technologies, Innovations
                                 and Applications.
                             </p>
 
@@ -251,7 +251,7 @@ export default function AdminLoginPage({ onVerified, adminEmail }: Props) {
                                 </p>
 
                                 <p className="mt-2 max-w-lg text-sm font-medium leading-6 text-white/80">
-                                    Emerging Technologies, Innovation &
+                                    Emerging Technologies, Innovations &
                                     Applications: Advancing Research,
                                     Industry & Society
                                 </p>

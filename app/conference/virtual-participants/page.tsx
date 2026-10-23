@@ -1,5 +1,6 @@
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
+import PublicationFooter from "@/components/publicationfooter";
 import { LuCircleHelp, LuGlobe, LuLaptop, LuWifi } from "react-icons/lu";
 
 
@@ -97,6 +98,7 @@ export default function virtualParticipants () {
           </div>
         </div>
       </main>
+      <PublicationFooter />
       <Footer />
         </section>
     )

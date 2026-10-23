@@ -9,6 +9,9 @@ import {
   LuImages,
   LuX,
 } from "react-icons/lu";
+import Footer from "@/components/footer";
+import PublicationFooter from "@/components/publicationfooter";
+import Navbar from "@/components/navbar";
 
 const allGalleryImages = [
   {
@@ -72,7 +75,7 @@ export default function GalleryPage() {
 
   return (
     <main className="min-h-screen bg-white text-slate-950">
-
+      <Navbar />
       {/* Header */}
       <section className="border-b border-white/10 bg-slate-950 text-white">
         <div className="container mx-auto px-5 py-10 lg:px-8 lg:py-14 xl:px-10 xl:py-16">
@@ -266,7 +269,7 @@ export default function GalleryPage() {
               </p>
               <p className="mt-1 text-xs text-slate-500">
                 International Conference on Emerging Technologies,
-                Innovation and Applications
+                Innovations and Applications
               </p>
             </div>
 
@@ -325,6 +328,8 @@ export default function GalleryPage() {
           </div>
         </div>
       )}
+      <PublicationFooter />
+      <Footer />
     </main>
   );
 }

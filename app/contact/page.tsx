@@ -1,5 +1,6 @@
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
+import PublicationFooter from "@/components/publicationfooter";
 import { FaUser, FaUsers } from "react-icons/fa";
 import {
     LuCalendarDays,
@@ -142,6 +143,8 @@ export default function Contact() {
                     </div>
                 </div>
             </div>
+
+            <PublicationFooter />
 
             <Footer />
         </section>

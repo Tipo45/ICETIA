@@ -50,6 +50,7 @@ import {
 } from "react-icons/lu";
 import { MdOutlineEventNote } from "react-icons/md";
 import { FaTimesCircle } from "react-icons/fa";
+import PublicationFooter from "@/components/publicationfooter";
 
 
 export default function RegistrationSection() {
@@ -478,7 +479,7 @@ export default function RegistrationSection() {
                         <p className="mt-5 max-w-2xl text-sm leading-7 text-slate-300 lg:text-base">
                             Register as a student participant for the
                             International Conference on Emerging Technologies,
-                            Innovation and Applications.
+                            Innovations and Applications.
                         </p>
 
                         <div className="mt-8 flex flex-wrap gap-x-8 gap-y-4 border-t border-white/10 pt-6 text-xs text-slate-300">
@@ -1197,6 +1198,8 @@ export default function RegistrationSection() {
                     <FiArrowRight />
                 </a>
             </section>
+
+            <PublicationFooter />
 
             <Footer />
         </main>

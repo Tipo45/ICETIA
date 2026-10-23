@@ -1,5 +1,7 @@
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
+import PublicationFooter from "@/components/publicationfooter";
+import PublicationHeader from "@/components/publicationheader";
 import Link from "next/link";
 import {
   LuArrowUpRight,
@@ -57,6 +59,7 @@ const submissionRequirements = [
 export default function WorkShop() {
   return (
     <section>
+      <PublicationHeader />
       <Navbar />
 
       <main className="bg-slate-950">
@@ -98,6 +101,16 @@ export default function WorkShop() {
                 >
                  Register for ICETIA 2027
                   <LuArrowUpRight className="h-4 w-4" />
+                </Link>
+
+                <Link
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-transparent border border-white/15 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/5"
+                >
+                 Submit Workshop Paper
+                  <LuSend className="h-4 w-4" />
                 </Link>
 
                 
@@ -193,13 +206,13 @@ export default function WorkShop() {
         {topic.name}
       </p>
 
-      <a
+      {/* <a
         href={topic.href}
         className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#07111f]"
       >
         Submit Paper
         <LuArrowUpRight className="h-4 w-4" />
-      </a>
+      </a> */}
     </div>
   ))}
 </div>
@@ -324,7 +337,9 @@ export default function WorkShop() {
             <div className="flex-row space-y-4 space-x-2">
                 <Link
               href="#"
-              className="inline-flex shrink-0 items-center justify-center gap-2 bg-white px-6 py-3 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-50 opacity-50 cursor-not-allowed"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex shrink-0 items-center justify-center gap-2 bg-white px-6 py-3 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-50"
             >
               Submit Workshop Paper
               <LuSend className="h-4 w-4" />
@@ -340,6 +355,8 @@ export default function WorkShop() {
           </div>
         </section>
       </main>
+
+      <PublicationFooter />
 
       <Footer />
     </section>

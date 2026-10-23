@@ -9,8 +9,9 @@ import {
   LuCalendarDays,
   LuFileText,
 } from "react-icons/lu";
-import { MemberRow } from "../page";
+import { MemberRow } from "../../../components/committee";
 import Image from "next/image";
+import PublicationFooter from "@/components/publicationfooter";
 
 const steeringCommittee = [
   {
@@ -112,7 +113,7 @@ export default function CommitteesPage() {
                 Meet the committees responsible for the strategic
                 leadership, academic quality, coordination and successful
                 delivery of the First International Conference on Emerging
-                Technologies, Innovation and Applications.
+                Technologies, Innovations and Applications.
               </p>
             </div>
           </div>
@@ -274,6 +275,8 @@ export default function CommitteesPage() {
           </div>
         </div>
       </section>
+
+      <PublicationFooter />
 
 
       <Footer />

@@ -127,7 +127,7 @@ export default function Navbar() {
             {/* Conference name */}
             <p className="mt-0.5 text-[10px] font-medium leading-4 text-slate-500 lg:text-xs">
               International Conference on Emerging Technologies,
-              Innovation & Applications
+              Innovations & Applications
             </p>
           </div>
 
@@ -392,7 +392,7 @@ export default function Navbar() {
 
                   <p className="mt-1 max-w-60 text-xs leading-relaxed text-slate-500">
                     International Conference on Emerging Technologies,
-                    Innovation & Applications
+                    Innovations & Applications
                   </p>
                 </div>
 

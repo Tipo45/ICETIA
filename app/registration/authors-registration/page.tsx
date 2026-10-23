@@ -67,6 +67,7 @@ import {
 } from "react-icons/md";
 
 import { PiPresentationChartFill } from "react-icons/pi";
+import PublicationFooter from "@/components/publicationfooter";
 
 export default function AuthorsRegistrationPage() {
     const router = useRouter();
@@ -901,6 +902,8 @@ export default function AuthorsRegistrationPage() {
                     </a>
                 </div>
             </section>
+
+            <PublicationFooter />
 
             <Footer />
         </main>

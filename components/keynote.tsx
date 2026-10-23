@@ -355,7 +355,7 @@ export default function KeynotePage() {
 
           <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-slate-400">
             Join researchers, academics, innovators, and technology leaders at
-            the International Conference on Emerging Technologies, Innovation
+            the International Conference on Emerging Technologies, Innovations
             & Applications.
           </p>
 

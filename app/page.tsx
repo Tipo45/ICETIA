@@ -6,6 +6,8 @@ import Footer from "@/components/footer";
 import About from "@/components/about";
 import Gallery from "@/components/gallery";
 import WhyICETIA from "@/components/WhyICETIA";
+import PublicationFooter from "@/components/publicationfooter";
+import Partners from "@/components/Partners";
 
 
 
@@ -26,6 +28,10 @@ export default function HomePage() {
 
 
       <HostInstitution />
+
+      <Partners />
+
+      <PublicationFooter />
 
       <Footer />
     </main>
