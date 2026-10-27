@@ -477,7 +477,7 @@ export default function AuthorsRegistrationPage() {
                         </p>
                         <p className="mt-1 flex items-center gap-2 text-sm font-semibold">
                             <BsClockHistory className="text-blue-600" />
-                            31 March, 2027
+                            1st December, 2026
                         </p>
                     </div>
 
@@ -802,7 +802,7 @@ export default function AuthorsRegistrationPage() {
                                 <span className="font-semibold">
                                     Early-bird registration:
                                 </span>{" "}
-                                Details will be announced.
+                                ends 30 November, 2026.
                             </p>
                         </div>
                     </div>
