@@ -1,14 +1,18 @@
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import PublicationFooter from "@/components/publicationfooter";
+import PublicationHeader from "@/components/publicationheader";
 import { LuCircleHelp, LuGlobe, LuLaptop, LuWifi } from "react-icons/lu";
 
 
-export default function virtualParticipants () {
-    return (
-        <section>
-            <Navbar />
-             {/* =========================================================
+export default function virtualParticipants() {
+  return (
+    <section>
+      <div className="sticky top-0 z-50">
+        <PublicationHeader />
+        <Navbar />
+      </div>
+      {/* =========================================================
           HYBRID PARTICIPATION
       ========================================================= */}
       <main
@@ -100,6 +104,6 @@ export default function virtualParticipants () {
       </main>
       <PublicationFooter />
       <Footer />
-        </section>
-    )
+    </section>
+  )
 }

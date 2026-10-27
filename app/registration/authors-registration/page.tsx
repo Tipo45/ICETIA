@@ -68,6 +68,7 @@ import {
 
 import { PiPresentationChartFill } from "react-icons/pi";
 import PublicationFooter from "@/components/publicationfooter";
+import PublicationHeader from "@/components/publicationheader";
 
 export default function AuthorsRegistrationPage() {
     const router = useRouter();
@@ -78,8 +79,8 @@ export default function AuthorsRegistrationPage() {
     const [step, setStep] = useState(1);
 
     const [paymentStatus, setPaymentStatus] = useState<
-            "idle" | "pending" | "cancelled"
-        >("idle");
+        "idle" | "pending" | "cancelled"
+    >("idle");
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -311,7 +312,7 @@ export default function AuthorsRegistrationPage() {
                 );
             }
 
-             if (paymentWindow && !paymentWindow.closed) {
+            if (paymentWindow && !paymentWindow.closed) {
                 paymentWindow.location.href =
                     paystackResult.data.authorization_url;
 
@@ -323,20 +324,20 @@ export default function AuthorsRegistrationPage() {
             }
 
             const monitor = window.setInterval(() => {
-                            if (paymentWindow.closed) {
-                                window.clearInterval(monitor);
-            
-                                setIsSubmitting(false);
-            
-                                // This means the gateway was closed, not that
-                                // the transaction is confirmed to have failed.
-                                setPaymentStatus("cancelled");
-            
-                                toast.info(
-                                    "Payment window closed. Please check your payment status before retrying."
-                                );
-                            }
-                        }, 1000);
+                if (paymentWindow.closed) {
+                    window.clearInterval(monitor);
+
+                    setIsSubmitting(false);
+
+                    // This means the gateway was closed, not that
+                    // the transaction is confirmed to have failed.
+                    setPaymentStatus("cancelled");
+
+                    toast.info(
+                        "Payment window closed. Please check your payment status before retrying."
+                    );
+                }
+            }, 1000);
 
 
             setIsSubmitting(false);
@@ -356,49 +357,52 @@ export default function AuthorsRegistrationPage() {
         }
     };
 
-    
+
     return (
         <main className="min-h-screen bg-white text-slate-900">
-            <Navbar />
+            <div className="sticky top-0 z-50">
+                <PublicationHeader />
+                <Navbar />
+            </div>
 
             {paymentStatus === "cancelled" && (
-              <div className="fixed left-1/2 top-1/2 z-10 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 -translate-y-1/2 animate-in fade-in zoom-in-95 duration-200">
-                <div className="rounded-2xl border border-amber-200 bg-white p-5 shadow-2xl">
-                  <div className="flex items-start gap-3">
-            
-                    <div className="min-w-0 flex-1">
-                      <h2 className="font-semibold text-slate-900">
-                        Payment window closed
-                      </h2>
-            
-                      <p className="mt-1 text-sm leading-5 text-slate-600">
-                        Your payment may still have succeeded. Verify
-                        your payment status before trying again.
-                      </p>
+                <div className="fixed left-1/2 top-1/2 z-10 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 -translate-y-1/2 animate-in fade-in zoom-in-95 duration-200">
+                    <div className="rounded-2xl border border-amber-200 bg-white p-5 shadow-2xl">
+                        <div className="flex items-start gap-3">
+
+                            <div className="min-w-0 flex-1">
+                                <h2 className="font-semibold text-slate-900">
+                                    Payment window closed
+                                </h2>
+
+                                <p className="mt-1 text-sm leading-5 text-slate-600">
+                                    Your payment may still have succeeded. Verify
+                                    your payment status before trying again.
+                                </p>
+                            </div>
+
+                            <button
+                                type="button"
+                                onClick={() => setPaymentStatus("idle")}
+                                aria-label="Dismiss notification"
+                                className="text-xl leading-none text-slate-400 hover:text-slate-700"
+                            >
+                                <FaTimesCircle />
+                            </button>
+                        </div>
+
+                        <div className="mt-4 flex items-center justify-between gap-3 border-t border-slate-100 pt-3">
+                            <a
+                                href="/contact"
+                                className="text-sm font-medium text-blue-600 hover:text-blue-700"
+                            >
+                                Contact us
+                            </a>
+
+
+                        </div>
                     </div>
-            
-                    <button
-                      type="button"
-                      onClick={() => setPaymentStatus("idle")}
-                      aria-label="Dismiss notification"
-                      className="text-xl leading-none text-slate-400 hover:text-slate-700"
-                    >
-                      <FaTimesCircle />
-                    </button>
-                  </div>
-            
-                  <div className="mt-4 flex items-center justify-between gap-3 border-t border-slate-100 pt-3">
-                    <a
-                      href="/contact"
-                      className="text-sm font-medium text-blue-600 hover:text-blue-700"
-                    >
-                      Contact us
-                    </a>
-            
-                    
-                  </div>
                 </div>
-              </div>
             )}
 
             {/* Hero */}
@@ -678,13 +682,13 @@ export default function AuthorsRegistrationPage() {
                                     Registration Fee
                                 </p>
 
-                                 <p className="mt-1 text-4xl font-semibold tracking-tight lg:text-5xl">
-                            ₦{(paymentValue - paymentValue * 0.125).toLocaleString()} {" "}
-                           <span className="text-md text-slate-400 line-through"> ₦
-                            {paymentValue.toLocaleString()}</span>
-                        </p>
+                                <p className="mt-1 text-4xl font-semibold tracking-tight lg:text-5xl">
+                                    ₦{(paymentValue - paymentValue * 0.125).toLocaleString()} {" "}
+                                    <span className="text-md text-slate-400 line-through"> ₦
+                                        {paymentValue.toLocaleString()}</span>
+                                </p>
 
-                        <p className="animate-pulse text-blue-500 font-semibold">Early Bird Registration</p>
+                                <p className="animate-pulse text-blue-500 font-semibold">Early Bird Registration</p>
                             </div>
 
                             <div className="mt-6">

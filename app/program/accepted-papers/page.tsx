@@ -6,6 +6,7 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { LuArrowRight, LuCalendarDays, LuCircleCheck } from "react-icons/lu";
 import PublicationFooter from "@/components/publicationfooter";
+import PublicationHeader from "@/components/publicationheader";
 
 const acceptedPapers = [
     {
@@ -96,7 +97,10 @@ export default function AcceptedPapersPage() {
 
     return (
         <section>
-            <Navbar />
+            <div className="sticky top-0 z-50">
+                <PublicationHeader />
+                <Navbar />
+            </div>
             <main className="min-h-screen bg-slate-950 text-white mb-2">
 
                 {/* Hero */}

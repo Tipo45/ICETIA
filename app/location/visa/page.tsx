@@ -1,12 +1,16 @@
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import PublicationFooter from "@/components/publicationfooter";
+import PublicationHeader from "@/components/publicationheader";
 import { LuCheck, LuShieldCheck } from "react-icons/lu";
 
 export default function Visa() {
     return (
         <section>
-            <Navbar />
+            <div className="sticky top-0 z-50">
+                <PublicationHeader />
+                <Navbar />
+            </div>
 
             {/* =========================================================
           VISA
@@ -115,132 +119,132 @@ export default function Visa() {
             {/* =========================================================
           VISA LETTER REQUIREMENTS
       ========================================================= */}
-           <div className="border-b border-white/10 bg-[#080f1a]">
-    <div className="container mx-auto px-5 py-16 lg:px-8 lg:py-20 xl:px-10">
-        <div className="max-w-3xl">
-            <div className="flex items-center gap-3">
-                <span className="h-px w-7 bg-blue-500" />
+            <div className="border-b border-white/10 bg-[#080f1a]">
+                <div className="container mx-auto px-5 py-16 lg:px-8 lg:py-20 xl:px-10">
+                    <div className="max-w-3xl">
+                        <div className="flex items-center gap-3">
+                            <span className="h-px w-7 bg-blue-500" />
 
-                <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-500">
-                    Invitation Letter Request
-                </span>
-            </div>
-
-            <h2 className="mt-5 text-3xl font-bold tracking-tight text-white lg:text-4xl">
-                Information required for your{" "}
-                <span className="text-blue-500">
-                    request.
-                </span>
-            </h2>
-
-            <p className="mt-5 text-sm leading-7 text-slate-500">
-                When requesting an official invitation letter,
-                international participants should provide complete
-                and accurate information and submit the required
-                supporting documents to allow the organizing
-                committee to process the request.
-            </p>
-        </div>
-
-        <div className="mt-10 grid gap-px overflow-hidden border border-white/10 bg-white/10 grid-cols-2">
-            {[
-                "Full name as it appears on your passport.",
-                "Job title, position or academic status.",
-                "Department and affiliated institution or organization.",
-                "Full address of the affiliated institution or organization.",
-                "Confirmation of completed conference registration.",
-                "Proof of payment for the conference registration.",
-            ].map((item) => (
-                <div
-                    key={item}
-                    className="flex items-start gap-3 bg-[#080f1a] p-6"
-                >
-                    <LuCheck className="mt-0.5 h-4 w-4 shrink-0 text-blue-400" />
-
-                    <p className="text-sm leading-6 text-slate-500">
-                        {item}
-                    </p>
-                </div>
-            ))}
-        </div>
-
-        {/* Email Instructions */}
-        <div className="mt-8 border border-blue-500/20 bg-blue-500/5 p-6">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-blue-400">
-                How to submit your request
-            </p>
-
-            <p className="mt-3 text-xs leading-6 text-slate-500">
-                Send your invitation letter request and the required
-                supporting documents to:
-            </p>
-
-            <a
-                href="mailto:conference@icetiaconference.org"
-                className="mt-3 inline-block text-sm font-semibold text-blue-400 transition-colors hover:text-blue-300"
-            >
-                conference@icetiaconference.org
-            </a>
-
-            <div className="mt-5 border-t border-blue-500/10 pt-5">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-600">
-                    Email subject format
-                </p>
-
-                <div className="mt-3 border border-white/10 bg-[#080f1a] px-4 py-3">
-                    <p className="text-xs font-medium text-slate-300">
-                       ICETIA 2027 Visa Invitation Letter Request – [Your Full Name]
-                    </p>
-                </div>
-            </div>
-
-            <div className="mt-5">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-600">
-                    Required attachments
-                </p>
-
-                <div className="mt-3 space-y-3">
-                    {[
-                        "Proof of completed conference registration.",
-                        "Proof of payment.",
-                    ].map((item) => (
-                        <div
-                            key={item}
-                            className="flex items-start gap-3"
-                        >
-                            <LuCheck className="mt-0.5 h-4 w-4 shrink-0 text-blue-400" />
-
-                            <p className="text-xs leading-5 text-slate-500">
-                                {item}
-                            </p>
+                            <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-500">
+                                Invitation Letter Request
+                            </span>
                         </div>
-                    ))}
+
+                        <h2 className="mt-5 text-3xl font-bold tracking-tight text-white lg:text-4xl">
+                            Information required for your{" "}
+                            <span className="text-blue-500">
+                                request.
+                            </span>
+                        </h2>
+
+                        <p className="mt-5 text-sm leading-7 text-slate-500">
+                            When requesting an official invitation letter,
+                            international participants should provide complete
+                            and accurate information and submit the required
+                            supporting documents to allow the organizing
+                            committee to process the request.
+                        </p>
+                    </div>
+
+                    <div className="mt-10 grid gap-px overflow-hidden border border-white/10 bg-white/10 grid-cols-2">
+                        {[
+                            "Full name as it appears on your passport.",
+                            "Job title, position or academic status.",
+                            "Department and affiliated institution or organization.",
+                            "Full address of the affiliated institution or organization.",
+                            "Confirmation of completed conference registration.",
+                            "Proof of payment for the conference registration.",
+                        ].map((item) => (
+                            <div
+                                key={item}
+                                className="flex items-start gap-3 bg-[#080f1a] p-6"
+                            >
+                                <LuCheck className="mt-0.5 h-4 w-4 shrink-0 text-blue-400" />
+
+                                <p className="text-sm leading-6 text-slate-500">
+                                    {item}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Email Instructions */}
+                    <div className="mt-8 border border-blue-500/20 bg-blue-500/5 p-6">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-blue-400">
+                            How to submit your request
+                        </p>
+
+                        <p className="mt-3 text-xs leading-6 text-slate-500">
+                            Send your invitation letter request and the required
+                            supporting documents to:
+                        </p>
+
+                        <a
+                            href="mailto:conference@icetiaconference.org"
+                            className="mt-3 inline-block text-sm font-semibold text-blue-400 transition-colors hover:text-blue-300"
+                        >
+                            conference@icetiaconference.org
+                        </a>
+
+                        <div className="mt-5 border-t border-blue-500/10 pt-5">
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-600">
+                                Email subject format
+                            </p>
+
+                            <div className="mt-3 border border-white/10 bg-[#080f1a] px-4 py-3">
+                                <p className="text-xs font-medium text-slate-300">
+                                    ICETIA 2027 Visa Invitation Letter Request – [Your Full Name]
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="mt-5">
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-600">
+                                Required attachments
+                            </p>
+
+                            <div className="mt-3 space-y-3">
+                                {[
+                                    "Proof of completed conference registration.",
+                                    "Proof of payment.",
+                                ].map((item) => (
+                                    <div
+                                        key={item}
+                                        className="flex items-start gap-3"
+                                    >
+                                        <LuCheck className="mt-0.5 h-4 w-4 shrink-0 text-blue-400" />
+
+                                        <p className="text-xs leading-5 text-slate-500">
+                                            {item}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mt-8 border border-blue-500/20 bg-blue-500/5 p-6">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-blue-400">
+                            Processing notice
+                        </p>
+
+                        <p className="mt-3 text-xs leading-6 text-slate-500">
+                            Invitation letter requests will only be processed after
+                            conference registration and payment have been confirmed.
+                            Participants are responsible for ensuring that all
+                            information submitted is accurate and that their passport
+                            remains valid for the intended period of travel.
+                        </p>
+
+                        <p className="mt-3 text-xs leading-6 text-slate-500">
+                            An invitation letter supports a visa application but does
+                            not guarantee visa approval. Participants should submit
+                            their visa applications through the appropriate Nigerian
+                            authorities and allow sufficient time for processing.
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <div className="mt-8 border border-blue-500/20 bg-blue-500/5 p-6">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-blue-400">
-                Processing notice
-            </p>
-
-            <p className="mt-3 text-xs leading-6 text-slate-500">
-                Invitation letter requests will only be processed after
-                conference registration and payment have been confirmed.
-                Participants are responsible for ensuring that all
-                information submitted is accurate and that their passport
-                remains valid for the intended period of travel.
-            </p>
-
-            <p className="mt-3 text-xs leading-6 text-slate-500">
-                An invitation letter supports a visa application but does
-                not guarantee visa approval. Participants should submit
-                their visa applications through the appropriate Nigerian
-                authorities and allow sufficient time for processing.
-            </p>
-        </div>
-    </div>
-</div>
 
             {/* =========================================================
           VISA RESPONSIBILITY

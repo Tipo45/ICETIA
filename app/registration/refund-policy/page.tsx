@@ -1,5 +1,6 @@
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
+import PublicationHeader from "@/components/publicationheader";
 import Link from "next/link";
 import { CiCircleCheck } from "react-icons/ci";
 import { FaAward, FaRegCalendarCheck, FaUsers } from "react-icons/fa";
@@ -76,7 +77,10 @@ const benefits = [
 export default function RegistrationCategories() {
     return (
         <section>
-            <Navbar />
+            <div className="sticky top-0 z-50">
+                <PublicationHeader />
+                <Navbar />
+            </div>
             <main
                 id="registration"
                 className="border-b border-slate-200 bg-[#061426]"
@@ -94,31 +98,31 @@ export default function RegistrationCategories() {
                 </div>
 
                 <div className="mt-10 border border-slate-200 bg-slate-50 p-6 lg:mt-12 lg:p-7">
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-            <div className="flex items-start gap-4">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600">
-                <IoIosInformationCircleOutline className="h-5 w-5" />
-              </div>
+                    <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+                        <div className="flex items-start gap-4">
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+                                <IoIosInformationCircleOutline className="h-5 w-5" />
+                            </div>
 
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-600">
-                  Refund & Cancellation
-                </p>
+                            <div>
+                                <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-600">
+                                    Refund & Cancellation
+                                </p>
 
-                <h3 className="mt-1 text-lg font-bold tracking-tight text-slate-950">
-                  Please review the refund policy before payment.
-                </h3>
+                                <h3 className="mt-1 text-lg font-bold tracking-tight text-slate-950">
+                                    Please review the refund policy before payment.
+                                </h3>
 
-                <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
-                  Approved registration refunds are subject to a 10% processing fee.
-                  Participants are encouraged to review the full ICETIA 2027 Refund &
-                  Cancellation Policy before completing registration and payment.
-                </p>
-              </div>
-            </div>
+                                <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+                                    Approved registration refunds are subject to a 10% processing fee.
+                                    Participants are encouraged to review the full ICETIA 2027 Refund &
+                                    Cancellation Policy before completing registration and payment.
+                                </p>
+                            </div>
+                        </div>
 
-          </div>
-        </div>
+                    </div>
+                </div>
             </main>
             <Footer />
         </section>

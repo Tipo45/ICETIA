@@ -1,6 +1,7 @@
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import PublicationFooter from "@/components/publicationfooter";
+import PublicationHeader from "@/components/publicationheader";
 import Link from "next/link";
 import { CiCircleCheck } from "react-icons/ci";
 import { FaAward, FaRegCalendarCheck, FaUsers } from "react-icons/fa";
@@ -85,7 +86,10 @@ export default function RegistrationCategories() {
     <section
       className="border-b border-slate-200 bg-white"
     >
-      <Navbar />
+      <div className="sticky top-0 z-50">
+        <PublicationHeader />
+        <Navbar />
+      </div>
       <div className="container mx-auto px-5 py-4 lg:px-8 lg:py-6 xl:px-10 xl:py-10">
 
         {/* Header */}
@@ -325,7 +329,7 @@ export default function RegistrationCategories() {
                   </td>
 
                   <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">
-                    $ -  
+                    $ -
                   </td>
 
                   <td className="border border-slate-200 px-4 py-4 text-center text-slate-600">

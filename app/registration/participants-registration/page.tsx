@@ -56,6 +56,7 @@ import {
 import { MdOutlineEventNote } from "react-icons/md";
 import { FaTimesCircle } from "react-icons/fa";
 import PublicationFooter from "@/components/publicationfooter";
+import PublicationHeader from "@/components/publicationheader";
 
 const benefits = [
     {
@@ -338,7 +339,7 @@ export default function RegistrationSection() {
                     ? "Email Has already been registered"
                     : "Something went wrong. Please try again."
             );
-        } 
+        }
         // finally {
         //     resetForm();
         // }
@@ -363,7 +364,10 @@ export default function RegistrationSection() {
 
     return (
         <main className="min-h-screen bg-white">
-            <Navbar />
+            <div className="sticky top-0 z-50">
+                <PublicationHeader />
+                <Navbar />
+            </div>
 
             {paymentStatus === "cancelled" && (
                 <div className="fixed left-1/2 top-1/2 z-10 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 -translate-y-1/2 animate-in fade-in zoom-in-95 duration-200">

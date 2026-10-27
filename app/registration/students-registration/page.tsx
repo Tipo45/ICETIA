@@ -51,6 +51,7 @@ import {
 import { MdOutlineEventNote } from "react-icons/md";
 import { FaTimesCircle } from "react-icons/fa";
 import PublicationFooter from "@/components/publicationfooter";
+import PublicationHeader from "@/components/publicationheader";
 
 
 export default function RegistrationSection() {
@@ -314,7 +315,7 @@ export default function RegistrationSection() {
     // };
 
     const registerParticipant = async () => {
-        
+
         const paymentWindow = window.open("about:blank", "_blank");
 
         setIsSubmitting(true);
@@ -371,7 +372,7 @@ export default function RegistrationSection() {
 
                     setIsSubmitting(false);
 
-                
+
                     setPaymentStatus("cancelled");
 
                     toast.info(
@@ -393,7 +394,7 @@ export default function RegistrationSection() {
                     ? "Email has already been registered"
                     : "Something went wrong. Please try again."
             );
-        } 
+        }
         // finally {
         //     resetForm();
         // }
@@ -418,7 +419,10 @@ export default function RegistrationSection() {
 
     return (
         <main className="min-h-screen bg-white relative">
-            <Navbar />
+            <div className="sticky top-0 z-50">
+                <PublicationHeader />
+                <Navbar />
+            </div>
 
             {paymentStatus === "cancelled" && (
                 <div className="fixed left-1/2 top-1/2 z-10 w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 -translate-y-1/2 animate-in fade-in zoom-in-95 duration-200">

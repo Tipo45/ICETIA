@@ -2,6 +2,7 @@ import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import Partners from "@/components/Partners";
 import PublicationFooter from "@/components/publicationfooter";
+import PublicationHeader from "@/components/publicationheader";
 import {
   LuArrowUpRight,
   LuBuilding2,
@@ -44,7 +45,10 @@ const opportunities = [
 export default function Sponsorship() {
   return (
     <main className="min-h-screen bg-white text-slate-950">
-      <Navbar />
+      <div className="sticky top-0 z-50">
+        <PublicationHeader />
+        <Navbar />
+      </div>
 
       {/* Hero */}
       <section className="border-b border-white/10 bg-slate-950 text-white">

@@ -1,6 +1,7 @@
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import PublicationFooter from "@/components/publicationfooter";
+import PublicationHeader from "@/components/publicationheader";
 import Link from "next/link";
 import { LuCalendarDays, LuCheck, LuGlobe, LuMic, LuSparkles } from "react-icons/lu";
 
@@ -8,7 +9,10 @@ import { LuCalendarDays, LuCheck, LuGlobe, LuMic, LuSparkles } from "react-icons
 export default function workShop() {
     return (
         <section>
-            <Navbar />
+            <div className="sticky top-0 z-50">
+                <PublicationHeader />
+                <Navbar />
+            </div>
             <main className="bg-slate-950">
                 <section className="border-b border-white/10 bg-slate-950">
                     <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-20">

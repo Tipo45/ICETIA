@@ -12,6 +12,7 @@ import {
 import { MemberRow } from "../../../components/committee";
 import Image from "next/image";
 import PublicationFooter from "@/components/publicationfooter";
+import PublicationHeader from "@/components/publicationheader";
 
 const steeringCommittee = [
   {
@@ -44,7 +45,7 @@ const steeringCommittee = [
     image: "/images/joy nateinyin dvc.jpeg",
     affiliation:
       "Deputy Vice-Chancellor, Research and Development (R&D), Federal University Otuoke",
-      objectPosition: "center 10%",
+    objectPosition: "center 10%",
   },
   {
     role: "Host",
@@ -53,7 +54,7 @@ const steeringCommittee = [
     image: "/images/dean FOS.jpeg",
     affiliation:
       "Dean, Faculty of Science, Federal University Otuoke, Nigeria",
-      objectPosition: "center 10%",
+    objectPosition: "center 10%",
   },
   {
     role: "Host",
@@ -62,7 +63,7 @@ const steeringCommittee = [
     image: "/images/Abosede.jpeg",
     affiliation:
       "Director of Research, Federal University Otuoke, Nigeria",
-      objectPosition: "center 10%",
+    objectPosition: "center 10%",
   },
 ];
 
@@ -87,7 +88,10 @@ const secretariat = [
 export default function CommitteesPage() {
   return (
     <section className="min-h-screen bg-white text-slate-950">
-      <Navbar />
+      <div className="sticky top-0 z-50">
+        <PublicationHeader />
+        <Navbar />
+      </div>
 
       {/* =========================================================
           HERO
@@ -188,50 +192,50 @@ export default function CommitteesPage() {
           </div>
 
 
-<div className="mt-10 grid border-l border-t border-slate-200 tablet:grid-cols-2 xl:grid-cols-3">
-  {steeringCommittee.map((member, index) => (
-    <div
-      key={member.name}
-      className="group border-b border-r border-slate-200 p-6 transition-colors duration-300 hover:bg-[#07111f] lg:min-h-64 lg:p-7 xl:p-8"
-    >
-      <div className="flex items-start justify-between gap-4">
-        <div className="relative h-75 w-75 max-w-full shrink-0 overflow-hidden rounded-xl bg-slate-200 shadow-md ring-1 ring-slate-200 transition-transform duration-300 group-hover:scale-[1.02]">
-          <Image
-            src={member.image}
-            alt={member.name}
-            fill
-            sizes="(max-width: 640px) 90vw, 300px"
-            className="object-cover"
-            style={{
-              objectPosition: member.objectPosition ?? "center 25%",
-            }}
-          />
-        </div>
+          <div className="mt-10 grid border-l border-t border-slate-200 tablet:grid-cols-2 xl:grid-cols-3">
+            {steeringCommittee.map((member, index) => (
+              <div
+                key={member.name}
+                className="group border-b border-r border-slate-200 p-6 transition-colors duration-300 hover:bg-[#07111f] lg:min-h-64 lg:p-7 xl:p-8"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="relative h-75 w-75 max-w-full shrink-0 overflow-hidden rounded-xl bg-slate-200 shadow-md ring-1 ring-slate-200 transition-transform duration-300 group-hover:scale-[1.02]">
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      sizes="(max-width: 640px) 90vw, 300px"
+                      className="object-cover"
+                      style={{
+                        objectPosition: member.objectPosition ?? "center 25%",
+                      }}
+                    />
+                  </div>
 
-        <span className="shrink-0 text-xs font-bold tracking-widest text-slate-300 transition-colors group-hover:text-slate-600">
-          {String(index + 1).padStart(2, "0")}
-        </span>
-      </div>
+                  <span className="shrink-0 text-xs font-bold tracking-widest text-slate-300 transition-colors group-hover:text-slate-600">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </div>
 
-      <p className="mt-8 text-xs font-semibold uppercase tracking-[0.14em] text-blue-600 transition-colors group-hover:text-blue-400">
-        {member.role}
-      </p>
+                <p className="mt-8 text-xs font-semibold uppercase tracking-[0.14em] text-blue-600 transition-colors group-hover:text-blue-400">
+                  {member.role}
+                </p>
 
-      <a
-        href={member.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-3 inline-block text-xl font-bold leading-tight tracking-tight text-slate-900 transition-colors group-hover:text-white lg:text-2xl"
-      >
-        {member.name}
-      </a>
+                <a
+                  href={member.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-block text-xl font-bold leading-tight tracking-tight text-slate-900 transition-colors group-hover:text-white lg:text-2xl"
+                >
+                  {member.name}
+                </a>
 
-      <p className="mt-4 text-sm leading-6 text-slate-500 transition-colors group-hover:text-slate-400">
-        {member.affiliation}
-      </p>
-    </div>
-  ))}
-</div>
+                <p className="mt-4 text-sm leading-6 text-slate-500 transition-colors group-hover:text-slate-400">
+                  {member.affiliation}
+                </p>
+              </div>
+            ))}
+          </div>
 
         </div>
       </section>

@@ -20,6 +20,7 @@ import {
 } from "react-icons/lu";
 import { CommitteeCard } from "../../../components/committee";
 import PublicationFooter from "@/components/publicationfooter";
+import PublicationHeader from "@/components/publicationheader";
 
 const committees = [
   {
@@ -382,7 +383,10 @@ const committees = [
 export default function CommitteesPage() {
   return (
     <section className="min-h-screen bg-white text-slate-950">
-      <Navbar />
+      <div className="sticky top-0 z-50">
+        <PublicationHeader />
+        <Navbar />
+      </div>
 
       {/* =========================================================
           HERO

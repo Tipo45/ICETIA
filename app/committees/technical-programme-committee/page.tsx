@@ -10,6 +10,7 @@ import {
 } from "react-icons/lu";
 import Image from "next/image";
 import PublicationFooter from "@/components/publicationfooter";
+import PublicationHeader from "@/components/publicationheader";
 
 const technicalProgrammeCommittee = [
   {
@@ -83,7 +84,10 @@ const technicalProgrammeCommittee = [
 export default function CommitteesPage() {
   return (
     <section className="min-h-screen bg-white text-slate-950">
-      <Navbar />
+      <div className="sticky top-0 z-50">
+        <PublicationHeader />
+        <Navbar />
+      </div>
 
       {/* =========================================================
           HERO
@@ -216,7 +220,7 @@ export default function CommitteesPage() {
         </div>
       </section>
 
-<PublicationFooter />
+      <PublicationFooter />
 
       <Footer />
     </section>

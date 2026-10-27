@@ -12,6 +12,7 @@ import {
 import Footer from "@/components/footer";
 import PublicationFooter from "@/components/publicationfooter";
 import Navbar from "@/components/navbar";
+import PublicationHeader from "@/components/publicationheader";
 
 const allGalleryImages = [
   {
@@ -75,18 +76,13 @@ export default function GalleryPage() {
 
   return (
     <main className="min-h-screen bg-white text-slate-950">
-      <Navbar />
+      <div className="sticky top-0 z-50">
+        <PublicationHeader />
+        <Navbar />
+      </div>
       {/* Header */}
       <section className="border-b border-white/10 bg-slate-950 text-white">
         <div className="container mx-auto px-5 py-10 lg:px-8 lg:py-14 xl:px-10 xl:py-16">
-
-          <button
-            onClick={() => router.back()}
-            className="group mb-10 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-slate-400 transition-colors hover:text-white"
-          >
-            <LuArrowLeft className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" />
-            Back
-          </button>
 
           <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-end lg:gap-16">
 
@@ -104,7 +100,7 @@ export default function GalleryPage() {
 
             <div>
               <p className="max-w-2xl text-sm leading-7 text-slate-400 lg:text-base lg:leading-8">
-                Explore 
+                Explore
                 ICETIA 2027 at Federal University Otuoke.
               </p>
             </div>

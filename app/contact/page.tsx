@@ -1,6 +1,7 @@
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import PublicationFooter from "@/components/publicationfooter";
+import PublicationHeader from "@/components/publicationheader";
 import { FaUser, FaUsers } from "react-icons/fa";
 import {
     LuCalendarDays,
@@ -10,7 +11,10 @@ import {
 export default function Contact() {
     return (
         <section>
-            <Navbar />
+            <div className="sticky top-0 z-50">
+                <PublicationHeader />
+                <Navbar />
+            </div>
 
             <div className="border-b border-white/10 bg-[#07111f] text-white">
                 <div className="container mx-auto px-5 py-12 lg:px-8 lg:py-14 xl:px-10 xl:py-16">
@@ -27,7 +31,7 @@ export default function Contact() {
                             </h1>
                         </div>
 
-                        
+
                     </div>
 
                     <div className="mt-10 grid grid-cols-2 border-t border-white/10 lg:mt-12 lg:grid-cols-4">
