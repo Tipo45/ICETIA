@@ -71,7 +71,7 @@ export default function Partners() {
 
                     <div className="flex justify-center">
                         <a
-                            href="https://link.springer.com/"
+                            href="https://share.google/fZqnio3Tk5z85H02t"
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label="Visit SpringerLink website"

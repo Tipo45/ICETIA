@@ -3,8 +3,9 @@ import Navbar from "@/components/navbar";
 import PublicationFooter from "@/components/publicationfooter";
 import PublicationHeader from "@/components/publicationheader";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import Link from "next/link";
 import { FaUsers } from "react-icons/fa";
-import { LuCalendarDays, LuDot } from "react-icons/lu";
+import { LuCalendarDays } from "react-icons/lu";
 
 
 const items = [
@@ -13,6 +14,12 @@ const items = [
         trigger: "Step 1: Complete the Registration Process",
         content: (
             <div className="space-y-4 text-md leading-7 bg-white/3 text-white p-4 rounded-lg border border-white/10">
+                <ol className="list-decimal list-inside marker:text-blue-600 space-y-3 py-3">
+                    <li><span className="font-semibold">IMPORTANT:</span> In the registration form, make sure that the Registrant details (name, affiliation, email address) match the details of one of the authors added during Initial Submission, and that they belong to the person personally attending the conference.</li>
+                    <li>Select the paper(s) you wish to register during the registration process. Only the papers selected in this step will have the Camera-ready upload enabled. If you do not see your paper in this step, please verify that the Registrant details are correct.</li>
+                    <li>Complete the payment. It is recommended that you pay with a credit card due to the speed of the transaction. For our international particcipants,please note that if you choose to pay via wire transfer, you will only receive the Camera-ready upload rights after the transaction has been completed, which may take up to 5 business days.</li>
+                </ol>
+                <Link href="/registration/authors-registration" className="px-2 py-4 rounded-lg no-underline! bg-blue-600 text-white hover:bg-blue-700 hover:text-white!">Registration Page</Link>
             </div>
         ),
     },
@@ -31,7 +38,18 @@ const items = [
         value: "step-3",
         trigger: "Step 3: Submit Camera-ready",
         content: (
-            <div className="space-y-4 text-sm leading-7 text-white border p-4 bg-white/3 rounded-lg border-white/10">
+            <div className="space-y-4 text-md leading-7 bg-white/3 text-white p-4 rounded-lg border border-white/10">
+                <ol className="list-decimal list-inside marker:text-blue-600 space-y-3 py-3">
+                    <li>Find your accepted submission on the Confy+ homepage in the “List of My Full Submissions” section,
+                    </li>
+                    <li>Click on your accepted paper,</li>
+                    <li>Click the “Submit Camera Ready” button (Note: This action will be available to all co-authors after one of them has completed the Registration)
+                    </li>
+                    <li> Fill in the required fields and accept the terms and conditions.</li>
+                </ol>
+                <span className="text-lg">
+                    (<Link href="#" className="no-underline! text-blue-600 hover:text-blue-700! hover:underline!">Submit Camera-ready here</Link>)
+                </span>
             </div>
         ),
     },
@@ -39,7 +57,13 @@ const items = [
         value: "step-4",
         trigger: "Step 4: To make changes or re-upload your Camera-ready submission",
         content: (
-            <div className="space-y-4 bg-white/3 p-4 rounded-lg border border-white/10">
+            <div className="space-y-4 text-md leading-7 bg-white/3 text-white p-4 rounded-lg border border-white/10">
+                <span className="font-semibold">*(possible only until the Camera-ready deadline)</span>
+                <ol className="list-decimal list-inside marker:text-blue-600 space-y-3 py-3">
+                    <li>Find your Camera-ready submission on the Confy+ homepage – in the section “List of My Full Submissions”,</li>
+                    <li>Click on your Camera-ready submission,</li>
+                    <li>Click the “Edit” button. Please note that it is not possible to create new Camera-ready submissions. All changes to your Camera-ready submission should be done via the method outlined above.</li>
+                </ol>
             </div>
         ),
     },
@@ -246,7 +270,7 @@ export default function CameraReadyPapers() {
                                 <Accordion
                                     type="single"
                                     collapsible
-                                    defaultValue="step-1"
+                                    // defaultValue="step-1"
                                     className="w-full"
                                 >
                                     {items.map((item) => (
