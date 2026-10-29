@@ -8,7 +8,6 @@ import { TfiHeadphoneAlt } from "react-icons/tfi";
 import { FcCustomerSupport } from "react-icons/fc";
 import {
     LuArrowUpRight,
-    LuFileText,
     LuMailOpen,
     LuMessageCircle,
 } from "react-icons/lu";

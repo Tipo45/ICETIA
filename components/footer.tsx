@@ -319,6 +319,8 @@ export default function Footer() {
                 <a
                   key={sponsor.name}
                   href={sponsor.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-400"
                 >
                   {sponsor.name}
