@@ -15,7 +15,8 @@ const sponsors = [
     {
         name: "EAI Community Research Series (CORE)",
         logo: EAICore,
-        href: "https://compse-conf.eai-conferences.org/2016/media/uploads/EAI%20CORE%20Proceedigns.pdf",
+        href: "https://eudl.eu/core-publish",
+        // href: "https://compse-conf.eai-conferences.org/2016/media/uploads/EAI%20CORE%20Proceedigns.pdf",
         width: 180,
         height: 90,
     },
@@ -71,7 +72,7 @@ export default function Partners() {
 
                     <div className="flex justify-center">
                         <a
-                            href="https://share.google/fZqnio3Tk5z85H02t"
+                            href="https://www.atlantis-press.com/"
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label="Visit SpringerLink website"

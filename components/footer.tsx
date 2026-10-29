@@ -83,14 +83,14 @@ const sponsors = [
     name: "EAI CORE",
     href: "https://compse-conf.eai-conferences.org/2016/media/uploads/EAI%20CORE%20Proceedigns.pdf"
   },
-  {
-    name: "EAI UDL",
-    href: "https://eudl.eu/"
-  },
-  {
-    name: "Arthur Press",
-    href: "#"
-  }
+  // {
+  //   name: "EAI UDL",
+  //   href: "https://eudl.eu/"
+  // },
+  // {
+  //   name: "Arthur Press",
+  //   href: "#"
+  // }
 ];
 
 export default function Footer() {
