@@ -81,7 +81,8 @@ const sponsors = [
   },
   {
     name: "EAI CORE",
-    href: "https://compse-conf.eai-conferences.org/2016/media/uploads/EAI%20CORE%20Proceedigns.pdf"
+    href: "https://eudl.eu/core-publish",
+    // href: "https://compse-conf.eai-conferences.org/2016/media/uploads/EAI%20CORE%20Proceedigns.pdf",
   },
   // {
   //   name: "EAI UDL",
