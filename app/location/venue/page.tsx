@@ -94,7 +94,7 @@ export default function TravelVenue() {
                 </p>
               </div>
 
-              <div className="border-b border-white/10 p-5">
+              {/* <div className="border-b border-white/10 p-5">
                 <LuBuilding2 className="h-5 w-5 text-blue-400" />
 
                 <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-500">
@@ -104,7 +104,7 @@ export default function TravelVenue() {
                 <p className="mt-2 text-sm font-semibold text-white">
                   TBA
                 </p>
-              </div>
+              </div> */}
 
               <div className="border-b border-white/10 p-5">
                 <LuMapPin className="h-5 w-5 text-blue-400" />
@@ -176,8 +176,6 @@ export default function TravelVenue() {
                       </p>
 
                       <p className="mt-1 text-xs leading-5 text-slate-500">
-                        TBA
-                        <br />
                         Federal University Otuoke
                         <br />
                         Otuoke, Ogbia LGA

@@ -67,51 +67,55 @@ const items = [
           <div className="text-sm text-white leading-7">
 
             <p>
-              All accepted and presented papers will be published in the EAI Community Research Series (EAI CORE), and will be submitted for indexing to CPCI, CNKI, EBSCO, Web of Science, Scopus, ProQuest, Google Scholar, CrossRef and European Union Digital Library (EUDL) can view and download the full-text PDFs of the proceeding papers.
+              Selected, accepted and presented papers from ICETIA 2027 will be considered for publication through the conference's approved international proceedings partners, subject to successful peer review, revision, similarity screening, presentation and compliance with publisher requirements.
             </p>
 
 
             <p>
-              Authors have the opportunity to submit an extended version of their paper in the Proposed series to be published: Advances in Computer Science Research is 2352-538X, and the print ISSN of Advances in Computer Science Research is 2948-1961 and the website is <a href="https://www.atlantis-press.com/proceedings/series/acsr" target="_blank" rel="noopener noreferrer" className="text-blue-600 no-underline">https://www.atlantis-press.com/proceedings/series/acsr</a>
+              <span className="block">
+                EAI Community Research Series – CORE
+              </span>
+
+              ICETIA 2027 has established a publication arrangement with the European Alliance for Innovation (EAI) for proceedings publication in the EAI Community Research Series (CORE).
             </p>
 
 
             <p>
-              About EUDL
-              The European Union Digital Library (EUDL) is the central repository for all content published by European Alliance for Innovation (EAI). EUDL additionally indexes content published by different publishing partners (Springer, ACM, IEEE) in collaboration with EAI.
+              Published papers will be available through the European Union Digital Library (EUDL) and are covered by major scholarly discovery services including CrossRef, CNKI, EBSCO and Google Scholar. Eligible proceedings may also be submitted for evaluation by Scopus, Ei Compendex, Web of Science/CPCI, ProQuest and other indexing services, subject to their independent assessment.
             </p>
 
             <p>
-              <span className="block">EUDL includes:</span>
+              <span className="block">Atlantis Press – Advances in Computer Science Research</span>
 
               <span>
-                EAI Community Research Series (CORE) – EAI’s ICT-focused books and proceedings series
-                EAI Computing and Communication in Emerging Regions (CCER) – EAI’s multidisciplinary proceedings series
-                EAI Endorsed Transactions, a list of peer-reviewed, open access research journals
-                Abstracts of EAI/Springer Lecture Notes of the Institute for Computer Sciences, Social Informatics and Telecommunications Engineering (LNICST)
-                A complete index of proceedings from conferences held by EAI and ICST
-                Each item in the digital library receives a unique Digital Object Identifier (DOI) via CrossRef, the world's largest inter-publisher cooperative project. The CrossRef system enables the cross-referencing and cross-citation of tens of millions of documents from more than 4300 participating societies and publishers.
+                ACSR is discoverable through services including CNKI, Dimensions, EBSCO Discovery Service, INSPEC, Google Scholar, OCLC WorldCat, ProQuest-ExLibris Primo, ProQuest-ExLibris Summon, TD Net and Wanfang Data, with DOIs registered through CrossRef. Selected proceedings volumes may also be submitted for evaluation in CPCI/Web of Science.
               </span>
             </p>
 
             <p>
-              Indexing
-              Content hosted in EUDL is submitted for inclusion in multiple citation indexes and databases, with the number of indexing partners constantly growing.
+              <span className="block">
+                Important Notice
+              </span>
+              All papers will undergo a rigorous double-blind peer-review process. Acceptance for presentation does not automatically guarantee publication. Final publication is subject to academic quality, originality, successful revision, presentation and the requirements of the relevant publisher.
             </p>
 
-            Currently, our contents are indistinctly indexed in:
+            <p>
+              Indexing in selective databases such as Scopus, Web of Science, CPCI and Ei Compendex is determined independently by the respective indexing services and cannot be guaranteed by ICETIA 2027.
+            </p>
 
-            DOAJ,
-            DBLP,
-            ProQuest,
-            EBSCO,
-            CNKI,
-            Google Scholar,
-            Scopus,
-            Web of Science,
-            Engineering Village (Compendex),
-            ACM Digital Library,
-            and many more.
+            <p>
+              <span className="block">Publication Pathway</span>
+              <span className="block">
+                ICETIA 2027 has established publication arrangements with two international proceedings publishers:
+              </span>
+              <span className="block">EAI Community Research Series (CORE)</span><span className="block">Atlantis Press – Advances in Computer Science Research (ACSR), part of Springer Nature</span>
+            </p>
+            <p>Following peer review and final acceptance, eligible papers will be assigned to the most appropriate publication outlet by the ICETIA 2027 Publications and Editorial Committee, taking into account the paper's subject area, academic quality, publisher scope, formatting requirements and applicable publication conditions.
+            </p>
+            <p>Each accepted paper will be published in only one proceedings series. Authors will be formally informed of the publication outlet assigned to their paper before the final camera-ready submission stage.</p>
+            <p>All papers must successfully complete the conference's double-blind peer-review process, required revisions, similarity and plagiarism screening, author registration and presentation requirements before being considered for final publication.</p>
+            <p>Similarity and plagiarism checks will be conducted using recognised publisher-provided or approved systems such as iThenticate, where applicable, alongside appropriate editorial review to assess originality and research integrity.</p>
+            <p>Final publication remains subject to the editorial, technical and publication requirements of the respective publisher.</p>
           </div>
         </div>
       </div>
@@ -123,7 +127,7 @@ const items = [
     content: (
       <div className="space-y-4 text-sm leading-7 text-white border p-4 bg-white/3 rounded-lg border-white/10">
         <p>
-          Papers should be submitted through the EAI <a href="#" className="no-underline text-blue-600">'Confy+'</a> system, and have to comply with the Springer format (see Author’s kit section).
+          Full research papers should follow the official ICETIA 2027 formatting template and submission requirements.
         </p>
 
         <div className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4">
@@ -142,7 +146,7 @@ const items = [
         </div>
 
         <p className="text-xs leading-6 text-white">
-          All conference papers undergo a thorough peer review process prior to the final decision and publication. This process is facilitated by experts in the Technical Program Committee during a dedicated conference period. Standard peer review is enhanced by EAI Community Review which allows EAI members to bid to review specific papers. All review assignments are ultimately decided by the responsible Technical Program Committee Members while the Technical Program Committee Chair is responsible for the final acceptance selection. You can learn more about Community Review <a href="https://help.eai-conferences.org/conference/community/community-review/" className="text-blue-900 hover:text-white">here</a>
+          Authors should ensure that manuscripts comply with the official template before submission
         </p>
       </div>
     ),
@@ -153,23 +157,24 @@ const items = [
     content: (
       <div className="space-y-4 bg-white/3 p-4 rounded-lg border border-white/10">
         <div>
-          <span className="text-sm text-blue-500 font-semibold">How to Submit a Paper in Confy</span>
+          <span className="text-sm text-blue-500 font-semibold">How to Submit a Paper</span>
           <ol className="list-decimal list-inside space-y-2 leading-6 pt-2 text-white">
-            <li>Go to <a href="#" target="_blank" rel="noopener noreferrer" className="text-blue-600">Confy+</a> website</li>
-            <li>Log in or sign up as a new user</li>
+            <li>Login to your account</li>
             <li>Select your desired track</li>
-            <li>Click the "Submit Paper" link within the track and follow the instructions</li>
+            <li>Click the "Upload Paper" and follow the instructions</li>
           </ol>
-          <p className="mt-4 text-slate-300">Alternatively, go to the Confy+ homepage and click on “Open Conferences.”</p>
         </div>
         <span className="ml-1 text-sm text-blue-600">Submission Guidelines</span>
         {[
           "All papers must be submitted in English.",
           "Submitted PDFs must be original and unpublished research.",
-          "Previously published work cannot be submitted, nor can it be concurrently submitted to any other conference or journal. These papers will be rejected without review.",
-          "Papers must follow the Springer formatting guidelines (available in the Author's Kit section).",
-          `Authors must read and agree to the ${<a href="#" target="_blank" rel="noopener noreferrer" className="text-blue-600">Publication Ethics and Malpractice Statement</a>}.`,
-          "As per new EU accessibility requirements, going forward, all figures, illustrations, tables, and images should have descriptive text accompanying them. Please refer to the document below, which will assist you in crafting Alternative Text (Alt Text)",
+          "Manuscripts should follow the official ICETIA 2027 formatting template",
+          "All authors and institutional affiliations must be correctly stated.",
+          "References and citations should follow the required formatting style.",
+          "Authors should ensure that their submission meets the conference's academic and ethical requirements.",
+          "Any AI-assisted content must comply with the final ICETIA 2027 responsible AI guidelines.",
+          "Accepted authors will be expected to revise and submit a camera-ready version before the stated deadline.",
+          "Authors of accepted papers will be expected to present their work at ICETIA 2027",
         ].map((guideline) => (
           <div
             key={guideline}
@@ -182,105 +187,104 @@ const items = [
             </span>
           </div>
         ))}
-        <p><a href="#" target="_blank" rel="noopener noreferrer" className="text-blue-500">HOW TO WRITE GOOD ALT TEXT</a></p>
       </div>
     ),
   },
-  {
-    value: "springer-AI-policies-and-guidance",
-    trigger: "Springer AI Policies and Guidance",
-    content: (
-      <div className="bg-white/3 border border-white/10 p-4 rounded-lg space-y-4">
-        <p>
-          <span>For full information, click <a href="https://www.springernature.com/gp/policies/book-publishing-policies" target="_blank" rel="noopener noreferrer" className="text-blue-600 no-underline">Here</a></span>
-        </p>
-        <div>
-          <p className="font-semibold text-blue-600">AI Authorship Policy</p>
-          <p>
-            Large Language Models (LLMs), such as ChatGPT, do not currently satisfy our authorship criteria. Notably an attribution of authorship carries with it accountability for the work, which cannot be effectively applied to LLMs. We thus ask that the use of an LLM be properly documented in the Acknowledgements, or in the Introduction or Preface of the manuscript.
-          </p>
-          <p>
-            The use of an LLM (or other AI-tool) for “AI assisted copy editing” purposes does not need to be declared. In this context, we define the term “AI assisted copy editing” as AI-assisted improvements to human-generated texts for readability and style, and to ensure that the texts are free of errors in grammar, spelling, punctuation and tone. These AI-assisted improvements may include wording and formatting changes to the texts, but do not include generative editorial work and autonomous content creation. In all cases, there must be human accountability for the final version of the text and agreement from the authors that the edits reflect their original work. This reflects a similar stance taken on the AI generative figures policy, where it was acknowledged that there are cases where AI can be used to generate a figure without being concerned about copyright e.g. to generate a graph based on data provided by the author.
-          </p>
-        </div>
+  // {
+  //   value: "springer-AI-policies-and-guidance",
+  //   trigger: "Springer AI Policies and Guidance",
+  //   content: (
+  //     <div className="bg-white/3 border border-white/10 p-4 rounded-lg space-y-4">
+  //       <p>
+  //         <span>For full information, click <a href="https://www.springernature.com/gp/policies/book-publishing-policies" target="_blank" rel="noopener noreferrer" className="text-blue-600 no-underline">Here</a></span>
+  //       </p>
+  //       <div>
+  //         <p className="font-semibold text-blue-600">AI Authorship Policy</p>
+  //         <p>
+  //           Large Language Models (LLMs), such as ChatGPT, do not currently satisfy our authorship criteria. Notably an attribution of authorship carries with it accountability for the work, which cannot be effectively applied to LLMs. We thus ask that the use of an LLM be properly documented in the Acknowledgements, or in the Introduction or Preface of the manuscript.
+  //         </p>
+  //         <p>
+  //           The use of an LLM (or other AI-tool) for “AI assisted copy editing” purposes does not need to be declared. In this context, we define the term “AI assisted copy editing” as AI-assisted improvements to human-generated texts for readability and style, and to ensure that the texts are free of errors in grammar, spelling, punctuation and tone. These AI-assisted improvements may include wording and formatting changes to the texts, but do not include generative editorial work and autonomous content creation. In all cases, there must be human accountability for the final version of the text and agreement from the authors that the edits reflect their original work. This reflects a similar stance taken on the AI generative figures policy, where it was acknowledged that there are cases where AI can be used to generate a figure without being concerned about copyright e.g. to generate a graph based on data provided by the author.
+  //         </p>
+  //       </div>
 
-        <div>
-          <p className="font-semibold text-blue-600">AI Authorship Guidance</p>
-          <p>
-            Authors should familiarise themselves with the current known risks of using AI models before using them in their manuscript. AI models have been known to plagiarise content and to create false content. As such, authors should carry out due diligence to ensure that any AI-generated content in their book is correct, appropriately referenced, and follow the standards as laid out in our Book Authors' Code of Conduct.
-          </p>
-        </div>
+  //       <div>
+  //         <p className="font-semibold text-blue-600">AI Authorship Guidance</p>
+  //         <p>
+  //           Authors should familiarise themselves with the current known risks of using AI models before using them in their manuscript. AI models have been known to plagiarise content and to create false content. As such, authors should carry out due diligence to ensure that any AI-generated content in their book is correct, appropriately referenced, and follow the standards as laid out in our Book Authors' Code of Conduct.
+  //         </p>
+  //       </div>
 
-        <div>
-          <p className="font-semibold text-blue-600">AI-generated Images Policy</p>
-          <p>
-            The fast-moving area of generative AI image creation has resulted in novel legal copyright and research integrity issues. As publishers, we strictly follow existing copyright law and best practices regarding publication ethics. While legal issues relating to AI-generated images and videos remain broadly unresolved, Springer Nature journals and books are unable to permit its use for publication.
-          </p>
-        </div>
+  //       <div>
+  //         <p className="font-semibold text-blue-600">AI-generated Images Policy</p>
+  //         <p>
+  //           The fast-moving area of generative AI image creation has resulted in novel legal copyright and research integrity issues. As publishers, we strictly follow existing copyright law and best practices regarding publication ethics. While legal issues relating to AI-generated images and videos remain broadly unresolved, Springer Nature journals and books are unable to permit its use for publication.
+  //         </p>
+  //       </div>
 
-        <div>
-          <span className="text-blue-600 font-semibold underline">Exceptions:</span>
-          <ul className="mt-2 space-y-2 list-disc list-inside marker:text-blue-600">
-            <li>
-              Images/art obtained from agencies that we have contractual relationships with that have created images in a legally acceptable manner.
-            </li>
-            <li>
-              Images and videos that are directly referenced in a piece that is specifically about AI and such cases will be reviewed on a case-by-case basis.
-            </li>
-            <li>
-              The use of generative AI tools developed with specific sets of underlying scientific data that can be attributed, checked and verified for accuracy, provided that ethics, copyright and terms of use restrictions are adhered to.
-            </li>
-          </ul>
-          <p className="mt-4 font-semibold">* All exceptions must be labelled clearly as generated by AI within the image field.</p>
-        </div>
+  //       <div>
+  //         <span className="text-blue-600 font-semibold underline">Exceptions:</span>
+  //         <ul className="mt-2 space-y-2 list-disc list-inside marker:text-blue-600">
+  //           <li>
+  //             Images/art obtained from agencies that we have contractual relationships with that have created images in a legally acceptable manner.
+  //           </li>
+  //           <li>
+  //             Images and videos that are directly referenced in a piece that is specifically about AI and such cases will be reviewed on a case-by-case basis.
+  //           </li>
+  //           <li>
+  //             The use of generative AI tools developed with specific sets of underlying scientific data that can be attributed, checked and verified for accuracy, provided that ethics, copyright and terms of use restrictions are adhered to.
+  //           </li>
+  //         </ul>
+  //         <p className="mt-4 font-semibold">* All exceptions must be labelled clearly as generated by AI within the image field.</p>
+  //       </div>
 
-        <div>
-          <p>
-            As we expect things to develop rapidly in this field in the near future, we will review this policy regularly and adapt if necessary.
-          </p>
-          <p>
-            Note: Examples of image types covered by this policy include: video and animation, including video stills; photography; illustration such as scientific diagrams, photo-illustrations and other collages, and editorial illustrations such as drawings, cartoons or other 2D or 3D visual representations. Not included in this policy are text-based and numerical display items, such as: tables, flow charts and other simple graphs that do not contain images. Please note that not all AI tools are generative. The use of non-generative machine learning tools to manipulate, combine or enhance existing images or figures should be disclosed in the relevant caption upon submission to allow a case-by-case review.
-          </p>
-        </div>
+  //       <div>
+  //         <p>
+  //           As we expect things to develop rapidly in this field in the near future, we will review this policy regularly and adapt if necessary.
+  //         </p>
+  //         <p>
+  //           Note: Examples of image types covered by this policy include: video and animation, including video stills; photography; illustration such as scientific diagrams, photo-illustrations and other collages, and editorial illustrations such as drawings, cartoons or other 2D or 3D visual representations. Not included in this policy are text-based and numerical display items, such as: tables, flow charts and other simple graphs that do not contain images. Please note that not all AI tools are generative. The use of non-generative machine learning tools to manipulate, combine or enhance existing images or figures should be disclosed in the relevant caption upon submission to allow a case-by-case review.
+  //         </p>
+  //       </div>
 
-        <div>
-          <p className="font-semibold text-blue-600">AI-generated Images Guidance</p>
-          <p>
-            For more information on the inclusion of third party content (i.e. any work that you have not created yourself and which you have reproduced or adapted from other sources) please see <a href="https://www.springernature.com/gp/partners/rights-permissions-third-party-distribution" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-600">Rights, Permissions, Third Party Distribution</a>.
-          </p>
-        </div>
-      </div>
-    ),
-  },
-  {
-    value: "author-s-Kit---instructions-and-templates",
-    trigger: "Author's Kit - Instructions and Templates",
-    content: (
-      <div className="space-y-4 bg-white/3 p-4 rounded-lg border border-white/10">
-        <p>Papers must be formatted using the Springer LNICST Authors' Kit.</p>
-        <div>
-          <p>Instructions and templates are available from <a href="https://link.springer.com/series/558/information-for-authors-and-editors" target="_blank" rel="noopener noreferrer" className="text-blue-600">Springer's LNICST homepage</a>:</p>
-          <ul className="space-y-2 list-disc list-inside marker:text-blue-600">
-            <li><a href="/templates/EAI-Proceedings-LATEX-Template.zip"
-            target="_blank" rel="noopener noreferrer"
-            download="EAI-Proceedings-LATEX-Template.zip" className="text-blue-600">EAI-Proceedings-LATEX-Template(zip)</a></li>
-            <li><a href="/templates/EAI-Proceedings-DOCX-Template.docx"
-            target="_blank" rel="noopener noreferrer" className="text-blue-600">EAI-Proceedings-DOCX-Template</a></li>
-          </ul>
-          <p className="my-4">
-            Please make sure that your paper adheres to the format as specified in the instructions and templates.
-          </p>
-        </div>
-        <div>
-          <p>When uploading the camera-ready copy of your paper, please be sure to upload both:</p>
-          <ul className="space-y-2 list-disc list-inside marker:text-blue-600">
-            <li>a PDF copy of your paper formatted according to the above templates, and</li>
-            <li>an archive in .ZIP file, containing <span className="font-semibold">LaTeX or Word</span> source material prepared according to the above guidelines.</li>
-          </ul>
-        </div>
-      </div>
-    ),
-  },
+  //       <div>
+  //         <p className="font-semibold text-blue-600">AI-generated Images Guidance</p>
+  //         <p>
+  //           For more information on the inclusion of third party content (i.e. any work that you have not created yourself and which you have reproduced or adapted from other sources) please see <a href="https://www.springernature.com/gp/partners/rights-permissions-third-party-distribution" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-600">Rights, Permissions, Third Party Distribution</a>.
+  //         </p>
+  //       </div>
+  //     </div>
+  //   ),
+  // },
+  // {
+  //   value: "author-s-Kit---instructions-and-templates",
+  //   trigger: "Author's Kit - Instructions and Templates",
+  //   content: (
+  //     <div className="space-y-4 bg-white/3 p-4 rounded-lg border border-white/10">
+  //       <p>Papers must be formatted using the Springer LNICST Authors' Kit.</p>
+  //       <div>
+  //         <p>Instructions and templates are available from <a href="https://link.springer.com/series/558/information-for-authors-and-editors" target="_blank" rel="noopener noreferrer" className="text-blue-600">Springer's LNICST homepage</a>:</p>
+  //         <ul className="space-y-2 list-disc list-inside marker:text-blue-600">
+  //           <li><a href="/templates/EAI-Proceedings-LATEX-Template.zip"
+  //           target="_blank" rel="noopener noreferrer"
+  //           download="EAI-Proceedings-LATEX-Template.zip" className="text-blue-600">EAI-Proceedings-LATEX-Template(zip)</a></li>
+  //           <li><a href="/templates/EAI-Proceedings-DOCX-Template.docx"
+  //           target="_blank" rel="noopener noreferrer" className="text-blue-600">EAI-Proceedings-DOCX-Template</a></li>
+  //         </ul>
+  //         <p className="my-4">
+  //           Please make sure that your paper adheres to the format as specified in the instructions and templates.
+  //         </p>
+  //       </div>
+  //       <div>
+  //         <p>When uploading the camera-ready copy of your paper, please be sure to upload both:</p>
+  //         <ul className="space-y-2 list-disc list-inside marker:text-blue-600">
+  //           <li>a PDF copy of your paper formatted according to the above templates, and</li>
+  //           <li>an archive in .ZIP file, containing <span className="font-semibold">LaTeX or Word</span> source material prepared according to the above guidelines.</li>
+  //         </ul>
+  //       </div>
+  //     </div>
+  //   ),
+  // },
 ];
 
 export default function CallForPapers() {
@@ -327,7 +331,7 @@ export default function CallForPapers() {
             </p>
 
             <div className="mt-8 flex flex-col gap-3 lg:flex-row lg:flex-wrap lg:items-center">
-              <a
+              {/* <a
                 href="#"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -335,7 +339,7 @@ export default function CallForPapers() {
               >
                 Submit a Paper
                 <LuArrowUpRight className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-              </a>
+              </a> */}
 
               <a
                 href="/registration"
@@ -516,7 +520,7 @@ export default function CallForPapers() {
 
             <div className="flex flex-col gap-3 tablet:flex-row">
 
-              <a
+              {/* <a
                 href="#"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -524,7 +528,7 @@ export default function CallForPapers() {
               >
                 Submit a Paper
                 <LuArrowUpRight className="ml-1 h-4 w-4" />
-              </a>
+              </a> */}
 
 
               {/* Replace href with your actual template URL */}

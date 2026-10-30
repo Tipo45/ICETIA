@@ -70,7 +70,7 @@ export default function Partners() {
                         Publication Partner
                     </h3>
 
-                    <div className="flex justify-center">
+                    <div className="flex justify-center gap-4">
                         <a
                             href="https://www.atlantis-press.com/"
                             target="_blank"
@@ -81,6 +81,22 @@ export default function Partners() {
                             <Image
                                 src={Atlantispress}
                                 alt="Atlantis Press"
+                                width={200}
+                                height={100}
+                                className="h-auto max-h-20 w-auto max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                            />
+                        </a>
+
+                        <a
+                            href="https://eudl.eu/core-publish"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Visit EAI CORE website"
+                            className="group flex min-h-32 w-full max-w-md items-center justify-center rounded-xl border border-white/10 bg-white/3 p-6 transition-all duration-300 hover:border-blue-500/40 hover:bg-white/6 lg:min-h-36"
+                        >
+                            <Image
+                                src={EAICore}
+                                alt="EAI CORE"
                                 width={200}
                                 height={100}
                                 className="h-auto max-h-20 w-auto max-w-full object-contain transition-transform duration-300 group-hover:scale-105"

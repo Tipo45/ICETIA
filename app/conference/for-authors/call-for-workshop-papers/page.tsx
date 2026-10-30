@@ -105,7 +105,7 @@ export default function WorkShop() {
                   <LuArrowUpRight className="h-4 w-4" />
                 </Link>
 
-                <Link
+                {/* <Link
                   href="#"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -113,7 +113,7 @@ export default function WorkShop() {
                 >
                   Submit Workshop Paper
                   <LuSend className="h-4 w-4" />
-                </Link>
+                </Link> */}
 
 
               </div>
@@ -337,7 +337,7 @@ export default function WorkShop() {
             </div>
 
             <div className="flex-row space-y-4 space-x-2">
-              <Link
+              {/* <Link
                 href="#"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -345,7 +345,7 @@ export default function WorkShop() {
               >
                 Submit Workshop Paper
                 <LuSend className="h-4 w-4" />
-              </Link>
+              </Link> */}
               <Link
                 href="/program/workshops"
                 className="inline-flex shrink-0 items-center justify-center gap-2 bg-[#080f1a] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#080f1a]/90"
