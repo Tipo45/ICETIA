@@ -296,7 +296,7 @@ export default function Footer() {
                 <LuPhone className="h-4 w-4 shrink-0 text-blue-500" />
 
                 <span className="text-slate-500">
-                  <a href="tel:+2348069225628" className="transition-colors hover:text-blue-600 hover:underline">+2348069225628</a>
+                  <a href="tel:+2348068225628" className="transition-colors hover:text-blue-600 hover:underline">+2348068225628</a>
                   <br />
                   <a href="tel:+447377083132" className="transition-colors hover:text-blue-600 hover:underline">+447377083132</a>
                 </span>
