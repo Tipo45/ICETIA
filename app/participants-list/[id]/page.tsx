@@ -602,6 +602,12 @@ export default function ParticipantsPage() {
                       <th className="px-5 py-3 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400">
                         Co-authors
                       </th>
+                      <th className="px-5 py-3 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400">
+                        Track
+                      </th>
+                      <th className="px-5 py-3 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400">
+                        Title
+                      </th>
 
                       <th className="px-5 py-3 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400">
                         Paper
@@ -800,18 +806,45 @@ export default function ParticipantsPage() {
                           </td>
 
                           {/* Paper */}
+                          <td className="px-5 py-4 align-top">
+                            {participant.submittedPapers?.length ? (
+                              participant.submittedPapers.map((paper) => (
+                                <p key={paper._id} className="text-xs text-slate-700">
+                                  {paper.paperTrack}
+                                </p>
+                              ))) : (
+                              <span className="text-xs text-slate-400">
+                                Not available
+                              </span>
+                            )}
+                          </td>
+                          <td className="px-5 py-4 align-top">
+                            {participant.submittedPapers?.length ? (
+                              participant.submittedPapers.map((paper) => (
+                                <p key={paper._id} className="text-xs text-slate-700">
+                                  {paper.paperTitle}
+                                </p>
+                              ))) : (
+                              <span className="text-xs text-slate-400">
+                                Not available
+                              </span>
+                            )}
+                          </td>
 
                           <td className="px-5 py-4 align-top">
-                            {participant.paperUrl ? (
-                              <a
-                                href={participant.paperUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 transition hover:text-blue-800"
-                              >
-                                <LuFileText className="h-4 w-4" />
-                                View paper
-                              </a>
+                            {participant.submittedPapers?.length ? (
+                              participant.submittedPapers.map((paper) => (
+                                <a
+                                  key={paper._id}
+                                  href={paper.paperUrl ?? undefined}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 transition hover:text-blue-800"
+                                >
+                                  <LuFileText className="h-4 w-4" />
+                                  View paper
+                                </a>
+                              ))
                             ) : (
                               <span className="text-xs text-slate-400">
                                 Not available

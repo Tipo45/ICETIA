@@ -350,7 +350,6 @@ export const getParticipants = query({
     },
 
     handler: async (ctx, args) => {
-
         let participants = await ctx.db
             .query("registrations")
             .collect();
@@ -395,9 +394,29 @@ export const getParticipants = query({
         }
 
         return Promise.all(
-            participants.map(async (participant) => ({
-                ...participant,
-            }))
+            participants.map(async (participant) => {
+
+                // Get papers belonging to this participant
+                const papers = await ctx.db
+                    .query("submittedPapers")
+                    .withIndex("by_registration_Id", q =>
+                        q.eq("registrationId", participant._id)
+                    )
+                    .collect();
+
+                return {
+                    ...participant,
+
+                    submittedPapers: await Promise.all(
+                        papers.map(async (paper) => ({
+                            ...paper,
+                            paperUrl: paper.paperFileId
+                                ? await ctx.storage.getUrl(paper.paperFileId)
+                                : null,
+                        }))
+                    ),
+                };
+            })
         );
     },
 });
