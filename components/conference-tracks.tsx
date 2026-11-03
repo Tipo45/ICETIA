@@ -319,7 +319,7 @@ export default function ConferenceTracks() {
                     ))}
                   </div>
 
-                  {/* <div className="mt-6">
+                  <div className="mt-6">
                     <button
                       type="button"
                       onClick={() => { router.push(`/conference/for-authors/call-for-papers/${track.href}`) }}
@@ -327,7 +327,7 @@ export default function ConferenceTracks() {
                     >
                       Submit Paper
                     </button>
-                  </div> */}
+                  </div>
                 </AccordionContent>
               </AccordionItem>
             ))}

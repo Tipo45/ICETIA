@@ -208,13 +208,13 @@ export default function WorkShop() {
                     {topic.name}
                   </p>
 
-                  {/* <a
-        href={topic.href}
-        className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#07111f]"
-      >
-        Submit Paper
-        <LuArrowUpRight className="h-4 w-4" />
-      </a> */}
+                  <a
+                    href={topic.href}
+                    className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-[#07111f]"
+                  >
+                    Submit Paper
+                    <LuArrowUpRight className="h-4 w-4" />
+                  </a>
                 </div>
               ))}
             </div>

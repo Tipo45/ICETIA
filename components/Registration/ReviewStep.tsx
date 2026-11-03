@@ -104,20 +104,6 @@ export default function ReviewStep({
                 />
             </ReviewSection>
 
-            {/* Paper */}
-            <ReviewSection
-                icon={<FiBook />}
-                title="Paper Information"
-            >
-                <ReviewRow
-                    label="Paper Title"
-                    value={formData.paperTitle}
-                    icon={<FiFileText />}
-                    stacked
-                />
-
-            </ReviewSection>
-
             {/* Co-authors */}
             <ReviewSection
                 icon={<FiUsers />}

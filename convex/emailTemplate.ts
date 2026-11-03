@@ -193,7 +193,7 @@ export function verifyAdminEmail({
   otp_code
 }: VerifyAdminEmailProps) {
   return `
-  Dear Author,
+  Dear Admin,
 
   A request was made to verify your email: ${email}, for admin privileges at the International Conference on Emerging Technologies and Intelligent Applications (ICETIA 2027).
   

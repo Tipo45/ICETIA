@@ -25,9 +25,6 @@ export default defineSchema({
             v.literal("Professor"),
             v.literal("Other")
         )),
-        paperTrack: v.optional(v.string()),
-        paperTitle: v.optional(v.string()),
-        paperFileId: v.optional(v.id("_storage")),
 
         coAuthors: v.optional(v.array(v.object({
             firstName: v.string(),
@@ -58,7 +55,6 @@ export default defineSchema({
         confirmationEmailSent: v.boolean(),
     }).index("by_email", ["email"])
         .index("by_registration_number", ["registrationNumber"])
-        .index("by_paper_track", ["paperTrack"])
         .index("by_payment_reference", ["paymentReference"])
         .index("by_payment_status", ["paymentStatus"]),
 

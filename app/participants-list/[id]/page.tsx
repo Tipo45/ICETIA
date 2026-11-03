@@ -171,17 +171,17 @@ export default function ParticipantsPage() {
 
   const handleLogOut = async () => {
     const sessionToken = sessionStorage.getItem(
-        "icetia-admin-session"
+      "icetia-admin-session"
     );
 
     try {
-        if (sessionToken) {
-            await logOutAdmin({ sessionToken });
-        }
+      if (sessionToken) {
+        await logOutAdmin({ sessionToken });
+      }
     } catch (error) {
-        console.error("Logout error:", error);
-        toast.error("Could not revoke the admin session.");
-        return;
+      console.error("Logout error:", error);
+      toast.error("Could not revoke the admin session.");
+      return;
     }
 
     toast.success("Logged out successfully")
@@ -560,10 +560,10 @@ export default function ParticipantsPage() {
                   </p>
                 </div>
 
-                <div className="flex items-center gap-2 text-xs text-slate-400">
+                {/* <div className="flex items-center gap-2 text-xs text-slate-400">
                   <LuCircleCheck className="h-4 w-4 text-green-600" />
                   Confirmed payment
-                </div>
+                </div> */}
               </div>
 
               <div className="overflow-x-auto">
@@ -717,15 +717,14 @@ export default function ParticipantsPage() {
                                 {participant.amount.toLocaleString()}
                               </p>
 
-                              <p className="mt-1 flex items-center gap-1 text-xs text-green-600">
-                                <LuCircleCheck className="h-3.5 w-3.5" />
+                              {participant.paidAt ?
+                                <p className="mt-1 flex items-center gap-1 text-xs text-green-600">
+                                  <LuCircleCheck className="h-3.5 w-3.5" /> {new Date(participant.paidAt).toLocaleDateString()}
+                                </p>
+                                :
+                                <p className="mt-1 flex items-center gap-1 text-xs text-red-600">Pending...
+                                </p>}
 
-                                {participant.paidAt
-                                  ? new Date(
-                                    participant.paidAt
-                                  ).toLocaleDateString()
-                                  : "Confirmed"}
-                              </p>
                             </div>
                           </td>
 

@@ -36,7 +36,6 @@ import {
 } from "react-icons/fi";
 
 import {
-    LuBuilding2,
     LuGraduationCap,
     LuPlus,
     LuTrash2,

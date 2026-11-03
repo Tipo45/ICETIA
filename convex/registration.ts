@@ -26,8 +26,6 @@ export const registerAuthor = mutation({
             v.literal("Professor"),
             v.literal("Other")
         )),
-        paperTrack: v.optional(v.string()),
-        paperTitle: v.optional(v.string()),
         coAuthors: v.optional(v.array(v.object({
             firstName: (v.string()),
             lastName: (v.string()),
@@ -82,8 +80,6 @@ export const registerAuthor = mutation({
             institution: args.institution,
             country: args.country,
             degree: args.degree,
-            paperTrack: args.paperTrack,
-            paperTitle: args.paperTitle,
             coAuthors: args.coAuthors ?? [],
             department: args.department,
             amount,
@@ -357,9 +353,6 @@ export const getParticipants = query({
 
         let participants = await ctx.db
             .query("registrations")
-            .withIndex("by_payment_status", q =>
-                q.eq("paymentStatus", "paid")
-            )
             .collect();
 
         if (args.search) {
@@ -404,9 +397,6 @@ export const getParticipants = query({
         return Promise.all(
             participants.map(async (participant) => ({
                 ...participant,
-                paperUrl: participant.paperFileId
-                    ? await ctx.storage.getUrl(participant.paperFileId)
-                    : null,
             }))
         );
     },

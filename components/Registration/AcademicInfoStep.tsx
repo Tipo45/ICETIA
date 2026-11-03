@@ -117,15 +117,6 @@ export default function AcademicInfoStep({
                         value as Degree | ""
                     ) || "";
                 break;
-
-                case "paperTrack":
-                    error =
-                    validatePaperTrack(value) || "";
-                break;
-
-            case "paperTitle":
-                error = validatePaperTitle(value) || "";
-                break;
         }
 
         setFormErrors((prev) => ({
@@ -338,82 +329,6 @@ export default function AcademicInfoStep({
                     formErrors.degree && (
                         <p className="text-xs text-red-500">
                             {formErrors.degree}
-                        </p>
-                    )}
-            </div>
-
-            <div className="space-y-2">
-                <label className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-600">
-                    Track{" "}
-                    <span className="text-red-500">*</span>
-                </label>
-
-                <Select
-                value={formData.paperTrack} onValueChange={(value) =>
-                    handleChange("paperTrack", value)
-                }>
-
-                    <SelectTrigger className={`h-12 w-full rounded-none border bg-white px-4 text-sm shadow-none ${
-                            formTouched.paperTrack &&
-                            formErrors.paperTrack
-                                ? "border-red-400"
-                                : formTouched.paperTrack &&
-                                  !formErrors.paperTrack &&
-                                  formData.paperTrack
-                                ? "border-emerald-400"
-                                : "border-slate-200"
-                        }`}>
-                        <SelectValue placeholder="Choose Track" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectGroup>
-                            {paperTracks.map((paperTrack)=>
-                            <SelectItem key={paperTrack.name} value={paperTrack.name}>{paperTrack.name}</SelectItem>
-                            )}
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
-
-                {formTouched.paperTrack &&
-                    formErrors.paperTrack && (
-                        <p className="text-xs text-red-500">
-                            {formErrors.paperTrack}
-                        </p>
-                    )}
-            </div>
-
-            <div className="space-y-2">
-                <label className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-600">
-                    Paper Title{" "}
-                    <span className="text-red-500">*</span>
-                </label>
-
-                <textarea
-                    value={formData.paperTitle}
-                    onChange={(e) =>
-                        handleChange(
-                            "paperTitle",
-                            e.target.value
-                        )
-                    }
-                    placeholder="Enter the title of your accepted paper"
-                    rows={4}
-                    className={`w-full resize-none border bg-white px-4 py-3 text-sm outline-none transition ${
-                        formTouched.paperTitle &&
-                        formErrors.paperTitle
-                            ? "border-red-400 focus:border-red-500"
-                            : formTouched.paperTitle &&
-                              !formErrors.paperTitle &&
-                              formData.paperTitle
-                            ? "border-emerald-400 focus:border-emerald-500"
-                            : "border-slate-200 focus:border-blue-600"
-                    }`}
-                />
-
-                {formTouched.paperTitle &&
-                    formErrors.paperTitle && (
-                        <p className="text-xs text-red-500">
-                            {formErrors.paperTitle}
                         </p>
                     )}
             </div>

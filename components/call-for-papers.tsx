@@ -158,9 +158,12 @@ const items = [
         <div>
           <span className="text-sm text-blue-500 font-semibold">How to Submit a Paper</span>
           <ol className="list-decimal list-inside space-y-2 leading-6 pt-2 text-white">
-            <li>Login to your account</li>
+            <li>Register for ICETIA 2027</li>
             <li>Select your desired track</li>
-            <li>Click the "Upload Paper" and follow the instructions</li>
+            <li>Verify your Registration Number</li>
+            <li>Prepare your paper according to the official ICETIA 2027 formatting template</li>
+            <li>Ensure that your paper meets the submission guidelines</li>
+            <li>Click the "Submit Paper" button</li>
           </ol>
         </div>
         <span className="ml-1 text-sm text-blue-600">Submission Guidelines</span>

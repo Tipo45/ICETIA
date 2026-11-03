@@ -8,7 +8,7 @@ import VerifyRegistrationForm from "@/components/verifyID";
 import { api } from "@/convex/_generated/api";
 import { useAction, useMutation } from "convex/react";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { LuCloudUpload, LuFileCheck2 } from "react-icons/lu";
 import { toast } from "sonner";
@@ -145,6 +145,7 @@ export default function EmergingTechnologiesPage() {
 
     const isFormValid = () => {
         return (
+            registrationNumber &&
             !validatePaperTitle(formData.paperTitle) &&
             !validateAbstract(formData.abstract) &&
             !validatePaperFile(formData.paperFile)
@@ -340,6 +341,10 @@ export default function EmergingTechnologiesPage() {
 
                                     <input value={registrationNumber}
                                         className="bg-gray-300 border border-blue-100 rounded-lg p-4 w-full font-semibold" readOnly />
+                                        {!registrationNumber && (<p className="mt-2 text-xs text-red-500">
+                                            Registration Number is required to submit a paper.
+                                        </p>
+                                    )}
                                 </div>
 
                                 <div className="space-y-2">

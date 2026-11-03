@@ -44,7 +44,6 @@ import {
 import {
     FiBookOpen,
     FiCheckCircle,
-    FiFileText,
     FiUserCheck,
 } from "react-icons/fi";
 
@@ -94,8 +93,6 @@ export default function AuthorsRegistrationPage() {
         country: "",
         department: "",
         degree: "",
-        paperTrack: "",
-        paperTitle: "",
         coAuthors: [],
     });
 
@@ -107,8 +104,6 @@ export default function AuthorsRegistrationPage() {
         country: "",
         department: "",
         degree: "",
-        paperTrack: "",
-        paperTitle: "",
         coAuthors: [
             {
                 firstName: "",
@@ -130,8 +125,6 @@ export default function AuthorsRegistrationPage() {
         country: false,
         department: false,
         degree: false,
-        paperTrack: false,
-        paperTitle: false,
         coAuthors: [
             {
                 firstName: false,
@@ -193,9 +186,7 @@ export default function AuthorsRegistrationPage() {
             !validateInstitution(formData.institution) &&
             !validateCountry(formData.country) &&
             !validateDepartment(formData.department) &&
-            !validateDegree(formData.degree) &&
-            !validatePaperTrack(formData.paperTrack) &&
-            !validatePaperTitle(formData.paperTitle)
+            !validateDegree(formData.degree)
         );
     };
 
@@ -281,9 +272,7 @@ export default function AuthorsRegistrationPage() {
                 institution: formData.institution,
                 country: formData.country,
                 degree: formData.degree as Degree,
-                paperTrack: formData.paperTrack,
                 department: formData.department,
-                paperTitle: formData.paperTitle,
                 coAuthors: formData.coAuthors.map((author) => ({
                     ...author,
                     degree: author.degree as Degree,
