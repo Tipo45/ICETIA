@@ -17,6 +17,8 @@ import {
     LuBuilding2,
     LuGraduationCap,
     LuBadgeCheck,
+    LuTag,
+    LuFileText,
 } from "react-icons/lu";
 
 import {
@@ -101,6 +103,29 @@ export default function ReviewStep({
                     label="Degree"
                     value={formData.degree}
                     icon={<LuGraduationCap />}
+                />
+            </ReviewSection>
+
+            <ReviewSection
+                icon={<FiBook />}
+                title="Paper Information">
+
+                <ReviewRow
+                    label="Paper Title"
+                    value={formData.paperTitle}
+                    icon={<FiFileText />}
+                />
+
+                <ReviewRow
+                    label="Paper Track"
+                    value={formData.paperTrack}
+                    icon={<LuTag />}
+                />
+                
+                <ReviewRow
+                    label="Paper File"
+                    value={formData.paperFile?.name}
+                    icon={<LuFileText />}
                 />
             </ReviewSection>
 
@@ -206,7 +231,7 @@ export default function ReviewStep({
                         </p>
 
                         <p className="mt-2 text-3xl font-semibold tracking-tight lg:text-4xl">
-                            ₦ {(paymentValue - paymentValue *0.125).toLocaleString()} {" "}
+                            ₦ {(paymentValue - paymentValue * 0.125).toLocaleString()} {" "}
                             <span className="text-slate-400 line-through">₦{paymentValue.toLocaleString()}</span>
                         </p>
                     </div>
@@ -265,11 +290,10 @@ function ReviewRow({
 }) {
     return (
         <div
-            className={`flex gap-4 px-5 py-4 ${
-                stacked
+            className={`flex gap-4 px-5 py-4 ${stacked
                     ? "flex-col"
                     : "flex-col tablet:flex-row tablet:items-center tablet:justify-between"
-            }`}
+                }`}
         >
             <div className="flex items-center gap-2 text-slate-500">
                 {icon}
@@ -279,11 +303,10 @@ function ReviewRow({
             </div>
 
             <div
-                className={`text-sm font-semibold text-slate-900 ${
-                    stacked
+                className={`text-sm font-semibold text-slate-900 ${stacked
                         ? "wrap-break-word"
                         : "tablet:text-right"
-                }`}
+                    }`}
             >
                 {value || "-"}
             </div>

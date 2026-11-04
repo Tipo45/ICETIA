@@ -7,22 +7,20 @@ import { Button } from "@/components/ui/button"
 import {
     LuArrowLeft,
     LuArrowRight,
-    LuLockKeyhole,
     LuShieldCheck,
 } from "react-icons/lu"
 import { MdOutlineEmail } from "react-icons/md"
-import { useRouter } from "next/navigation"
 import { useAction } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "sonner"
-import VerifyAdminOtp from "@/components/VerifyAdmin"
+import VerifyReviewerOtp from "@/components/admin/VerifyReviewer"
 
 interface Props {
     onVerified: (sessionToken: string) => void;
     adminEmail: string;
 }
 
-export default function AdminLoginPage({ onVerified, adminEmail }: Props) {
+export default function ReviewerLoginPage({ onVerified, adminEmail }: Props) {
 
     const [email, setEmail] = useState("")
     const [message, setMessage] = useState("");
@@ -382,7 +380,7 @@ export default function AdminLoginPage({ onVerified, adminEmail }: Props) {
 
                         {showOtp && (
                             <div className="mt-6 space-y-4">
-                                <VerifyAdminOtp
+                                <VerifyReviewerOtp
                                     adminEmail={email}
                                     onVerified={(token) => {
                                         setSessionToken(token);

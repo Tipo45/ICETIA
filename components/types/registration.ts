@@ -25,6 +25,9 @@ export interface RegistrationFormData {
     department: string;
     country: string;
     degree: Degree | "";
+    paperTrack: string;
+    paperTitle: string;
+    paperFile: File | null;
 
     coAuthors: CoAuthor[];
 }
@@ -48,6 +51,9 @@ export interface RegistrationFormErrors {
     department: string;
     country: string;
     degree: string;
+    paperTrack: string;
+    paperTitle: string;
+    paperFile: string;
     
 
     coAuthors: CoAuthorErrors[];
@@ -72,6 +78,9 @@ export interface RegistrationFormTouched {
     department: boolean;
     country: boolean;
     degree: boolean;
+    paperTrack: boolean;
+    paperTitle: boolean;
+    paperFile: boolean;
 
     coAuthors: CoAuthorTouched[];
 }

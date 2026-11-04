@@ -25,6 +25,9 @@ export default defineSchema({
             v.literal("Professor"),
             v.literal("Other")
         )),
+        paperTrack: v.optional(v.string()),
+        paperTitle: v.optional(v.string()),
+        paperFileId: v.optional(v.id("_storage")),
 
         coAuthors: v.optional(v.array(v.object({
             firstName: v.string(),

@@ -2,9 +2,8 @@ import { v } from "convex/values";
 import { internalMutation, internalQuery, mutation, query } from "./_generated/server";
 import { ConvexError } from "convex/values";
 import { Resend } from "@convex-dev/resend";
-import { api, components } from "./_generated/api";
+import { components } from "./_generated/api";
 import { registrationConfirmationEmail, reminderEmail, ticketEmail, verifyId } from "./emailTemplate";
-import { createHash, randomInt } from "crypto";
 
 export const resend: Resend = new Resend(components.resend, {
     testMode: false,
@@ -26,6 +25,9 @@ export const registerAuthor = mutation({
             v.literal("Professor"),
             v.literal("Other")
         )),
+        paperTrack: v.optional(v.string()),
+        paperTitle: v.optional(v.string()),
+        paperFileId: v.optional(v.id("_storage")),
         coAuthors: v.optional(v.array(v.object({
             firstName: (v.string()),
             lastName: (v.string()),
@@ -80,6 +82,9 @@ export const registerAuthor = mutation({
             institution: args.institution,
             country: args.country,
             degree: args.degree,
+            paperTrack: args.paperTrack,
+            paperTitle: args.paperTitle,
+            paperFileId: args.paperFileId,
             coAuthors: args.coAuthors ?? [],
             department: args.department,
             amount,
@@ -394,7 +399,7 @@ export const getParticipants = query({
         }
 
         return Promise.all(
-            participants.map(async (participant) => {
+            participants.slice(0, 5).map(async (participant) => {
 
                 // Get papers belonging to this participant
                 const papers = await ctx.db

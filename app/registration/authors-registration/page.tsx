@@ -16,6 +16,7 @@ import {
     validateFirstName,
     validateInstitution,
     validateLastName,
+    validatePaperFile,
     validatePaperTitle,
     validatePaperTrack,
 } from "@/components/types/validation";
@@ -68,12 +69,13 @@ import {
 import { PiPresentationChartFill } from "react-icons/pi";
 import PublicationFooter from "@/components/publicationfooter";
 import PublicationHeader from "@/components/publicationheader";
+import PaperUploadStep from "@/components/Registration/PaperFileStep";
 
 export default function AuthorsRegistrationPage() {
     const router = useRouter();
 
     const paymentValue = 40000;
-    const totalSteps = 4;
+    const totalSteps = 5;
 
     const [step, setStep] = useState(1);
 
@@ -82,6 +84,10 @@ export default function AuthorsRegistrationPage() {
     >("idle");
 
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const generateUploadUrl = useMutation(
+        api.registration.generateUploadUrl
+    );
 
     const register = useMutation(api.registration.registerAuthor);
 
@@ -93,6 +99,9 @@ export default function AuthorsRegistrationPage() {
         country: "",
         department: "",
         degree: "",
+        paperTrack: "",
+        paperTitle: "",
+        paperFile: null,
         coAuthors: [],
     });
 
@@ -104,6 +113,9 @@ export default function AuthorsRegistrationPage() {
         country: "",
         department: "",
         degree: "",
+        paperTrack: "",
+        paperTitle: "",
+        paperFile: "",
         coAuthors: [
             {
                 firstName: "",
@@ -125,6 +137,9 @@ export default function AuthorsRegistrationPage() {
         country: false,
         department: false,
         degree: false,
+        paperTrack: false,
+        paperTitle: false,
+        paperFile: false,
         coAuthors: [
             {
                 firstName: false,
@@ -186,7 +201,9 @@ export default function AuthorsRegistrationPage() {
             !validateInstitution(formData.institution) &&
             !validateCountry(formData.country) &&
             !validateDepartment(formData.department) &&
-            !validateDegree(formData.degree)
+            !validateDegree(formData.degree) &&
+            !validatePaperTrack(formData.paperTrack) &&
+            !validatePaperTitle(formData.paperTitle)
         );
     };
 
@@ -217,6 +234,10 @@ export default function AuthorsRegistrationPage() {
         });
     };
 
+    const isPaperFileFormValid = () => {
+        return !validatePaperFile(formData.paperFile);
+    };
+
     const isCurrentStepValid = () => {
         switch (step) {
             case 1:
@@ -229,6 +250,9 @@ export default function AuthorsRegistrationPage() {
                 return isCoauthorInfoRegFormValid();
 
             case 4:
+                return isPaperFileFormValid();
+
+            case 5:
                 return true;
 
             default:
@@ -250,20 +274,164 @@ export default function AuthorsRegistrationPage() {
         }
     };
 
+    // const registerParticipant = async () => {
+
+    //     if (!formData.degree) {
+    //         toast.error("Please select your degree.");
+    //         return;
+    //     }
+
+    //     let storageId;
+
+
+    //     const paymentWindow = window.open("about:blank", "_blank");
+
+    //     let gatewayOpened = false;
+    //     setIsSubmitting(true);
+    //     try {
+    //         if (formData.paperFile) {
+    //             const postUrl = await generateUploadUrl();
+
+    //             const uploadResult = await fetch(postUrl, {
+    //                 method: "POST",
+    //                 headers: {
+    //                     "Content-Type": formData.paperFile.type,
+    //                 },
+    //                 body: formData.paperFile,
+    //             });
+
+    //             if (!uploadResult.ok) {
+    //                 throw new Error("Paper upload failed. Please try again.");
+    //             }
+
+    //             const {
+    //                 storageId: uploadedStorageId,
+    //             } = await uploadResult.json();
+
+    //             storageId = uploadedStorageId;
+    //         }
+
+    //         const registration = await register({
+    //             firstName: formData.firstName,
+    //             lastName: formData.lastName,
+    //             email: formData.email,
+    //             institution: formData.institution,
+    //             country: formData.country,
+    //             degree: formData.degree as Degree,
+    //             department: formData.department,
+    //             paperTrack: formData.paperTrack,
+    //             paperTitle: formData.paperTitle,
+    //             paperFileId: storageId,
+    //             coAuthors: formData.coAuthors.map((author) => ({
+    //                 ...author,
+    //                 degree: author.degree as Degree,
+    //             })),
+    //         });
+
+    //         const registrationId = registration.registrationId;
+
+    //         const result = await fetch("/api/payment", {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             },
+    //             body: JSON.stringify({
+    //                 email: formData.email,
+    //                 amount: (paymentValue - 5000) * 100,
+    //                 registrationId,
+    //             })
+    //         });
+
+    //         const paystackResult = await result.json();
+
+    //         if (!result.ok || !paystackResult.status) {
+    //             throw new Error(
+    //                 paystackResult?.message || "Payment initialization failed."
+    //             );
+    //         }
+
+    //         if (paymentWindow && !paymentWindow.closed) {
+    //             paymentWindow.location.href =
+    //                 paystackResult.data.authorization_url;
+
+    //             gatewayOpened = true;
+    //         } else {
+    //             // Popup blocked or closed: fall back to same-tab checkout.
+    //             router.push(paystackResult.data.authorization_url);
+    //             return;
+    //         }
+
+    //         const monitor = window.setInterval(() => {
+    //             if (paymentWindow.closed) {
+    //                 window.clearInterval(monitor);
+
+    //                 setIsSubmitting(false);
+
+    //                 // This means the gateway was closed, not that
+    //                 // the transaction is confirmed to have failed.
+    //                 setPaymentStatus("cancelled");
+
+    //                 toast.info(
+    //                     "Payment window closed. Please check your payment status before retrying."
+    //                 );
+    //             }
+    //         }, 1000);
+
+
+    //         setIsSubmitting(false);
+    //     } catch (error: unknown) {
+    //         if (paymentWindow && !paymentWindow.closed) {
+    //             paymentWindow.close();
+    //         }
+
+    //         setIsSubmitting(false);
+    //         setPaymentStatus("idle");
+
+    //         toast.error(
+    //             error instanceof Error
+    //                 ? "Email has already been registered"
+    //                 : "Something went wrong. Please try again."
+    //         );
+    //     }
+    // };
+
+
+
     const registerParticipant = async () => {
         if (!formData.degree) {
             toast.error("Please select your degree.");
             return;
         }
 
-        const paymentWindow = window.open("about:blank", "_blank");
-
+        let storageId;
+        let paymentWindow: Window | null = null;
 
         setIsSubmitting(true);
 
-        let gatewayOpened = false;
-
         try {
+            if (formData.paperFile) {
+                const postUrl = await generateUploadUrl();
+
+                const uploadResult = await fetch(postUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": formData.paperFile.type,
+                    },
+                    body: formData.paperFile,
+                });
+
+                if (!uploadResult.ok) {
+                    throw new Error("Paper upload failed. Please try again.");
+                }
+
+                const {
+                    storageId: uploadedStorageId,
+                } = await uploadResult.json();
+
+                storageId = uploadedStorageId;
+            }
+
+            paymentWindow = window.open("about:blank", "_blank");
 
             const registration = await register({
                 firstName: formData.firstName,
@@ -273,6 +441,9 @@ export default function AuthorsRegistrationPage() {
                 country: formData.country,
                 degree: formData.degree as Degree,
                 department: formData.department,
+                paperTrack: formData.paperTrack,
+                paperTitle: formData.paperTitle,
+                paperFileId: storageId,
                 coAuthors: formData.coAuthors.map((author) => ({
                     ...author,
                     degree: author.degree as Degree,
@@ -284,13 +455,13 @@ export default function AuthorsRegistrationPage() {
             const result = await fetch("/api/payment", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     email: formData.email,
                     amount: (paymentValue - 5000) * 100,
                     registrationId,
-                })
+                }),
             });
 
             const paystackResult = await result.json();
@@ -305,37 +476,28 @@ export default function AuthorsRegistrationPage() {
                 paymentWindow.location.href =
                     paystackResult.data.authorization_url;
 
-                gatewayOpened = true;
+                const monitor = window.setInterval(() => {
+                    if (paymentWindow?.closed) {
+                        window.clearInterval(monitor);
+
+                        setIsSubmitting(false);
+                        setPaymentStatus("cancelled");
+
+                        toast.info(
+                            "Payment window closed. Please check your payment status before retrying."
+                        );
+                    }
+                }, 1000);
             } else {
-                // Popup blocked or closed: fall back to same-tab checkout.
                 router.push(paystackResult.data.authorization_url);
                 return;
             }
 
-            const monitor = window.setInterval(() => {
-                if (paymentWindow.closed) {
-                    window.clearInterval(monitor);
-
-                    setIsSubmitting(false);
-
-                    // This means the gateway was closed, not that
-                    // the transaction is confirmed to have failed.
-                    setPaymentStatus("cancelled");
-
-                    toast.info(
-                        "Payment window closed. Please check your payment status before retrying."
-                    );
-                }
-            }, 1000);
-
-
-            setIsSubmitting(false);
         } catch (error: unknown) {
             if (paymentWindow && !paymentWindow.closed) {
                 paymentWindow.close();
             }
 
-            setIsSubmitting(false);
             setPaymentStatus("idle");
 
             toast.error(
@@ -343,8 +505,11 @@ export default function AuthorsRegistrationPage() {
                     ? "Email has already been registered"
                     : "Something went wrong. Please try again."
             );
+        } finally {
+            setIsSubmitting(false);
         }
     };
+
 
 
     return (
@@ -532,13 +697,13 @@ export default function AuthorsRegistrationPage() {
                                     </div>
 
                                     <h2 className="text-2xl font-semibold tracking-tight lg:text-3xl">
-                                        {step === 4
+                                        {step === 5
                                             ? "Review your details"
                                             : "Complete your registration"}
                                     </h2>
 
                                     <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500">
-                                        {step === 4
+                                        {step === 5
                                             ? "Check your information carefully before submitting your registration."
                                             : "Complete each section before proceeding to the next step."}
                                     </p>
@@ -597,8 +762,18 @@ export default function AuthorsRegistrationPage() {
                                 />
                             )}
 
-
                             {step === 4 && (
+                                <PaperUploadStep
+                                    formData={formData}
+                                    setFormData={setFormData}
+                                    formErrors={formErrors}
+                                    setFormErrors={setFormErrors}
+                                    formTouched={formTouched}
+                                    setFormTouched={setFormTouched}
+                                />
+                            )}
+
+                            {step === 5 && (
                                 <ReviewStep formData={formData} />
                             )}
                         </div>

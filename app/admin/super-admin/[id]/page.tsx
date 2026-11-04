@@ -32,7 +32,7 @@ import {
 } from "react-icons/lu";
 import { toast } from "sonner";
 
-export default function ParticipantsPage() {
+export default function SuperAdminPage() {
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const router = useRouter();
@@ -106,11 +106,11 @@ export default function ParticipantsPage() {
     try {
       setSendingId(registrationId);
 
-      const token = sessionStorage.getItem("adminToken");
+      const token = sessionStorage.getItem("icetia-super-admin-session");
 
       if (!token) {
         toast.error("Your admin session has expired. Please log in again.");
-        router.push("/admin-login");
+        router.push("/admin/super-admin-login");
         return;
       }
 
@@ -171,7 +171,7 @@ export default function ParticipantsPage() {
 
   const handleLogOut = async () => {
     const sessionToken = sessionStorage.getItem(
-      "icetia-admin-session"
+      "icetia-super-admin-session"
     );
 
     try {
@@ -186,8 +186,8 @@ export default function ParticipantsPage() {
 
     toast.success("Logged out successfully")
 
-    sessionStorage.removeItem("icetia-admin-session");
-    router.replace("/admin-login");
+    sessionStorage.removeItem("icetia-super-admin-session");
+    router.replace("/admin/login/super-admin");
   };
 
   useEffect(() => {
@@ -195,11 +195,11 @@ export default function ParticipantsPage() {
 
     const checkSession = async () => {
       const token = sessionStorage.getItem(
-        "icetia-admin-session"
+        "icetia-super-admin-session"
       );
 
       if (!token) {
-        router.replace("/admin-login");
+        router.replace("/admin/login/super-admin");
         return;
       }
 
@@ -212,17 +212,17 @@ export default function ParticipantsPage() {
 
         if (!result.valid) {
           sessionStorage.removeItem(
-            "icetia-admin-session"
+            "icetia-super-admin-session"
           );
 
-          router.replace("/admin-login");
+          router.replace("/admin/login/super-admin");
           return;
         }
 
         setIsAuthorized(true);
       } catch {
         if (!cancelled) {
-          router.replace("/admin-login");
+          router.replace("/admin/login/super-admin");
         }
       } finally {
         if (!cancelled) {

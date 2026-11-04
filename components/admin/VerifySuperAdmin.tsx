@@ -18,7 +18,7 @@ interface Props {
     onVerified: (sessionToken: string) => void;
 }
 
-export default function VerifyAdminOtp({ adminEmail, onVerified }: Props) {
+export default function VerifySuperAdminOtp({ adminEmail, onVerified }: Props) {
 
     const verifyOtp = useAction(
         api.paperSubmission.verifyAdminOtp
@@ -85,7 +85,7 @@ export default function VerifyAdminOtp({ adminEmail, onVerified }: Props) {
         const adminId = `admin-${result.adminId.slice(0, 10)}`;
 
         sessionStorage.setItem(
-            "icetia-admin-session",
+            "icetia-super-admin-session",
             result.sessionToken
         );
 
@@ -93,7 +93,7 @@ export default function VerifyAdminOtp({ adminEmail, onVerified }: Props) {
 
         toast.success(result.message);
 
-        router.replace(`/participants-list/${adminId}`);
+        router.replace(`/admin/super-admin/${adminId}`);
     } catch (err) {
         const rawMessage = err instanceof Error ? err.message : "";
 
@@ -103,7 +103,7 @@ export default function VerifyAdminOtp({ adminEmail, onVerified }: Props) {
             "Your OTP has expired. Please request a new code.",
             "Too many incorrect attempts. Please request a new code.",
             "Incorrect OTP.",
-            "Registration is not eligible for paper submission.",
+            "Email has no admin privileges.",
         ];
 
         setError(
