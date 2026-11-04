@@ -806,50 +806,109 @@ export default function SuperAdminPage() {
                           </td>
 
                           {/* Paper */}
+                          {/* Paper Track */}
                           <td className="px-5 py-4 align-top">
-                            {participant.submittedPapers?.length ? (
-                              participant.submittedPapers.map((paper) => (
+                            <div className="flex flex-col gap-2">
+                              {participant.registrationPaper?.paperTrack && (
+                                <p className="text-xs font-medium text-slate-700">
+                                  {participant.registrationPaper.paperTrack}
+                                  <span className="ml-1 text-[10px] text-slate-400">
+                                    (Registration)
+                                  </span>
+                                </p>
+                              )}
+
+                              {participant.submittedPapers?.map((paper) => (
                                 <p key={paper._id} className="text-xs text-slate-700">
                                   {paper.paperTrack}
+                                  <span className="ml-1 text-[10px] text-slate-400">
+                                    (Call for Papers)
+                                  </span>
                                 </p>
-                              ))) : (
-                              <span className="text-xs text-slate-400">
-                                Not available
-                              </span>
-                            )}
-                          </td>
-                          <td className="px-5 py-4 align-top">
-                            {participant.submittedPapers?.length ? (
-                              participant.submittedPapers.map((paper) => (
-                                <p key={paper._id} className="text-xs text-slate-700">
-                                  {paper.paperTitle}
-                                </p>
-                              ))) : (
-                              <span className="text-xs text-slate-400">
-                                Not available
-                              </span>
-                            )}
+                              ))}
+
+                              {!participant.registrationPaper?.paperTrack &&
+                                !participant.submittedPapers?.length && (
+                                  <span className="text-xs text-slate-400">
+                                    Not available
+                                  </span>
+                                )}
+                            </div>
                           </td>
 
+                          {/* Paper Title */}
                           <td className="px-5 py-4 align-top">
-                            {participant.submittedPapers?.length ? (
-                              participant.submittedPapers.map((paper) => (
+                            <div className="flex flex-col gap-2">
+                              {participant.registrationPaper?.paperTitle && (
+                                <p className="text-xs font-medium text-slate-700">
+                                  {participant.registrationPaper.paperTitle}
+                                  <span className="ml-1 text-[10px] text-slate-400">
+                                    (Registration)
+                                  </span>
+                                </p>
+                              )}
+
+                              {participant.submittedPapers?.map((paper) => (
+                                <p key={paper._id} className="text-xs text-slate-700">
+                                  {paper.paperTitle}
+                                  <span className="ml-1 text-[10px] text-slate-400">
+                                    (Call for Papers)
+                                  </span>
+                                </p>
+                              ))}
+
+                              {!participant.registrationPaper?.paperTitle &&
+                                !participant.submittedPapers?.length && (
+                                  <span className="text-xs text-slate-400">
+                                    Not available
+                                  </span>
+                                )}
+                            </div>
+                          </td>
+
+                          {/* Paper File */}
+                          <td className="px-5 py-4 align-top">
+                            <div className="flex flex-col gap-2">
+                              {participant.registrationPaper?.paperUrl && (
                                 <a
-                                  key={paper._id}
-                                  href={paper.paperUrl ?? undefined}
+                                  href={participant.registrationPaper.paperUrl}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 transition hover:text-blue-800"
                                 >
                                   <LuFileText className="h-4 w-4" />
                                   View paper
+                                  <span className="text-[10px] text-slate-400">
+                                    (Registration)
+                                  </span>
                                 </a>
-                              ))
-                            ) : (
-                              <span className="text-xs text-slate-400">
-                                Not available
-                              </span>
-                            )}
+                              )}
+
+                              {participant.submittedPapers?.map((paper) => (
+                                paper.paperUrl && (
+                                  <a
+                                    key={paper._id}
+                                    href={paper.paperUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 transition hover:text-blue-800"
+                                  >
+                                    <LuFileText className="h-4 w-4" />
+                                    View paper
+                                    <span className="text-[10px] text-slate-400">
+                                    (Call for Papers)
+                                  </span>
+                                  </a>
+                                )
+                              ))}
+
+                              {!participant.registrationPaper?.paperUrl &&
+                                !participant.submittedPapers?.some((paper) => paper.paperUrl) && (
+                                  <span className="text-xs text-slate-400">
+                                    Not available
+                                  </span>
+                                )}
+                            </div>
                           </td>
 
                           {/* Action */}

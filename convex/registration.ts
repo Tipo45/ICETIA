@@ -412,6 +412,15 @@ export const getParticipants = query({
                 return {
                     ...participant,
 
+                    registrationPaper: {
+                        paperTrack: participant.paperTrack ?? null,
+                        paperTitle: participant.paperTitle ?? null,
+                        paperFileId: participant.paperFileId ?? null,
+                        paperUrl: participant.paperFileId
+                            ? await ctx.storage.getUrl(participant.paperFileId)
+                            : null,
+                    },
+
                     submittedPapers: await Promise.all(
                         papers.map(async (paper) => ({
                             ...paper,
@@ -946,7 +955,7 @@ export const getEligibleAdminStatus = internalQuery({
             throw new Error("You are not an admin.");
         }
 
-    
+
 
         return {
             adminId: adminEmail._id,
@@ -1053,9 +1062,10 @@ export const verifyAndCreateAdminSession = internalMutation({
             used: false,
         });
 
-        return { success: true,
+        return {
+            success: true,
             adminId: adminEmail._id
-         };
+        };
     },
 });
 
