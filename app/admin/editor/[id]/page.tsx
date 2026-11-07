@@ -15,7 +15,8 @@ import {
 } from "@/components/ui/select";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { useAction, useMutation, useQuery } from "convex/react";
+import { useAuthActions } from "@convex-dev/auth/react";
+import { useMutation, useQuery } from "convex/react";
 import { Country } from "country-state-city";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -32,17 +33,16 @@ import {
 } from "react-icons/lu";
 import { toast } from "sonner";
 
-export default function AdminsPage() {
+export default function EditorsPage() {
+  const admin = useQuery(api.admin.getCurrentEditor);
+  const { signOut } = useAuthActions();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const router = useRouter();
   const sendConferenceMail = useMutation(api.registration.sendMail);
   const sendEmailTicket = useMutation(api.registration.sendConferenceTicket);
   const sendReminder = useMutation(api.registration.sendReminder);
-  const verifySession = useAction(api.paperSubmission.verifyAdminSession);
-  const [isAuthorized, setIsAuthorized] = useState(false);
-  const [isChecking, setIsChecking] = useState(true);
-  const logOutAdmin = useAction(api.paperSubmission.logoutAdmin)
 
   const [category, setCategory] = useState<
     "author" | "participant" | "student" | undefined
@@ -169,76 +169,29 @@ export default function AdminsPage() {
   };
 
 
-  const handleLogOut = async () => {
-    const sessionToken = sessionStorage.getItem(
-      "icetia-admin-session"
-    );
+  const handleLogout = async () => {
+    if (isLoggingOut) return;
+
+    setIsLoggingOut(true);
 
     try {
-      if (sessionToken) {
-        await logOutAdmin({ sessionToken });
-      }
+      await signOut();
+
+      toast.success("You have been logged out successfully.");
+
+      router.replace("/admin/login");
+      router.refresh();
     } catch (error) {
       console.error("Logout error:", error);
-      toast.error("Could not revoke the admin session.");
-      return;
+      toast.error("Unable to log out. Please try again.");
+    } finally {
+      setIsLoggingOut(false);
     }
-
-    toast.success("Logged out successfully")
-
-    sessionStorage.removeItem("icetia-admin-session");
-    router.replace("/admin/login/admin");
   };
 
-  useEffect(() => {
-    let cancelled = false;
 
-    const checkSession = async () => {
-      const token = sessionStorage.getItem(
-        "icetia-admin-session"
-      );
 
-      if (!token) {
-        router.replace("/admin/login/admin");
-        return;
-      }
-
-      try {
-        const result = await verifySession({
-          sessionToken: token,
-        });
-
-        if (cancelled) return;
-
-        if (!result.valid) {
-          sessionStorage.removeItem(
-            "icetia-admin-session"
-          );
-
-          router.replace("/admin/login/admin");
-          return;
-        }
-
-        setIsAuthorized(true);
-      } catch {
-        if (!cancelled) {
-          router.replace("/admin/login/admin");
-        }
-      } finally {
-        if (!cancelled) {
-          setIsChecking(false);
-        }
-      }
-    };
-
-    void checkSession();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [router, verifySession]);
-
-  if (isChecking || !isAuthorized) {
+  if (admin === undefined) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <p>Verifying admin access...</p>
@@ -294,10 +247,10 @@ export default function AdminsPage() {
             </div>
 
             <Button
-              onClick={handleLogOut}
+              onClick={handleLogout}
               className="h-auto bg-red-600 rounded-2xl px-5 py-3 text-xs font-semibold uppercase tracking-wide text-white hover:bg-red-700"
             >
-              Logout
+              {isLoggingOut ? "Logging out..." : "Logout"}
             </Button>
           </div>
         </div>

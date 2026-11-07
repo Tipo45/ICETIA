@@ -71,7 +71,7 @@ export default function Partners() {
                     </h3>
 
                     <div className="flex justify-center gap-4">
-                        <a
+                        {/* <a
                             href="https://www.atlantis-press.com/"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -85,7 +85,7 @@ export default function Partners() {
                                 height={100}
                                 className="h-auto max-h-20 w-auto max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
                             />
-                        </a>
+                        </a> */}
 
                         <a
                             href="https://eudl.eu/core-publish"

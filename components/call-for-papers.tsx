@@ -83,13 +83,13 @@ const items = [
               Published papers will be available through the European Union Digital Library (EUDL) and are covered by major scholarly discovery services including CrossRef, CNKI, EBSCO and Google Scholar. Eligible proceedings may also be submitted for evaluation by Scopus, Ei Compendex, Web of Science/CPCI, ProQuest and other indexing services, subject to their independent assessment.
             </p>
 
-            <p>
+            {/* <p>
               <span className="block">Atlantis Press – Advances in Computer Science Research</span>
 
               <span>
                 ACSR is discoverable through services including CNKI, Dimensions, EBSCO Discovery Service, INSPEC, Google Scholar, OCLC WorldCat, ProQuest-ExLibris Primo, ProQuest-ExLibris Summon, TD Net and Wanfang Data, with DOIs registered through CrossRef. Selected proceedings volumes may also be submitted for evaluation in CPCI/Web of Science.
               </span>
-            </p>
+            </p> */}
 
             <p>
               <span className="block">
@@ -107,7 +107,8 @@ const items = [
               <span className="block">
                 ICETIA 2027 has established publication arrangements with two international proceedings publishers:
               </span>
-              <span className="block">EAI Community Research Series (CORE)</span><span className="block">Atlantis Press – Advances in Computer Science Research (ACSR), part of Springer Nature</span>
+              <span className="block">EAI Community Research Series (CORE)</span>
+              {/* <span className="block">Atlantis Press – Advances in Computer Science Research (ACSR), part of Springer Nature</span> */}
             </p>
             <p>Following peer review and final acceptance, eligible papers will be assigned to the most appropriate publication outlet by the ICETIA 2027 Publications and Editorial Committee, taking into account the paper's subject area, academic quality, publisher scope, formatting requirements and applicable publication conditions.
             </p>

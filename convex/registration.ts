@@ -255,24 +255,6 @@ export const sendMail = mutation({
             text: body,
         });
 
-        // await ctx.db.insert("emails", {
-        //     to: registration.email,
-        //     subject: subject,
-        //     body,
-        // });
-
-        // await ctx.db.patch(registration._id, {
-        //     confirmationEmailSent: true,
-        // });
-
-        // await ctx.scheduler.runAfter(
-        //     2 * 60 * 1000,
-        //     api.registration.sendConferenceTicket,
-        //     {
-        //         registrationId: registration._id,
-        //     }
-        // );
-
     }
 });
 

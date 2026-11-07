@@ -1,8 +1,20 @@
+import { authTables } from "@convex-dev/auth/server";
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 
 export default defineSchema({
+    ...authTables,
+    users: defineTable({
+        name: v.optional(v.string()),
+        email: v.optional(v.string()),
+        role: v.optional(v.union(
+            v.literal("editor"),
+            v.literal("reviewer")
+        )),
+    }).index("email", ["email"])
+        .index("name", ["name"])
+        .index("role", ["role"]),
     registrations: defineTable({
         registrationNumber: v.string(),
         firstName: v.string(),
@@ -162,7 +174,7 @@ export default defineSchema({
     }).index("by_registration", ["registrationId"])
         .index("by_session_token_hash", ["sessionTokenHash"]),
 
-        admins: defineTable({
+    admins: defineTable({
         email: v.string(),
     })
         .index("by_email", ["email"]),
@@ -185,5 +197,76 @@ export default defineSchema({
         used: v.boolean(),
     }).index("by_admin", ["adminId"])
         .index("by_session_token_hash", ["sessionTokenHash"]),
+
+    paperAssignments: defineTable({
+        paperId: v.id("submittedPapers"),
+        editorId: v.id("users"),
+        reviewerIds: v.array(v.id("users")),
+        assignedBy: v.id("admins"),
+        status: v.union(
+            v.literal("assigned"),
+            v.literal("editor_assigned"),
+            v.literal("under_review"),
+            v.literal("reviews_completed"),
+            v.literal("completed")
+        ),
+        reviewDeadline: v.optional(v.number()),
+        editorDeadline: v.optional(v.number()),
+        assignedAt: v.number(),
+    })
+        .index("by_paper", ["paperId"])
+        .index("by_editor", ["editorId"])
+        .index("by_status", ["status"]),
+
+    paperReviews: defineTable({
+        paperId: v.id("submittedPapers"),
+        assignmentId: v.id("paperAssignments"),
+        reviewerId: v.id("users"),
+        status: v.union(
+            v.literal("pending"),
+            v.literal("accepted"),
+            v.literal("declined"),
+            v.literal("in_progress"),
+            v.literal("submitted")
+        ),
+        recommendation: v.optional(v.union(
+            v.literal("accept"),
+            v.literal("minor_revision"),
+            v.literal("major_revision"),
+            v.literal("reject")
+        )),
+        comments: v.optional(v.string()),
+        confidentialComments: v.optional(v.string()),
+        submittedAt: v.optional(v.number()),
+        createdAt: v.number(),
+    })
+        .index("by_paper", ["paperId"])
+        .index("by_reviewer", ["reviewerId"])
+        .index("by_assignment", ["assignmentId"]),
+
+    editorialDecisions: defineTable({
+        paperId: v.id("submittedPapers"),
+        editorId: v.id("users"),
+        decision: v.union(
+            v.literal("accepted"),
+            v.literal("rejected"),
+            v.literal("revision_required")
+        ),
+        comments: v.optional(v.string()),
+        decidedAt: v.number(),
+    })
+        .index("by_paper", ["paperId"])
+        .index("by_editor", ["editorId"]),
+
+    adminActivityLogs: defineTable({
+        adminId: v.id("admins"),
+        action: v.string(),
+        description: v.string(),
+        relatedPaperId: v.optional(v.id("submittedPapers")),
+        relatedUserId: v.optional(v.id("users")),
+        createdAt: v.number(),
+    })
+        .index("by_admin", ["adminId"])
+        .index("by_created_at", ["createdAt"]),
 
 })
