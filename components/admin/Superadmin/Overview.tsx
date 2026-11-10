@@ -17,7 +17,7 @@ type Section =
     | "reviews"
     | "reports";
 
-interface PaperRow {
+type PaperRow = {
     id: string;
     registrationId: string;
     registrationNumber: string;
@@ -30,17 +30,15 @@ interface PaperRow {
     status: string;
 }
 
-interface EditorialMember {
+type EditorialMember = {
     id: string;
     name: string;
     email: string;
-    institution: string;
-    expertise: string;
     role: "editor" | "reviewer";
     status: "active" | "inactive";
 }
 
-interface Assignment {
+type Assignment = {
     id: string;
     paperId: string;
     editorId: string;
@@ -49,7 +47,7 @@ interface Assignment {
     status: "assigned" | "in_progress" | "completed";
 }
 
-interface Paper {
+type Paper = {
     id: string;
     title: string;
 }
@@ -111,17 +109,19 @@ export default function Overview({ participants,
                     </p>
                 </div>
 
-                <Button
+                <button
                     onClick={() => setActiveSection("assignments")}
-                    className="bg-[#07111f] text-white hover:bg-slate-800"
+                    className="group inline-flex items-center justify-center gap-2 rounded-xl bg-[#07111f] px-5 py-3 text-sm font-semibold text-white shadow-md shadow-slate-900/10 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#10243b] hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2"
                 >
-                    <LuPlus className="mr-2" size={16} />
+                    <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-cyan-500/15 text-cyan-400 transition-colors group-hover:bg-cyan-500 group-hover:text-white">
+                        <LuPlus size={16} />
+                    </span>
                     Create assignment
-                </Button>
+                </button>
             </div>
 
             {/* SUMMARY CARDS */}
-            <div className="grid gap-4 tablet:grid-cols-2 2xl:grid-cols-4">
+            <div className="grid gap-4 tablet:grid-cols-2 2xl:grid-cols-4 my-4">
                 {[
                     {
                         label: "Registrations",
@@ -178,7 +178,7 @@ export default function Overview({ participants,
             </div>
 
             {/* SECONDARY STATS */}
-            <div className="grid gap-4 tablet:grid-cols-3">
+            <div className="grid gap-4 tablet:grid-cols-3 my-4">
                 <Card className="rounded-xl border-slate-200 shadow-sm">
                     <CardContent className="p-5">
                         <p className="text-xs text-slate-500">Authors</p>
@@ -203,7 +203,7 @@ export default function Overview({ participants,
             </div>
 
             {/* OVERVIEW CONTENT */}
-            <div className="grid gap-6 2xl:grid-cols-[1.4fr_1fr]">
+            <div className="grid gap-6 2xl:grid-cols-[1.4fr_1fr] my-4">
                 <Card className="rounded-xl border-slate-200 shadow-sm">
                     <CardHeader>
                         <CardTitle className="text-base">Editorial workflow</CardTitle>

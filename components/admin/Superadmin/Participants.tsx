@@ -166,7 +166,7 @@ export default function Participant({ participants,
                 ))}
             </div>
 
-            <Card className="rounded-xl border-slate-200 shadow-sm">
+            <Card className="rounded-xl border-slate-200 shadow-sm my-4">
                 <CardHeader>
                     <div className="flex flex-col justify-between gap-3 tablet:flex-row tablet:items-center">
                         <div>

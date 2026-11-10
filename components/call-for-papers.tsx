@@ -101,19 +101,6 @@ const items = [
             <p>
               Indexing in selective databases such as Scopus, Web of Science, CPCI and Ei Compendex is determined independently by the respective indexing services and cannot be guaranteed by ICETIA 2027.
             </p>
-
-            <p>
-              <span className="block">Publication Pathway</span>
-              <span className="block">
-                ICETIA 2027 has established publication arrangements with two international proceedings publishers:
-              </span>
-              <span className="block">EAI Community Research Series (CORE)</span>
-              {/* <span className="block">Atlantis Press – Advances in Computer Science Research (ACSR), part of Springer Nature</span> */}
-            </p>
-            <p>Following peer review and final acceptance, eligible papers will be assigned to the most appropriate publication outlet by the ICETIA 2027 Publications and Editorial Committee, taking into account the paper's subject area, academic quality, publisher scope, formatting requirements and applicable publication conditions.
-            </p>
-            <p>Each accepted paper will be published in only one proceedings series. Authors will be formally informed of the publication outlet assigned to their paper before the final camera-ready submission stage.</p>
-            <p>All papers must successfully complete the conference's double-blind peer-review process, required revisions, similarity and plagiarism screening, author registration and presentation requirements before being considered for final publication.</p>
             <p>Similarity and plagiarism checks will be conducted using recognised publisher-provided or approved systems such as iThenticate, where applicable, alongside appropriate editorial review to assess originality and research integrity.</p>
             <p>Final publication remains subject to the editorial, technical and publication requirements of the respective publisher.</p>
           </div>
