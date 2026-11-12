@@ -1,13 +1,11 @@
 "use node"
 
 import QRCode from "qrcode";
-
-import { ConvexError, v } from "convex/values";
+import { v } from "convex/values";
 import { internal } from "./_generated/api";
-import { action, internalAction, mutation } from "./_generated/server";
-import { registrationConfirmationEmail, ticketEmail, verifyId } from "./emailTemplate";
-import { createHash, randomInt } from "node:crypto";
-import { resend } from "./registration";
+import { action, internalAction } from "./_generated/server";
+import { registrationConfirmationEmail, ticketEmail } from "./emailTemplate";
+import { createHash } from "node:crypto";
 
 // Verify with Paystack first, then update Convex.
 export const verifyAndConfirmPayment = action({

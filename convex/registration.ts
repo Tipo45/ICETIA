@@ -898,3 +898,115 @@ export const getCurrentAdmin = query({
         };
     },
 });
+
+export const getCurrentEditor = query({
+    args: {},
+
+    handler: async (ctx) => {
+        const identity = await ctx.auth.getUserIdentity();
+
+        if (!identity) return null;
+
+        const userId = identity.subject.split("|")[0] as Id<"users">;
+
+        const user = await ctx.db.get(userId);
+
+        if (!user) return null;
+
+        if (user.role !== "editor") {
+            throw new ConvexError(
+                "You are not authorized to access the editor dashboard."
+            );
+        }
+
+        return {
+            id: user._id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+        };
+    },
+});
+
+export const getCurrentReviewer = query({
+    args: {},
+
+    handler: async (ctx) => {
+        const identity = await ctx.auth.getUserIdentity();
+
+        if (!identity) return null;
+
+        const userId = identity.subject.split("|")[0] as Id<"users">;
+
+        const user = await ctx.db.get(userId);
+
+        if (!user) return null;
+
+        if (user.role !== "reviewer") {
+            throw new ConvexError(
+                "You are not authorized to access the reviewer dashboard."
+            );
+        }
+
+        return {
+            id: user._id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+        };
+    },
+});
+
+
+import { Email } from "@convex-dev/auth/providers/Email";
+import { Resend as ResendAPI } from "resend";
+import {
+    RandomReader,
+    generateRandomString,
+} from "@oslojs/crypto/random";
+import { verifyAdminEmail } from "./emailTemplate";
+
+
+export const ResendOTP = Email({
+    id: "resend-otp",
+
+    apiKey: process.env.RESEND_API_KEY,
+
+    // OTP expires after 10 minutes
+    maxAge: 60 * 10,
+
+    async generateVerificationToken() {
+    const random: RandomReader = {
+        read(bytes) {
+            crypto.getRandomValues(
+                new Uint8Array(bytes.buffer as ArrayBuffer, bytes.byteOffset, bytes.byteLength)
+            );
+        },
+    };
+
+    return generateRandomString(random, "0123456789", 6);
+},
+
+    async sendVerificationRequest({
+        identifier: email,
+        provider,
+        token,
+    }) {
+        const resend = new ResendAPI(provider.apiKey);
+
+        const { error } = await resend.emails.send({
+            from:
+                "ICETIA <conference@icetiaconference.org>",
+            to: [email],
+            subject: "ICETIA 2027 Admin Email Verification",
+            text: verifyAdminEmail({
+                email,
+                otp_code: token,
+            }),
+        });
+
+        if (error) {
+            throw new Error(JSON.stringify(error));
+        }
+    },
+});

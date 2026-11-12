@@ -17,8 +17,6 @@ export const getRegistrationForPayment = internalQuery({
   },
 });
 
-// Save the Paystack reference returned during payment initialization.
-// This does NOT mark the registration as paid.
 export const savePaymentReference = mutation({
   args: {
     registrationId: v.id("registrations"),
@@ -45,7 +43,6 @@ export const savePaymentReference = mutation({
   },
 });
 
-// Only this internal mutation can mark a registration as paid.
 export const markPaymentAsPaid = internalMutation({
   args: {
     registrationId: v.id("registrations"),

@@ -1,6 +1,6 @@
 
 import { convexAuth } from "@convex-dev/auth/server";
-import { ResendOTP } from "./Resend";
+import { ResendOTP } from "./registration";
 
 export const {
     auth,
