@@ -16,7 +16,7 @@ import {
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useAuthActions } from "@convex-dev/auth/react";
-import { useAction, useMutation, useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { Country } from "country-state-city";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -34,7 +34,7 @@ import {
 import { toast } from "sonner";
 
 export default function ReviewrsPage() {
-  const admin = useQuery(api.admin.getCurrentReviewer);
+  const admin = useQuery(api.registration.getCurrentReviewer);
   const { signOut } = useAuthActions();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [searchInput, setSearchInput] = useState("");

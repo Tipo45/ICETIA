@@ -109,7 +109,7 @@ export default function ReviewerLoginPage() {
 
             await signIn("password", formData);
 
-            const editor = await convex.query(api.admin.getCurrentEditor);
+            const editor = await convex.query(api.registration.getCurrentEditor);
 
             const editorId = editor?.id.slice(0, 10)
 

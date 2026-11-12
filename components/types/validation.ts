@@ -86,7 +86,7 @@ export const validatePaperFile = (file: File | null) => {
     }
 
     if (file.size > 5 * 1024 * 1024) {
-        return "File size must not exceed 5 MB.";
+        return "File size must not exceed 2 MB.";
     }
 
     return "";

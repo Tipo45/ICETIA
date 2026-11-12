@@ -34,7 +34,7 @@ import {
 import { toast } from "sonner";
 
 export default function EditorsPage() {
-  const admin = useQuery(api.admin.getCurrentEditor);
+  const admin = useQuery(api.registration.getCurrentEditor);
   const { signOut } = useAuthActions();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [searchInput, setSearchInput] = useState("");

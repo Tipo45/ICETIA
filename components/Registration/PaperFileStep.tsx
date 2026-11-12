@@ -70,7 +70,7 @@ export default function PaperUploadStep({
             setFormErrors((prev) => ({
                 ...prev,
                 paperFile:
-                    "File size must not exceed 5 MB.",
+                    "File size must not exceed 2 MB.",
             }));
 
             return;
@@ -155,7 +155,7 @@ export default function PaperUploadStep({
                         </span>
 
                         <span className="border border-slate-200 bg-slate-50 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">
-                            Max 5 MB
+                            Max 2 MB
                         </span>
                     </div>
 
@@ -220,7 +220,7 @@ export default function PaperUploadStep({
 
                             <li>
                                 Maximum file size is{" "}
-                                <strong>5 MB</strong>.
+                                <strong>2 MB</strong>.
                             </li>
 
                             {/* <li>

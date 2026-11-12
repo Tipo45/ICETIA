@@ -110,7 +110,7 @@ export default function InformationSystemsPage() {
             setFormErrors((prev) => ({
                 ...prev,
                 paperFile:
-                    "File size must not exceed 5 MB.",
+                    "File size must not exceed 2 MB.",
             }));
 
             return;
@@ -456,7 +456,7 @@ export default function InformationSystemsPage() {
                                                     PDF only
                                                 </span>
                                                 <span className="rounded-full border border-blue-200 bg-white px-3 py-1 text-xs font-semibold text-blue-700">
-                                                    Maximum 5 MB
+                                                    Maximum 2 MB
                                                 </span>
                                             </div>
 
@@ -470,7 +470,7 @@ export default function InformationSystemsPage() {
 
                                             <p className="mt-3 text-xs leading-5 text-slate-500">
                                                 Ensure your file is in PDF or Word format (.doc, .docx) and does not exceed
-                                                5 MB (5,242,880 bytes).
+                                                2 MB (2,097,152 bytes).
                                             </p>
                                         </div>
                                     </div>
@@ -518,7 +518,7 @@ export default function InformationSystemsPage() {
                                     </p>
                                     <p className="mt-2 text-sm leading-6 text-slate-500">
                                         Review your paper details carefully. Your uploaded document must
-                                        be a PDF or Word format file no larger than 5 MB.
+                                        be a PDF or Word format file no larger than 2 MB.
                                     </p>
                                 </div>
 

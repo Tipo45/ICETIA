@@ -45,7 +45,7 @@ async function verifyAdmin(ctx: any, token: string) {
             "Your admin session has expired. Please log in again."
         );
     }
-
+    
     const admin = await ctx.db.get(session.adminId);
 
     if (!admin) {

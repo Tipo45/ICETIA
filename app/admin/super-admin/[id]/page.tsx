@@ -29,6 +29,7 @@ import Papers from "@/components/admin/Superadmin/Papers";
 import PaperAssignments from "@/components/admin/Superadmin/PaperAssignments";
 import ReviewsandDecisions from "@/components/admin/Superadmin/Reviews&Decisions";
 import ReportsandActivity from "@/components/admin/Superadmin/Reports&Activity";
+import { useAuthActions } from "@convex-dev/auth/react";
 
 type Section =
   | "overview"
@@ -103,6 +104,8 @@ const navigation: {
 export default function SuperAdminPage() {
   const router = useRouter();
   const { isAuthenticated, isLoading } = useConvexAuth();
+  const { signOut } = useAuthActions();
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
 
 
   const [activeSection, setActiveSection] = useState<Section>("overview");
@@ -280,8 +283,19 @@ export default function SuperAdminPage() {
     return matchesSearch && matchesStatus;
   });
 
-  const handleLogOut = async () => {
-    
+  const handleLogout = async () => {
+    try {
+      setIsLoggingOut(true);
+
+      await signOut();
+
+      router.replace("/admin/login/super-admin");
+      router.refresh();
+    } catch (error) {
+      console.error("Logout failed:", error);
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
 
   const resetTeamForm = () => {
@@ -413,11 +427,12 @@ export default function SuperAdminPage() {
         </div>
 
         <button
-          onClick={handleLogOut}
+          onClick={handleLogout}
+          disabled={isLoggingOut}
           className="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-sm text-red-400 transition hover:bg-red-500/10"
         >
-          <LuLogOut size={17} />
-          Sign out
+          {isLoggingOut ? "Logging out..." : <><LuLogOut size={17} />
+            Sign out</>}
         </button>
       </div>
     </aside>

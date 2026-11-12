@@ -37,12 +37,12 @@ export default function VerifySuperAdminOtp({ adminEmail }: Props) {
 
         const adminId = `admin-${currentAdmin.id.slice(0, 10)}`;
 
-        const destination = `/admin/super-admin/${adminId}`;
+        // const destination = `/admin/super-admin/${adminId}`;
 
 
-        console.log("Redirecting to:", destination);
+        // console.log("Redirecting to:", destination);
         router.replace(`/admin/super-admin/${adminId}`);
-        toast.success("Login successful!");
+        // toast.success("Login successful!");
 
     }, [isAuthenticated, currentAdmin, router]);
 
