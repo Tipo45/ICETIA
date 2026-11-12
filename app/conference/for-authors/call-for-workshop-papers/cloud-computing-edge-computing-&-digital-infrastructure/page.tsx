@@ -2,6 +2,8 @@
 
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
+import Partners from "@/components/Partners";
+import PublicationHeader from "@/components/publicationheader";
 import { SubmissionOfPapers } from "@/components/types/registration";
 import { validateAbstract, validatePaperFile, validatePaperTitle, validatePaperTrack } from "@/components/types/validation";
 import VerifyRegistrationForm from "@/components/verifyID";
@@ -117,10 +119,10 @@ export default function ComputingCloudPage() {
         }
 
         const allowedTypes = [
-    "application/pdf",
-    "application/msword",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-];
+            "application/pdf",
+            "application/msword",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        ];
 
         if (!allowedTypes.includes(file.type)) {
             setFormErrors((prev) => ({
@@ -274,7 +276,10 @@ export default function ComputingCloudPage() {
 
     return (
         <div className="min-h-screen bg-slate-50">
-            <Navbar />
+            <div className="sticky top-0 z-50">
+                <PublicationHeader />
+                <Navbar />
+            </div>
 
             <main className="mx-auto w-full max-w-5xl px-4 py-12 lg:px-8 lg:py-16">
                 <div className="mb-10 text-center">
@@ -341,9 +346,9 @@ export default function ComputingCloudPage() {
 
                                     <input value={registrationNumber}
                                         className="bg-gray-300 border border-blue-100 rounded-lg p-4 w-full font-semibold" readOnly />
-                                        {!registrationNumber && (<p className="mt-2 text-xs text-red-500">
-                                            Registration Number is required to submit a paper.
-                                        </p>
+                                    {!registrationNumber && (<p className="mt-2 text-xs text-red-500">
+                                        Registration Number is required to submit a paper.
+                                    </p>
                                     )}
                                 </div>
 
@@ -456,13 +461,13 @@ export default function ComputingCloudPage() {
                                             </p>
 
                                             <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
-                                                
+
                                                 <span className="rounded-full border border-blue-200 bg-white px-3 py-1 text-xs font-semibold text-blue-700">
                                                     Maximum 2 MB
                                                 </span>
                                             </div>
 
-                                           <input
+                                            <input
                                                 type="file"
                                                 accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                                 onChange={handleFileChange}
@@ -552,6 +557,8 @@ export default function ComputingCloudPage() {
                 )}
 
             </main>
+
+            <Partners />
 
             <Footer />
         </div>

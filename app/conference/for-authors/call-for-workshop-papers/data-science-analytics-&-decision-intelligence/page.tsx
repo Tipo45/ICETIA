@@ -2,6 +2,8 @@
 
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
+import Partners from "@/components/Partners";
+import PublicationHeader from "@/components/publicationheader";
 import { SubmissionOfPapers } from "@/components/types/registration";
 import { validateAbstract, validatePaperFile, validatePaperTitle, validatePaperTrack } from "@/components/types/validation";
 import VerifyRegistrationForm from "@/components/verifyID";
@@ -274,7 +276,10 @@ export default function DataSciencePage() {
 
     return (
         <div className="min-h-screen bg-slate-50">
-            <Navbar />
+            <div className="sticky top-0 z-50">
+                    <PublicationHeader />
+                    <Navbar />
+                  </div>
 
             <main className="mx-auto w-full max-w-5xl px-4 py-12 lg:px-8 lg:py-16">
                 <div className="mb-10 text-center">
@@ -552,6 +557,8 @@ export default function DataSciencePage() {
                 )}
 
             </main>
+
+            <Partners />
 
             <Footer />
         </div>
