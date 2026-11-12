@@ -7,115 +7,121 @@ import {
     InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { api } from "@/convex/_generated/api";
-import { useAction } from "convex/react";
+import { useAuthActions } from "@convex-dev/auth/react";
+import { useConvexAuth, useQuery } from "convex/react";
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 interface Props {
     adminEmail: string;
-    onVerified: (sessionToken: string) => void;
 }
 
-export default function VerifySuperAdminOtp({ adminEmail, onVerified }: Props) {
+export default function VerifySuperAdminOtp({ adminEmail }: Props) {
 
-    const verifyOtp = useAction(
-        api.paperSubmission.verifyAdminOtp
-    );
-    const [otp, setOtp] = useState("");
+    const [code, setCode] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-    const [sessionToken, setSessionToken] = useState("");
     const router = useRouter();
+    const { signIn } = useAuthActions();
+    const { isAuthenticated, isLoading: authLoading } = useConvexAuth();
 
-    // const handleSubmit = async () => {
+    const currentAdmin = useQuery(
+        api.registration.getCurrentAdmin,
+        isAuthenticated ? {} : "skip"
+    );
 
-    //     setError("");
-    //     setLoading(true);
+    useEffect(() => {
+        if (!isAuthenticated || !currentAdmin) return;
 
-    //     try {
-    //         const result = await verifyOtp({
-    //             email: adminEmail,
-    //             otp,
-    //         });
+        const adminId = `admin-${currentAdmin.id.slice(0, 10)}`;
 
-    //         const adminId = `admin-${result.adminId.slice(0, 10)}`;
+        const destination = `/admin/super-admin/${adminId}`;
 
-    //         sessionStorage.setItem(
-    //             "icetia-admin-session",
-    //             result.sessionToken
-    //         );
 
-    //         setSessionToken(result.sessionToken);
-    //         onVerified(result.sessionToken);
-    //         toast.success(result.message);
-    //         router.push(`/participants-list/${adminId}`)
-    //     } catch (err) {
-    //         const rawMessage = err instanceof Error ? err.message : "";
+        console.log("Redirecting to:", destination);
+        router.replace(`/admin/super-admin/${adminId}`);
+        toast.success("Login successful!");
 
-    //         const knownErrors = [
-    //             "Enter a valid 6-digit OTP.",
-    //             "No valid pending OTP found. Please request a new code.",
-    //             "Your OTP has expired. Please request a new code.",
-    //             "Too many incorrect attempts. Please request a new code.",
-    //             "Incorrect OTP.",
-    //             "Registration is not eligible for paper submission.",
-    //         ];
-
-    //         setError(
-    //             knownErrors.find((message) => rawMessage.includes(message)) ??
-    //             "Unable to verify your OTP. Please retry verification again."
-    //         );
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
+    }, [isAuthenticated, currentAdmin, router]);
 
     const handleSubmit = async () => {
-    setError("");
-    setLoading(true);
+        setError("");
+        setLoading(true);
 
-    try {
-        const result = await verifyOtp({
-            email: adminEmail,
-            otp,
-        });
+        try {
+            const formData = new FormData();
+            formData.set("email", adminEmail);
+            formData.set("code", code.trim());
 
-        const adminId = `admin-${result.adminId.slice(0, 10)}`;
+            const result = await signIn("resend-otp", formData);
 
-        sessionStorage.setItem(
-            "icetia-super-admin-session",
-            result.sessionToken
-        );
+            if (!result.signingIn) {
+                setError("Unable to complete login. Please try again.");
+            }
 
-        setSessionToken(result.sessionToken);
+        } catch (err) {
+            const rawMessage = err instanceof Error ? err.message : "";
 
-        toast.success(result.message);
+            const knownErrors = [
+                "Enter a valid 6-digit OTP.",
+                "No valid pending OTP found. Please request a new code.",
+                "Your OTP has expired. Please request a new code.",
+                "Too many incorrect attempts. Please request a new code.",
+                "Incorrect OTP.",
+                "Email has no admin privileges.",
+            ];
 
-        router.replace(`/admin/super-admin/${adminId}`);
-    } catch (err) {
-        const rawMessage = err instanceof Error ? err.message : "";
+            setError(
+                knownErrors.find((message) => rawMessage.includes(message)) ??
+                "Unable to verify your OTP. Please retry verification again."
+            );
+            toast.error(knownErrors.find((message) => rawMessage.includes(message)))
+        } finally {
+            setLoading(false);
+            setCode("");
+        }
+    };
 
-        const knownErrors = [
-            "Enter a valid 6-digit OTP.",
-            "No valid pending OTP found. Please request a new code.",
-            "Your OTP has expired. Please request a new code.",
-            "Too many incorrect attempts. Please request a new code.",
-            "Incorrect OTP.",
-            "Email has no admin privileges.",
-        ];
+    // const handleVerifyOtp = async () => {
+    //     if (code.length !== 6) {
+    //         toast.error("Enter the complete 6-digit verification code.");
+    //         return;
+    //     }
 
-        setError(
-            knownErrors.find((message) => rawMessage.includes(message)) ??
-            "Unable to verify your OTP. Please retry verification again."
-        );
-        toast.error(knownErrors.find((message) => rawMessage.includes(message)))
-    } finally {
-        setLoading(false);
-        setOtp("");
-    }
-};
+    //     // setIsSubmitting(true);
+
+    //     try {
+    //         const formData = new FormData();
+    //         formData.set("email", adminEmail.trim());
+    //         formData.set("code", code.trim());
+
+    //         const result = await signIn("resend-otp", formData);
+
+    //         console.log("OTP verification result:", result);
+
+    //         if (!result.signingIn) {
+    //             toast.error("Verification was unsuccessful. Check your OTP.");
+    //             return;
+    //         }
+
+    //         toast.success("OTP verified successfully!");
+
+    //         // Authentication state will update.
+    //         // Your existing authenticated-user redirect effect handles navigation.
+
+    //     } catch (error) {
+    //         console.error("OTP verification error:", error);
+    //         toast.error(
+    //             error instanceof Error
+    //                 ? error.message
+    //                 : "OTP verification failed."
+    //         );
+    //     } finally {
+    //         // setIsSubmitting(false);
+    //     }
+    // };
 
     return (
         <div>
@@ -132,12 +138,13 @@ export default function VerifySuperAdminOtp({ adminEmail, onVerified }: Props) {
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     handleSubmit();
+                    // handleVerifyOtp();
                 }}>
                     <InputOTP
                         maxLength={6}
                         pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
-                        value={otp}
-                        onChange={setOtp}
+                        value={code}
+                        onChange={setCode}
                         aria-label="Six-character verification code"
                     >
                         <InputOTPGroup className="gap-1.5 lg:gap-2">
@@ -181,7 +188,7 @@ export default function VerifySuperAdminOtp({ adminEmail, onVerified }: Props) {
 
                     <button
                         type="submit"
-                        disabled={loading || otp.length !== 6 || !!sessionToken}
+                        disabled={loading || code.length !== 6}
                         className="mt-4 w-full rounded-lg bg-blue-600 px-5 py-3
     text-sm font-semibold text-white disabled:opacity-60"
                     >
@@ -190,7 +197,7 @@ export default function VerifySuperAdminOtp({ adminEmail, onVerified }: Props) {
                 </form>
             </div>
 
-            
+
 
         </div>
     )

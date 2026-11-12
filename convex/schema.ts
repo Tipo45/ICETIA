@@ -8,7 +8,11 @@ export default defineSchema({
     users: defineTable({
         name: v.optional(v.string()),
         email: v.optional(v.string()),
+        emailVerificationTime: v.optional(v.number()),
+        phone: v.optional(v.string()),
+        phoneVerificationTime: v.optional(v.number()),
         role: v.optional(v.union(
+            v.literal("super-admin"),
             v.literal("editor"),
             v.literal("reviewer")
         )),
@@ -152,7 +156,6 @@ export default defineSchema({
             "paperTrack",
         ]),
 
-
     paperSubmissionOtps: defineTable({
         registrationId: v.id("registrations"),
         registrationNumber: v.string(),
@@ -174,35 +177,11 @@ export default defineSchema({
     }).index("by_registration", ["registrationId"])
         .index("by_session_token_hash", ["sessionTokenHash"]),
 
-    admins: defineTable({
-        email: v.string(),
-    })
-        .index("by_email", ["email"]),
-
-    adminOtps: defineTable({
-        adminId: v.id("admins"),
-        email: v.string(),
-        otpHash: v.string(),
-        expiresAt: v.number(),
-        verified: v.boolean(),
-        attempts: v.number(),
-        createdAt: v.number(),
-    }).index("by_adminId", ["adminId"]),
-
-    adminSessions: defineTable({
-        adminId: v.id("admins"),
-        sessionTokenHash: v.string(),
-        expiresAt: v.number(),
-        createdAt: v.number(),
-        used: v.boolean(),
-    }).index("by_admin", ["adminId"])
-        .index("by_session_token_hash", ["sessionTokenHash"]),
-
     paperAssignments: defineTable({
         paperId: v.id("submittedPapers"),
         editorId: v.id("users"),
         reviewerIds: v.array(v.id("users")),
-        assignedBy: v.id("admins"),
+        assignedBy: v.id("users"),
         status: v.union(
             v.literal("assigned"),
             v.literal("editor_assigned"),
@@ -259,7 +238,7 @@ export default defineSchema({
         .index("by_editor", ["editorId"]),
 
     adminActivityLogs: defineTable({
-        adminId: v.id("admins"),
+        adminId: v.id("users"),
         action: v.string(),
         description: v.string(),
         relatedPaperId: v.optional(v.id("submittedPapers")),

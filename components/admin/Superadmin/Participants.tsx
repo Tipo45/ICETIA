@@ -104,7 +104,7 @@ export default function Participant({ participants,
                 return;
             }
 
-            await sendReminder({ registrationId, token });
+            await sendReminder({ registrationId });
             toast.success("Reminder email sent successfully.");
         } catch (error: any) {
             toast.error(error?.data ?? error?.message ?? "Failed to send reminder email.");

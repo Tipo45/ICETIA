@@ -1,19 +1,5 @@
 export type RegistrationConfirmationEmailProps = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  category: "author" | "participant" | "student";
-  amountPaid: number;
-
-  coAuthors?: {
-    firstName: string;
-    lastName: string;
-    email?: string;
-    institution?: string;
-    country?: string;
-    department?: string;
-    degree?: string;
-  }[];
+  registrationNumber: string;
 };
 
 export type TicketEmailProps = {
@@ -33,61 +19,47 @@ export type VerifyAdminEmailProps = {
 }
 
 export type ReminderEmailProps = {
-  firstName: string;
   registrationNumber: string;
+  paymentStatus: string;
 }
 
 export function registrationConfirmationEmail({
-  firstName,
-  lastName,
-  email,
-  category,
-  amountPaid,
-  coAuthors,
+  registrationNumber
 }: RegistrationConfirmationEmailProps): string {
 
-  const coAuthorSection =
-    category === "author" &&
-      coAuthors &&
-      coAuthors.length > 0
-      ? `
-Co-Authors
-${coAuthors
-        .map(
-          (author, index) => `
-${index + 1}. ${author.firstName} ${author.lastName}
-   Email: ${author.email ?? "-"}
-   Institution: ${author.institution ?? "-"}
-   Country: ${author.country ?? "-"}
-   Department: ${author.department ?? "-"}
-   Degree: ${author.degree ?? "-"}
-`
-        )
-        .join("\n")}
-`
-      : "";
-
   return `
-Dear ${firstName || 'Participant'},
+Dear Participant,
 
-Thank you for registering for ICETIA 2027. We are excited to have you join us for the first International Conference on Emerging Technologies, Innovations and Applications.
+Thank you for registering for the First International Conference on Emerging Technologies, Innovations and Applications (ICETIA 2027), hosted by Federal University Otuoke, Bayelsa State, Nigeria, from 28–30 April 2027.
 
-Registration Details:
-- Name: ${firstName} ${lastName}
-- Email: ${email}
-- Category: ${category.charAt(0).toUpperCase() + category.slice(1)}
-- Amount Paid: ₦${amountPaid.toLocaleString()}
+We are pleased to confirm that your registration and payment have been successfully received and verified.
 
-${coAuthorSection}
+Participant Reference: ${registrationNumber}
+Registration Status: Confirmed
+Payment Status: Paid
 
-You will receive your ticket and further instructions via email shortly. Please ensure to check your inbox and spam folder.
+Your place at ICETIA 2027 is now fully confirmed.
 
-For more information, please visit our website or contact us at conference@icetiaconference.org.
+Conference Details:
+Dates: 28–30 April 2027
+Format: Hybrid
+Venue: Federal University Otuoke, Bayelsa State, Nigeria
+Website: https://www.icetiaconference.org/
 
-We look forward to welcoming you to the conference!
+Please quote your Participant Reference in any future correspondence with the ICETIA 2027 Secretariat regarding your registration.
 
-Best regards,
+Further information regarding the conference programme, session arrangements, accreditation and participant logistics will be communicated before the event.
+
+Please retain this email as confirmation of your registration and payment.
+
+Thank you for your participation. We look forward to welcoming you to ICETIA 2027.
+
+Kind regards,
+
 ICETIA 2027 Organizing Committee
+Federal University Otuoke, Nigeria
+conference@icetiaconference.org
+https://www.icetiaconference.org/
 `
 }
 
@@ -113,17 +85,14 @@ export function ticketEmail({
 </p>
 
 <p>
-  <strong>🕘 Time:</strong> TBA AM (WAT)
+  <strong>🕘 Time:</strong> 9:00AM (WAT)
 </p>
 
 <p>
-  <strong>📍 Venue:</strong><br/>
-  TBA,<br/>
+  <strong>📍 Venue:
   Federal University Otuoke, Ogbia<br/>
   Bayelsa State, Nigeria
 </p>
-
-<h3>Your Registration</h3>
 
 <p>
   <strong>Registration Number:</strong><br/>
@@ -160,7 +129,10 @@ export function ticketEmail({
 
 <p>
   Best regards,<br/>
-  <strong>ICETIA 2027 Organizing Committee</strong>
+  ICETIA 2027 Organizing Committee<br/>
+Federal University Otuoke, Nigeria<br/>
+conference@icetiaconference.org<br/>
+https://www.icetiaconference.org/
 </p>`;
 }
 
@@ -213,33 +185,45 @@ export function verifyAdminEmail({
 }
 
 export function reminderEmail({
-  firstName,
-  registrationNumber
+  registrationNumber,
+  paymentStatus
 }: ReminderEmailProps) {
   return `
- Dear ${firstName},
+ Dear Participant,
 
-This is a friendly reminder that you are successfully registered for the International Conference on Emerging Technologies, Innovations and Applications (ICETIA 2027).
+This is a friendly reminder regarding your registration for the First International Conference on Emerging Technologies, Innovations and Applications (ICETIA 2027), hosted by Federal University Otuoke, Bayelsa State, Nigeria.
 
-Conference Details
-──────────────────────────
-📅 Date: 28th - 30th April, 2027
-🕘 Time: TBA
-📍 Venue: TBA, Federal University Otuoke, Ogbia, Bayelsa State, Nigeria
+Participant Reference: ${registrationNumber}
 
-Your Registration Details
-──────────────────────────
-Registration Number: ${registrationNumber}
+Conference Details:
+Date: 28 - 30 April, 2027
+Time: TBA
+Venue: Federal University Otuoke, Bayelsa State, Nigeria
+Format: Hybrid, with physical and online participation
+Website: https://www.icetiaconference.org/
 
-Please keep your registration number safe and present your conference ticket (QR code) during check-in.
 
-We recommend arriving at least 30 minutes before the event begins to complete registration and seating.
 
-If you have any questions or require assistance, please contact support@ICETIA2027.com.
+Theme:
+“Advancing Emerging Technologies, Innovation and Applications for Sustainable Digital Transformation.”
 
-We look forward to welcoming you and hope you have a rewarding conference experience.
+Please ensure that your registration and payment requirements are completed within the applicable deadlines.
 
-Best regards,
+Registration Status: Confirmed
+Payment Status: ${paymentStatus} Paid   Pending / Waived
 
-ICETIA 2027 Organizing Committee`
+If your payment status is Pending, kindly complete the applicable registration payment once the official payment facility is available. Participants whose registration and payment have already been confirmed do not need to take any further action at this stage.
+
+Further information regarding the detailed conference programme, presentation schedules, accreditation, virtual participation arrangements and other logistics will be communicated to registered participants before the conference.
+
+Please quote your Participant Reference in any correspondence with the ICETIA 2027 Secretariat.
+
+Thank you for your continued interest in ICETIA 2027. We look forward to welcoming you in April 2027.
+
+Kind regards,
+
+ICETIA 2027 Organizing Committee
+Federal University Otuoke, Nigeria
+conference@icetiaconference.org
+https://www.icetiaconference.org/`
 }

@@ -43,7 +43,6 @@ export default function ReviewrsPage() {
   const sendConferenceMail = useMutation(api.registration.sendMail);
   const sendEmailTicket = useMutation(api.registration.sendConferenceTicket);
   const sendReminder = useMutation(api.registration.sendReminder);
-  const logOutAdmin = useAction(api.paperSubmission.logoutAdmin)
 
   const [category, setCategory] = useState<
     "author" | "participant" | "student" | undefined
@@ -107,15 +106,7 @@ export default function ReviewrsPage() {
     try {
       setSendingId(registrationId);
 
-      const token = sessionStorage.getItem("icetia-reviewer-session");
-
-      if (!token) {
-        toast.error("Your admin session has expired. Please log in again.");
-        router.push("/admin/login/reviewer");
-        return;
-      }
-
-      await sendReminder({ registrationId, token });
+      await sendReminder({ registrationId });
 
       toast.success("Reminder email sent successfully.");
     } catch (error: any) {
@@ -179,7 +170,7 @@ export default function ReviewrsPage() {
 
       toast.success("You have been logged out successfully.");
 
-      router.replace("/admin/login");
+      router.replace("/admin");
       router.refresh();
     } catch (error) {
       console.error("Logout error:", error);

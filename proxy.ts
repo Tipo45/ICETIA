@@ -4,24 +4,24 @@ import {
   nextjsMiddlewareRedirect,
 } from "@convex-dev/auth/nextjs/server";
 
-const isSignInPage = createRouteMatcher(["/admin/login"]);
-const isProtectedRoute = createRouteMatcher(["/admin/editor/:id", "/admin/reviewer/:id"]);
- 
+const isProtectedRoute = createRouteMatcher([
+  "admin/super-admin/:path*",
+  "/admin/editor/:path*",
+  "/admin/reviewer/:path*"]);
+
 export default convexAuthNextjsMiddleware(async (request, { convexAuth }) => {
-  // if (isSignInPage(request) && (await convexAuth.isAuthenticated())) {
-  //   return nextjsMiddlewareRedirect(request, "/admin");
-  // }
+  
   if (isProtectedRoute(request) && !(await convexAuth.isAuthenticated())) {
-    return nextjsMiddlewareRedirect(request, "/admin/login");
+    return nextjsMiddlewareRedirect(request, "/admin");
   }
 },
-{
-  cookieConfig: {
-    maxAge: 60 * 60 * 1, // 1 hour
-  }
-});
- 
- 
+  {
+    cookieConfig: {
+      maxAge: 60 * 60 ,
+    }
+  });
+
+
 export const config = {
   // The following matcher runs middleware on all routes
   // except static assets.
@@ -29,5 +29,8 @@ export const config = {
   matcher: [
     "/admin/editor/:path*",
     "/admin/reviewer/:path*",
+    "/admin/super-admin/:path*",
+    "/api/auth",
+    "/api/auth/:path*",
   ],
 };

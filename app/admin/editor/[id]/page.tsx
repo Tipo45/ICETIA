@@ -106,15 +106,7 @@ export default function EditorsPage() {
     try {
       setSendingId(registrationId);
 
-      const token = sessionStorage.getItem("icetia-admin-session");
-
-      if (!token) {
-        toast.error("Your admin session has expired. Please log in again.");
-        router.push("/admin/login/admin");
-        return;
-      }
-
-      await sendReminder({ registrationId, token });
+      await sendReminder({ registrationId });
 
       toast.success("Reminder email sent successfully.");
     } catch (error: any) {
@@ -179,7 +171,7 @@ export default function EditorsPage() {
 
       toast.success("You have been logged out successfully.");
 
-      router.replace("/admin/login");
+      router.replace("/admin");
       router.refresh();
     } catch (error) {
       console.error("Logout error:", error);

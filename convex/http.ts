@@ -1,6 +1,7 @@
 import { httpRouter } from "convex/server";
 import { httpAction } from "./_generated/server";
 import { resend } from "./email";
+import { auth } from "./auth";
 
 const http = httpRouter();
 
@@ -11,5 +12,7 @@ http.route({
     return await resend.handleResendEventWebhook(ctx, req);
   }),
 });
+
+auth.addHttpRoutes(http);
 
 export default http;

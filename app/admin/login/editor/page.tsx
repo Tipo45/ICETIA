@@ -111,7 +111,7 @@ export default function EditorLoginPage() {
 
             const editor = await convex.query(api.admin.getCurrentEditor);
 
-            const editorId = editor.adminId.slice(0,10)
+            const editorId = editor?.id.slice(0,10)
 
             toast.success("Login successful!");
 

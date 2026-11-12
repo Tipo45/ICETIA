@@ -4,6 +4,7 @@ import { ConvexError } from "convex/values";
 import { Resend } from "@convex-dev/resend";
 import { components } from "./_generated/api";
 import { registrationConfirmationEmail, reminderEmail, ticketEmail, verifyId } from "./emailTemplate";
+import { Id } from "./_generated/dataModel";
 
 export const resend: Resend = new Resend(components.resend, {
     testMode: false,
@@ -240,12 +241,7 @@ export const sendMail = mutation({
         const subject = "ICETIA 2027 Registration Confirmation";
 
         const body = registrationConfirmationEmail({
-            firstName: existing.firstName,
-            lastName: existing.lastName,
-            email: existing.email,
-            category: existing.category,
-            amountPaid: existing.amount,
-            coAuthors: existing.coAuthors,
+            registrationNumber: existing.registrationNumber
         });
 
         await resend.sendEmail(ctx, {
@@ -276,7 +272,7 @@ export const sendConferenceTicket = mutation({
                 registration.registrationNumber
             )}`;
 
-        const subject = "Your ICETIA 2027 Conference Ticket";
+        const subject = "ICETIA 2027 Conference Ticket";
 
         const body = ticketEmail({
             firstName: registration.firstName,
@@ -311,6 +307,7 @@ export const getRegistrationForEmail = internalQuery({
 
         return {
             _id: registration._id,
+            registrationNumber: registration.registrationNumber,
             firstName: registration.firstName,
             lastName: registration.lastName,
             email: registration.email,
@@ -420,35 +417,20 @@ export const getParticipants = query({
 export const sendReminder = mutation({
     args: {
         registrationId: v.id("registrations"),
-        token: v.string(),
     },
 
     handler: async (ctx, args) => {
 
-        const tokenHash = await crypto.subtle.digest(
-            "SHA-256",
-            new TextEncoder().encode(args.token)
-        );
+        const identity = await ctx.auth.getUserIdentity();
 
-        const tokenHashHex = Array.from(new Uint8Array(tokenHash))
-            .map((byte) => byte.toString(16).padStart(2, "0"))
-            .join("");
-
-        const session = await ctx.db
-            .query("adminSessions")
-            .withIndex("by_session_token_hash", (q) =>
-                q.eq("sessionTokenHash", tokenHashHex)
-            )
-            .unique();
-
-        if (!session || session.expiresAt <= Date.now()) {
-            throw new ConvexError("Unauthorized: admin login required.");
+        if (!identity) {
+            throw new ConvexError("Unauthorized access.");
         }
 
-        const admin = await ctx.db.get(session.adminId);
-
-        if (!admin) {
-            throw new ConvexError("Unauthorized: admin not found.");
+        const user = await ctx.db.get(identity.subject as any);
+        
+        if (!user) {
+            throw new ConvexError("Admin account not found or inactive.");
         }
 
         const registration = await ctx.db.get(args.registrationId);
@@ -469,8 +451,8 @@ export const sendReminder = mutation({
         const subject = "ICETIA 2027 Conference Reminder";
 
         const body = reminderEmail({
-            firstName: existing.firstName,
             registrationNumber: existing.registrationNumber,
+            paymentStatus: existing.paymentStatus === "paid" ? "Paid" : "Pending"
         })
 
         await resend.sendEmail(ctx, {
@@ -481,29 +463,6 @@ export const sendReminder = mutation({
         });
 
         return { success: true };
-    },
-});
-
-export const createAdmin = internalMutation({
-    args: {
-        email: v.string(),
-    },
-
-    handler: async (ctx, args) => {
-        const existingAdmin = await ctx.db
-            .query("admins")
-            .withIndex("by_email", (q) =>
-                q.eq("email", args.email)
-            )
-            .unique();
-
-        if (existingAdmin) {
-            throw new Error("An admin with this email already exists");
-        }
-
-        return await ctx.db.insert("admins", {
-            email: args.email,
-        });
     },
 });
 
@@ -920,275 +879,22 @@ export const validatePaperSubmissionSession = internalQuery({
     },
 });
 
-export const getEligibleAdminStatus = internalQuery({
-    args: {
-        email: v.string(),
-    },
+export const getCurrentAdmin = query({
+    args: {},
 
-    handler: async (ctx, args) => {
-        const adminEmail = await ctx.db
-            .query("admins")
-            .withIndex("by_email", (q) =>
-                q.eq("email", args.email)
-            )
-            .unique();
+    handler: async (ctx) => {
+        const identity = await ctx.auth.getUserIdentity();
 
-        if (!adminEmail) {
-            throw new Error("You are not an admin.");
-        }
+        if (!identity) return null;
 
+        const userId = identity.subject.split("|")[0] as Id<"users">;
 
+        const user = await ctx.db.get(userId);
+
+        if (!user) return null;
 
         return {
-            adminId: adminEmail._id,
-            email: adminEmail.email,
-        };
-    },
-});
-
-export const getAdminForOtp = internalQuery({
-    args: {
-        adminEmail: v.string(),
-    },
-
-    handler: async (ctx, args) => {
-        return await ctx.db
-            .query("admins")
-            .withIndex("by_email", (q) =>
-                q.eq("email", args.adminEmail)
-            )
-            .unique();
-    },
-});
-
-export const verifyAndCreateAdminSession = internalMutation({
-    args: {
-        email: v.string(),
-        otpHash: v.string(),
-        sessionTokenHash: v.string(),
-        sessionExpiresAt: v.number(),
-        used: v.boolean(),
-    },
-
-    handler: async (ctx, args) => {
-        const adminEmail = await ctx.db
-            .query("admins")
-            .withIndex("by_email", (q) =>
-                q.eq("email", args.email)
-            )
-            .unique();
-
-        if (
-            !adminEmail
-        ) {
-            return {
-                success: false,
-                message: "You are not an eligible admin",
-            };
-        }
-
-        const otpRecord = await ctx.db
-            .query("adminOtps")
-            .withIndex("by_adminId", (q) =>
-                q.eq("adminId", adminEmail._id)
-            )
-            .first();
-
-        if (!otpRecord || otpRecord.verified) {
-            return {
-                success: false,
-                message: "No valid pending OTP found. Please request a new code.",
-            };
-        }
-
-        if (otpRecord.expiresAt <= Date.now()) {
-            await ctx.db.delete(otpRecord._id);
-
-            return {
-                success: false,
-                message: "Your OTP has expired. Please request a new code.",
-            };
-        }
-
-        if (otpRecord.attempts >= 5) {
-            await ctx.db.delete(otpRecord._id);
-
-            return {
-                success: false,
-                message: "Too many incorrect attempts. Please request a new code.",
-            };
-        }
-
-        if (otpRecord.otpHash !== args.otpHash) {
-            const attempts = otpRecord.attempts + 1;
-
-            await ctx.db.patch(otpRecord._id, { attempts });
-
-            return {
-                success: false,
-                message:
-                    attempts >= 5
-                        ? "Too many incorrect attempts. Please request a new code."
-                        : `Incorrect OTP. ${5 - attempts} attempt(s) remaining.`,
-            };
-        }
-
-        // OTP is correct. Mark it as used.
-        await ctx.db.patch(otpRecord._id, { verified: true });
-
-        await ctx.db.insert("adminSessions", {
-            adminId: adminEmail._id,
-            sessionTokenHash: args.sessionTokenHash,
-            expiresAt: args.sessionExpiresAt,
-            createdAt: Date.now(),
-            used: false,
-        });
-
-        return {
-            success: true,
-            adminId: adminEmail._id
-        };
-    },
-});
-
-export const storeAdminLoginOtp = internalMutation({
-    args: {
-        adminId: v.id("admins"),
-        email: v.string(),
-        otpHash: v.string(),
-        expiresAt: v.number(),
-    },
-
-    handler: async (ctx, args) => {
-        const adminId = await ctx.db.get(args.adminId);
-
-        if (
-            !adminId
-        ) {
-            throw new Error("You are not eligible");
-        }
-
-        // Invalidate existing OTPs for this registration.
-        const existingOtps = await ctx.db
-            .query("adminOtps")
-            .withIndex("by_adminId", (q) =>
-                q.eq("adminId", args.adminId)
-            )
-            .collect();
-
-        for (const otp of existingOtps) {
-            await ctx.db.delete(otp._id);
-        }
-
-        await ctx.db.insert("adminOtps", {
-            adminId: args.adminId,
-            email: args.email,
-            otpHash: args.otpHash,
-            expiresAt: args.expiresAt,
-            verified: false,
-            attempts: 0,
-            createdAt: Date.now(),
-        });
-    },
-});
-
-export const clearAdminOtps = internalMutation({
-    args: {
-        adminId: v.id("admins"),
-    },
-
-    handler: async (ctx, args) => {
-        const existingOtps = await ctx.db
-            .query("adminOtps")
-            .withIndex("by_adminId", (q) =>
-                q.eq("adminId", args.adminId)
-            )
-            .collect();
-
-        for (const otp of existingOtps) {
-            if (!otp.verified) {
-                await ctx.db.delete(otp._id);
-            }
-        }
-    },
-});
-
-export const validateAdminLoginSession = internalQuery({
-    args: {
-        sessionTokenHash: v.string(),
-    },
-
-    handler: async (ctx, args) => {
-        const session = await ctx.db
-            .query("adminSessions")
-            .withIndex("by_session_token_hash", (q) =>
-                q.eq("sessionTokenHash", args.sessionTokenHash)
-            )
-            .unique();
-
-        if (!session || session.expiresAt <= Date.now() || session.used === true) {
-            return false;
-        }
-
-        const admin = await ctx.db.get(session.adminId);
-
-        return Boolean(
-            admin
-        );
-    },
-});
-
-export const getValidAdminSession = internalQuery({
-    args: {
-        sessionTokenHash: v.string(),
-    },
-
-    handler: async (ctx, args) => {
-        const session = await ctx.db
-            .query("adminSessions")
-            .withIndex("by_session_token_hash", (q) =>
-                q.eq("sessionTokenHash", args.sessionTokenHash)
-            )
-            .unique();
-
-        if (!session) return null;
-        if (session.used) return null;
-        if (session.expiresAt <= Date.now()) return null;
-
-        return {
-            adminId: session.adminId,
-        };
-    },
-});
-
-export const revokeAdminSession = internalMutation({
-    args: {
-        sessionTokenHash: v.string(),
-    },
-
-    handler: async (ctx, args) => {
-        const session = await ctx.db
-            .query("adminSessions")
-            .withIndex("by_session_token_hash", (q) =>
-                q.eq("sessionTokenHash", args.sessionTokenHash)
-            )
-            .unique();
-
-        if (!session) {
-            return {
-                success: true,
-                message: "Session already revoked or not found.",
-            };
-        }
-
-        // Update the existing session document.
-        await ctx.db.patch(session._id, {
-            used: true,
-        });
-
-        return {
-            success: true,
-            message: "Admin session revoked successfully.",
+            id: user._id
         };
     },
 });

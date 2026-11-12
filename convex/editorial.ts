@@ -7,7 +7,6 @@ import {
     v,
     ConvexError,
 } from "convex/values";
-import { verifyAdminSession } from "./paperSubmission";
 import { Id } from "./_generated/dataModel";
 
 async function hashToken(token: string) {
@@ -58,7 +57,7 @@ async function verifyAdmin(ctx: any, token: string) {
 
 async function logActivity(
     ctx: any,
-    adminId: Id<"admins">,
+    adminId: Id<"users">,
     action: string,
     description: string,
     relatedPaperId?: Id<"submittedPapers">,

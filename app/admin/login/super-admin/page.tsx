@@ -10,30 +10,33 @@ import {
     LuShieldCheck,
 } from "react-icons/lu"
 import { MdOutlineEmail } from "react-icons/md"
-import { useAction } from "convex/react";
-import { api } from "@/convex/_generated/api";
 import { toast } from "sonner"
+import { useAuthActions } from "@convex-dev/auth/react"
+import { useConvexAuth } from "convex/react"
+import { useRouter } from "next/navigation"
 import VerifySuperAdminOtp from "@/components/admin/VerifySuperAdmin"
 
 interface Props {
-    onVerified: (sessionToken: string) => void;
     adminEmail: string;
 }
 
-export default function SuperAdminLoginPage({ onVerified, adminEmail }: Props) {
 
-    const [email, setEmail] = useState("")
-    const [message, setMessage] = useState("");
+export default function SuperAdminLoginPage({ adminEmail }: Props) {
+
+    const router = useRouter();
+    const { signIn } = useAuthActions();
+    const { isAuthenticated, isLoading } = useConvexAuth();
+
+    const [email, setEmail] = useState("");
     const [showOtp, setShowOtp] = useState(false);
-    const [isVerified, setIsVerified] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false)
     const RESEND_COOLDOWN = 60;
     const [resendCountdown, setResendCountdown] = useState(0);
-    const requestOtp = useAction(api.paperSubmission.requestAdminOtp);
-    const [sessionToken, setSessionToken] = useState("");
-    const [emailError, setEmailError] = useState("")
 
+    const [emailError, setEmailError] = useState("");
     const [emailTouched, setEmailTouched] = useState(false);
+    
+
 
     const validateEmail = (email: string): string | null => {
         const trimmedEmail = email.trim();
@@ -70,24 +73,29 @@ export default function SuperAdminLoginPage({ onVerified, adminEmail }: Props) {
     const handleRequestOtp = async (isResend = false) => {
         const emailValidationError = validateEmail(email);
 
-        setMessage("");
         setEmailTouched(true);
         setEmailError(emailValidationError || "");
 
         if (emailValidationError) return;
 
+        if (isResend && resendCountdown > 0) return;
+
         setIsSubmitting(true);
 
         try {
-            const result = await requestOtp({
-                email: email.trim(),
-            });
+            const formData = new FormData();
+            formData.set("email", email.trim());
 
-            setMessage(result.message);
+            await signIn("resend-otp", formData);
+
             setShowOtp(true);
             setResendCountdown(RESEND_COOLDOWN);
 
-            toast.success(result.message);
+            toast.success(
+                isResend
+                    ? "A new verification code has been sent."
+                    : "Verification code sent to your email."
+            );
         } catch (err) {
             const rawMessage =
                 err instanceof Error ? err.message : "";
@@ -111,7 +119,7 @@ export default function SuperAdminLoginPage({ onVerified, adminEmail }: Props) {
             toast.error(errorMessage);
         } finally {
             setIsSubmitting(false);
-            
+
         }
     };
 
@@ -125,51 +133,11 @@ export default function SuperAdminLoginPage({ onVerified, adminEmail }: Props) {
         return () => clearTimeout(timer);
     }, [resendCountdown]);
 
-    // const handleSubmit = async () => {
-    //     const emailValidationError = validateEmail(email);
-
-    //     setMessage("")
-    //     setEmailError(emailValidationError || "");
-    //     setShowOtp(false);
-    //     setEmailTouched(true);
-    //     setIsSubmitting(true);
-
-
-    //     if (emailValidationError) {
-    //         return;
-    //     }
-    //     try {
-    //         const result = await requestOtp({ email });
-
-    //         setMessage(result.message);
-    //         setShowOtp(true);
-    //         toast.success(result.message)
-
-    //     } catch (err) {
-    //         const rawMessage =
-    //             err instanceof Error ? err.message : "";
-
-    //         const knownErrors = [
-    //             "Please enter your email.",
-    //             "Admin not found.",
-    //             "Only authorized admins can access.",
-    //             "Unable to send the verification email. Please try again.",
-    //         ];
-
-    //         const matchedError = knownErrors.find((message) =>
-    //             rawMessage.includes(message)
-    //         );
-
-    //         setEmailError(
-    //             matchedError ??
-    //             "We couldn't process your request. Please try again."
-    //         );
-    //     }
-    //     finally {
-    //         setIsSubmitting(false);
-    //     }
-
-    // };
+    useEffect(() => {
+        if (!isLoading && isAuthenticated) {
+            router.replace("/admin/login/super-admin");
+        }
+    }, [isAuthenticated, isLoading, router]);
 
     return (
         <main className="min-h-screen bg-[#07111f] text-white">
@@ -345,7 +313,6 @@ export default function SuperAdminLoginPage({ onVerified, adminEmail }: Props) {
                                         value={email}
                                         onChange={(e) => {
                                             handleEmailChange(e.target.value);
-                                            setMessage("");
                                             setEmailError("");
                                             setShowOtp(false);
                                         }}
@@ -356,6 +323,7 @@ export default function SuperAdminLoginPage({ onVerified, adminEmail }: Props) {
                                         type="email"
                                         placeholder="johndoe@email.com"
                                         autoComplete="email"
+                                        disabled={showOtp}
                                         className={`h-12 rounded-none border-white/10 bg-white/[0.035] pl-11 text-sm text-white placeholder:text-white/25 focus-visible:border-blue-500 focus-visible:ring-1 focus-visible:ring-blue-500/30 ${emailTouched && emailError ? 'border-red-500 focus:ring-red-500' : emailTouched && !emailError ? 'border-blue-500 focus:ring-blue-500' : ''}`}
                                     />
 
@@ -371,7 +339,7 @@ export default function SuperAdminLoginPage({ onVerified, adminEmail }: Props) {
                             <Button
                                 type="submit"
                                 className="group h-12 w-full rounded-none bg-blue-600 text-sm font-semibold text-white transition-all hover:bg-blue-500 flex items-center justify-center gap-2 px-4 py-3 tracking-[0.12em] uppercase disabled:opacity-40 disabled:cursor-not-allowed"
-                                disabled={!isFormValid() || isSubmitting}
+                                disabled={!isFormValid() || isSubmitting || showOtp}
                             >
                                 {isSubmitting ? "Sending..." : (<>Request Otp
                                     <LuArrowRight className="ml-auto h-4 w-4 transition-transform group-hover:translate-x-1" /></>)}
@@ -382,11 +350,6 @@ export default function SuperAdminLoginPage({ onVerified, adminEmail }: Props) {
                             <div className="mt-6 space-y-4">
                                 <VerifySuperAdminOtp
                                     adminEmail={email}
-                                    onVerified={(token) => {
-                                        setSessionToken(token);
-                                        setIsVerified(true);
-                                        onVerified(token);
-                                    }}
                                 />
 
                                 <div className="text-center text-sm text-black">

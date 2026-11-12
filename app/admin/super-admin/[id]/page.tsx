@@ -23,7 +23,7 @@ import {
 } from "react-icons/lu";
 import Overview from "@/components/admin/Superadmin/Overview";
 import Participant from "@/components/admin/Superadmin/Participants";
-import { useAction, useQuery } from "convex/react";
+import { useConvexAuth, useQuery } from "convex/react";
 import EditorsAndReviewers from "@/components/admin/Superadmin/Editors&Reviewers";
 import Papers from "@/components/admin/Superadmin/Papers";
 import PaperAssignments from "@/components/admin/Superadmin/PaperAssignments";
@@ -102,12 +102,8 @@ const navigation: {
 
 export default function SuperAdminPage() {
   const router = useRouter();
+  const { isAuthenticated, isLoading } = useConvexAuth();
 
-  const verifySession = useAction(api.paperSubmission.verifyAdminSession);
-  const logOutAdmin = useAction(api.paperSubmission.logoutAdmin);
-
-  const [isAuthorized, setIsAuthorized] = useState(false);
-  const [isChecking, setIsChecking] = useState(true);
 
   const [activeSection, setActiveSection] = useState<Section>("overview");
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -179,45 +175,11 @@ export default function SuperAdminPage() {
   const [paperSearch, setPaperSearch] = useState("");
   const [paperStatusFilter, setPaperStatusFilter] = useState("all");
 
-
   useEffect(() => {
-    let cancelled = false;
-
-    const checkSession = async () => {
-      const token = sessionStorage.getItem("icetia-super-admin-session");
-
-      if (!token) {
-        router.replace("/admin/login/super-admin");
-        return;
-      }
-
-      try {
-        const result = await verifySession({ sessionToken: token });
-
-        if (cancelled) return;
-
-        if (!result.valid) {
-          sessionStorage.removeItem("icetia-super-admin-session");
-          router.replace("/admin/login/super-admin");
-          return;
-        }
-
-        setIsAuthorized(true);
-      } catch {
-        if (!cancelled) {
-          router.replace("/admin/login/super-admin");
-        }
-      } finally {
-        if (!cancelled) setIsChecking(false);
-      }
-    };
-
-    void checkSession();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [router, verifySession]);
+    if (!isLoading && !isAuthenticated) {
+      router.replace("/admin/login/super-admin");
+    }
+  }, [isAuthenticated, isLoading, router]);
 
   const participants = useQuery(api.registration.getParticipants, {
     search: search || undefined,
@@ -319,19 +281,7 @@ export default function SuperAdminPage() {
   });
 
   const handleLogOut = async () => {
-    const sessionToken = sessionStorage.getItem("icetia-super-admin-session");
-
-    try {
-      if (sessionToken) await logOutAdmin({ sessionToken });
-    } catch (error) {
-      console.error("Logout error:", error);
-      toast.error("Could not revoke the admin session.");
-      return;
-    }
-
-    toast.success("Logged out successfully");
-    sessionStorage.removeItem("icetia-super-admin-session");
-    router.replace("/admin/login/super-admin");
+    
   };
 
   const resetTeamForm = () => {
@@ -374,7 +324,7 @@ export default function SuperAdminPage() {
   };
 
 
-  if (isChecking || !isAuthorized) {
+  if (!isAuthenticated || isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#07111f] text-white">
         <div className="text-center">

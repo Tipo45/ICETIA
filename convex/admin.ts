@@ -1,43 +1,32 @@
+import { Id } from "./_generated/dataModel";
 import { query } from "./_generated/server";
 import { v, ConvexError } from "convex/values";
 
 export const getCurrentEditor = query({
     args: {},
 
-    handler: async (ctx, args) => {
-        // Get authenticated user
+    handler: async (ctx) => {
         const identity = await ctx.auth.getUserIdentity();
 
-        if (!identity?.email) {
-            throw new ConvexError("Unauthenticated.");
-        }
+        if (!identity) return null;
 
-        // Find admin by authenticated email
-        const admin = await ctx.db
-            .query("users")
-            .withIndex("email", (q) =>
-                q.eq("email", identity.email!.toLowerCase())
-            )
-            .unique();
+        const userId = identity.subject.split("|")[0] as Id<"users">;
 
-        // Check admin authorization
-        if (!admin) {
+        const user = await ctx.db.get(userId);
+
+        if (!user) return null;
+
+        if (user.role !== "editor") {
             throw new ConvexError(
-                "Only authorized admins can access."
-            );
-        }
-
-        // Check role authorization
-        if (admin.role !== "editor") {
-            throw new ConvexError(
-                "You are not authorized to access this page."
+                "You are not authorized to access the editor dashboard."
             );
         }
 
         return {
-            adminId: admin._id,
-            email: admin.email,
-            role: admin.role,
+            id: user._id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
         };
     },
 });
@@ -48,33 +37,25 @@ export const getCurrentReviewer = query({
     handler: async (ctx) => {
         const identity = await ctx.auth.getUserIdentity();
 
-        if (!identity?.email) {
-            throw new ConvexError("Unauthenticated.");
-        }
+        if (!identity) return null;
 
-        const admin = await ctx.db
-            .query("users")
-            .withIndex("email", (q) =>
-                q.eq("email", identity.email!.toLowerCase())
-            )
-            .unique();
+        const userId = identity.subject.split("|")[0] as Id<"users">;
 
-        if (!admin) {
-            throw new ConvexError(
-                "Only authorized admins can access."
-            );
-        }
+        const user = await ctx.db.get(userId);
 
-        if (admin.role !== "reviewer") {
+        if (!user) return null;
+
+        if (user.role !== "reviewer") {
             throw new ConvexError(
                 "You are not authorized to access the reviewer dashboard."
             );
         }
 
         return {
-            adminId: admin._id,
-            email: admin.email,
-            role: admin.role,
+            id: user._id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
         };
     },
 });

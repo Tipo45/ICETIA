@@ -143,13 +143,8 @@ export const sendPaidConfirmation = internalAction({
     }
 
     const emailText = registrationConfirmationEmail({
-  firstName: registration.firstName,
-  lastName: registration.lastName,
-  email: registration.email,
-  category: registration.category,
-  amountPaid: registration.amount,
-  coAuthors: registration.coAuthors,
-});
+      registrationNumber: registration.registrationNumber,
+    });
 
 const response = await fetch(
   "https://api.resend.com/emails",
