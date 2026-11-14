@@ -23,6 +23,17 @@ export type ReminderEmailProps = {
   paymentStatus: string;
 }
 
+export type editorialInviteProps = {
+  name: string;
+  role: string;
+}
+
+export type editorialAcceptanceProps = {
+  name: string;
+  email: string;
+  role: string;
+}
+
 export function registrationConfirmationEmail({
   registrationNumber
 }: RegistrationConfirmationEmailProps): string {
@@ -226,4 +237,158 @@ ICETIA 2027 Organizing Committee
 Federal University Otuoke, Nigeria
 conference@icetiaconference.org
 https://www.icetiaconference.org/`
+}
+
+export function editorInvite ({
+  name,
+  role
+}: editorialInviteProps) {
+  return `
+  Dear ${name},
+  
+
+On behalf of the Organising Committee of the International Conference on Emerging Technologies, Innovations & Applications (ICETIA 2027), we are pleased to invite you to serve as a ${role} for the maiden edition of our conference.
+
+
+On behalf of the Organising Committee of the International Conference on Emerging Technologies, Innovations & Applications (ICETIA 2027), we are pleased to invite you to serve as a ${role} for the maiden edition of our conference.
+
+ICETIA 2027 will be held from 28th – 30th April 2027 at the Federal University Otuoke, Bayelsa State, Nigeria, with provisions for on-site and hybrid participation
+
+Given your academic background, professional experience, and contributions to your field, we believe your expertise would be invaluable to the success of this conference.
+
+Given your academic background, professional experience, and contributions to your field, we believe your expertise would be invaluable to the success of this conference.
+
+As a ${role}, your responsibilities will include:
+
+- Overseeing the evaluation and review process for assigned submissions.
+
+- Coordinating reviewers and monitoring review progress.
+
+- Providing editorial recommendations on submitted manuscripts.
+
+- Ensuring that submissions meet the conference's academic and publication standards.
+
+We would be honoured to have you join the ICETIA 2027 academic team and contribute to advancing research, innovation, and collaboration.
+
+We would be honoured to have you join the ICETIA 2027 academic team and contribute to advancing research, innovation, and collaboration.
+
+Kindly confirm your acceptance of this invitation by replying to this email. Upon acceptance, further information regarding your role and access to the conference management platform will be communicated to you.
+
+We would be honoured to have you join the ICETIA 2027 academic team and contribute to advancing research, innovation, and collaboration.
+
+Kindly confirm your acceptance of this invitation by replying to this email. Upon acceptance, further information regarding your role and access to the conference management platform will be communicated to you.
+
+Thank you for considering this invitation. We look forward to the possibility of working with you.
+
+Warm regards,
+
+ICETIA 2027 Organising Committee
+International Conference on Emerging Technologies, Innovations & Applications
+Federal University Otuoke, Bayelsa State, Nigeria
+Email: conference@icetiaconference.org
+Website: https://icetiaconference.org
+`
+}
+
+export function reviewerInvite ({
+  name,
+  role
+}: editorialInviteProps) {
+  return `
+  Dear ${name},
+  
+
+On behalf of the Organising Committee of the International Conference on Emerging Technologies, Innovations & Applications (ICETIA 2027), we are pleased to invite you to serve as a ${role} for the maiden edition of our conference.
+
+
+On behalf of the Organising Committee of the International Conference on Emerging Technologies, Innovations & Applications (ICETIA 2027), we are pleased to invite you to serve as a ${role} for the maiden edition of our conference.
+
+ICETIA 2027 will be held from 28th – 30th April 2027 at the Federal University Otuoke, Bayelsa State, Nigeria, with provisions for on-site and hybrid participation
+
+Given your academic background, professional experience, and contributions to your field, we believe your expertise would be invaluable to the success of this conference.
+
+Given your academic background, professional experience, and contributions to your field, we believe your expertise would be invaluable to the success of this conference.
+
+As a ${role}, your responsibilities will include:
+
+- Evaluating assigned manuscripts based on their originality, relevance, technical quality, and academic contributions.
+
+- Providing constructive feedback and recommendations.
+
+- Completing reviews within the stipulated deadlines
+
+- Maintaining confidentiality and impartiality throughout the review process.
+
+We would be honoured to have you join the ICETIA 2027 academic team and contribute to advancing research, innovation, and collaboration.
+
+Kindly confirm your acceptance of this invitation by replying to this email. Upon acceptance, further information regarding your role and access to the conference management platform will be communicated to you.
+
+Thank you for considering this invitation. We look forward to the possibility of working with you.
+
+Warm regards,
+
+ICETIA 2027 Organising Committee
+International Conference on Emerging Technologies, Innovations & Applications
+Federal University Otuoke, Bayelsa State, Nigeria
+Email: conference@icetiaconference.org
+Website: https://icetiaconference.org
+`
+}
+
+export function editorialAcceptaance ({name, email, role}: editorialAcceptanceProps) {
+  return `
+  Dear ${name},
+
+We are pleased to inform you that your ICETIA 2027 ${role} account has been successfully created and activated.
+
+Thank you for accepting our invitation to join the academic team of the International Conference on Emerging Technologies, Innovations & Applications (ICETIA 2027).
+
+You have been assigned the role of ${role} on the conference management platform. Through your account, you will be able to access the tools and resources required to carry out your assigned responsibilities.
+
+Account Details
+
+Name: ${name}
+
+Email Address: ${email}
+
+Assigned Role: ${role}
+
+Conference: ICETIA 2027
+
+Accessing Your Account
+
+To access the conference management platform, please follow these steps:
+
+Visit the ICETIA 2027 management portal: https://icetiaconference.org/admin
+
+Sign in using your registered email address.
+
+Complete the authentication process by entering the password sent to your email.
+
+Once authenticated, you will be redirected to your designated dashboard.
+
+Important Information
+
+Keep your login credentials confidential.
+
+Access to papers and conference information is restricted according to your assigned role.
+
+All submitted manuscripts and review materials must be treated as confidential.
+
+Please ensure that assigned tasks and deadlines are observed.
+
+We sincerely appreciate your willingness to contribute your expertise to ICETIA 2027. Your participation is an important part of maintaining the academic quality and integrity of the conference.
+
+Should you experience any difficulty accessing your account, please contact the conference support team.
+
+We look forward to working with you.
+
+Warm regards,
+
+ICETIA 2027 Organising Committee
+International Conference on Emerging Technologies, Innovations & Applications
+Federal University Otuoke, Bayelsa State, Nigeria
+Email: conference@icetiaconference.org
+Website: https://icetiaconference.org
+  `
 }

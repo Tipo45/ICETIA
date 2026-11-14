@@ -66,7 +66,7 @@ export default function ReportsandActivity ({ participantsList, totalPeople, pap
                 </p>
               </div>
 
-              <div className="grid gap-4 tablet:grid-cols-2 2xl:grid-cols-4">
+              <div className="grid gap-4 tablet:grid-cols-2 2xl:grid-cols-4 my-4">
                 {[
                   { label: "Registrations", value: participantsList.length, icon: LuUsers },
                   { label: "Total people", value: totalPeople, icon: LuUserRound },
@@ -88,7 +88,7 @@ export default function ReportsandActivity ({ participantsList, totalPeople, pap
                 })}
               </div>
 
-              <div className="grid gap-6 2xl:grid-cols-2">
+              <div className="grid gap-6 2xl:grid-cols-2 my-4">
                 <Card className="rounded-xl border-slate-200 shadow-sm">
                   <CardHeader>
                     <CardTitle className="text-base">Registration breakdown</CardTitle>

@@ -5,6 +5,14 @@ import { Resend } from "@convex-dev/resend";
 import { components } from "./_generated/api";
 import { registrationConfirmationEmail, reminderEmail, ticketEmail, verifyId } from "./emailTemplate";
 import { Id } from "./_generated/dataModel";
+import { Email } from "@convex-dev/auth/providers/Email";
+import { Resend as ResendAPI } from "resend";
+import {
+    RandomReader,
+    generateRandomString,
+} from "@oslojs/crypto/random";
+import { verifyAdminEmail } from "./emailTemplate";
+
 
 export const resend: Resend = new Resend(components.resend, {
     testMode: false,
@@ -26,7 +34,18 @@ export const registerAuthor = mutation({
             v.literal("Professor"),
             v.literal("Other")
         )),
-        paperTrack: v.optional(v.string()),
+        paperTrack: v.optional(v.union(
+            v.literal("Cybersecurity, Privacy & Digital Trust"),
+            v.literal("Artificial Intelligence and Machine Learning"),
+            v.literal("Smart Systems, Internet of Things and Embedded Computing"),
+            v.literal("Computing, Cloud, Edge and Distributed Systems"),
+            v.literal("Data Science, Analytics and Big Data"),
+            v.literal("Software Development"),
+            v.literal("Health Informatics, Digital Health and Medical Laboratory Technology"),
+            v.literal("Emerging Technologies and Digital Transformation"),
+            v.literal("Computing for Sustainable Development"),
+            v.literal("Information Systems, Governance and Society"),
+        )),
         paperTitle: v.optional(v.string()),
         paperFileId: v.optional(v.id("_storage")),
         coAuthors: v.optional(v.array(v.object({
@@ -331,6 +350,7 @@ export const getParticipants = query({
         ),
         country: v.optional(v.string()),
         paymentDate: v.optional(v.number()),
+        paperTrack: v.optional(v.string()),
     },
 
     handler: async (ctx, args) => {
@@ -360,6 +380,13 @@ export const getParticipants = query({
                 p => p.country === args.country
             );
         }
+
+        if (args.paperTrack) {
+            participants = participants.filter(
+                p => p.paperTrack === args.paperTrack
+            );
+        }
+
 
         if (args.paymentDate) {
             const selected = new Date(args.paymentDate);
@@ -428,7 +455,7 @@ export const sendReminder = mutation({
         }
 
         const user = await ctx.db.get(identity.subject as any);
-        
+
         if (!user) {
             throw new ConvexError("Admin account not found or inactive.");
         }
@@ -677,22 +704,9 @@ export const getEligibleRegistration = internalQuery({
             registrationId: registration._id,
             registrationNumber: registration.registrationNumber,
             email: registration.email,
+            category: registration.category,
+            paymentStatus: registration.paymentStatus,
         };
-    },
-});
-
-export const getRegistrationForOtp = internalQuery({
-    args: {
-        registrationNumber: v.string(),
-    },
-
-    handler: async (ctx, args) => {
-        return await ctx.db
-            .query("registrations")
-            .withIndex("by_registration_number", (q) =>
-                q.eq("registrationNumber", args.registrationNumber)
-            )
-            .unique();
     },
 });
 
@@ -894,7 +908,9 @@ export const getCurrentAdmin = query({
         if (!user) return null;
 
         return {
-            id: user._id
+            id: user._id,
+            name: user.name,
+            email: user.email,
         };
     },
 });
@@ -957,15 +973,634 @@ export const getCurrentReviewer = query({
     },
 });
 
+export const handleSaveMember = mutation({
+    args: {
+        name: v.optional(v.string()),
+        email: v.optional(v.string()),
+        role: v.union(
+            v.literal("editor"),
+            v.literal("reviewer")
+        )
+    },
+    handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
 
-import { Email } from "@convex-dev/auth/providers/Email";
-import { Resend as ResendAPI } from "resend";
-import {
-    RandomReader,
-    generateRandomString,
-} from "@oslojs/crypto/random";
-import { verifyAdminEmail } from "./emailTemplate";
+        if (!identity) {
+            throw new ConvexError("You must be logged in.");
+        }
 
+        const userId = identity.subject.split("|")[0] as Id<"users">;
+
+        const currentUser = await ctx.db.get(userId);
+
+
+        if (!currentUser || currentUser.role !== "super-admin") {
+            throw new ConvexError(
+                "Only super-admins can create team members."
+            );
+        }
+
+        // Normalize email
+        const email = args.email
+
+        if (!email) {
+            throw new ConvexError("Email address is required.");
+        }
+
+        const existingUser = await ctx.db
+            .query("users")
+            .withIndex("email", (q) => q.eq("email", email))
+            .first();
+
+        if (existingUser) {
+            throw new ConvexError(
+                "A user with this email address already exists."
+            );
+        }
+        const memberId = await ctx.db.insert("users", {
+            name: args.name,
+            email,
+            role: args.role,
+            status: "inactive"
+        });
+
+        return {
+            success: true,
+            memberId,
+            message: `${args.role === "editor" ? "Editor" : "Reviewer"} created successfully.`,
+        };
+    },
+});
+
+export const updateTeamMember = mutation({
+    args: {
+        memberId: v.id("users"),
+        name: v.string(),
+        email: v.string(),
+        role: v.union(
+            v.literal("editor"),
+            v.literal("reviewer")
+        ),
+    },
+
+    handler: async (ctx, args) => {
+        // Authenticate current user
+        const identity = await ctx.auth.getUserIdentity();
+
+        if (!identity) {
+            throw new ConvexError("You must be logged in.");
+        }
+
+        const userId = identity.subject.split("|")[0] as Id<"users">;
+
+        const currentUser = await ctx.db.get(userId);
+
+        if (!currentUser || currentUser.role !== "super-admin") {
+            throw new ConvexError(
+                "Only super-admins can update team members."
+            );
+        }
+
+        // Find member
+        const member = await ctx.db.get(args.memberId);
+
+        if (!member) {
+            throw new ConvexError("Team member not found.");
+        }
+
+        if (
+            member.role !== "editor" &&
+            member.role !== "reviewer"
+        ) {
+            throw new ConvexError(
+                "This user is not an editor or reviewer."
+            );
+        }
+
+        const email = args.email;
+
+        if (!email) {
+            throw new ConvexError("Email address is required.");
+        }
+
+        // Prevent duplicate email addresses
+        const existingUser = await ctx.db
+            .query("users")
+            .withIndex("email", (q) => q.eq("email", email))
+            .first();
+
+        if (existingUser && existingUser._id !== args.memberId) {
+            throw new ConvexError(
+                "Another user already uses this email address."
+            );
+        }
+
+        // Update member
+        await ctx.db.patch(args.memberId, {
+            name: args.name.trim(),
+            email,
+            role: args.role,
+        });
+
+        return {
+            success: true,
+            message: "Team member updated successfully.",
+        };
+    },
+});
+
+export const toggleTeamMemberStatus = mutation({
+    args: {
+        memberId: v.id("users"),
+    },
+
+    handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
+
+        if (!identity) {
+            throw new ConvexError("You must be logged in.");
+        }
+
+        const userId = identity.subject.split("|")[0] as Id<"users">;
+        const currentUser = await ctx.db.get(userId);
+
+        if (currentUser?.role !== "super-admin") {
+            throw new ConvexError("You don't have permission to perform this action.");
+        }
+
+        const member = await ctx.db.get(args.memberId);
+
+        if (!member || !["editor", "reviewer"].includes(member.role ?? "")) {
+            throw new ConvexError("Team member not found.");
+        }
+
+        const newStatus = member.status === "inactive" ? "active" : "inactive";
+
+        await ctx.db.patch(args.memberId, {
+            status: newStatus,
+        });
+
+        return { success: true, status: newStatus };
+    },
+});
+
+export const viewTeamMembers = query({
+    args: {
+        search: v.optional(v.string()),
+        role: v.optional(v.union(
+            v.literal("editor"),
+            v.literal("reviewer")
+        ))
+    },
+    handler: async (ctx, args) => {
+        const team = await ctx.db.query("users").collect();
+
+        const filteredTeam = team.filter(
+            (member): member is typeof member & {
+                role: "editor" | "reviewer";
+            } => member.role === "editor" || member.role === "reviewer"
+        );
+
+        let result = filteredTeam;
+
+        if (args.role) {
+            result = result.filter(member => member.role === args.role);
+        }
+
+        if (args.search?.trim()) {
+            const search = args.search.trim().toLowerCase();
+
+            result = result.filter(
+                member =>
+                    member.name?.toLowerCase().includes(search) ||
+                    member.email?.toLowerCase().includes(search)
+            );
+        }
+
+        return result.map(member => ({
+            id: member._id,
+            name: member.name ?? "Unnamed Member",
+            email: member.email ?? "No email address",
+            role: member.role,
+            status: member.status ?? "active",
+            createdAt: member._creationTime,
+        }));
+    },
+});
+
+export const deleteTeamMember = mutation({
+    args: {
+        memberId: v.id("users"),
+    },
+
+    handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
+
+        if (!identity) {
+            throw new ConvexError("You must be logged in.");
+        }
+
+        const userId = identity.subject.split("|")[0] as Id<"users">;
+        const currentUser = await ctx.db.get(userId);
+
+        if (currentUser?.role !== "super-admin") {
+            throw new ConvexError("You don't have permission to perform this action.");
+        }
+
+        const member = await ctx.db.get(args.memberId);
+
+        if (!member || !["editor", "reviewer"].includes(member.role ?? "")) {
+            throw new ConvexError("Team member not found.");
+        }
+
+        await ctx.db.delete(args.memberId);
+
+        return { success: true };
+    },
+});
+
+export const handleSaveAssignment = mutation({
+    args: {
+        paperId: v.id("submittedPapers"),
+        editorId: v.id("users"),
+        reviewerIds: v.optional(v.array(v.id("users"))),
+        status: v.union(
+            v.literal("assigned"),
+            v.literal("editor_assigned"),
+            v.literal("under_review"),
+            v.literal("reviews_completed"),
+            v.literal("completed")
+        ),
+        reviewDeadline: v.optional(v.number()),
+        editorDeadline: v.optional(v.number()),
+    },
+
+    handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
+
+        if (!identity) {
+            throw new ConvexError("You must be logged in.");
+        }
+
+        const userId = identity.subject.split("|")[0] as Id<"users">;
+        const currentUser = await ctx.db.get(userId);
+
+        if (!currentUser || currentUser.role !== "super-admin") {
+            throw new ConvexError(
+                "Only super-admins can create assignments."
+            );
+        }
+
+        // Validate paper
+        const paper = await ctx.db.get(args.paperId);
+
+        if (!paper) {
+            throw new ConvexError("The selected paper could not be found.");
+        }
+
+        // Validate editor
+        const editor = await ctx.db.get(args.editorId);
+
+        if (!editor || editor.role !== "editor") {
+            throw new ConvexError("Please select a valid editor.");
+        }
+
+        // Validate reviewers
+        const reviewerIds = args.reviewerIds ?? [];
+
+        if (new Set(reviewerIds).size !== reviewerIds.length) {
+            throw new ConvexError("Duplicate reviewers are not allowed.");
+        }
+
+        if (reviewerIds.includes(args.editorId)) {
+            throw new ConvexError(
+                "An editor cannot also review the same paper."
+            );
+        }
+
+        for (const reviewerId of reviewerIds) {
+            const reviewer = await ctx.db.get(reviewerId);
+
+            if (!reviewer || reviewer.role !== "reviewer") {
+                throw new ConvexError(
+                    "One or more selected reviewers are invalid."
+                );
+            }
+        }
+
+        // Prevent duplicate assignment for the same paper
+        const existingAssignment = await ctx.db
+            .query("paperAssignments")
+            .collect();
+
+        if (existingAssignment.some(
+            (assignment) => assignment.paperId === args.paperId
+        )) {
+            throw new ConvexError(
+                "This paper already has an assignment. Update the existing assignment instead."
+            );
+        }
+
+        // Validate deadlines
+        if (
+            args.reviewDeadline !== undefined &&
+            args.reviewDeadline <= Date.now()
+        ) {
+            throw new ConvexError(
+                "The review deadline must be in the future."
+            );
+        }
+
+        if (
+            args.editorDeadline !== undefined &&
+            args.editorDeadline <= Date.now()
+        ) {
+            throw new ConvexError(
+                "The editor deadline must be in the future."
+            );
+        }
+
+        const assignmentId = await ctx.db.insert("paperAssignments", {
+            paperId: args.paperId,
+            editorId: args.editorId,
+            reviewerIds,
+            assignedBy: userId,
+            status: args.status,
+            reviewDeadline: args.reviewDeadline,
+            editorDeadline: args.editorDeadline,
+        });
+
+        return {
+            success: true,
+            assignmentId,
+            message: "Paper assignment created successfully.",
+        };
+    },
+});
+
+export const updateAssignment = mutation({
+    args: {
+        assignmentId: v.id("paperAssignments"),
+        paperId: v.id("submittedPapers"),
+        editorId: v.id("users"),
+        reviewerIds: v.optional(v.array(v.id("users"))),
+        status: v.union(
+            v.literal("assigned"),
+            v.literal("editor_assigned"),
+            v.literal("under_review"),
+            v.literal("reviews_completed"),
+            v.literal("completed")
+        ),
+        reviewDeadline: v.optional(v.number()),
+        editorDeadline: v.optional(v.number()),
+    },
+
+    handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
+
+        if (!identity) {
+            throw new ConvexError("You must be logged in.");
+        }
+
+        const userId = identity.subject.split("|")[0] as Id<"users">;
+        const currentUser = await ctx.db.get(userId);
+
+        if (!currentUser || currentUser.role !== "super-admin") {
+            throw new ConvexError(
+                "Only super-admins can update assignments."
+            );
+        }
+
+        // Find existing assignment
+        const assignment = await ctx.db.get(args.assignmentId);
+
+        if (!assignment) {
+            throw new ConvexError("Assignment not found.");
+        }
+
+        // Validate paper
+        const paper = await ctx.db.get(args.paperId);
+
+        if (!paper) {
+            throw new ConvexError("The selected paper could not be found.");
+        }
+
+        // Validate editor
+        const editor = await ctx.db.get(args.editorId);
+
+        if (!editor || editor.role !== "editor") {
+            throw new ConvexError("Please select a valid editor.");
+        }
+
+        // Validate reviewers
+        const reviewerIds = args.reviewerIds ?? [];
+
+        if (new Set(reviewerIds).size !== reviewerIds.length) {
+            throw new ConvexError("Duplicate reviewers are not allowed.");
+        }
+
+        if (reviewerIds.includes(args.editorId)) {
+            throw new ConvexError(
+                "An editor cannot also review the same paper."
+            );
+        }
+
+        for (const reviewerId of reviewerIds) {
+            const reviewer = await ctx.db.get(reviewerId);
+
+            if (!reviewer || reviewer.role !== "reviewer") {
+                throw new ConvexError(
+                    "One or more selected reviewers are invalid."
+                );
+            }
+        }
+
+        // Prevent another assignment for the same paper
+        const existingAssignments = await ctx.db
+            .query("paperAssignments")
+            .collect();
+
+        const duplicateAssignment = existingAssignments.find(
+            (item) =>
+                item.paperId === args.paperId &&
+                item._id !== args.assignmentId
+        );
+
+        if (duplicateAssignment) {
+            throw new ConvexError(
+                "Another assignment already exists for this paper."
+            );
+        }
+
+        // Validate deadlines
+        if (
+            args.reviewDeadline !== undefined &&
+            args.reviewDeadline <= Date.now()
+        ) {
+            throw new ConvexError(
+                "The review deadline must be in the future."
+            );
+        }
+
+        if (
+            args.editorDeadline !== undefined &&
+            args.editorDeadline <= Date.now()
+        ) {
+            throw new ConvexError(
+                "The editor deadline must be in the future."
+            );
+        }
+
+        await ctx.db.patch(args.assignmentId, {
+            paperId: args.paperId,
+            editorId: args.editorId,
+            reviewerIds,
+            status: args.status,
+            reviewDeadline: args.reviewDeadline,
+            editorDeadline: args.editorDeadline,
+        });
+
+        return {
+            success: true,
+            message: "Assignment updated successfully.",
+        };
+    },
+});
+
+export const viewAssignments = query({
+    args: {},
+
+    handler: async (ctx) => {
+        const identity = await ctx.auth.getUserIdentity();
+
+        if (!identity) {
+            throw new ConvexError("You must be logged in.");
+        }
+
+        const userId = identity.subject.split("|")[0] as Id<"users">;
+        const currentUser = await ctx.db.get(userId);
+
+        if (!currentUser || currentUser.role !== "super-admin") {
+            throw new ConvexError(
+                "Only super-admins can view paper assignments."
+            );
+        }
+
+        const assignments = await ctx.db
+            .query("paperAssignments")
+            .collect();
+
+        const results = await Promise.all(
+            assignments.map(async (assignment) => {
+                const paper = await ctx.db.get(assignment.paperId);
+
+                const editor = await ctx.db.get(assignment.editorId);
+
+                const assignedBy = await ctx.db.get(
+                    assignment.assignedBy
+                );
+
+                const reviewers = await Promise.all(
+                    (assignment.reviewerIds ?? []).map(
+                        async (reviewerId) => {
+                            const reviewer = await ctx.db.get(reviewerId);
+
+                            return reviewer
+                                ? {
+                                    id: reviewer._id,
+                                    name: reviewer.name ?? "Unnamed Reviewer",
+                                    email: reviewer.email ?? "",
+                                    role: reviewer.role,
+                                }
+                                : null;
+                        }
+                    )
+                );
+
+                const registration = paper
+                    ? await ctx.db.get(paper.registrationId)
+                    : null;
+
+                const paperUrl =
+                    paper?.paperFileId
+                        ? await ctx.storage.getUrl(paper.paperFileId)
+                        : null;
+
+                return {
+                    ...assignment,
+
+                    paper: paper
+                        ? {
+                            ...paper,
+                            paperUrl,
+                        }
+                        : null,
+
+                    editor: editor
+                        ? {
+                            id: editor._id,
+                            name: editor.name ?? "Unnamed Editor",
+                            email: editor.email ?? "",
+                            role: editor.role,
+                        }
+                        : null,
+
+                    reviewers: reviewers.filter(
+                        (reviewer) => reviewer !== null
+                    ),
+
+                    assignedByUser: assignedBy
+                        ? {
+                            id: assignedBy._id,
+                            name: assignedBy.name ?? "Unknown Admin",
+                            email: assignedBy.email ?? "",
+                        }
+                        : null,
+
+                    registration,
+                };
+            })
+        );
+
+        return results;
+    },
+});
+
+export const deleteAssignments = mutation({
+    args: {
+        assignmentId: v.id("paperAssignments"),
+    },
+    handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
+
+        if (!identity) {
+            throw new ConvexError("You must be logged in.");
+        }
+
+        const userId = identity.subject.split("|")[0] as Id<"users">;
+        const currentUser = await ctx.db.get(userId);
+
+        if (currentUser?.role !== "super-admin") {
+            throw new ConvexError("You don't have permission to perform this action.");
+        }
+
+        const assignment = await ctx.db.get(args.assignmentId);
+
+        if (currentUser?.role !== "super-admin") {
+            throw new ConvexError("You don't have permission to perform this action.");
+        }
+
+        if (!assignment) {
+            throw new ConvexError("Assignment not found.");
+        }
+
+        await ctx.db.delete(args.assignmentId);
+
+        return {
+            success: true
+        }
+    }
+})
 
 export const ResendOTP = Email({
     id: "resend-otp",
@@ -976,16 +1611,16 @@ export const ResendOTP = Email({
     maxAge: 60 * 10,
 
     async generateVerificationToken() {
-    const random: RandomReader = {
-        read(bytes) {
-            crypto.getRandomValues(
-                new Uint8Array(bytes.buffer as ArrayBuffer, bytes.byteOffset, bytes.byteLength)
-            );
-        },
-    };
+        const random: RandomReader = {
+            read(bytes) {
+                crypto.getRandomValues(
+                    new Uint8Array(bytes.buffer as ArrayBuffer, bytes.byteOffset, bytes.byteLength)
+                );
+            },
+        };
 
-    return generateRandomString(random, "0123456789", 6);
-},
+        return generateRandomString(random, "0123456789", 6);
+    },
 
     async sendVerificationRequest({
         identifier: email,

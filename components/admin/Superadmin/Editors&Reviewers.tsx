@@ -1,5 +1,6 @@
 "use client"
 
+import { getErrorMessage } from "@/components/lib/error-handler";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,13 +17,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
+import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
+import { useMutation, useQuery } from "convex/react";
 import { useState } from "react";
-import { FiMoreHorizontal } from "react-icons/fi";
+import { FiLoader, FiMoreHorizontal } from "react-icons/fi";
 import { LuPlus, LuSearch, LuUsers } from "react-icons/lu";
 import { toast } from "sonner";
 
 type TeamMember = {
-    id: string;
+    id: Id<"users">;
     name: string;
     email: string;
     role: "editor" | "reviewer";
@@ -49,30 +53,43 @@ interface EditorsAndReviewersProps {
     assignments: Assignment[];
     openAddMember: (role: TeamRole) => void;
 
+    memberName: string;
+    setMemberName: React.Dispatch<React.SetStateAction<string>>;
+    memberEmail: string;
+    setMemberEmail: React.Dispatch<React.SetStateAction<string>>;
+    memberRole: TeamRole;
+    setMemberRole: React.Dispatch<React.SetStateAction<TeamRole>>;
+
     editingMember: TeamMember | null;
     setEditingMember: React.Dispatch<React.SetStateAction<TeamMember | null>>;
     teamDialogOpen: boolean;
     setTeamDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    handleSaveMember: () => void;
 }
 
 
-export default function EditorsAndReviewers({ teamMembers, setTeamMembers, editors, reviewers, assignments, openAddMember, editingMember, setEditingMember, teamDialogOpen, setTeamDialogOpen }: EditorsAndReviewersProps) {
+export default function EditorsAndReviewers({ editors, reviewers, assignments, openAddMember, editingMember, setEditingMember, teamDialogOpen, setTeamDialogOpen, memberName,
+    setMemberName,
+    memberEmail,
+    setMemberEmail,
+    memberRole,
+    setMemberRole, handleSaveMember }: EditorsAndReviewersProps) {
 
     const [teamSearch, setTeamSearch] = useState("");
-    const [teamRoleFilter, setTeamRoleFilter] = useState("all");
-    const [memberName, setMemberName] = useState("");
-    const [memberEmail, setMemberEmail] = useState("");
-    const [memberRole, setMemberRole] = useState<TeamRole>("editor");
-    const filteredTeam = teamMembers.filter((member) => {
-        const matchesSearch =
-            member.name.toLowerCase().includes(teamSearch.toLowerCase()) ||
-            member.email.toLowerCase().includes(teamSearch.toLowerCase());
+    const teamMembers = useQuery(api.registration.viewTeamMembers, {});
 
-        const matchesRole =
-            teamRoleFilter === "all" || member.role === teamRoleFilter;
+    const [teamRoleFilter, setTeamRoleFilter] = useState<
+        "all" | "editor" | "reviewer"
+    >("all");
 
-        return matchesSearch && matchesRole;
+    const viewTeamMembers = useQuery(api.registration.viewTeamMembers, {
+        search: teamSearch,
+        role: teamRoleFilter === "all" ? undefined : teamRoleFilter,
     });
+    const updateTeamMemberStatus = useMutation(api.registration.toggleTeamMemberStatus);
+    const deleteTeamMember = useMutation(api.registration.deleteTeamMember);
+
+    const teamMember = viewTeamMembers ?? [];
 
     const openEditMember = (member: TeamMember) => {
         setEditingMember(member);
@@ -82,19 +99,6 @@ export default function EditorsAndReviewers({ teamMembers, setTeamMembers, edito
         setTeamDialogOpen(true);
     };
 
-    const toggleMemberStatus = (id: string) => {
-        setTeamMembers((current) =>
-            current.map((member) =>
-                member.id === id
-                    ? {
-                        ...member,
-                        status: member.status === "active" ? "inactive" : "active",
-                    }
-                    : member
-            )
-        );
-    };
-
     const resetTeamForm = () => {
         setEditingMember(null);
         setMemberName("");
@@ -102,48 +106,22 @@ export default function EditorsAndReviewers({ teamMembers, setTeamMembers, edito
         setMemberRole("editor");
     };
 
-
-    const deleteMember = (id: string) => {
-        setTeamMembers((current) => current.filter((member) => member.id !== id));
-        toast.success("Team member removed.");
+    const toggleMemberStatus = async (id: Id<"users">) => {
+        try {
+            await updateTeamMemberStatus({ memberId: id });
+            toast.success("Team member status updated.");
+        } catch (error) {
+            toast.error(getErrorMessage(error));
+        }
     };
 
-    const handleSaveMember = () => {
-        if (!memberName.trim() || !memberEmail.trim()) {
-            toast.error("Name and email address are required.");
-            return;
+    const deleteMember = async (id: Id<"users">) => {
+        try {
+            await deleteTeamMember({ memberId: id });
+            toast.success("Team member removed.");
+        } catch (error) {
+            toast.error(getErrorMessage(error));
         }
-
-        if (editingMember) {
-            setTeamMembers((current) =>
-                current.map((member) =>
-                    member.id === editingMember.id
-                        ? {
-                            ...member,
-                            name: memberName,
-                            email: memberEmail,
-                            role: memberRole,
-                        }
-                        : member
-                )
-            );
-
-            toast.success("Team member updated.");
-        } else {
-            const newMember: TeamMember = {
-                id: crypto.randomUUID(),
-                name: memberName,
-                email: memberEmail,
-                role: memberRole,
-                status: "active",
-            };
-
-            setTeamMembers((current) => [...current, newMember]);
-            toast.success(`${memberRole === "editor" ? "Editor" : "Reviewer"} added.`);
-        }
-
-        setTeamDialogOpen(false);
-        resetTeamForm();
     };
 
     return (
@@ -176,10 +154,10 @@ export default function EditorsAndReviewers({ teamMembers, setTeamMembers, edito
 
             <div className="grid gap-4 tablet:grid-cols-2 2xl:grid-cols-4 my-4">
                 {[
-                    { label: "Total team members", value: teamMembers.length },
-                    { label: "Editors", value: editors.length },
-                    { label: "Reviewers", value: reviewers.length },
-                    { label: "Active members", value: teamMembers.filter((member) => member.status === "active").length },
+                    { label: "Total team members", value: teamMember.length },
+                    { label: "Editors", value: teamMembers?.filter((member) => member.role === "editor").length },
+                    { label: "Reviewers", value: teamMembers?.filter((member) => member.role === "reviewer").length },
+                    { label: "Active members", value: teamMember.filter((member) => member.status === "active").length },
                 ].map((item) => (
                     <Card key={item.label} className="rounded-xl border-slate-200 shadow-sm">
                         <CardContent className="p-5">
@@ -209,7 +187,9 @@ export default function EditorsAndReviewers({ teamMembers, setTeamMembers, edito
                                     className="pl-9 tablet:w-56"
                                 />
                             </div>
-                            <Select value={teamRoleFilter} onValueChange={setTeamRoleFilter}>
+                            <Select value={teamRoleFilter} onValueChange={(value) =>
+                                setTeamRoleFilter(value as "all" | "editor" | "reviewer")
+                            }>
                                 <SelectTrigger className="w-37.5">
                                     <SelectValue placeholder="All roles" />
                                 </SelectTrigger>
@@ -224,21 +204,36 @@ export default function EditorsAndReviewers({ teamMembers, setTeamMembers, edito
                 </CardHeader>
 
                 <CardContent>
-                    {filteredTeam.length === 0 ? (
+                    {viewTeamMembers === undefined ? (
+                        <div className="py-16 text-center">
+                            <FiLoader className="mx-auto mb-3 h-7 w-7 animate-spin text-slate-400" />
+                            <p className="text-sm text-slate-500">
+                                Loading editorial team...
+                            </p>
+                        </div>
+                    ) : teamMember.length === 0 ? (
                         <div className="py-16 text-center">
                             <LuUsers className="mx-auto mb-3 text-slate-300" size={32} />
-                            <p className="font-semibold">No team members added yet</p>
-                            <p className="mt-1 text-sm text-slate-400">
-                                Add editors and reviewers to begin organising the review process.
+
+                            <p className="font-semibold">
+                                {teamSearch || teamRoleFilter !== "all"
+                                    ? "No matching team members"
+                                    : "No team members added yet"}
                             </p>
-                            <button onClick={() => openAddMember("editor")}
-                                className="group mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-[#07111f] px-5 py-3 text-sm font-semibold text-white shadow-md shadow-slate-900/10 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#10243b] hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 focus-visible:ring-offset-2"
+
+                            <p className="mt-1 text-sm text-slate-400">
+                                {teamSearch || teamRoleFilter !== "all"
+                                    ? "Try changing your search or role filter."
+                                    : "Add editors and reviewers to begin organising the review process."}
+                            </p>
+
+                            <Button
+                                onClick={() => openAddMember("editor")}
+                                className="mt-4 bg-[#07111f] hover:bg-slate-800"
                             >
-                                <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-cyan-500/15 text-cyan-400 transition-colors group-hover:bg-cyan-500 group-hover:text-white">
-                                    <LuPlus size={16} />
-                                </span>
-                                Create assignment
-                            </button>
+                                <LuPlus className="mr-2" size={16} />
+                                Add editor
+                            </Button>
                         </div>
                     ) : (
                         <div className="overflow-x-auto">
@@ -252,8 +247,9 @@ export default function EditorsAndReviewers({ teamMembers, setTeamMembers, edito
                                         <TableHead />
                                     </TableRow>
                                 </TableHeader>
+
                                 <TableBody>
-                                    {filteredTeam.map((member) => {
+                                    {teamMember.map((member) => {
                                         const workload = assignments.filter((assignment) =>
                                             member.role === "editor"
                                                 ? assignment.editorId === member.id
@@ -264,36 +260,68 @@ export default function EditorsAndReviewers({ teamMembers, setTeamMembers, edito
                                             <TableRow key={member.id}>
                                                 <TableCell>
                                                     <p className="font-semibold">{member.name}</p>
-                                                    <p className="text-xs text-slate-400">{member.email}</p>
+                                                    <p className="text-xs text-slate-400">
+                                                        {member.email}
+                                                    </p>
                                                 </TableCell>
+
                                                 <TableCell>
-                                                    <Badge variant="outline" className={member.role === "editor" ? "border-blue-200 bg-blue-50 text-blue-700" : "border-purple-200 bg-purple-50 text-purple-700"}>
+                                                    <Badge
+                                                        variant="outline"
+                                                        className={
+                                                            member.role === "editor"
+                                                                ? "border-blue-200 bg-blue-50 text-blue-700"
+                                                                : "border-purple-200 bg-purple-50 text-purple-700"
+                                                        }
+                                                    >
                                                         {member.role}
                                                     </Badge>
                                                 </TableCell>
+
                                                 <TableCell>
                                                     <span className="font-semibold">{workload}</span>
-                                                    <span className="ml-1 text-xs text-slate-400">papers</span>
+                                                    <span className="ml-1 text-xs text-slate-400">
+                                                        papers
+                                                    </span>
                                                 </TableCell>
+
                                                 <TableCell>
-                                                    <Badge variant="outline" className={member.status === "active" ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-slate-200 bg-slate-100 text-slate-500"}>
-                                                        {member.status}
+                                                    <Badge
+                                                        variant="outline"
+                                                        className={
+                                                            member.status !== "inactive"
+                                                                ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                                                                : "border-slate-200 bg-slate-100 text-slate-500"
+                                                        }
+                                                    >
+                                                        {member.status === "active" ? "active" : "inactive"}
                                                     </Badge>
                                                 </TableCell>
+
                                                 <TableCell>
+                                                    {/* Keep your existing DropdownMenu here */}
                                                     <DropdownMenu>
                                                         <DropdownMenuTrigger asChild>
                                                             <Button variant="ghost" size="icon">
                                                                 <FiMoreHorizontal size={18} />
                                                             </Button>
                                                         </DropdownMenuTrigger>
+
                                                         <DropdownMenuContent align="end">
-                                                            <DropdownMenuItem onClick={() => openEditMember(member)}>
+                                                            <DropdownMenuItem
+                                                                onClick={() => openEditMember(member)}
+                                                            >
                                                                 Edit member
                                                             </DropdownMenuItem>
-                                                            <DropdownMenuItem onClick={() => toggleMemberStatus(member.id)}>
-                                                                {member.status === "active" ? "Deactivate" : "Activate"}
+
+                                                            <DropdownMenuItem
+                                                                onClick={() => toggleMemberStatus(member.id)}
+                                                            >
+                                                                {member.status === "active"
+                                                                    ? "Deactivate"
+                                                                    : "Activate"}
                                                             </DropdownMenuItem>
+
                                                             <DropdownMenuItem
                                                                 className="text-red-600"
                                                                 onClick={() => deleteMember(member.id)}

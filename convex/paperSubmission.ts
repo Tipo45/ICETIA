@@ -6,7 +6,7 @@ import { action } from "./_generated/server";
 import { internal } from "./_generated/api";
 import { v, ConvexError } from "convex/values";
 import { resend } from "./registration";
-import { verifyAdminEmail, verifyId } from "./emailTemplate";
+import { verifyId } from "./emailTemplate";
 
 export const requestPaperSubmissionOtp = action({
   args: {
@@ -22,7 +22,7 @@ export const requestPaperSubmissionOtp = action({
 
     // 1. Find the registration by its human-readable number.
     const registration = await ctx.runQuery(
-      internal.registration.getRegistrationForOtp,
+      internal.registration.getEligibleRegistration,
       { registrationNumber }
     );
 
@@ -56,7 +56,7 @@ export const requestPaperSubmissionOtp = action({
     await ctx.runMutation(
       internal.registration.storePaperSubmissionOtp,
       {
-        registrationId: registration._id,
+        registrationId: registration.registrationId,
         registrationNumber: registration.registrationNumber,
         email: registration.email,
         otpHash,
@@ -80,7 +80,7 @@ export const requestPaperSubmissionOtp = action({
     } catch {
       await ctx.runMutation(
         internal.registration.clearPaperSubmissionOtps,
-        { registrationId: registration._id }
+        { registrationId: registration.registrationId }
       );
 
       throw new ConvexError(

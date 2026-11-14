@@ -12,7 +12,6 @@ import { Id } from "@/convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 import { FunctionReturnType } from "convex/server";
 import { Country } from "country-state-city";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LuChevronDown, LuFileCheck, LuMail, LuRefreshCw, LuSearch, LuSend, LuUsers } from "react-icons/lu";
 import { toast } from "sonner";
@@ -21,15 +20,19 @@ type ParticipantData = FunctionReturnType<
     typeof api.registration.getParticipants
 >;
 
+
 interface ParticipantProps {
     participants: ParticipantData | undefined;
+    participantsList: ParticipantData;
+    paperTracks: string[];
+    selectedTrack: string | undefined;
+    setSelectedTrack: React.Dispatch<
+        React.SetStateAction<string | undefined>
+    >;
     category: "author" | "participant" | "student" | undefined;
     setCategory: React.Dispatch<
         React.SetStateAction<"author" | "participant" | "student" | undefined>
     >;
-
-    tracks: string;
-    setTracks: React.Dispatch<React.SetStateAction<string>>;
 
     country: string;
     setCountry: React.Dispatch<React.SetStateAction<string>>;
@@ -42,16 +45,16 @@ interface ParticipantProps {
     authorsCount: number;
     participantCount: number;
     studentsCount: number;
-
-    paperTracks: string[];
 }
 
 
 export default function Participant({ participants,
+    participantsList,
+    selectedTrack,
+    setSelectedTrack,
     setCategory,
     category,
-    tracks,
-    setTracks,
+    paperTracks,
     country,
     setCountry,
     paymentDate,
@@ -59,16 +62,14 @@ export default function Participant({ participants,
     setSearch,
     authorsCount,
     participantCount,
-    studentsCount,
-    paperTracks }: ParticipantProps) {
+    studentsCount }: ParticipantProps) {
 
-    const router = useRouter();
+
     const sendConferenceMail = useMutation(api.registration.sendMail);
     const sendEmailTicket = useMutation(api.registration.sendConferenceTicket);
     const sendReminder = useMutation(api.registration.sendReminder);
     const [sendingId, setSendingId] = useState<Id<"registrations"> | null>(null);
 
-    const participantsList = participants ?? [];
 
     const coAuthorsCount = participantsList.reduce(
         (total, participant) => total + (participant.coAuthors?.length ?? 0),
@@ -76,7 +77,7 @@ export default function Participant({ participants,
     );
 
     const [searchInput, setSearchInput] = useState("");
-    
+
 
     useEffect(() => {
         const timer = setTimeout(() => setSearch(searchInput), 400);
@@ -89,20 +90,12 @@ export default function Participant({ participants,
         setCategory(undefined);
         setCountry("");
         setPaymentDate("");
-        setTracks("");
+        setSelectedTrack("");
     };
 
     const handleSendReminder = async (registrationId: Id<"registrations">) => {
         try {
             setSendingId(registrationId);
-
-            const token = sessionStorage.getItem("icetia-super-admin-session");
-
-            if (!token) {
-                toast.error("Your admin session has expired. Please log in again.");
-                router.push("/admin/super-admin-login");
-                return;
-            }
 
             await sendReminder({ registrationId });
             toast.success("Reminder email sent successfully.");
@@ -215,14 +208,23 @@ export default function Participant({ participants,
                             </SelectContent>
                         </Select>
 
-                        <Select value={tracks || "all"} onValueChange={(value) => setTracks(value === "all" ? "" : value)}>
+                        <Select
+                            value={selectedTrack ?? "all"}
+                            onValueChange={(value) =>
+                                setSelectedTrack(value === "all" ? undefined : value)
+                            }
+                        >
                             <SelectTrigger>
                                 <SelectValue placeholder="All tracks" />
                             </SelectTrigger>
+
                             <SelectContent>
                                 <SelectItem value="all">All tracks</SelectItem>
+
                                 {paperTracks.map((track) => (
-                                    <SelectItem key={track} value={track}>{track}</SelectItem>
+                                    <SelectItem key={track} value={track}>
+                                        {track}
+                                    </SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>

@@ -23,13 +23,14 @@ import {
 } from "react-icons/lu";
 import Overview from "@/components/admin/Superadmin/Overview";
 import Participant from "@/components/admin/Superadmin/Participants";
-import { useConvexAuth, useQuery } from "convex/react";
+import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import EditorsAndReviewers from "@/components/admin/Superadmin/Editors&Reviewers";
 import Papers from "@/components/admin/Superadmin/Papers";
 import PaperAssignments from "@/components/admin/Superadmin/PaperAssignments";
 import ReviewsandDecisions from "@/components/admin/Superadmin/Reviews&Decisions";
 import ReportsandActivity from "@/components/admin/Superadmin/Reports&Activity";
 import { useAuthActions } from "@convex-dev/auth/react";
+import { getErrorMessage } from "@/components/lib/error-handler";
 
 type Section =
   | "overview"
@@ -43,10 +44,10 @@ type Section =
 type TeamRole = "editor" | "reviewer";
 
 type TeamMember = {
-  id: string;
+  id: Id<"users">;
   name: string;
   email: string;
-  role: TeamRole;
+  role: "editor" | "reviewer";
   status: "active" | "inactive";
 };
 
@@ -64,26 +65,13 @@ type PaperRow = {
 };
 
 type Assignment = {
-  id: string;
+  id: Id<"paperAssignments">;
   paperId: string;
   editorId: string;
   reviewerIds: string[];
   deadline: string;
   status: "assigned" | "in_progress" | "completed";
 };
-
-const paperTracks = [
-  "Cybersecurity, Privacy & Digital Trust",
-  "Artificial Intelligence and Machine Learning",
-  "Smart Systems, Internet of Things and Embedded Computing",
-  "Computing, Cloud, Edge and Distributed Systems",
-  "Data Science, Analytics and Big Data",
-  "Software Development",
-  "Health Informatics, Digital Health and Medical Laboratory Technology",
-  "Emerging Technologies and Digital Transformation",
-  "Computing for Sustainable Development",
-  "Information Systems, Governance and Society",
-];
 
 
 const navigation: {
@@ -102,10 +90,23 @@ const navigation: {
   ];
 
 export default function SuperAdminPage() {
+  const admin = useQuery(api.registration.getCurrentAdmin);
   const router = useRouter();
+  const paperTracks = [
+    "Cybersecurity, Privacy & Digital Trust",
+    "Artificial Intelligence and Machine Learning",
+    "Smart Systems, Internet of Things and Embedded Computing",
+    "Computing, Cloud, Edge and Distributed Systems",
+    "Data Science, Analytics and Big Data",
+    "Software Development",
+    "Health Informatics, Digital Health and Medical Laboratory Technology",
+    "Emerging Technologies and Digital Transformation",
+    "Computing for Sustainable Development",
+    "Information Systems, Governance and Society",
+  ];
   const { isAuthenticated, isLoading } = useConvexAuth();
   const { signOut } = useAuthActions();
-    const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
 
   const [activeSection, setActiveSection] = useState<Section>("overview");
@@ -115,7 +116,7 @@ export default function SuperAdminPage() {
   const [category, setCategory] = useState<
     "author" | "participant" | "student" | undefined
   >();
-  const [tracks, setTracks] = useState("");
+  const [selectedTrack, setSelectedTrack] = useState<string | undefined>(undefined);
   const [country, setCountry] = useState("");
   const [paymentDate, setPaymentDate] = useState("");
 
@@ -136,6 +137,7 @@ export default function SuperAdminPage() {
   const [selectedReviewerIds, setSelectedReviewerIds] = useState<string[]>([]);
   const [assignmentDeadline, setAssignmentDeadline] = useState("");
 
+
   const toggleReviewer = (id: string) => {
     setSelectedReviewerIds((current) =>
       current.includes(id)
@@ -144,7 +146,63 @@ export default function SuperAdminPage() {
     );
   };
 
-  const handleCreateAssignment = () => {
+  const saveMember = useMutation(api.registration.handleSaveMember);
+  const updateMember = useMutation(api.registration.updateTeamMember);
+  const saveAssignment = useMutation(
+    api.registration.handleSaveAssignment
+  );
+
+  const editAssignment = useMutation(
+    api.registration.updateAssignment
+  );
+
+  const assignmentss = useQuery(
+    api.registration.viewAssignments,
+    {}
+  );
+
+  const handleSaveMember = async () => {
+    if (!memberName.trim() || !memberEmail.trim()) {
+      toast.error("Name and email address are required.");
+      return;
+    }
+
+    if (!memberRole) {
+      toast.error("Please select a role.");
+      return;
+    }
+
+    try {
+      if (editingMember) {
+        await updateMember({
+          memberId: editingMember.id as Id<"users">,
+          name: memberName.trim(),
+          email: memberEmail.trim(),
+          role: memberRole,
+        });
+
+        toast.success("Team member updated.");
+      } else {
+        await saveMember({
+          name: memberName.trim(),
+          email: memberEmail.trim(),
+          role: memberRole,
+        });
+
+        toast.success(
+          `${memberRole === "editor" ? "Editor" : "Reviewer"} added.`
+        );
+      }
+
+      setTeamDialogOpen(false);
+      resetTeamForm();
+
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
+
+  const handleCreateAssignment = async () => {
     if (!selectedPaperId || !selectedEditorId || selectedReviewerIds.length === 0) {
       toast.error("Select a paper, an editor and at least one reviewer.");
       return;
@@ -155,25 +213,43 @@ export default function SuperAdminPage() {
       return;
     }
 
-    const assignment: Assignment = {
-      id: crypto.randomUUID(),
-      paperId: selectedPaperId,
-      editorId: selectedEditorId,
-      reviewerIds: selectedReviewerIds,
-      deadline: assignmentDeadline,
-      status: "assigned",
-    };
+    try {
+      const reviewDeadline = new Date(assignmentDeadline).getTime();
 
-    setAssignments((current) => [...current, assignment]);
-    setAssignmentDialogOpen(false);
+      if (Number.isNaN(reviewDeadline) || reviewDeadline <= Date.now()) {
+        toast.error("Please select a valid future review deadline.");
+        return;
+      }
 
-    setSelectedPaperId("");
-    setSelectedEditorId("");
-    setSelectedReviewerIds([]);
-    setAssignmentDeadline("");
+      await saveAssignment({
+        paperId: selectedPaperId as Id<"submittedPapers">,
+        editorId: selectedEditorId as Id<"users">,
+        reviewerIds: selectedReviewerIds as Id<"users">[],
+        status: "editor_assigned",
+        reviewDeadline,
+      });
 
-    toast.success("Paper assignment created.");
+      setAssignmentDialogOpen(false);
+
+      setSelectedPaperId("");
+      setSelectedEditorId("");
+      setSelectedReviewerIds([]);
+      setAssignmentDeadline("");
+
+      toast.success("Paper assignment created successfully.");
+
+    } catch (error) {
+      console.error("Assignment creation failed:", error);
+
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Unable to create paper assignment. Please try again."
+      );
+    }
   };
+
+  const handleUpdateAssignment = () => { };
 
   const [paperSearch, setPaperSearch] = useState("");
   const [paperStatusFilter, setPaperStatusFilter] = useState("all");
@@ -187,6 +263,7 @@ export default function SuperAdminPage() {
   const participants = useQuery(api.registration.getParticipants, {
     search: search || undefined,
     category,
+    paperTrack: selectedTrack,
     country: country || undefined,
     paymentDate: paymentDate
       ? new Date(paymentDate).getTime()
@@ -485,7 +562,7 @@ export default function SuperAdminPage() {
               </p>
             </div>
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#07111f] text-xs font-bold text-cyan-400">
-              SA
+              {admin?.name?.split(" ").map((word) => word.charAt(0).toUpperCase()).join("")}
             </div>
           </div>
         </header>
@@ -512,6 +589,17 @@ export default function SuperAdminPage() {
               setActiveSection={setActiveSection}
               openAddMember={openAddMember}
               statusBadge={statusBadge}
+              editingMember={editingMember}
+              setEditingMember={setEditingMember}
+              teamDialogOpen={teamDialogOpen}
+              setTeamDialogOpen={setTeamDialogOpen}
+              memberName={memberName}
+              setMemberName={setMemberName}
+              memberEmail={memberEmail}
+              setMemberEmail={setMemberEmail}
+              memberRole={memberRole}
+              setMemberRole={setMemberRole}
+              handleSaveMember={handleSaveMember}
             />
           )}
 
@@ -522,10 +610,12 @@ export default function SuperAdminPage() {
           {activeSection === "participants" && (
             <Participant
               participants={participants}
+              participantsList={participantsList}
+              paperTracks={paperTracks}
+              selectedTrack={selectedTrack}
+              setSelectedTrack={setSelectedTrack}
               category={category}
               setCategory={setCategory}
-              tracks={tracks}
-              setTracks={setTracks}
               country={country}
               setCountry={setCountry}
               paymentDate={paymentDate}
@@ -534,7 +624,6 @@ export default function SuperAdminPage() {
               authorsCount={authorsCount}
               participantCount={participantCount}
               studentsCount={studentsCount}
-              paperTracks={paperTracks}
             />
           )}
 
@@ -544,16 +633,23 @@ export default function SuperAdminPage() {
 
           {activeSection === "team" && (
             <EditorsAndReviewers
-              teamMembers={teamMembers}
-              setTeamMembers={setTeamMembers}
               editors={editors}
               reviewers={reviewers}
+              teamMembers={teamMembers}
+              setTeamMembers={setTeamMembers}
               assignments={assignments}
               openAddMember={openAddMember}
               editingMember={editingMember}
               setEditingMember={setEditingMember}
               teamDialogOpen={teamDialogOpen}
-              setTeamDialogOpen={setTeamDialogOpen} />
+              setTeamDialogOpen={setTeamDialogOpen}
+              memberName={memberName}
+              setMemberName={setMemberName}
+              memberEmail={memberEmail}
+              setMemberEmail={setMemberEmail}
+              memberRole={memberRole}
+              setMemberRole={setMemberRole}
+              handleSaveMember={handleSaveMember} />
           )}
 
           {/* ==========================================

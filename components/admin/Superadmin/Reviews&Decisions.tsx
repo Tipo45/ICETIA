@@ -16,6 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Id } from "@/convex/_generated/dataModel";
 import { LuActivity, LuFileCheck } from "react-icons/lu";
 
 type Assignment = {
@@ -28,11 +29,11 @@ type Assignment = {
 };
 
 type TeamMember = {
-  id: string;
-  name: string;
-  email: string;
-  role: "editor" | "reviewer";
-  status: "active" | "inactive";
+    id: Id<"users">;
+    name: string;
+    email: string;
+    role: "editor" | "reviewer";
+    status: "active" | "inactive";
 };
 
 type PaperRow = {
@@ -78,7 +79,7 @@ export default function ReviewsandDecisions({ assignments, getPaper, getMember, 
                 </p>
             </div>
 
-            <div className="grid gap-4 tablet:grid-cols-3">
+            <div className="grid gap-4 tablet:grid-cols-3 my-4">
                 <Card className="rounded-xl border-slate-200 shadow-sm">
                     <CardContent className="p-5">
                         <p className="text-xs text-slate-500">Assigned for review</p>
@@ -103,7 +104,7 @@ export default function ReviewsandDecisions({ assignments, getPaper, getMember, 
                 </Card>
             </div>
 
-            <Card className="rounded-xl border-slate-200 shadow-sm">
+            <Card className="rounded-xl border-slate-200 shadow-sm mb-4">
                 <CardHeader>
                     <CardTitle className="text-base">Review tracking</CardTitle>
                     <CardDescription>

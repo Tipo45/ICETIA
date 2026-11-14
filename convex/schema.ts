@@ -16,6 +16,10 @@ export default defineSchema({
             v.literal("editor"),
             v.literal("reviewer")
         )),
+        status: v.optional(v.union(
+            v.literal("active"),
+            v.literal("inactive")
+        )),
     }).index("email", ["email"])
         .index("name", ["name"])
         .index("role", ["role"]),
@@ -41,7 +45,18 @@ export default defineSchema({
             v.literal("Professor"),
             v.literal("Other")
         )),
-        paperTrack: v.optional(v.string()),
+        paperTrack: v.optional(v.union(
+            v.literal("Cybersecurity, Privacy & Digital Trust"),
+            v.literal("Artificial Intelligence and Machine Learning"),
+            v.literal("Smart Systems, Internet of Things and Embedded Computing"),
+            v.literal("Computing, Cloud, Edge and Distributed Systems"),
+            v.literal("Data Science, Analytics and Big Data"),
+            v.literal("Software Development"),
+            v.literal("Health Informatics, Digital Health and Medical Laboratory Technology"),
+            v.literal("Emerging Technologies and Digital Transformation"),
+            v.literal("Computing for Sustainable Development"),
+            v.literal("Information Systems, Governance and Society"),
+        )),
         paperTitle: v.optional(v.string()),
         paperFileId: v.optional(v.id("_storage")),
 
@@ -93,12 +108,6 @@ export default defineSchema({
         gatewayResponse: v.optional(v.string())
     }).index("by_registration", ["registrationId"])
         .index("by_reference", ["reference"]),
-
-    emails: defineTable({
-        to: v.string(),
-        subject: v.string(),
-        body: v.string(),
-    }),
 
     submittedPapers: defineTable({
         registrationId: v.id("registrations"),
@@ -191,7 +200,6 @@ export default defineSchema({
         ),
         reviewDeadline: v.optional(v.number()),
         editorDeadline: v.optional(v.number()),
-        assignedAt: v.number(),
     })
         .index("by_paper", ["paperId"])
         .index("by_editor", ["editorId"])

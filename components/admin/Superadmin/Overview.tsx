@@ -1,12 +1,34 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 import { FunctionReturnType } from "convex/server";
 import { LuClipboardList, LuFileText, LuPlus, LuUserRound, LuUsers } from "react-icons/lu";
 
 type ParticipantData = FunctionReturnType<
     typeof api.registration.getParticipants
 >;
+
+type TeamMember = {
+    id: Id<"users">;
+    name: string;
+    email: string;
+    role: "editor" | "reviewer";
+    status: "active" | "inactive";
+};
+
+type TeamRole = "editor" | "reviewer";
 
 type Section =
     | "overview"
@@ -30,14 +52,6 @@ type PaperRow = {
     status: string;
 }
 
-type EditorialMember = {
-    id: string;
-    name: string;
-    email: string;
-    role: "editor" | "reviewer";
-    status: "active" | "inactive";
-}
-
 type Assignment = {
     id: string;
     paperId: string;
@@ -56,8 +70,8 @@ interface OverviewProps {
     participants: ParticipantData | undefined;
 
     papers: PaperRow[];
-    editors: EditorialMember[];
-    reviewers: EditorialMember[];
+    editors: TeamMember[];
+    reviewers: TeamMember[];
     assignments: Assignment[];
     unassignedPapers: Paper[];
 
@@ -65,14 +79,27 @@ interface OverviewProps {
     studentsCount: number;
     paidCount: number;
     totalPeople: number;
+    memberName: string;
+    setMemberName: React.Dispatch<React.SetStateAction<string>>;
+    memberEmail: string;
+    setMemberEmail: React.Dispatch<React.SetStateAction<string>>;
+    memberRole: TeamRole;
+    setMemberRole: React.Dispatch<React.SetStateAction<TeamRole>>;
 
-    activeEditors: EditorialMember[];
-    activeReviewers: EditorialMember[];
+    activeEditors: TeamMember[];
+    activeReviewers: TeamMember[];
 
     setActiveSection: React.Dispatch<React.SetStateAction<Section>>;
-    openAddMember: (role: "editor" | "reviewer") => void;
+    openAddMember: (role: TeamRole) => void;
+    
+
+    editingMember: TeamMember | null;
+    setEditingMember: React.Dispatch<React.SetStateAction<TeamMember | null>>;
+    teamDialogOpen: boolean;
+    setTeamDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 
     statusBadge: (status: string) => React.ReactNode;
+    handleSaveMember: () => void;
 }
 
 export default function Overview({ participants,
@@ -88,11 +115,31 @@ export default function Overview({ participants,
     activeEditors,
     activeReviewers,
     setActiveSection,
+    teamDialogOpen,
+    setTeamDialogOpen,
     openAddMember,
+    editingMember,
+    setEditingMember,
     statusBadge,
+    memberName,
+    setMemberName,
+    memberEmail,
+    setMemberEmail,
+    memberRole,
+    setMemberRole,
+    handleSaveMember
 }: OverviewProps) {
 
+    
     const participantsList = participants ?? [];
+
+    const resetTeamForm = () => {
+        setEditingMember(null);
+        setMemberName("");
+        setMemberEmail("");
+        setMemberRole("editor");
+    };
+
     return (
         <div>
             <div className="flex flex-col justify-between gap-4 tablet:flex-row tablet:items-end">
@@ -350,6 +397,72 @@ export default function Overview({ participants,
                     )}
                 </CardContent>
             </Card>
+
+            <Dialog
+                open={teamDialogOpen}
+                onOpenChange={(open) => {
+                    setTeamDialogOpen(open);
+                    if (!open) resetTeamForm();
+                }}
+            >
+                <DialogContent className="max-h-[90vh] overflow-y-auto tablet:max-w-130">
+                    <DialogHeader>
+                        <DialogTitle>
+                            {editingMember ? "Edit team member" : "Add editorial team member"}
+                        </DialogTitle>
+                        <DialogDescription>
+                            Enter the member's details and select their editorial role.
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <div className="space-y-4 py-2">
+                        <div className="space-y-2">
+                            <Label>Full name *</Label>
+                            <Input
+                                value={memberName}
+                                onChange={(event) => setMemberName(event.target.value)}
+                                placeholder="Enter full name"
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label>Email address *</Label>
+                            <Input
+                                type="email"
+                                value={memberEmail}
+                                onChange={(event) => setMemberEmail(event.target.value)}
+                                placeholder="name@example.com"
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label>Editorial role *</Label>
+                            <Select
+                                value={memberRole}
+                                onValueChange={(value) => setMemberRole(value as TeamRole)}
+                            >
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select role" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="editor">Editor</SelectItem>
+                                    <SelectItem value="reviewer">Reviewer</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                    </div>
+
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setTeamDialogOpen(false)}>
+                            Cancel
+                        </Button>
+                        <Button onClick={handleSaveMember} className="bg-[#07111f] hover:bg-slate-800">
+                            {editingMember ? "Save changes" : "Add team member"}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }
