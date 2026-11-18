@@ -1,5 +1,6 @@
 import {
     mutation,
+    MutationCtx,
     query,
 } from "./_generated/server";
 
@@ -9,23 +10,69 @@ import {
 } from "convex/values";
 import { Id } from "./_generated/dataModel";
 
-async function logActivity(
-    ctx: any,
-    adminId: Id<"users">,
-    action: string,
-    description: string,
-    relatedPaperId?: Id<"submittedPapers">,
-    relatedUserId?: Id<"users">
+type AuditCategory =
+  | "team"
+  | "assignment"
+  | "paper"
+  | "review"
+  | "decision"
+  | "email"
+  | "auth"
+  | "system";
+
+  type LogActivityArgs = {
+  adminId?: Id<"users">;
+  actorName: string;
+  actorEmail?: string;
+  actorRole?: "super-admin" | "editor" | "reviewer";
+
+  action: string;
+  category: AuditCategory;
+  description: string;
+
+  entityId?: string;
+  entityType?: string;
+
+  metadata?: unknown;
+};
+
+export async function logActivity(
+  ctx: MutationCtx,
+  args: LogActivityArgs
 ) {
-    await ctx.db.insert("adminActivityLogs", {
-        adminId,
-        action,
-        description,
-        relatedPaperId,
-        relatedUserId,
-        createdAt: Date.now(),
-    });
+  await ctx.db.insert("adminActivityLogs", {
+    ...args,
+    createdAt: Date.now(),
+  });
 }
+
+export const getAuditLogs = query({
+  args: {},
+
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new ConvexError("You must be logged in.");
+    }
+
+    const userId = identity.subject.split("|")[0] as Id<"users">;
+
+    const currentUser = await ctx.db.get(userId);
+
+    if (!currentUser || currentUser.role !== "super-admin") {
+      throw new ConvexError(
+        "Only super-admins can view the activity log."
+      );
+    }
+
+    return await ctx.db
+      .query("adminActivityLogs")
+      .withIndex("by_created_at")
+      .order("desc")
+      .collect();
+  },
+});
 
 export const getEditorialDashboard = query({
     args: {},
@@ -105,8 +152,8 @@ export const getEditorialPapers = query({
 
                 const assignment = await ctx.db
                     .query("paperAssignments")
-                    .withIndex("by_paper", (q) =>
-                        q.eq("paperId", paper._id)
+                    .withIndex("by_submitted_paper", (q) =>
+                        q.eq("submittedPaperId", paper._id)
                     )
                     .unique();
 
@@ -239,8 +286,8 @@ export const makeEditorialDecision = mutation({
 
         const assignment = await ctx.db
             .query("paperAssignments")
-            .withIndex("by_paper", (q) =>
-                q.eq("paperId", args.paperId)
+            .withIndex("by_submitted_paper", (q) =>
+                q.eq("submittedPaperId", args.paperId)
             )
             .unique();
 

@@ -11,68 +11,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
-import { api } from "@/convex/_generated/api";
-import { Id } from "@/convex/_generated/dataModel";
-import { FunctionReturnType } from "convex/server";
 import { LuClipboardList, LuFileText, LuPlus, LuUserRound, LuUsers } from "react-icons/lu";
+import { AssignmentData, EditorialMember, EditorialRole, Paper, PaperRow, ParticipantData, Section, TeamMember, TeamRole } from "./types";
 
-type ParticipantData = FunctionReturnType<
-    typeof api.registration.getParticipants
->;
 
-type TeamMember = {
-    id: Id<"users">;
-    name: string;
-    email: string;
-    role: "editor" | "reviewer";
-    status: "active" | "inactive";
-};
-
-type TeamRole = "editor" | "reviewer";
-
-type Section =
-    | "overview"
-    | "participants"
-    | "team"
-    | "papers"
-    | "assignments"
-    | "reviews"
-    | "reports";
-
-type PaperRow = {
-    id: string;
-    registrationId: string;
-    registrationNumber: string;
-    author: string;
-    email: string;
-    title: string;
-    track: string;
-    url?: string | null;
-    source: string;
-    status: string;
-}
-
-type Assignment = {
-    id: string;
-    paperId: string;
-    editorId: string;
-    reviewerIds: string[];
-    deadline: string;
-    status: "assigned" | "in_progress" | "completed";
-}
-
-type Paper = {
-    id: string;
-    title: string;
-}
 
 interface OverviewProps {
     participants: ParticipantData | undefined;
 
     papers: PaperRow[];
-    editors: TeamMember[];
-    reviewers: TeamMember[];
-    assignments: Assignment[];
+    editors: EditorialMember[];
+    reviewers: EditorialMember[];
+    assignments: AssignmentData[];
     unassignedPapers: Paper[];
 
     authorsCount: number;
@@ -84,13 +34,13 @@ interface OverviewProps {
     memberEmail: string;
     setMemberEmail: React.Dispatch<React.SetStateAction<string>>;
     memberRole: TeamRole;
-    setMemberRole: React.Dispatch<React.SetStateAction<TeamRole>>;
+    setMemberRole: React.Dispatch<React.SetStateAction<EditorialRole>>;
 
-    activeEditors: TeamMember[];
-    activeReviewers: TeamMember[];
+    activeEditors: EditorialMember[];
+    activeReviewers: EditorialMember[];
 
     setActiveSection: React.Dispatch<React.SetStateAction<Section>>;
-    openAddMember: (role: TeamRole) => void;
+    openAddMember: (role: EditorialRole) => void;
     
 
     editingMember: TeamMember | null;
@@ -439,7 +389,7 @@ export default function Overview({ participants,
                             <Label>Editorial role *</Label>
                             <Select
                                 value={memberRole}
-                                onValueChange={(value) => setMemberRole(value as TeamRole)}
+                                onValueChange={(value) => setMemberRole(value as EditorialRole)}
                             >
                                 <SelectTrigger>
                                     <SelectValue placeholder="Select role" />

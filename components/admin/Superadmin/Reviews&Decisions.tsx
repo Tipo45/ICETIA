@@ -2,74 +2,37 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
 } from "@/components/ui/table";
 import { Id } from "@/convex/_generated/dataModel";
 import { LuActivity, LuFileCheck } from "react-icons/lu";
+import { AssignmentData, PaperRow, Section, TeamMember } from "./types";
 
-type Assignment = {
-    id: string;
-    paperId: string;
-    editorId: string;
-    reviewerIds: string[];
-    deadline: string;
-    status: "assigned" | "in_progress" | "completed";
-};
 
-type TeamMember = {
-    id: Id<"users">;
-    name: string;
-    email: string;
-    role: "editor" | "reviewer";
-    status: "active" | "inactive";
-};
-
-type PaperRow = {
-    id: string;
-    registrationId: string;
-    registrationNumber: string;
-    author: string;
-    email: string;
-    title: string;
-    track: string;
-    url?: string | null;
-    source: string;
-    status: string;
-};
-
-type Section =
-  | "overview"
-  | "participants"
-  | "team"
-  | "papers"
-  | "assignments"
-  | "reviews"
-  | "reports";
 
 interface ReviewsandDecisionsProps {
-    assignments: Assignment[];
-    getPaper: (paperId: string) => PaperRow | undefined;
+    assignments: AssignmentData[];
 
-    getMember: (memberId: string) => TeamMember| undefined;
+    getMember: (id: Id<"users">) => TeamMember | undefined;
 
     statusBadge: (status: string) => React.ReactNode;
 
     setActiveSection: React.Dispatch<React.SetStateAction<Section>>;
 }
 
-export default function ReviewsandDecisions({ assignments, getPaper, getMember, statusBadge, setActiveSection }: ReviewsandDecisionsProps) {
+export default function ReviewsandDecisions({ assignments, getMember, statusBadge, setActiveSection }: ReviewsandDecisionsProps) {
     return (
         <div>
             <div>
@@ -90,7 +53,7 @@ export default function ReviewsandDecisions({ assignments, getPaper, getMember, 
                     <CardContent className="p-5">
                         <p className="text-xs text-slate-500">In progress</p>
                         <p className="mt-2 text-2xl font-bold">
-                            {assignments.filter((item) => item.status === "in_progress").length}
+                            {assignments.filter((item) => item.status === "under_review").length}
                         </p>
                     </CardContent>
                 </Card>
@@ -141,14 +104,16 @@ export default function ReviewsandDecisions({ assignments, getPaper, getMember, 
                                 </TableHeader>
                                 <TableBody>
                                     {assignments.map((assignment) => (
-                                        <TableRow key={assignment.id}>
+                                        <TableRow key={assignment._id}>
                                             <TableCell className="min-w-55 font-semibold">
-                                                {getPaper(assignment.paperId)?.title ?? "Paper unavailable"}
+                                                {assignment.paper?.paperTitle ?? "Paper unavailable"}
                                             </TableCell>
                                             <TableCell>{getMember(assignment.editorId)?.name ?? "—"}</TableCell>
                                             <TableCell>{assignment.reviewerIds.length}</TableCell>
                                             <TableCell className="whitespace-nowrap text-xs">
-                                                {new Date(assignment.deadline).toLocaleDateString()}
+                                                {assignment.reviewDeadline
+                                                    ? new Date(assignment.reviewDeadline).toLocaleDateString("en-NG")
+                                                    : "Not set"}
                                             </TableCell>
                                             <TableCell>{statusBadge(assignment.status)}</TableCell>
                                             <TableCell>

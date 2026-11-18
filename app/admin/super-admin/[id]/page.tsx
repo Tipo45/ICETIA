@@ -31,47 +31,7 @@ import ReviewsandDecisions from "@/components/admin/Superadmin/Reviews&Decisions
 import ReportsandActivity from "@/components/admin/Superadmin/Reports&Activity";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { getErrorMessage } from "@/components/lib/error-handler";
-
-type Section =
-  | "overview"
-  | "participants"
-  | "team"
-  | "papers"
-  | "assignments"
-  | "reviews"
-  | "reports";
-
-type TeamRole = "editor" | "reviewer";
-
-type TeamMember = {
-  id: Id<"users">;
-  name: string;
-  email: string;
-  role: "editor" | "reviewer";
-  status: "active" | "inactive";
-};
-
-type PaperRow = {
-  id: string;
-  registrationId: Id<"registrations">;
-  registrationNumber: string;
-  author: string;
-  email: string;
-  title: string;
-  track: string;
-  url?: string | null;
-  source: string;
-  status: string;
-};
-
-type Assignment = {
-  id: Id<"paperAssignments">;
-  paperId: string;
-  editorId: string;
-  reviewerIds: string[];
-  deadline: string;
-  status: "assigned" | "in_progress" | "completed";
-};
+import { AssignmentData, EditorialMember, EditorialRole, PaperRow, Section, TeamMember, TeamRole } from "@/components/admin/Superadmin/types";
 
 
 const navigation: {
@@ -104,6 +64,7 @@ export default function SuperAdminPage() {
     "Computing for Sustainable Development",
     "Information Systems, Governance and Society",
   ];
+
   const { isAuthenticated, isLoading } = useConvexAuth();
   const { signOut } = useAuthActions();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -121,28 +82,34 @@ export default function SuperAdminPage() {
   const [paymentDate, setPaymentDate] = useState("");
 
   // Editorial UI state
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
-  const [assignments, setAssignments] = useState<Assignment[]>([]);
+  const teamMembers = useQuery(
+    api.registration.viewTeamMembers,
+    { search: "" }
+  );
 
   const [teamDialogOpen, setTeamDialogOpen] = useState(false);
   const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
+  const [editingAssignment, setEditingAssignment] = useState<AssignmentData | null>(null);
+
 
   const [memberName, setMemberName] = useState("");
   const [memberEmail, setMemberEmail] = useState("");
-  const [memberRole, setMemberRole] = useState<TeamRole>("editor");
+  const [memberRole, setMemberRole] = useState<EditorialRole>("editor");
 
   const [assignmentDialogOpen, setAssignmentDialogOpen] = useState(false);
   const [selectedPaperId, setSelectedPaperId] = useState("");
-  const [selectedEditorId, setSelectedEditorId] = useState("");
-  const [selectedReviewerIds, setSelectedReviewerIds] = useState<string[]>([]);
-  const [assignmentDeadline, setAssignmentDeadline] = useState("");
+  const [selectedEditorId, setSelectedEditorId] =
+    useState<Id<"users"> | "">("");
+  const [selectedReviewerIds, setSelectedReviewerIds] =
+    useState<Id<"users">[]>([]);
+  const [assignmentDeadline, setAssignmentDeadline] = useState<number | undefined>(undefined);
 
 
-  const toggleReviewer = (id: string) => {
-    setSelectedReviewerIds((current) =>
-      current.includes(id)
-        ? current.filter((reviewerId) => reviewerId !== id)
-        : [...current, id]
+  const toggleReviewer = (reviewerId: Id<"users">) => {
+    setSelectedReviewerIds((previous) =>
+      previous.includes(reviewerId)
+        ? previous.filter((id) => id !== reviewerId)
+        : [...previous, reviewerId]
     );
   };
 
@@ -152,14 +119,13 @@ export default function SuperAdminPage() {
     api.registration.handleSaveAssignment
   );
 
-  const editAssignment = useMutation(
+  const updateAssignment = useMutation(
     api.registration.updateAssignment
   );
 
-  const assignmentss = useQuery(
-    api.registration.viewAssignments,
-    {}
-  );
+  const assignments = useQuery(
+    api.registration.viewAssignments
+  ) ?? [];
 
   const handleSaveMember = async () => {
     if (!memberName.trim() || !memberEmail.trim()) {
@@ -201,55 +167,6 @@ export default function SuperAdminPage() {
       toast.error(getErrorMessage(error));
     }
   };
-
-  const handleCreateAssignment = async () => {
-    if (!selectedPaperId || !selectedEditorId || selectedReviewerIds.length === 0) {
-      toast.error("Select a paper, an editor and at least one reviewer.");
-      return;
-    }
-
-    if (!assignmentDeadline) {
-      toast.error("Please select a review deadline.");
-      return;
-    }
-
-    try {
-      const reviewDeadline = new Date(assignmentDeadline).getTime();
-
-      if (Number.isNaN(reviewDeadline) || reviewDeadline <= Date.now()) {
-        toast.error("Please select a valid future review deadline.");
-        return;
-      }
-
-      await saveAssignment({
-        paperId: selectedPaperId as Id<"submittedPapers">,
-        editorId: selectedEditorId as Id<"users">,
-        reviewerIds: selectedReviewerIds as Id<"users">[],
-        status: "editor_assigned",
-        reviewDeadline,
-      });
-
-      setAssignmentDialogOpen(false);
-
-      setSelectedPaperId("");
-      setSelectedEditorId("");
-      setSelectedReviewerIds([]);
-      setAssignmentDeadline("");
-
-      toast.success("Paper assignment created successfully.");
-
-    } catch (error) {
-      console.error("Assignment creation failed:", error);
-
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Unable to create paper assignment. Please try again."
-      );
-    }
-  };
-
-  const handleUpdateAssignment = () => { };
 
   const [paperSearch, setPaperSearch] = useState("");
   const [paperStatusFilter, setPaperStatusFilter] = useState("all");
@@ -306,7 +223,9 @@ export default function SuperAdminPage() {
       ) {
         result.push({
           id: `${participant._id}-registration`,
+          paperSource: "registration",
           registrationId: participant._id,
+          submittedPaperId: undefined,
           registrationNumber: participant.registrationNumber,
           author: `${participant.firstName} ${participant.lastName}`,
           email: participant.email,
@@ -321,7 +240,9 @@ export default function SuperAdminPage() {
       for (const paper of participant.submittedPapers ?? []) {
         result.push({
           id: paper._id,
+          paperSource: "call-for-papers",
           registrationId: participant._id,
+          submittedPaperId: paper._id,
           registrationNumber: participant.registrationNumber,
           author: `${participant.firstName} ${participant.lastName}`,
           email: participant.email,
@@ -337,16 +258,35 @@ export default function SuperAdminPage() {
     return result;
   }, [participantsList]);
 
-  const assignedPaperIds = assignments.map((item) => item.paperId);
-  const unassignedPapers = papers.filter(
-    (paper) => !assignedPaperIds.includes(paper.id)
+  const unassignedPapers = papers.filter((paper) => {
+    return !assignments.some((assignment) => {
+      if (assignment.paperSource !== paper.paperSource) {
+        return false;
+      }
+
+      if (paper.paperSource === "registration") {
+        return assignment.registrationId === paper.registrationId;
+      }
+
+      return assignment.submittedPaperId === paper.submittedPaperId;
+    });
+  });
+
+  const editors: EditorialMember[] = (teamMembers ?? []).filter(
+    (member): member is EditorialMember => member.role === "editor"
   );
 
-  const editors = teamMembers.filter((member) => member.role === "editor");
-  const reviewers = teamMembers.filter((member) => member.role === "reviewer");
+  const reviewers: EditorialMember[] = (teamMembers ?? []).filter(
+    (member): member is EditorialMember => member.role === "reviewer"
+  );
 
-  const activeEditors = editors.filter((member) => member.status === "active");
-  const activeReviewers = reviewers.filter((member) => member.status === "active");
+  const activeEditors = editors.filter(
+    (member) => member.status === "active"
+  );
+
+  const activeReviewers = reviewers.filter(
+    (member) => member.status === "active"
+  );
 
   const filteredPapers = papers.filter((paper) => {
     const matchesSearch =
@@ -382,7 +322,7 @@ export default function SuperAdminPage() {
     setMemberRole("editor");
   };
 
-  const openAddMember = (role: TeamRole) => {
+  const openAddMember = (role: EditorialRole) => {
     resetTeamForm();
     setMemberRole(role);
     setTeamDialogOpen(true);
@@ -390,7 +330,9 @@ export default function SuperAdminPage() {
 
 
   const getPaper = (id: string) => papers.find((paper) => paper.id === id);
-  const getMember = (id: string) => teamMembers.find((member) => member.id === id);
+
+  const getMember = (id: Id<"users">): TeamMember | undefined =>
+    (teamMembers ?? []).find((member) => member.id === id);
 
   const statusBadge = (status: string) => {
     const styles: Record<string, string> = {
@@ -412,6 +354,73 @@ export default function SuperAdminPage() {
         {status.replaceAll("_", " ")}
       </Badge>
     );
+  };
+
+  const handleCreateAssignment = async () => {
+    const selectedPaper = papers.find(
+      (paper) => paper.id === selectedPaperId
+    );
+
+    if (!selectedPaper) {
+      toast.error("Please select a valid paper.");
+      return;
+    }
+
+    if (!selectedPaperId || !selectedEditorId || selectedReviewerIds.length === 0) {
+      toast.error("Select a paper, an editor and at least one reviewer.");
+      return;
+    }
+
+    if (!assignmentDeadline) {
+      toast.error("Please select a review deadline.");
+      return;
+    }
+
+    try {
+      const reviewDeadline = new Date(assignmentDeadline).getTime();
+
+      if (Number.isNaN(reviewDeadline) || reviewDeadline <= Date.now()) {
+        toast.error("Please select a valid future review deadline.");
+        return;
+      }
+
+      const payload = {
+        paperSource: selectedPaper.paperSource,
+        registrationId: selectedPaper.registrationId,
+        submittedPaperId: selectedPaper.submittedPaperId,
+        editorId: selectedEditorId,
+        reviewerIds: selectedReviewerIds,
+        status: editingAssignment?.status ?? "assigned" as const,
+        reviewDeadline,
+      };
+
+      if (editingAssignment) {
+        // Update existing assignment
+        await updateAssignment({
+          assignmentId: editingAssignment._id,
+          ...payload,
+        });
+
+        toast.success("Paper assignment updated successfully.");
+      } else {
+        // Create new assignment
+        await saveAssignment(payload);
+
+        toast.success("Paper assignment created successfully.");
+      }
+
+      setAssignmentDialogOpen(false);
+      setEditingAssignment(null);
+      setSelectedPaperId("");
+      setSelectedEditorId("");
+      setSelectedReviewerIds([]);
+      setAssignmentDeadline(undefined);
+
+      toast.success("Paper assignment created successfully.");
+
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
   };
 
 
@@ -633,10 +642,9 @@ export default function SuperAdminPage() {
 
           {activeSection === "team" && (
             <EditorsAndReviewers
-              editors={editors}
-              reviewers={reviewers}
-              teamMembers={teamMembers}
-              setTeamMembers={setTeamMembers}
+              // editors={editors}
+              // reviewers={reviewers}
+              teamMembers={teamMembers ?? []}
               assignments={assignments}
               openAddMember={openAddMember}
               editingMember={editingMember}
@@ -689,6 +697,7 @@ export default function SuperAdminPage() {
               activeEditors={activeEditors}
               activeReviewers={activeReviewers}
               selectedReviewerIds={selectedReviewerIds}
+              setSelectedReviewerIds={setSelectedReviewerIds}
               toggleReviewer={toggleReviewer}
               assignmentDeadline={assignmentDeadline}
               setAssignmentDeadline={setAssignmentDeadline}
@@ -696,6 +705,8 @@ export default function SuperAdminPage() {
               getPaper={getPaper}
               getMember={getMember}
               statusBadge={statusBadge}
+              editingAssignment={editingAssignment}
+              setEditingAssignment={setEditingAssignment}
             />
           )}
 
@@ -706,7 +717,6 @@ export default function SuperAdminPage() {
           {activeSection === "reviews" && (
             <ReviewsandDecisions
               assignments={assignments}
-              getPaper={getPaper}
               getMember={getMember}
               setActiveSection={setActiveSection}
               statusBadge={statusBadge}

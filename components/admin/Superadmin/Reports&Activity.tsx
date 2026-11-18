@@ -5,58 +5,29 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { api } from "@/convex/_generated/api";
-import { FunctionReturnType } from "convex/server";
 import { LuActivity, LuClipboardList, LuFileText, LuUserRound, LuUsers } from "react-icons/lu";
+import { AssignmentData, PaperRow, ParticipantData, TeamMember } from "./types";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
-type ParticipantData = FunctionReturnType<
-    typeof api.registration.getParticipants
->;
 
-type Assignment = {
-    id: string;
-    paperId: string;
-    editorId: string;
-    reviewerIds: string[];
-    deadline: string;
-    status: "assigned" | "in_progress" | "completed";
-};
-
-type PaperRow = {
-    id: string;
-    registrationId: string;
-    registrationNumber: string;
-    author: string;
-    email: string;
-    title: string;
-    track: string;
-    url?: string | null;
-    source: string;
-    status: string;
-};
-
-type EditorialMember = {
-    id: string;
-    name: string;
-    email: string;
-    role: "editor" | "reviewer";
-    status: "active" | "inactive";
-};
 
 interface ReportsandActivityProps {
     participantsList: NonNullable<ParticipantData>; 
     totalPeople: number; 
     papers: PaperRow[]; 
-    assignments: Assignment[]; 
+    assignments: AssignmentData[]; 
     authorsCount: number; 
     participantCount: number; 
     studentsCount: number; 
-    editors: EditorialMember[];
-    reviewers: EditorialMember[];
+    editors: TeamMember[];
+    reviewers: TeamMember[];
     unassignedPapers: PaperRow[];
 }
 
 export default function ReportsandActivity ({ participantsList, totalPeople, papers, assignments, authorsCount, participantCount, studentsCount, editors, reviewers, unassignedPapers }: ReportsandActivityProps) {
+
+  const auditLogs = useQuery(api.editorial.getAuditLogs);
     return (
         <div>
               <div>
@@ -154,23 +125,85 @@ export default function ReportsandActivity ({ participantsList, totalPeople, pap
               </div>
 
               <Card className="rounded-xl border-slate-200 shadow-sm">
-                <CardHeader>
-                  <CardTitle className="text-base">Activity log</CardTitle>
-                  <CardDescription>
-                    Activity history will appear here when audit logging is connected.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-col items-center py-12 text-center">
-                    <LuActivity className="mb-3 text-slate-300" size={32} />
-                    <p className="text-sm font-semibold">No activity records available</p>
-                    <p className="mt-1 max-w-md text-xs leading-5 text-slate-400">
-                      A persistent activity log can record editor changes, paper assignments,
-                      review submissions, decisions and email actions.
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+  <CardHeader>
+    <CardTitle className="text-base">Activity log</CardTitle>
+    <CardDescription>
+      A history of administrative and editorial activities.
+    </CardDescription>
+  </CardHeader>
+
+  <CardContent>
+    {auditLogs === undefined ? (
+      <div className="py-12 text-center text-sm text-slate-400">
+        Loading activity...
+      </div>
+    ) : auditLogs.length === 0 ? (
+      <div className="flex flex-col items-center py-12 text-center">
+        <LuActivity className="mb-3 text-slate-300" size={32} />
+
+        <p className="text-sm font-semibold text-slate-700">
+          No activity records available
+        </p>
+
+        <p className="mt-1 max-w-md text-xs leading-5 text-slate-400">
+          Administrative and editorial activities will appear here
+          as they happen.
+        </p>
+      </div>
+    ) : (
+      <div className="max-h-150 space-y-5 overflow-y-auto pr-2">
+        {auditLogs.map((activity) => (
+          <div
+            key={activity._id}
+            className="flex gap-3"
+          >
+            <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-slate-100">
+              <LuActivity size={16} className="text-slate-600" />
+            </div>
+
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-col justify-between gap-1 tablet:flex-row tablet:items-start">
+                <p className="text-sm font-medium text-slate-800">
+                  {activity.description}
+                </p>
+
+                <span className="shrink-0 text-[11px] text-slate-400">
+                  {new Date(activity.createdAt).toLocaleString("en-NG", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    timeZone: "Africa/Lagos",
+                  })}
+                </span>
+              </div>
+
+              <div className="mt-1 flex flex-wrap items-center gap-2">
+                <span className="text-xs font-medium text-slate-500">
+                  {activity.actorName}
+                </span>
+
+                {activity.actorRole && (
+                  <>
+                    <span className="text-slate-300">·</span>
+                    <span className="text-[11px] capitalize text-slate-400">
+                      {activity.actorRole.replace("-", " ")}
+                    </span>
+                  </>
+                )}
+
+                <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] capitalize text-slate-500">
+                  {activity.category}
+                </span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+  </CardContent>
+</Card>
             </div>
     )
 }

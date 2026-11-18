@@ -15,10 +15,9 @@ import { Country } from "country-state-city";
 import { useEffect, useState } from "react";
 import { LuChevronDown, LuFileCheck, LuMail, LuRefreshCw, LuSearch, LuSend, LuUsers } from "react-icons/lu";
 import { toast } from "sonner";
+import { ParticipantData } from "./types";
 
-type ParticipantData = FunctionReturnType<
-    typeof api.registration.getParticipants
->;
+
 
 
 interface ParticipantProps {

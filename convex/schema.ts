@@ -187,7 +187,12 @@ export default defineSchema({
         .index("by_session_token_hash", ["sessionTokenHash"]),
 
     paperAssignments: defineTable({
-        paperId: v.id("submittedPapers"),
+        paperSource: v.union(
+            v.literal("registration"),
+            v.literal("call-for-papers")
+        ),
+        registrationId: v.id("registrations"),
+        submittedPaperId: v.optional(v.id("submittedPapers")),
         editorId: v.id("users"),
         reviewerIds: v.array(v.id("users")),
         assignedBy: v.id("users"),
@@ -201,7 +206,8 @@ export default defineSchema({
         reviewDeadline: v.optional(v.number()),
         editorDeadline: v.optional(v.number()),
     })
-        .index("by_paper", ["paperId"])
+        .index("by_registration", ["registrationId"])
+        .index("by_submitted_paper", ["submittedPaperId"])
         .index("by_editor", ["editorId"])
         .index("by_status", ["status"]),
 
@@ -246,14 +252,41 @@ export default defineSchema({
         .index("by_editor", ["editorId"]),
 
     adminActivityLogs: defineTable({
-        adminId: v.id("users"),
+        adminId: v.optional(v.id("users")),
+        actorName: v.string(),
+        actorEmail: v.optional(v.string()),
+        actorRole: v.optional(
+            v.union(
+                v.literal("super-admin"),
+                v.literal("editor"),
+                v.literal("reviewer")
+            )
+        ),
+
         action: v.string(),
+        category: v.union(
+            v.literal("team"),
+            v.literal("assignment"),
+            v.literal("paper"),
+            v.literal("review"),
+            v.literal("decision"),
+            v.literal("email"),
+            v.literal("auth"),
+            v.literal("system")
+        ),
+
         description: v.string(),
-        relatedPaperId: v.optional(v.id("submittedPapers")),
-        relatedUserId: v.optional(v.id("users")),
+
+        entityId: v.optional(v.string()),
+        entityType: v.optional(v.string()),
+
+        metadata: v.optional(v.any()),
+
         createdAt: v.number(),
     })
-        .index("by_admin", ["adminId"])
-        .index("by_created_at", ["createdAt"]),
+        .index("by_created_at", ["createdAt"])
+        .index("by_actor", ["adminId"])
+        .index("by_category", ["category"])
+        .index("by_action", ["action"]),
 
 })

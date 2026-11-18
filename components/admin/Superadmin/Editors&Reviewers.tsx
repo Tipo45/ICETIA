@@ -24,41 +24,24 @@ import { useState } from "react";
 import { FiLoader, FiMoreHorizontal } from "react-icons/fi";
 import { LuPlus, LuSearch, LuUsers } from "react-icons/lu";
 import { toast } from "sonner";
+import { AssignmentData, EditorialMember, EditorialRole, TeamMember, TeamRole } from "./types";
 
-type TeamMember = {
-    id: Id<"users">;
-    name: string;
-    email: string;
-    role: "editor" | "reviewer";
-    status: "active" | "inactive";
-};
 
-type TeamRole = "editor" | "reviewer";
-
-type Assignment = {
-    id: string;
-    paperId: string;
-    editorId: string;
-    reviewerIds: string[];
-    deadline: string;
-    status: "assigned" | "in_progress" | "completed";
-};
 
 interface EditorsAndReviewersProps {
     teamMembers: TeamMember[];
-    setTeamMembers: React.Dispatch<React.SetStateAction<TeamMember[]>>;
 
-    editors: TeamMember[];
-    reviewers: TeamMember[];
-    assignments: Assignment[];
-    openAddMember: (role: TeamRole) => void;
+    // editors: EditorialMember[];
+    // reviewers: EditorialMember[];
+    assignments: AssignmentData[];
+    openAddMember: (role: EditorialRole) => void;
 
     memberName: string;
     setMemberName: React.Dispatch<React.SetStateAction<string>>;
     memberEmail: string;
     setMemberEmail: React.Dispatch<React.SetStateAction<string>>;
     memberRole: TeamRole;
-    setMemberRole: React.Dispatch<React.SetStateAction<TeamRole>>;
+    setMemberRole: React.Dispatch<React.SetStateAction<EditorialRole>>;
 
     editingMember: TeamMember | null;
     setEditingMember: React.Dispatch<React.SetStateAction<TeamMember | null>>;
@@ -68,7 +51,7 @@ interface EditorsAndReviewersProps {
 }
 
 
-export default function EditorsAndReviewers({ editors, reviewers, assignments, openAddMember, editingMember, setEditingMember, teamDialogOpen, setTeamDialogOpen, memberName,
+export default function EditorsAndReviewers({ assignments, openAddMember, editingMember, setEditingMember, teamDialogOpen, setTeamDialogOpen, memberName,
     setMemberName,
     memberEmail,
     setMemberEmail,
@@ -92,6 +75,11 @@ export default function EditorsAndReviewers({ editors, reviewers, assignments, o
     const teamMember = viewTeamMembers ?? [];
 
     const openEditMember = (member: TeamMember) => {
+        if (member.role !== "editor" && member.role !== "reviewer") {
+            toast.error("Only editors and reviewers can be edited here.");
+            return;
+        }
+
         setEditingMember(member);
         setMemberName(member.name);
         setMemberEmail(member.email);
@@ -382,7 +370,7 @@ export default function EditorsAndReviewers({ editors, reviewers, assignments, o
                             <Label>Editorial role *</Label>
                             <Select
                                 value={memberRole}
-                                onValueChange={(value) => setMemberRole(value as TeamRole)}
+                                onValueChange={(value) => setMemberRole(value as EditorialRole)}
                             >
                                 <SelectTrigger>
                                     <SelectValue placeholder="Select role" />

@@ -12,6 +12,7 @@ import {
     generateRandomString,
 } from "@oslojs/crypto/random";
 import { verifyAdminEmail } from "./emailTemplate";
+import { logActivity } from "./editorial";
 
 
 export const resend: Resend = new Resend(components.resend, {
@@ -1024,6 +1025,27 @@ export const handleSaveMember = mutation({
             status: "inactive"
         });
 
+        await logActivity(ctx, {
+            adminId: userId,
+            actorName: currentUser.name ?? "Unknown user",
+            actorEmail: currentUser.email,
+            actorRole: currentUser.role,
+
+            action: "team_member_created",
+            category: "team",
+
+            description: `Created ${args.role} account for ${args.name}.`,
+
+            entityId: String(memberId),
+            entityType: "user",
+
+            metadata: {
+                memberName: args.name,
+                memberEmail: args.email,
+                memberRole: args.role,
+            },
+        });
+
         return {
             success: true,
             memberId,
@@ -1102,6 +1124,30 @@ export const updateTeamMember = mutation({
             role: args.role,
         });
 
+        await logActivity(ctx, {
+            adminId: userId,
+            actorName: currentUser.name ?? "Unknown user",
+            actorEmail: currentUser.email,
+            actorRole: currentUser.role,
+
+            action: "team_member_updated",
+            category: "team",
+
+            description: `Updated the account details for ${member.name ?? "a team member"}.`,
+
+            entityId: String(args.memberId),
+            entityType: "user",
+
+            metadata: {
+                updatedFields: {
+                    name: args.name,
+                    email: args.email,
+                    role: args.role,
+                    // status: args.status,
+                },
+            },
+        });
+
         return {
             success: true,
             message: "Team member updated successfully.",
@@ -1140,6 +1186,27 @@ export const toggleTeamMemberStatus = mutation({
             status: newStatus,
         });
 
+        await logActivity(ctx, {
+            adminId: userId,
+            actorName: currentUser.name ?? "Unknown user",
+            actorEmail: currentUser.email,
+            actorRole: currentUser.role,
+
+            action: "team_member_updated",
+            category: "team",
+
+            description: `Updated the account details for ${member.name ?? "a team member"}.`,
+
+            entityId: String(args.memberId),
+            entityType: "user",
+
+            metadata: {
+                updatedFields: {
+                    status: newStatus,
+                },
+            },
+        });
+
         return { success: true, status: newStatus };
     },
 });
@@ -1155,29 +1222,30 @@ export const viewTeamMembers = query({
     handler: async (ctx, args) => {
         const team = await ctx.db.query("users").collect();
 
-        const filteredTeam = team.filter(
-            (member): member is typeof member & {
-                role: "editor" | "reviewer";
-            } => member.role === "editor" || member.role === "reviewer"
+        let filteredTeam = team.filter(
+            (member) =>
+                member.role === "editor" ||
+                member.role === "reviewer"
         );
 
-        let result = filteredTeam;
 
         if (args.role) {
-            result = result.filter(member => member.role === args.role);
+            filteredTeam = filteredTeam.filter(
+                (member) => member.role === args.role
+            );
         }
 
         if (args.search?.trim()) {
             const search = args.search.trim().toLowerCase();
 
-            result = result.filter(
-                member =>
+            filteredTeam = filteredTeam.filter(
+                (member) =>
                     member.name?.toLowerCase().includes(search) ||
                     member.email?.toLowerCase().includes(search)
             );
         }
 
-        return result.map(member => ({
+        return filteredTeam.map((member) => ({
             id: member._id,
             name: member.name ?? "Unnamed Member",
             email: member.email ?? "No email address",
@@ -1215,15 +1283,44 @@ export const deleteTeamMember = mutation({
 
         await ctx.db.delete(args.memberId);
 
+        await logActivity(ctx, {
+            adminId: userId,
+            actorName: currentUser.name ?? "Unknown user",
+            actorEmail: currentUser.email,
+            actorRole: currentUser.role,
+
+            action: "team_member_deleted",
+            category: "team",
+
+            description: `Deleted the ${member.role ?? "team member"} account belonging to ${member.name ?? member.email}.`,
+
+            entityId: String(member._id),
+            entityType: "user",
+
+            metadata: {
+                memberName: member.name,
+                memberEmail: member.email,
+                memberRole: member.role,
+            },
+        });
+
+        // Then delete the member.
+        await ctx.db.delete(member._id);
+
         return { success: true };
     },
 });
 
 export const handleSaveAssignment = mutation({
     args: {
-        paperId: v.id("submittedPapers"),
+        paperSource: v.union(
+            v.literal("registration"),
+            v.literal("call-for-papers")
+        ),
+        registrationId: v.id("registrations"),
+        submittedPaperId: v.optional(v.id("submittedPapers")),
         editorId: v.id("users"),
-        reviewerIds: v.optional(v.array(v.id("users"))),
+        reviewerIds: v.array(v.id("users")),
         status: v.union(
             v.literal("assigned"),
             v.literal("editor_assigned"),
@@ -1236,6 +1333,7 @@ export const handleSaveAssignment = mutation({
     },
 
     handler: async (ctx, args) => {
+        // Authenticate super-admin
         const identity = await ctx.auth.getUserIdentity();
 
         if (!identity) {
@@ -1251,11 +1349,45 @@ export const handleSaveAssignment = mutation({
             );
         }
 
-        // Validate paper
-        const paper = await ctx.db.get(args.paperId);
+        // Validate registration
+        const registration = await ctx.db.get(args.registrationId);
 
-        if (!paper) {
-            throw new ConvexError("The selected paper could not be found.");
+        if (!registration) {
+            throw new ConvexError("Registration not found.");
+        }
+
+        // Validate paper according to its source
+        if (args.paperSource === "registration") {
+            if (args.submittedPaperId !== undefined) {
+                throw new ConvexError(
+                    "A registration-level paper cannot have a submitted paper ID."
+                );
+            }
+
+            const track = registration.paperTrack;
+            const title = registration.paperTitle
+
+            if (
+                !registration.paperTitle ||
+                !registration.paperTrack
+            ) {
+                throw new ConvexError("Registration paper not found.");
+            }
+        } else {
+            if (!args.submittedPaperId) {
+                throw new ConvexError("Submitted paper ID is required.");
+            }
+
+            const submittedPaper = await ctx.db.get(
+                args.submittedPaperId
+            );
+
+            if (
+                !submittedPaper ||
+                submittedPaper.registrationId !== args.registrationId
+            ) {
+                throw new ConvexError("Submitted paper not found.");
+            }
         }
 
         // Validate editor
@@ -1265,8 +1397,12 @@ export const handleSaveAssignment = mutation({
             throw new ConvexError("Please select a valid editor.");
         }
 
+        if (editor.status === "inactive") {
+            throw new ConvexError("The selected editor is inactive.");
+        }
+
         // Validate reviewers
-        const reviewerIds = args.reviewerIds ?? [];
+        const reviewerIds = args.reviewerIds;
 
         if (new Set(reviewerIds).size !== reviewerIds.length) {
             throw new ConvexError("Duplicate reviewers are not allowed.");
@@ -1281,30 +1417,52 @@ export const handleSaveAssignment = mutation({
         for (const reviewerId of reviewerIds) {
             const reviewer = await ctx.db.get(reviewerId);
 
-            if (!reviewer || reviewer.role !== "reviewer") {
+            if (
+                !reviewer ||
+                reviewer.role !== "reviewer" ||
+                reviewer.status === "inactive"
+            ) {
                 throw new ConvexError(
-                    "One or more selected reviewers are invalid."
+                    "One or more selected reviewers are invalid or inactive."
                 );
             }
         }
 
-        // Prevent duplicate assignment for the same paper
-        const existingAssignment = await ctx.db
+        // Prevent duplicate assignments for the same paper
+        const existingAssignments = await ctx.db
             .query("paperAssignments")
             .collect();
 
-        if (existingAssignment.some(
-            (assignment) => assignment.paperId === args.paperId
-        )) {
+        const alreadyAssigned = existingAssignments.some(
+            (assignment) => {
+                if (assignment.paperSource !== args.paperSource) {
+                    return false;
+                }
+
+                if (args.paperSource === "registration") {
+                    return (
+                        assignment.registrationId === args.registrationId
+                    );
+                }
+
+                return (
+                    assignment.submittedPaperId === args.submittedPaperId
+                );
+            }
+        );
+
+        if (alreadyAssigned) {
             throw new ConvexError(
                 "This paper already has an assignment. Update the existing assignment instead."
             );
         }
 
         // Validate deadlines
+        const now = Date.now();
+
         if (
             args.reviewDeadline !== undefined &&
-            args.reviewDeadline <= Date.now()
+            args.reviewDeadline <= now
         ) {
             throw new ConvexError(
                 "The review deadline must be in the future."
@@ -1313,22 +1471,30 @@ export const handleSaveAssignment = mutation({
 
         if (
             args.editorDeadline !== undefined &&
-            args.editorDeadline <= Date.now()
+            args.editorDeadline <= now
         ) {
             throw new ConvexError(
                 "The editor deadline must be in the future."
             );
         }
 
-        const assignmentId = await ctx.db.insert("paperAssignments", {
-            paperId: args.paperId,
-            editorId: args.editorId,
-            reviewerIds,
-            assignedBy: userId,
-            status: args.status,
-            reviewDeadline: args.reviewDeadline,
-            editorDeadline: args.editorDeadline,
-        });
+        // Create assignment
+        const assignmentId = await ctx.db.insert(
+            "paperAssignments",
+            {
+                paperSource: args.paperSource,
+                registrationId: args.registrationId,
+                submittedPaperId: args.submittedPaperId,
+                editorId: args.editorId,
+                reviewerIds,
+                assignedBy: userId,
+                status: args.status,
+                reviewDeadline: args.reviewDeadline,
+                editorDeadline: args.editorDeadline,
+            }
+        );
+
+        
 
         return {
             success: true,
@@ -1341,7 +1507,12 @@ export const handleSaveAssignment = mutation({
 export const updateAssignment = mutation({
     args: {
         assignmentId: v.id("paperAssignments"),
-        paperId: v.id("submittedPapers"),
+        paperSource: v.union(
+            v.literal("registration"),
+            v.literal("call-for-papers")
+        ),
+        registrationId: v.id("registrations"),
+        submittedPaperId: v.optional(v.id("submittedPapers")),
         editorId: v.id("users"),
         reviewerIds: v.optional(v.array(v.id("users"))),
         status: v.union(
@@ -1378,18 +1549,53 @@ export const updateAssignment = mutation({
             throw new ConvexError("Assignment not found.");
         }
 
-        // Validate paper
-        const paper = await ctx.db.get(args.paperId);
+        // Validate registration
+        const registration = await ctx.db.get(args.registrationId);
 
-        if (!paper) {
-            throw new ConvexError("The selected paper could not be found.");
+        if (!registration) {
+            throw new ConvexError("Registration not found.");
+        }
+
+        // Validate paper according to source
+        if (args.paperSource === "registration") {
+            if (args.submittedPaperId !== undefined) {
+                throw new ConvexError(
+                    "Invalid registration paper reference."
+                );
+            }
+
+            if (
+                !registration.paperTitle ||
+                !registration.paperTrack
+            ) {
+                throw new ConvexError("Registration paper not found.");
+            }
+        } else {
+            if (!args.submittedPaperId) {
+                throw new ConvexError("Submitted paper ID is required.");
+            }
+
+            const submittedPaper = await ctx.db.get(
+                args.submittedPaperId
+            );
+
+            if (
+                !submittedPaper ||
+                submittedPaper.registrationId !== args.registrationId
+            ) {
+                throw new ConvexError("Submitted paper not found.");
+            }
         }
 
         // Validate editor
         const editor = await ctx.db.get(args.editorId);
 
-        if (!editor || editor.role !== "editor") {
-            throw new ConvexError("Please select a valid editor.");
+        if (
+            !editor ||
+            editor.role !== "editor" ||
+            editor.status === "inactive"
+        ) {
+            throw new ConvexError("Please select a valid active editor.");
         }
 
         // Validate reviewers
@@ -1408,9 +1614,13 @@ export const updateAssignment = mutation({
         for (const reviewerId of reviewerIds) {
             const reviewer = await ctx.db.get(reviewerId);
 
-            if (!reviewer || reviewer.role !== "reviewer") {
+            if (
+                !reviewer ||
+                reviewer.role !== "reviewer" ||
+                reviewer.status === "inactive"
+            ) {
                 throw new ConvexError(
-                    "One or more selected reviewers are invalid."
+                    "One or more selected reviewers are invalid or inactive."
                 );
             }
         }
@@ -1421,9 +1631,16 @@ export const updateAssignment = mutation({
             .collect();
 
         const duplicateAssignment = existingAssignments.find(
-            (item) =>
-                item.paperId === args.paperId &&
-                item._id !== args.assignmentId
+            (item) => {
+                if (item._id === args.assignmentId) return false;
+                if (item.paperSource !== args.paperSource) return false;
+
+                if (args.paperSource === "registration") {
+                    return item.registrationId === args.registrationId;
+                }
+
+                return item.submittedPaperId === args.submittedPaperId;
+            }
         );
 
         if (duplicateAssignment) {
@@ -1433,9 +1650,11 @@ export const updateAssignment = mutation({
         }
 
         // Validate deadlines
+        const now = Date.now();
+
         if (
             args.reviewDeadline !== undefined &&
-            args.reviewDeadline <= Date.now()
+            args.reviewDeadline <= now
         ) {
             throw new ConvexError(
                 "The review deadline must be in the future."
@@ -1444,15 +1663,18 @@ export const updateAssignment = mutation({
 
         if (
             args.editorDeadline !== undefined &&
-            args.editorDeadline <= Date.now()
+            args.editorDeadline <= now
         ) {
             throw new ConvexError(
                 "The editor deadline must be in the future."
             );
         }
 
+        // Update assignment
         await ctx.db.patch(args.assignmentId, {
-            paperId: args.paperId,
+            paperSource: args.paperSource,
+            registrationId: args.registrationId,
+            submittedPaperId: args.submittedPaperId,
             editorId: args.editorId,
             reviewerIds,
             status: args.status,
@@ -1492,49 +1714,76 @@ export const viewAssignments = query({
 
         const results = await Promise.all(
             assignments.map(async (assignment) => {
-                const paper = await ctx.db.get(assignment.paperId);
+                // Get registration
+                const registration = await ctx.db.get(
+                    assignment.registrationId
+                );
 
+                if (!registration) {
+                    throw new ConvexError("Cannot find registration");
+                }
+
+                // Resolve paper according to its source
+                let paper = null;
+
+                if (assignment.paperSource === "registration") {
+
+
+                    paper = {
+                        id: assignment.registrationId,
+                        paperSource: "registration" as const,
+                        paperTitle: registration.paperTitle,
+                        paperTrack: registration.paperTrack,
+                        paperUrl: registration?.paperFileId ?? null,
+                    };
+
+                } else if (assignment.submittedPaperId) {
+                    const submittedPaper = await ctx.db.get(
+                        assignment.submittedPaperId
+                    );
+
+                    if (submittedPaper) {
+                        const paperUrl = submittedPaper.paperFileId
+                            ? await ctx.storage.getUrl(submittedPaper.paperFileId)
+                            : null;
+
+                        paper = {
+                            ...submittedPaper,
+                            id: submittedPaper._id,
+                            paperSource: "call-for-papers" as const,
+                            paperUrl,
+                        };
+                    }
+                }
+
+                // Get editor
                 const editor = await ctx.db.get(assignment.editorId);
 
+                // Get reviewers
+                const reviewers = await Promise.all(
+                    assignment.reviewerIds.map(async (reviewerId) => {
+                        const reviewer = await ctx.db.get(reviewerId);
+
+                        return reviewer
+                            ? {
+                                id: reviewer._id,
+                                name: reviewer.name ?? "Unnamed Reviewer",
+                                email: reviewer.email ?? "",
+                                role: reviewer.role,
+                            }
+                            : null;
+                    })
+                );
+
+                // Get assigning admin
                 const assignedBy = await ctx.db.get(
                     assignment.assignedBy
                 );
 
-                const reviewers = await Promise.all(
-                    (assignment.reviewerIds ?? []).map(
-                        async (reviewerId) => {
-                            const reviewer = await ctx.db.get(reviewerId);
-
-                            return reviewer
-                                ? {
-                                    id: reviewer._id,
-                                    name: reviewer.name ?? "Unnamed Reviewer",
-                                    email: reviewer.email ?? "",
-                                    role: reviewer.role,
-                                }
-                                : null;
-                        }
-                    )
-                );
-
-                const registration = paper
-                    ? await ctx.db.get(paper.registrationId)
-                    : null;
-
-                const paperUrl =
-                    paper?.paperFileId
-                        ? await ctx.storage.getUrl(paper.paperFileId)
-                        : null;
-
                 return {
                     ...assignment,
 
-                    paper: paper
-                        ? {
-                            ...paper,
-                            paperUrl,
-                        }
-                        : null,
+                    paper,
 
                     editor: editor
                         ? {

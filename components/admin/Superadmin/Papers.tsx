@@ -23,39 +23,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { api } from "@/convex/_generated/api";
-import { FunctionReturnType } from "convex/server";
 import { LuDownload, LuSearch } from "react-icons/lu";
+import { AssignmentData, PaperRow, ParticipantData } from "./types";
 
-type PaperRow = {
-    id: string;
-    registrationId: string;
-    registrationNumber: string;
-    author: string;
-    email: string;
-    title: string;
-    track: string;
-    url?: string | null;
-    source: string;
-    status: string;
-}
-
-type Assignment = {
-    id: string;
-    paperId: string;
-    editorId: string;
-    reviewerIds: string[];
-    deadline: string;
-    status: "assigned" | "in_progress" | "completed";
-};
-
-type ParticipantData = FunctionReturnType<
-    typeof api.registration.getParticipants
->;
 
 interface PapersProps {
     papers: PaperRow[];
-    assignments: Assignment[];
+    assignments: AssignmentData[];
     unassignedPapers: PaperRow[];
     participants: ParticipantData | undefined;
 
@@ -166,7 +140,7 @@ export default function Papers({ papers,
                                 </TableHeader>
                                 <TableBody>
                                     {filteredPapers.map((paper) => {
-                                        const assignment = assignments.find((item) => item.paperId === paper.id);
+                                        const assignment = assignments.find((item) => item.submittedPaperId === paper.id);
 
                                         return (
                                             <TableRow key={paper.id}>

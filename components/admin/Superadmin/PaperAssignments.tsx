@@ -37,44 +37,22 @@ import {
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useMutation } from "convex/react";
-import { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { LuClipboardList, LuPlus } from "react-icons/lu";
 import { toast } from "sonner";
+import { AssignmentData, PaperRow, TeamMember } from "./types";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { FiMoreHorizontal } from "react-icons/fi";
 
-type PaperRow = {
-  id: string;
-  registrationId: string;
-  registrationNumber: string;
-  author: string;
-  email: string;
-  title: string;
-  track: string;
-  url?: string | null;
-  source: string;
-  status: string;
-}
 
-type Assignment = {
-  id: Id<"paperAssignments">;
-  paperId: string;
-  editorId: string;
-  reviewerIds: string[];
-  deadline: string;
-  status: "assigned" | "in_progress" | "completed";
-};
-
-type TeamMember = {
-  id: Id<"users">;
-  name: string;
-  email: string;
-  role: "editor" | "reviewer";
-  status: "active" | "inactive";
-};
 
 interface PaperAssignmentsProps {
   papers: PaperRow[];
-  assignments: Assignment[];
+  assignments: AssignmentData[];
   unassignedPapers: PaperRow[];
+
+  editingAssignment: AssignmentData | null;
+  setEditingAssignment: React.Dispatch<React.SetStateAction<AssignmentData | null>>;
 
   setAssignmentDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   assignmentDialogOpen: boolean;
@@ -82,22 +60,23 @@ interface PaperAssignmentsProps {
   setSelectedPaperId: React.Dispatch<React.SetStateAction<string>>;
   selectedPaperId: string;
 
-  selectedEditorId: string;
-  setSelectedEditorId: React.Dispatch<React.SetStateAction<string>>;
+  selectedEditorId: Id<"users"> | "";
+  setSelectedEditorId: Dispatch<SetStateAction<Id<"users"> | "">>;
 
   activeEditors: TeamMember[];
   activeReviewers: TeamMember[];
 
-  selectedReviewerIds: string[];
-  toggleReviewer: (id: string) => void;
+  selectedReviewerIds: Id<"users">[];
+  setSelectedReviewerIds: Dispatch<SetStateAction<Id<"users">[]>>;
+  toggleReviewer: (id: Id<"users">) => void;
 
-  assignmentDeadline: string;
-  setAssignmentDeadline: React.Dispatch<React.SetStateAction<string>>;
+  assignmentDeadline: number | undefined;
+  setAssignmentDeadline: React.Dispatch<React.SetStateAction<number | undefined>>;
 
   handleCreateAssignment: () => void;
 
   getPaper: (paperId: string) => PaperRow | undefined;
-  getMember: (memberId: string) => TeamMember | undefined;
+  getMember: (memberId: Id<"users">) => TeamMember | undefined;
   statusBadge: (status: string) => React.ReactNode;
 }
 
@@ -105,6 +84,8 @@ export default function PaperAssignments({
   papers,
   assignments,
   unassignedPapers,
+  editingAssignment,
+  setEditingAssignment,
   setAssignmentDialogOpen,
   assignmentDialogOpen,
   setSelectedPaperId,
@@ -114,6 +95,7 @@ export default function PaperAssignments({
   activeEditors,
   activeReviewers,
   selectedReviewerIds,
+  setSelectedReviewerIds,
   toggleReviewer,
   assignmentDeadline,
   setAssignmentDeadline,
@@ -123,6 +105,34 @@ export default function PaperAssignments({
   statusBadge }: PaperAssignmentsProps) {
 
   const handleDeleteAssignment = useMutation(api.registration.deleteAssignments);
+
+  const openEditAssignment = (assignment: AssignmentData) => {
+
+
+    const paper = papers.find((paper) =>
+      assignment.paperSource === "registration"
+        ? paper.paperSource === "registration" &&
+        paper.registrationId === assignment.registrationId
+        : paper.paperSource === "call-for-papers" &&
+        paper.submittedPaperId === assignment.submittedPaperId
+    );
+
+    if (!paper) {
+      toast.error("The assigned paper could not be found.");
+      return;
+    }
+
+    setSelectedPaperId(paper.id);
+    setSelectedEditorId(assignment.editorId);
+    setSelectedReviewerIds(assignment.reviewerIds ?? []);
+
+    setEditingAssignment(assignment);
+
+    setAssignmentDeadline(assignment.reviewDeadline);
+
+    setAssignmentDialogOpen(true);
+
+  }
 
   const deleteAssignment = async (id: Id<"paperAssignments">) => {
     try {
@@ -175,7 +185,7 @@ export default function PaperAssignments({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {assignments.length === 0 ? (
+          {!assignments || assignments.length === 0 ? (
             <div className="py-16 text-center">
               <LuClipboardList className="mx-auto mb-3 text-slate-300" size={34} />
               <p className="font-semibold">No paper assignments yet</p>
@@ -199,20 +209,20 @@ export default function PaperAssignments({
                     <TableHead>Paper</TableHead>
                     <TableHead>Editor</TableHead>
                     <TableHead>Reviewers</TableHead>
-                    <TableHead>Deadline</TableHead>
+                    {/* <TableHead>Editor Deadline</TableHead> */}
+                    <TableHead>Review Deadline</TableHead>
                     <TableHead>Status</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {assignments.map((assignment) => {
-                    const paper = getPaper(assignment.paperId);
                     const editor = getMember(assignment.editorId);
 
                     return (
-                      <TableRow key={assignment.id}>
+                      <TableRow key={assignment._id}>
                         <TableCell className="min-w-55">
-                          <p className="font-semibold">{paper?.title ?? "Paper unavailable"}</p>
-                          <p className="text-xs text-slate-400">{paper?.track}</p>
+                          <p className="font-semibold">{assignment.paper?.paperTitle ?? "Paper unavailable"}</p>
+                          <p className="text-xs text-slate-400">{assignment.paper?.paperTrack}</p>
                         </TableCell>
                         <TableCell>{editor?.name ?? "Unavailable"}</TableCell>
                         <TableCell>
@@ -224,13 +234,32 @@ export default function PaperAssignments({
                             ))}
                           </div>
                         </TableCell>
-                        <TableCell className="whitespace-nowrap text-xs">
-                          {new Date(assignment.deadline).toLocaleDateString()}
-                        </TableCell>
+                        {/* <TableCell className="whitespace-nowrap text-xs">
+                          {assignment.editorDeadline
+                            ? new Date(assignment.editorDeadline).toLocaleDateString("en-NG")
+                            : "Not set"}
+                        </TableCell> */}
+                        <TableCell className="whitespace-nowrap text-xs">{assignment.reviewDeadline
+                          ? new Date(assignment.reviewDeadline).toLocaleDateString("en-NG")
+                          : "Not set"}</TableCell>
                         <TableCell>{statusBadge(assignment.status)}</TableCell>
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="icon">
+                                <FiMoreHorizontal size={18} />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem onClick={() => openEditAssignment(assignment)}>Edit</DropdownMenuItem>
+                              <DropdownMenuItem className="text-red-600" onClick={() => deleteAssignment(assignment._id)}>Delete</DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
                       </TableRow>
                     );
-                  })}
+                  }
+                  )}
                 </TableBody>
               </Table>
             </div>
@@ -280,16 +309,18 @@ export default function PaperAssignments({
       <Dialog open={assignmentDialogOpen} onOpenChange={setAssignmentDialogOpen}>
         <DialogContent className="max-h-[90vh] overflow-y-auto tablet:max-w-162.5">
           <DialogHeader>
-            <DialogTitle>Assign paper to editorial team</DialogTitle>
+            <DialogTitle>{editingAssignment ? "Edit paper assignment" : "Assign paper to editorial team"}</DialogTitle>
             <DialogDescription>
-              Select the submitted paper, its handling editor, reviewers and review deadline.
+              {editingAssignment
+                ? "Update the assigned editor, reviewers and review deadline."
+                : "Select the submitted paper, its handling editor, reviewers and review deadline."}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-5 py-2">
             <div className="space-y-2">
               <Label>Submitted paper *</Label>
-              <Select value={selectedPaperId} onValueChange={setSelectedPaperId}>
+              {editingAssignment ? ("") : (<Select value={selectedPaperId} onValueChange={setSelectedPaperId}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select a paper" />
                 </SelectTrigger>
@@ -302,8 +333,8 @@ export default function PaperAssignments({
                     </SelectItem>
                   ))}
                 </SelectContent>
-              </Select>
-              {unassignedPapers.length === 0 && (
+              </Select>)}
+              {!editingAssignment && unassignedPapers.length === 0 && (
                 <p className="text-xs text-amber-600">
                   No unassigned papers are currently available.
                 </p>
@@ -323,7 +354,8 @@ export default function PaperAssignments({
 
             <div className="space-y-2">
               <Label>Handling editor *</Label>
-              <Select value={selectedEditorId} onValueChange={setSelectedEditorId}>
+              <Select value={selectedEditorId} onValueChange={(value) =>
+                setSelectedEditorId(value as Id<"users">)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select an editor" />
                 </SelectTrigger>
@@ -365,6 +397,9 @@ export default function PaperAssignments({
                         onChange={() => toggleReviewer(reviewer.id)}
                         className="h-4 w-4 accent-cyan-600"
                       />
+                      <span className="text-sm font-medium text-slate-700">
+                        {reviewer.name}
+                      </span>
                     </label>
                   ))}
                 </div>
@@ -378,9 +413,25 @@ export default function PaperAssignments({
               <Label>Review deadline *</Label>
               <Input
                 type="date"
-                value={assignmentDeadline}
-                onChange={(event) => setAssignmentDeadline(event.target.value)}
-                min={new Date().toISOString().split("T")[0]}
+                value={
+                  assignmentDeadline
+                    ? new Date(assignmentDeadline).toLocaleDateString("en-CA", {
+                      timeZone: "Africa/Lagos",
+                    })
+                    : ""
+                }
+                onChange={(event) => {
+                  const value = event.target.value;
+
+                  setAssignmentDeadline(
+                    value
+                      ? new Date(`${value}T00:00:00+01:00`).getTime()
+                      : undefined
+                  );
+                }}
+                min={new Date().toLocaleDateString("en-CA", {
+                  timeZone: "Africa/Lagos",
+                })}
               />
             </div>
           </div>
@@ -392,9 +443,17 @@ export default function PaperAssignments({
             <Button
               onClick={handleCreateAssignment}
               className="bg-[#07111f] hover:bg-slate-800"
-              disabled={activeEditors.length === 0 || activeReviewers.length === 0 || unassignedPapers.length === 0}
+              disabled={
+                activeEditors.length === 0 ||
+                activeReviewers.length === 0 ||
+                // availablePapers.length === 0 ||
+                !selectedPaperId ||
+                !selectedEditorId ||
+                selectedReviewerIds.length === 0 ||
+                !assignmentDeadline
+              }
             >
-              Create assignment
+              {editingAssignment ? "Save changes" : "Create assignment"}
             </Button>
           </DialogFooter>
         </DialogContent>
