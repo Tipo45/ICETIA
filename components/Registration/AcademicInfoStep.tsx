@@ -90,7 +90,7 @@ export default function AcademicInfoStep({
                 field === "degree"
                     ? (value as Degree)
                     : field === "paperTrack"
-                        ? (value as PaperTracks)
+                        ? (value as PaperTracks | "")
                         : value,
 
         }));
@@ -124,7 +124,7 @@ export default function AcademicInfoStep({
 
             case "paperTrack":
                 error =
-                    validatePaperTrack(value) || "";
+                    validatePaperTrack(value as PaperTracks | "") || "";
                 break;
 
             case "paperTitle":

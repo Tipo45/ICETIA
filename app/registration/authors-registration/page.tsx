@@ -7,7 +7,7 @@ import CoAuthorsStep from "@/components/Registration/CoAuthorsStep";
 import PersonalInfoStep from "@/components/Registration/PersonalInfoStep";
 import ProgressStepper from "@/components/Registration/ProgressStepper";
 import ReviewStep from "@/components/Registration/ReviewStep";
-import { Degree, RegistrationFormData } from "@/components/types/registration";
+import { Degree, PaperTracks, RegistrationFormData } from "@/components/types/registration";
 import {
     validateCountry,
     validateDegree,
@@ -403,6 +403,11 @@ export default function AuthorsRegistrationPage() {
             return;
         }
 
+        if (!formData.paperTrack) {
+            toast.error("Please select a paper track.");
+            return;
+        }
+
         let storageId;
         let paymentWindow: Window | null = null;
 
@@ -441,7 +446,7 @@ export default function AuthorsRegistrationPage() {
                 country: formData.country,
                 degree: formData.degree as Degree,
                 department: formData.department,
-                paperTrack: formData.paperTrack,
+                paperTrack: formData.paperTrack as PaperTracks,
                 paperTitle: formData.paperTitle,
                 paperFileId: storageId,
                 coAuthors: formData.coAuthors.map((author) => ({

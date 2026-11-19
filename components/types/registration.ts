@@ -6,18 +6,19 @@ export type Degree =
     | "Professor"
     | "Other";
 
-export type PaperTracks = 
+export type PaperTracks =
+    |
     "Cybersecurity, Privacy & Digital Trust" |
     "Artificial Intelligence and Machine Learning" |
     "Smart Systems, Internet of Things and Embedded Computing" |
     "Computing, Cloud, Edge and Distributed Systems" |
     "Data Science, Analytics and Big Data" |
     "Software Development" |
-    "Health Informatics, Digtal Health and Medical Laboratory Technology" |
+    "Health Informatics, Digital Health and Medical Laboratory Technology" |
     "Emerging Technologies and Digital Transformation" |
     "Computing for Sustainable Development" |
-    "Information Systems, Governance and Society" 
-    
+    "Information Systems, Governance and Society"
+
 
 export interface CoAuthor {
     firstName: string;
@@ -38,7 +39,7 @@ export interface RegistrationFormData {
     department: string;
     country: string;
     degree: Degree | "";
-    paperTrack: PaperTracks;
+    paperTrack: PaperTracks | "";
     paperTitle: string;
     paperFile: File | null;
 
