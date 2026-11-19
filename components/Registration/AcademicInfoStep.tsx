@@ -11,6 +11,7 @@ import {
 
 import {
     Degree,
+    PaperTracks,
     RegistrationFormData,
     RegistrationFormErrors,
     RegistrationFormTouched,
@@ -67,16 +68,16 @@ export default function AcademicInfoStep({
     const countries = Country.getAllCountries();
 
     const paperTracks = [
-        {name: "Cybersecurity, Privacy & Digital Trust"},
-        {name: "Artificial Intelligence and Machine Learning"},
-        {name: "Smart Systems, Internet of Things and Embedded Computing"},
-        {name: "Computing, Cloud, Edge and Distributed Systems"},
-        {name: "Data Science, Analytics and Big Data"},
-        {name: "Software Development"},
-        {name: "Health Informatics, Digtal Health and Medical Laboratory Technology"},
-        {name: "Emerging Technologies and Digital Transformation"},
-        {name: "Computing for Sustainable Development"},
-        {name: "Information Systems, Governance and Society"},
+        { name: "Cybersecurity, Privacy & Digital Trust" },
+        { name: "Artificial Intelligence and Machine Learning" },
+        { name: "Smart Systems, Internet of Things and Embedded Computing" },
+        { name: "Computing, Cloud, Edge and Distributed Systems" },
+        { name: "Data Science, Analytics and Big Data" },
+        { name: "Software Development" },
+        { name: "Health Informatics, Digtal Health and Medical Laboratory Technology" },
+        { name: "Emerging Technologies and Digital Transformation" },
+        { name: "Computing for Sustainable Development" },
+        { name: "Information Systems, Governance and Society" },
     ]
 
     const handleChange = (
@@ -88,7 +89,10 @@ export default function AcademicInfoStep({
             [field]:
                 field === "degree"
                     ? (value as Degree)
-                    : value,
+                    : field === "paperTrack"
+                        ? (value as PaperTracks)
+                        : value,
+
         }));
 
         setFormTouched((prev) => ({
@@ -118,8 +122,8 @@ export default function AcademicInfoStep({
                     ) || "";
                 break;
 
-                case "paperTrack":
-                    error =
+            case "paperTrack":
+                error =
                     validatePaperTrack(value) || "";
                 break;
 
@@ -141,13 +145,12 @@ export default function AcademicInfoStep({
         const error =
             formErrors[field as keyof typeof formErrors];
 
-        return `h-12 w-full border bg-white px-4 text-sm outline-none transition ${
-            touched && error
-                ? "border-red-400 focus:border-red-500"
-                : touched && !error
+        return `h-12 w-full border bg-white px-4 text-sm outline-none transition ${touched && error
+            ? "border-red-400 focus:border-red-500"
+            : touched && !error
                 ? "border-emerald-400 focus:border-emerald-500"
                 : "border-slate-200 focus:border-blue-600"
-        }`;
+            }`;
     };
 
     return (
@@ -222,16 +225,15 @@ export default function AcademicInfoStep({
                         }
                     >
                         <SelectTrigger
-                            className={`h-12 w-full rounded-none border bg-white px-4 text-sm shadow-none ${
-                                formTouched.country &&
+                            className={`h-12 w-full rounded-none border bg-white px-4 text-sm shadow-none ${formTouched.country &&
                                 formErrors.country
-                                    ? "border-red-400"
-                                    : formTouched.country &&
-                                      !formErrors.country &&
-                                      formData.country
+                                ? "border-red-400"
+                                : formTouched.country &&
+                                    !formErrors.country &&
+                                    formData.country
                                     ? "border-emerald-400"
                                     : "border-slate-200"
-                            }`}
+                                }`}
                         >
                             <SelectValue placeholder="Choose country" />
                         </SelectTrigger>
@@ -299,16 +301,15 @@ export default function AcademicInfoStep({
                     }
                 >
                     <SelectTrigger
-                        className={`h-12 w-full rounded-none border bg-white px-4 text-sm shadow-none ${
-                            formTouched.degree &&
+                        className={`h-12 w-full rounded-none border bg-white px-4 text-sm shadow-none ${formTouched.degree &&
                             formErrors.degree
-                                ? "border-red-400"
-                                : formTouched.degree &&
-                                  !formErrors.degree &&
-                                  formData.degree
+                            ? "border-red-400"
+                            : formTouched.degree &&
+                                !formErrors.degree &&
+                                formData.degree
                                 ? "border-emerald-400"
                                 : "border-slate-200"
-                        }`}
+                            }`}
                     >
                         <SelectValue placeholder="Choose degree" />
                     </SelectTrigger>
@@ -349,26 +350,28 @@ export default function AcademicInfoStep({
                 </label>
 
                 <Select
-                value={formData.paperTrack} onValueChange={(value) =>
-                    handleChange("paperTrack", value)
-                }>
+                    value={formData.paperTrack} onValueChange={(value) =>
+                        setFormData((prev) => ({
+                            ...prev,
+                            paperTrack: value as PaperTracks,
+                        }))
+                    }>
 
-                    <SelectTrigger className={`h-12 w-full rounded-none border bg-white px-4 text-sm shadow-none ${
-                            formTouched.paperTrack &&
-                            formErrors.paperTrack
-                                ? "border-red-400"
-                                : formTouched.paperTrack &&
-                                  !formErrors.paperTrack &&
-                                  formData.paperTrack
-                                ? "border-emerald-400"
-                                : "border-slate-200"
+                    <SelectTrigger className={`h-12 w-full rounded-none border bg-white px-4 text-sm shadow-none ${formTouched.paperTrack &&
+                        formErrors.paperTrack
+                        ? "border-red-400"
+                        : formTouched.paperTrack &&
+                            !formErrors.paperTrack &&
+                            formData.paperTrack
+                            ? "border-emerald-400"
+                            : "border-slate-200"
                         }`}>
                         <SelectValue placeholder="Choose Track" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
-                            {paperTracks.map((paperTrack)=>
-                            <SelectItem key={paperTrack.name} value={paperTrack.name}>{paperTrack.name}</SelectItem>
+                            {paperTracks.map((paperTrack) =>
+                                <SelectItem key={paperTrack.name} value={paperTrack.name}>{paperTrack.name}</SelectItem>
                             )}
                         </SelectGroup>
                     </SelectContent>
@@ -398,16 +401,15 @@ export default function AcademicInfoStep({
                     }
                     placeholder="Enter the title of your accepted paper"
                     rows={4}
-                    className={`w-full resize-none border bg-white px-4 py-3 text-sm outline-none transition ${
-                        formTouched.paperTitle &&
+                    className={`w-full resize-none border bg-white px-4 py-3 text-sm outline-none transition ${formTouched.paperTitle &&
                         formErrors.paperTitle
-                            ? "border-red-400 focus:border-red-500"
-                            : formTouched.paperTitle &&
-                              !formErrors.paperTitle &&
-                              formData.paperTitle
+                        ? "border-red-400 focus:border-red-500"
+                        : formTouched.paperTitle &&
+                            !formErrors.paperTitle &&
+                            formData.paperTitle
                             ? "border-emerald-400 focus:border-emerald-500"
                             : "border-slate-200 focus:border-blue-600"
-                    }`}
+                        }`}
                 />
 
                 {formTouched.paperTitle &&

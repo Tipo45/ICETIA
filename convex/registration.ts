@@ -1143,7 +1143,6 @@ export const updateTeamMember = mutation({
                     name: args.name,
                     email: args.email,
                     role: args.role,
-                    // status: args.status,
                 },
             },
         });
@@ -1195,7 +1194,7 @@ export const toggleTeamMemberStatus = mutation({
             action: "team_member_updated",
             category: "team",
 
-            description: `Updated the account details for ${member.name ?? "a team member"}.`,
+            description: `Updated the active status for ${member.name ?? "a team member"}.`,
 
             entityId: String(args.memberId),
             entityType: "user",
@@ -1355,7 +1354,8 @@ export const handleSaveAssignment = mutation({
         if (!registration) {
             throw new ConvexError("Registration not found.");
         }
-
+        const track = registration.paperTrack;
+        const title = registration.paperTitle
         // Validate paper according to its source
         if (args.paperSource === "registration") {
             if (args.submittedPaperId !== undefined) {
@@ -1364,8 +1364,7 @@ export const handleSaveAssignment = mutation({
                 );
             }
 
-            const track = registration.paperTrack;
-            const title = registration.paperTitle
+
 
             if (
                 !registration.paperTitle ||
@@ -1494,7 +1493,29 @@ export const handleSaveAssignment = mutation({
             }
         );
 
-        
+        await logActivity(ctx, {
+            adminId: userId,
+            actorName: currentUser.name ?? "Unknown user",
+            actorEmail: currentUser.email,
+            actorRole: currentUser.role,
+
+            action: "paper_assignment_created",
+            category: "assignment",
+
+            description: `Created an editorial assignment for "${track}" and assigned it to ${editor.name}.`,
+
+            entityId: String(assignmentId),
+            entityType: "paperAssignment",
+
+            metadata: {
+                title,
+                track,
+                editorId: args.editorId,
+                editorName: editor.name,
+                reviewerIds: args.reviewerIds,
+                paperSource: args.paperSource,
+            },
+        });
 
         return {
             success: true,
@@ -1555,6 +1576,9 @@ export const updateAssignment = mutation({
         if (!registration) {
             throw new ConvexError("Registration not found.");
         }
+
+        const title = registration.paperTitle;
+        const track = registration.paperTrack;
 
         // Validate paper according to source
         if (args.paperSource === "registration") {
@@ -1681,6 +1705,33 @@ export const updateAssignment = mutation({
             reviewDeadline: args.reviewDeadline,
             editorDeadline: args.editorDeadline,
         });
+
+        await logActivity(ctx, {
+            adminId: userId,
+            actorName: currentUser.name ?? "Unknown user",
+            actorEmail: currentUser.email,
+            actorRole: currentUser.role,
+
+            action: "paper_assignment_updated",
+            category: "assignment",
+
+            description: `Updated an editorial assignment for "${title}" and assigned it to ${editor.name}.`,
+
+            entityId: String(args.assignmentId),
+            entityType: "paperAssignment",
+
+            metadata: {
+                updatedFields: {
+                    title,
+                    track,
+                    editorId: args.editorId,
+                    editorName: editor.name,
+                    reviewerIds: args.reviewerIds,
+                    paperSource: args.paperSource,
+                }
+            },
+        });
+
 
         return {
             success: true,
@@ -1844,6 +1895,8 @@ export const deleteAssignments = mutation({
         }
 
         await ctx.db.delete(args.assignmentId);
+
+
 
         return {
             success: true
