@@ -119,7 +119,7 @@ export function ticketEmail({
   width="220"
   height="220"
   alt="ICETIA 2027 Conference QR Code"
-  style="display:block; width:220px; height:220px;"
+  style="display:block; width:220px; height:220px; margin:auto;"
 />
 
 <p>
@@ -131,7 +131,7 @@ export function ticketEmail({
 </p>
 
 <p>
-  If you have any questions, kindly contact conference@icetiaconference.org.
+  If you have any questions, kindly contact <a href="mailto:conference@icetiaconference.org">conference@icetiaconference.org</a>.
 </p>
 
 <p>
@@ -239,7 +239,7 @@ conference@icetiaconference.org
 https://www.icetiaconference.org/`
 }
 
-export function editorInvite ({
+export function editorInvite({
   name,
   role
 }: editorialInviteProps) {
@@ -290,7 +290,7 @@ Website: https://icetiaconference.org
 `
 }
 
-export function reviewerInvite ({
+export function reviewerInvite({
   name,
   role
 }: editorialInviteProps) {
@@ -335,7 +335,7 @@ Website: https://icetiaconference.org
 `
 }
 
-export function editorialAcceptaance ({name, email, role}: editorialAcceptanceProps) {
+export function editorialAcceptaance({ name, email, role }: editorialAcceptanceProps) {
   return `
   Dear ${name},
 

@@ -61,15 +61,19 @@ export const verifyAndConfirmPayment = action({
 
     const result = await response.json();
 
-    console.log("PAYSTACK VERIFICATION RESULT:", {
-      httpStatus: response.status,
-      apiStatus: result.status,
-      message: result.message,
-      transactionStatus: result.data?.status,
-      reference: result.data?.reference,
-      amount: result.data?.amount,
-      currency: result.data?.currency,
-    });
+    // console.log("PAYSTACK VERIFICATION RESULT:", {
+    //   amount: result.data?.amount,
+    //   requestedAmount: result.data?.requested_amount,
+    //   fees: result.data?.fees,
+    //   channel: result.data?.channel,
+    //   currency: result.data?.currency,
+    //   gatewayResponse: result.data?.gateway_response,
+    //   httpStatus: response.status,
+    //   apiStatus: result.status,
+    //   message: result.message,
+    //   transactionStatus: result.data?.status,
+    //   reference: result.data?.reference,
+    // });
 
 
 
@@ -96,9 +100,21 @@ export const verifyAndConfirmPayment = action({
     // const expectedAmountInKobo = Math.round(registration.amount * 100);
 
     const expectedAmountInKobo = Math.round(100 * 10);
+    // console.log("AMOUNT COMPARISON:", {
+    //   registrationAmount: registration.amount,
+    //   expectedAmountInKobo,
+    //   paystackAmount: transaction.amount,
+    //   paystackAmountInNaira: transaction.amount / 100,
+    //   matches: transaction.amount === expectedAmountInKobo,
+    // });
 
-    if (transaction.amount !== expectedAmountInKobo) {
-      throw new Error("The payment amount does not match the registration fee.");
+    const actualRequestedAmount =
+      transaction.requested_amount ?? transaction.amount;
+
+    if (actualRequestedAmount !== expectedAmountInKobo) {
+      throw new Error(
+        `Amount mismatch. Expected ${expectedAmountInKobo} kobo, received ${transaction.amount} kobo.`
+      );
     }
 
     if (transaction.currency !== "NGN") {
@@ -245,7 +261,12 @@ export const sendTicketEmail = internalAction({
       }
     );
 
-    const qrCodeBase64 = qrCode.replace(/^/, "");
+    // const qrCodeBase64 = qrCode.replace(/^/, "");
+
+    const qrCodeBase64 = qrCode.replace(
+      /^data:image\/png;base64,/,
+      ""
+    );
 
     const emailHtml = ticketEmail({
       firstName: registration.firstName,
