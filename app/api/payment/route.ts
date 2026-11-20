@@ -62,6 +62,14 @@ export async function POST(request: Request) {
 
     const paystackResult: PaystackResponse = await response.json();
 
+    console.log("PAYSTACK INITIALIZATION DEBUG:", {
+      httpStatus: response.status,
+      status: paystackResult.status,
+      message: paystackResult.message,
+      amount,
+      email,
+    });
+
     if (
       !response.ok ||
       !paystackResult.status ||
