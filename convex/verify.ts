@@ -53,7 +53,7 @@ export const verifyAndConfirmPayment = action({
       {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${secretKey}`,
+          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
           "Content-Type": "application/json",
         },
       }
@@ -61,14 +61,30 @@ export const verifyAndConfirmPayment = action({
 
     const result = await response.json();
 
-    if (!response.ok || !result.status || !result.data) {
-      throw new Error("Paystack could not verify this transaction.");
-    }
+    console.log("PAYSTACK VERIFICATION RESULT:", {
+  httpStatus: response.status,
+  apiStatus: result.status,
+  message: result.message,
+  transactionStatus: result.data?.status,
+  reference: result.data?.reference,
+  amount: result.data?.amount,
+  currency: result.data?.currency,
+});
+
+//  || !result.data
+
+    if (!response.ok || !result.status) {
+      throw new Error(
+    `Paystack verification API failed: ${
+      result.message || "Unknown error"
+    }`
+  );
+}
 
     const transaction = result.data;
 
     if (transaction.status !== "success") {
-      throw new Error("This payment has not been confirmed as successful.");
+      throw new Error("This payment has not been confirmed as successful.", transaction.status);
     }
 
     if (transaction.reference !== args.reference) {

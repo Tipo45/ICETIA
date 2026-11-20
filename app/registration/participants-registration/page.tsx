@@ -260,14 +260,17 @@ export default function RegistrationSection() {
 
     const registerParticipant = async () => {
 
-        const paymentWindow = window.open("about:blank", "_blank");
-
+        // const paymentWindow = window.open("about:blank", "_blank");
+        let paymentWindow: Window | null = null;
         setIsSubmitting(true);
         setPaymentStatus("pending");
 
-        let gatewayOpened = false;
+
 
         try {
+
+            paymentWindow = window.open("about:blank", "_blank");
+
             const registration = await register({
                 firstName: formData.firstName,
                 lastName: formData.lastName,
@@ -285,7 +288,8 @@ export default function RegistrationSection() {
                 },
                 body: JSON.stringify({
                     email: formData.email,
-                    amount: (paymentValue - 5000) * 100,
+                    // amount: (paymentValue - 5000) * 100,
+                    amount: 100 * 10,
                     registrationId,
                 })
             });
@@ -294,55 +298,51 @@ export default function RegistrationSection() {
 
             if (!result.ok || !paystackResult.status) {
                 throw new Error(
-                    paystackResult?.message || "Payment initialization failed."
+                    paystackResult?.message ||
+                    paystackResult?.error ||
+                    "Payment initialization failed."
                 );
             }
-
             if (paymentWindow && !paymentWindow.closed) {
                 paymentWindow.location.href =
                     paystackResult.data.authorization_url;
 
-                gatewayOpened = true;
+                const monitor = window.setInterval(() => {
+                    if (paymentWindow?.closed) {
+                        window.clearInterval(monitor);
+
+                        setIsSubmitting(false);
+                        setPaymentStatus("cancelled");
+
+                        toast.info(
+                            "Payment window closed. Please check your payment status before retrying."
+                        );
+                    }
+                }, 1000);
             } else {
                 // Popup blocked or closed: fall back to same-tab checkout.
                 router.push(paystackResult.data.authorization_url);
                 return;
             }
 
-            // Detect when the Paystack tab is closed.
-            const monitor = window.setInterval(() => {
-                if (paymentWindow.closed) {
-                    window.clearInterval(monitor);
-
-                    setIsSubmitting(false);
-
-                    // This means the gateway was closed, not that
-                    // the transaction is confirmed to have failed.
-                    setPaymentStatus("cancelled");
-
-                    toast.info(
-                        "Payment window closed. Please check your payment status before retrying."
-                    );
-                }
-            }, 1000);
-
         } catch (error: unknown) {
             if (paymentWindow && !paymentWindow.closed) {
                 paymentWindow.close();
             }
 
-            setIsSubmitting(false);
             setPaymentStatus("idle");
+
+            console.error("Registration error:", error);
 
             toast.error(
                 error instanceof Error
-                    ? "Email Has already been registered"
+                    ? error.message
                     : "Something went wrong. Please try again."
             );
         }
-        // finally {
-        //     resetForm();
-        // }
+        finally {
+            setIsSubmitting(false);
+        }
     };
 
     const inputClass = (

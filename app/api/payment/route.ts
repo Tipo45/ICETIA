@@ -38,7 +38,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://icetia.vercel.app";
+    const siteUrl = "https://icetia.vercel.app";
 
     // const siteUrl = "https://icetiaconference.org";
 
