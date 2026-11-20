@@ -97,9 +97,9 @@ export const verifyAndConfirmPayment = action({
     }
 
     // The stored registration amount is in naira; Paystack uses kobo.
-    // const expectedAmountInKobo = Math.round(registration.amount * 100);
+    const expectedAmountInKobo = Math.round(registration.amount * 100);
 
-    const expectedAmountInKobo = Math.round(100 * 10);
+    // const expectedAmountInKobo = Math.round(100 * 10);
     // console.log("AMOUNT COMPARISON:", {
     //   registrationAmount: registration.amount,
     //   expectedAmountInKobo,

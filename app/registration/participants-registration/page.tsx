@@ -289,7 +289,7 @@ export default function RegistrationSection() {
                 body: JSON.stringify({
                     email: formData.email,
                     // amount: (paymentValue - 5000) * 100,
-                    amount: 100 * 10,
+                    amount: 10,
                     registrationId,
                 })
             });
