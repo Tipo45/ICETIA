@@ -142,8 +142,8 @@ export const registerParticipant = mutation({
             .slice(0, 8)
             .toUpperCase()}`;
 
-        const amount = 10;
-        // const amount = 35000;
+        // const amount = 10;
+        const amount = 35000;
 
         const existing = await ctx.db
             .query("registrations")
