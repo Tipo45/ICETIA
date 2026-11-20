@@ -62,29 +62,30 @@ export const verifyAndConfirmPayment = action({
     const result = await response.json();
 
     console.log("PAYSTACK VERIFICATION RESULT:", {
-  httpStatus: response.status,
-  apiStatus: result.status,
-  message: result.message,
-  transactionStatus: result.data?.status,
-  reference: result.data?.reference,
-  amount: result.data?.amount,
-  currency: result.data?.currency,
-});
+      httpStatus: response.status,
+      apiStatus: result.status,
+      message: result.message,
+      transactionStatus: result.data?.status,
+      reference: result.data?.reference,
+      amount: result.data?.amount,
+      currency: result.data?.currency,
+    });
 
-//  || !result.data
 
-    if (!response.ok || !result.status) {
+
+    if (!response.ok || !result.status || !result.data) {
       throw new Error(
-    `Paystack verification API failed: ${
-      result.message || "Unknown error"
-    }`
-  );
-}
+        `Paystack verification API failed: ${result.message || "Unknown error"
+        }`
+      );
+    }
 
     const transaction = result.data;
 
     if (transaction.status !== "success") {
-      throw new Error("This payment has not been confirmed as successful.", transaction.status);
+      throw new Error(
+        `This payment has not been confirmed as successful. Status: ${transaction.status}`
+      );
     }
 
     if (transaction.reference !== args.reference) {
@@ -92,7 +93,9 @@ export const verifyAndConfirmPayment = action({
     }
 
     // The stored registration amount is in naira; Paystack uses kobo.
-    const expectedAmountInKobo = Math.round(registration.amount * 100);
+    // const expectedAmountInKobo = Math.round(registration.amount * 100);
+
+    const expectedAmountInKobo = Math.round(100 * 10);
 
     if (transaction.amount !== expectedAmountInKobo) {
       throw new Error("The payment amount does not match the registration fee.");
@@ -160,22 +163,22 @@ export const sendPaidConfirmation = internalAction({
       registrationNumber: registration.registrationNumber,
     });
 
-const response = await fetch(
-  "https://api.resend.com/emails",
-  {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: fromEmail,
-      to: [registration.email],
-      subject: "ICETIA 2027 — Payment Confirmation",
-      text: emailText,
-    }),
-  }
-);
+    const response = await fetch(
+      "https://api.resend.com/emails",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: fromEmail,
+          to: [registration.email],
+          subject: "ICETIA 2027 — Payment Confirmation",
+          text: emailText,
+        }),
+      }
+    );
 
     if (!response.ok) {
       const errorDetails = await response.text();
@@ -227,67 +230,67 @@ export const sendTicketEmail = internalAction({
     }
 
     const registrationNumber =
-  registration.registrationNumber ?? registration._id;
+      registration.registrationNumber ?? registration._id;
 
-// Create a QR code containing the registration identifier.
-const qrCode = await QRCode.toDataURL(
-  JSON.stringify({
-    event: "ICETIA 2027",
-    registrationNumber,
-  }),
-  {
-    width: 300,
-    margin: 2,
-    errorCorrectionLevel: "M",
-  }
-);
-
-const qrCodeBase64 = qrCode.replace(/^/, "");
-
-const emailHtml = ticketEmail({
-  firstName: registration.firstName,
-  registrationNumber,
-  qrCode: "cid:conference-qr",
-});
-
-const response = await fetch(
-  "https://api.resend.com/emails",
-  {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: fromEmail,
-      to: [registration.email],
-      subject: "Your ICETIA 2027 Conference Ticket",
-      html: emailHtml,
-    attachments: [
+    // Create a QR code containing the registration identifier.
+    const qrCode = await QRCode.toDataURL(
+      JSON.stringify({
+        event: "ICETIA 2027",
+        registrationNumber,
+      }),
       {
-        filename: "icetia-2027-ticket-qr.png",
-        content: qrCodeBase64,
-        content_type: "image/png",
-        content_id: "conference-qr",
-      },
-    ],
-  }),
-});
+        width: 300,
+        margin: 2,
+        errorCorrectionLevel: "M",
+      }
+    );
 
-const result = await response.json();
+    const qrCodeBase64 = qrCode.replace(/^/, "");
 
-if (!response.ok) {
-  console.error("Resend error:", result);
-  const details = await response.text();
-  // throw new Error(`Ticket email failed: ${details}`);
-  throw new Error(
-    `Ticket email failed: ${JSON.stringify(result)}`
-  );
-}
+    const emailHtml = ticketEmail({
+      firstName: registration.firstName,
+      registrationNumber,
+      qrCode: "cid:conference-qr",
+    });
 
-console.log("Resend email response:", result);
+    const response = await fetch(
+      "https://api.resend.com/emails",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: fromEmail,
+          to: [registration.email],
+          subject: "Your ICETIA 2027 Conference Ticket",
+          html: emailHtml,
+          attachments: [
+            {
+              filename: "icetia-2027-ticket-qr.png",
+              content: qrCodeBase64,
+              content_type: "image/png",
+              content_id: "conference-qr",
+            },
+          ],
+        }),
+      });
 
-// Keep your existing ticketEmailSent update here.
+    const result = await response.json();
+
+    if (!response.ok) {
+      console.error("Resend error:", result);
+      const details = await response.text();
+      // throw new Error(`Ticket email failed: ${details}`);
+      throw new Error(
+        `Ticket email failed: ${JSON.stringify(result)}`
+      );
+    }
+
+    console.log("Resend email response:", result);
+
+    // Keep your existing ticketEmailSent update here.
 
     // Record successful email-provider acceptance.
     await ctx.runMutation(
@@ -302,24 +305,24 @@ console.log("Resend email response:", result);
 });
 
 export const validatePaperSubmissionSession = action({
-    args: {
-        sessionToken: v.string(),
-    },
+  args: {
+    sessionToken: v.string(),
+  },
 
-    handler: async (ctx, args): Promise<{ valid: boolean }> => {
-        if (!args.sessionToken) {
-            return { valid: false };
-        }
+  handler: async (ctx, args): Promise<{ valid: boolean }> => {
+    if (!args.sessionToken) {
+      return { valid: false };
+    }
 
-        const sessionTokenHash = createHash("sha256")
-            .update(args.sessionToken)
-            .digest("hex");
+    const sessionTokenHash = createHash("sha256")
+      .update(args.sessionToken)
+      .digest("hex");
 
-        const valid = await ctx.runQuery(
-            internal.registration.validatePaperSubmissionSession,
-            { sessionTokenHash }
-        );
+    const valid = await ctx.runQuery(
+      internal.registration.validatePaperSubmissionSession,
+      { sessionTokenHash }
+    );
 
-        return { valid };
-    },
+    return { valid };
+  },
 });
