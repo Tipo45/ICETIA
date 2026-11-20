@@ -70,22 +70,41 @@ export async function POST(request: Request) {
       email,
     });
 
-    if (
-      !response.ok ||
-      !paystackResult.status ||
-      !paystackResult.data?.reference ||
-      !paystackResult.data?.authorization_url
-    ) {
-      console.error(
-        "Failed to initialize Paystack transaction:",
-        paystackResult
-      );
+    // if (
+    //   !response.ok ||
+    //   !paystackResult.status ||
+    //   !paystackResult.data?.reference ||
+    //   !paystackResult.data?.authorization_url
+    // ) {
+    //   console.error(
+    //     "Failed to initialize Paystack transaction:",
+    //     paystackResult
+    //   );
 
-      return NextResponse.json(
-        { error: "Could not initialize Paystack payment." },
-        { status: 502 }
-      );
-    }
+    //   return NextResponse.json(
+    //     { error: "Could not initialize Paystack payment." },
+    //     { status: 502 }
+    //   );
+    // }
+
+    if (
+  !response.ok ||
+  !paystackResult.status ||
+  !paystackResult.data?.reference ||
+  !paystackResult.data?.authorization_url
+) {
+  console.error("PAYSTACK INITIALIZATION FAILURE:", {
+    httpStatus: response.status,
+    response: paystackResult,
+  });
+
+  return NextResponse.json(
+    {
+      error: paystackResult.message || "Could not initialize Paystack payment.",
+    },
+    { status: 502 }
+  );
+}
 
     // Connect to Convex.
     const convex = new ConvexHttpClient(convexUrl);
