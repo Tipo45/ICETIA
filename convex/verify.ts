@@ -99,21 +99,23 @@ export const verifyAndConfirmPayment = action({
     // The stored registration amount is in naira; Paystack uses kobo.
     const expectedAmountInKobo = Math.round(registration.amount * 100);
 
+    const actualRequestedAmount =
+      transaction.requested_amount ?? transaction.amount;
+
     // const expectedAmountInKobo = Math.round(100 * 10);
     // console.log("AMOUNT COMPARISON:", {
     //   registrationAmount: registration.amount,
     //   expectedAmountInKobo,
     //   paystackAmount: transaction.amount,
-    //   paystackAmountInNaira: transaction.amount / 100,
-    //   matches: transaction.amount === expectedAmountInKobo,
+    //   requestedAmount: transaction.requested_amount,
+    //   actualRequestedAmount,
+    //   fees: transaction.fees,
+    //   matches: actualRequestedAmount === expectedAmountInKobo,
     // });
-
-    const actualRequestedAmount =
-      transaction.requested_amount ?? transaction.amount;
 
     if (actualRequestedAmount !== expectedAmountInKobo) {
       throw new Error(
-        `Amount mismatch. Expected ${expectedAmountInKobo} kobo, received ${transaction.amount} kobo.`
+        `Amount mismatch. Expected ${expectedAmountInKobo} kobo, received ${actualRequestedAmount} kobo.`
       );
     }
 
