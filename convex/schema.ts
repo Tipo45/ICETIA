@@ -272,7 +272,8 @@ export default defineSchema({
             v.literal("decision"),
             v.literal("email"),
             v.literal("auth"),
-            v.literal("system")
+            v.literal("system"),
+            v.literal("participant"),
         ),
 
         description: v.string(),

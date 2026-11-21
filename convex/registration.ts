@@ -360,6 +360,10 @@ export const getParticipants = query({
             .query("registrations")
             .collect();
 
+        // participants = participants.filter(
+        //     p => p.paymentStatus !== "pending"
+        // );
+
         if (args.search) {
             const search = args.search.toLowerCase();
 
@@ -407,7 +411,7 @@ export const getParticipants = query({
         }
 
         return Promise.all(
-            participants.slice(0, 5).map(async (participant) => {
+            participants.slice(5, 10).map(async (participant) => {
 
                 // Get papers belonging to this participant
                 const papers = await ctx.db
@@ -440,6 +444,82 @@ export const getParticipants = query({
                 };
             })
         );
+    },
+});
+
+export const deleteParticipant = mutation({
+    args: {
+        registrationId: v.id("registrations"),
+    },
+
+    handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
+
+        if (!identity) {
+            throw new ConvexError("You must be logged in.");
+        }
+
+        const userId = identity.subject.split("|")[0] as Id<"users">;
+        const currentUser = await ctx.db.get(userId);
+
+        if (currentUser?.role !== "super-admin") {
+            throw new ConvexError("You don't have permission to perform this action.");
+        }
+
+        const registration = await ctx.db.get(args.registrationId);
+
+        if (!registration) {
+            throw new ConvexError("Registration not found.");
+        }
+
+        if (registration.paperFileId) {
+            await ctx.storage.delete(registration.paperFileId);
+        }
+
+        const papers = await ctx.db
+            .query("submittedPapers")
+            .withIndex("by_registration_Id", q =>
+                q.eq("registrationId", args.registrationId)
+            )
+            .collect();
+
+        for (const paper of papers) {
+            if (paper.paperFileId) {
+                await ctx.storage.delete(paper.paperFileId);
+            }
+
+            await ctx.db.delete(paper._id);
+        }
+
+        await logActivity(ctx, {
+            adminId: userId,
+            actorName: currentUser.name ?? "Unknown user",
+            actorEmail: currentUser.email,
+            actorRole: currentUser.role,
+
+            action: "registration_deleted",
+            category: "participant",
+
+            description: `Deleted the registration belonging to ${registration.firstName} ${registration.lastName} (${registration.email}).`,
+
+            entityId: String(registration._id),
+            entityType: "registration",
+
+            metadata: {
+                participantName: `${registration.firstName} + ${registration.lastName}`,
+                participantEmail: registration.email,
+                registrationNumber: registration.registrationNumber,
+                deletedPapersCount: papers.length,
+            },
+        });
+
+
+        await ctx.db.delete(args.registrationId);
+
+        return {
+            success: true,
+            deletedPapers: papers.length,
+        };
     },
 });
 

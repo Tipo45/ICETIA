@@ -18,7 +18,8 @@ type AuditCategory =
   | "decision"
   | "email"
   | "auth"
-  | "system";
+  | "system"
+  | "participant";
 
   type LogActivityArgs = {
   adminId?: Id<"users">;

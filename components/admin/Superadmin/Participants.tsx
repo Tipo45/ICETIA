@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { LuChevronDown, LuFileCheck, LuMail, LuRefreshCw, LuSearch, LuSend, LuUsers } from "react-icons/lu";
 import { toast } from "sonner";
 import { ParticipantData } from "./types";
+import { FiMoreHorizontal } from "react-icons/fi";
 
 
 
@@ -63,7 +64,7 @@ export default function Participant({ participants,
     participantCount,
     studentsCount }: ParticipantProps) {
 
-
+    const deleteParticipant = useMutation(api.registration.deleteParticipant);
     const sendConferenceMail = useMutation(api.registration.sendMail);
     const sendEmailTicket = useMutation(api.registration.sendConferenceTicket);
     const sendReminder = useMutation(api.registration.sendReminder);
@@ -90,6 +91,15 @@ export default function Participant({ participants,
         setCountry("");
         setPaymentDate("");
         setSelectedTrack("");
+    };
+
+    const deleteRegistration = async (id: Id<"registrations">) => {
+        try {
+            await deleteParticipant({ registrationId: id });
+            toast.success("Registration removed.");
+        } catch (error) {
+            toast.error("Couldn't remove");
+        }
     };
 
     const handleSendReminder = async (registrationId: Id<"registrations">) => {
@@ -411,6 +421,14 @@ export default function Participant({ participants,
                                                         Ticket
                                                     </Button>
                                                 </div>
+                                            </TableCell>
+
+                                            <TableCell>
+                                                <button
+                                                    className="text-white text-xs bg-red-600 px-2 py-2 rounded-lg hover:bg-red-500"
+                                                    onClick={() => deleteRegistration(participant._id)}
+                                                >Delete Registration</button>
+
                                             </TableCell>
                                         </TableRow>
                                     ))}
