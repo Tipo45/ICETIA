@@ -97,19 +97,24 @@ export default function ConferenceCountdown() {
                                     </p>
                                 </div>
                             ) : (
-                                <div className="mt-10 grid grid-cols-2 gap-3 tablet:grid-cols-4 tablet:gap-5">
-                                    {timeUnits.map((unit) => (
-                                        <div
-                                            key={unit.key}
-                                            className="group rounded-2xl border border-white/10 bg-white/4 px-3 py-6 backdrop-blur-sm transition duration-300 hover:border-cyan-400/40 hover:bg-cyan-400/6 tablet:px-5 tablet:py-8"
-                                        >
-                                            <div className="text-4xl font-extrabold tabular-nums tracking-tight text-white tablet:text-6xl">
-                                                {String(countdown[unit.key]).padStart(2, "0")}
+                                <div className="mt-10 flex items-center justify-center gap-2 tablet:gap-5">
+                                    {timeUnits.map((unit, index) => (
+                                        <div key={unit.key} className="flex items-center gap-2 tablet:gap-5">
+                                            <div className="group rounded-2xl border border-white/10 bg-white/4 px-1 py-2 lg:px-3 lg:py-6 backdrop-blur-sm transition duration-300 hover:border-cyan-400/40 hover:bg-cyan-400/6 tablet:px-8 tablet:py-8">
+                                                <div className="text-sm lg:text-2xl font-extrabold tabular-nums tracking-tight text-white tablet:text-6xl">
+                                                    {String(countdown[unit.key]).padStart(2, "0")}
+                                                </div>
+
+                                                <div className="mt-3 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">
+                                                    {unit.label}
+                                                </div>
                                             </div>
 
-                                            <div className="mt-3 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">
-                                                {unit.label}
-                                            </div>
+                                            {index !== timeUnits.length - 1 && (
+                                                <span className="text-lg font-bold text-cyan-400 tablet:text-4xl">
+                                                    :
+                                                </span>
+                                            )}
                                         </div>
                                     ))}
                                 </div>
