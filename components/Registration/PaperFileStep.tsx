@@ -223,15 +223,22 @@ export default function PaperUploadStep({
                                 <strong>2 MB</strong>.
                             </li>
 
+                            <li>
+                                Download the paper submission template <a href="/templates/EAI-Proceedings-LATEX-Template.zip"
+                                    target="_blank" rel="noopener noreferrer"
+                                    download="EAI-Proceedings-LATEX-Template.zip" className="text-blue-600 hover:underline">EAI-Proceedings-LATEX-Template(zip)</a> and <a href="/templates/EAI-Proceedings-DOCX-Template.docx"
+                                        target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">EAI-Proceedings-DOCX-Template</a>.
+                            </li>
+
                             {/* <li>
                                  Ensure this is the final camera-ready
                                 version.
                             </li> */}
 
-                            {/* <li>
-                                 The uploaded file should match the paper
-                                title provided during registration.
-                            </li> */}
+                            <li>
+                                The uploaded file should match the paper
+                                title provided in the previous step.
+                            </li>
                         </ul>
                     </div>
                 </div>

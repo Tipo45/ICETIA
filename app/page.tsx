@@ -9,6 +9,7 @@ import WhyICETIA from "@/components/WhyICETIA";
 import PublicationFooter from "@/components/publicationfooter";
 import Partners from "@/components/Partners";
 import PublicationHeader from "@/components/publicationheader";
+import ConferenceCountdown from "@/components/ConferenceCountdown";
 
 
 
@@ -22,15 +23,14 @@ export default function HomePage() {
 
       <Hero />
 
+      <ConferenceCountdown />
+
       <About />
 
       <WhyICETIA />
 
       <Gallery />
-
-      {/* <ConferenceTracks /> */}
-
-
+      
       <HostInstitution />
 
       <Partners />

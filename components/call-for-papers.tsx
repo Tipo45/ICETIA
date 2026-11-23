@@ -192,6 +192,7 @@ const items = [
         <p>
           <span>For full information, click <a href="https://www.springernature.com/gp/policies/book-publishing-policies" target="_blank" rel="noopener noreferrer" className="text-blue-600 no-underline">Here</a></span>
         </p>
+        
         <div>
           <p className="font-semibold text-blue-600">AI Authorship Policy</p>
           <p>
