@@ -135,6 +135,10 @@ const items = [
         <p className="text-xs leading-6 text-white">
           Authors should ensure that manuscripts comply with the official template before submission
         </p>
+
+        <p>
+          All conference papers undergo a thorough peer review process prior to the final decision and publication. This process is facilitated by experts in the Technical Program Committee during a dedicated conference period. All review assignments are ultimately decided by the responsible Technical Program Committee Members while the Technical Program Committee Chair is responsible for the final acceptance selection.
+        </p>
       </div>
     ),
   },
@@ -180,101 +184,101 @@ const items = [
       </div>
     ),
   },
-  // {
-  //   value: "springer-AI-policies-and-guidance",
-  //   trigger: "Springer AI Policies and Guidance",
-  //   content: (
-  //     <div className="bg-white/3 border border-white/10 p-4 rounded-lg space-y-4">
-  //       <p>
-  //         <span>For full information, click <a href="https://www.springernature.com/gp/policies/book-publishing-policies" target="_blank" rel="noopener noreferrer" className="text-blue-600 no-underline">Here</a></span>
-  //       </p>
-  //       <div>
-  //         <p className="font-semibold text-blue-600">AI Authorship Policy</p>
-  //         <p>
-  //           Large Language Models (LLMs), such as ChatGPT, do not currently satisfy our authorship criteria. Notably an attribution of authorship carries with it accountability for the work, which cannot be effectively applied to LLMs. We thus ask that the use of an LLM be properly documented in the Acknowledgements, or in the Introduction or Preface of the manuscript.
-  //         </p>
-  //         <p>
-  //           The use of an LLM (or other AI-tool) for “AI assisted copy editing” purposes does not need to be declared. In this context, we define the term “AI assisted copy editing” as AI-assisted improvements to human-generated texts for readability and style, and to ensure that the texts are free of errors in grammar, spelling, punctuation and tone. These AI-assisted improvements may include wording and formatting changes to the texts, but do not include generative editorial work and autonomous content creation. In all cases, there must be human accountability for the final version of the text and agreement from the authors that the edits reflect their original work. This reflects a similar stance taken on the AI generative figures policy, where it was acknowledged that there are cases where AI can be used to generate a figure without being concerned about copyright e.g. to generate a graph based on data provided by the author.
-  //         </p>
-  //       </div>
+  {
+    value: "springer-AI-policies-and-guidance",
+    trigger: "Springer AI Policies and Guidance",
+    content: (
+      <div className="bg-white/3 border border-white/10 p-4 rounded-lg space-y-4">
+        <p>
+          <span>For full information, click <a href="https://www.springernature.com/gp/policies/book-publishing-policies" target="_blank" rel="noopener noreferrer" className="text-blue-600 no-underline">Here</a></span>
+        </p>
+        <div>
+          <p className="font-semibold text-blue-600">AI Authorship Policy</p>
+          <p>
+            Large Language Models (LLMs), such as ChatGPT, do not currently satisfy our authorship criteria. Notably an attribution of authorship carries with it accountability for the work, which cannot be effectively applied to LLMs. We thus ask that the use of an LLM be properly documented in the Acknowledgements, or in the Introduction or Preface of the manuscript.
+          </p>
+          <p>
+            The use of an LLM (or other AI-tool) for “AI assisted copy editing” purposes does not need to be declared. In this context, we define the term “AI assisted copy editing” as AI-assisted improvements to human-generated texts for readability and style, and to ensure that the texts are free of errors in grammar, spelling, punctuation and tone. These AI-assisted improvements may include wording and formatting changes to the texts, but do not include generative editorial work and autonomous content creation. In all cases, there must be human accountability for the final version of the text and agreement from the authors that the edits reflect their original work. This reflects a similar stance taken on the AI generative figures policy, where it was acknowledged that there are cases where AI can be used to generate a figure without being concerned about copyright e.g. to generate a graph based on data provided by the author.
+          </p>
+        </div>
 
-  //       <div>
-  //         <p className="font-semibold text-blue-600">AI Authorship Guidance</p>
-  //         <p>
-  //           Authors should familiarise themselves with the current known risks of using AI models before using them in their manuscript. AI models have been known to plagiarise content and to create false content. As such, authors should carry out due diligence to ensure that any AI-generated content in their book is correct, appropriately referenced, and follow the standards as laid out in our Book Authors' Code of Conduct.
-  //         </p>
-  //       </div>
+        <div>
+          <p className="font-semibold text-blue-600">AI Authorship Guidance</p>
+          <p>
+            Authors should familiarise themselves with the current known risks of using AI models before using them in their manuscript. AI models have been known to plagiarise content and to create false content. As such, authors should carry out due diligence to ensure that any AI-generated content in their book is correct, appropriately referenced, and follow the standards as laid out in our Book Authors' Code of Conduct.
+          </p>
+        </div>
 
-  //       <div>
-  //         <p className="font-semibold text-blue-600">AI-generated Images Policy</p>
-  //         <p>
-  //           The fast-moving area of generative AI image creation has resulted in novel legal copyright and research integrity issues. As publishers, we strictly follow existing copyright law and best practices regarding publication ethics. While legal issues relating to AI-generated images and videos remain broadly unresolved, Springer Nature journals and books are unable to permit its use for publication.
-  //         </p>
-  //       </div>
+        <div>
+          <p className="font-semibold text-blue-600">AI-generated Images Policy</p>
+          <p>
+            The fast-moving area of generative AI image creation has resulted in novel legal copyright and research integrity issues. As publishers, we strictly follow existing copyright law and best practices regarding publication ethics. While legal issues relating to AI-generated images and videos remain broadly unresolved, Springer Nature journals and books are unable to permit its use for publication.
+          </p>
+        </div>
 
-  //       <div>
-  //         <span className="text-blue-600 font-semibold underline">Exceptions:</span>
-  //         <ul className="mt-2 space-y-2 list-disc list-inside marker:text-blue-600">
-  //           <li>
-  //             Images/art obtained from agencies that we have contractual relationships with that have created images in a legally acceptable manner.
-  //           </li>
-  //           <li>
-  //             Images and videos that are directly referenced in a piece that is specifically about AI and such cases will be reviewed on a case-by-case basis.
-  //           </li>
-  //           <li>
-  //             The use of generative AI tools developed with specific sets of underlying scientific data that can be attributed, checked and verified for accuracy, provided that ethics, copyright and terms of use restrictions are adhered to.
-  //           </li>
-  //         </ul>
-  //         <p className="mt-4 font-semibold">* All exceptions must be labelled clearly as generated by AI within the image field.</p>
-  //       </div>
+        <div>
+          <span className="text-blue-600 font-semibold underline">Exceptions:</span>
+          <ul className="mt-2 space-y-2 list-disc list-inside marker:text-blue-600">
+            <li>
+              Images/art obtained from agencies that we have contractual relationships with that have created images in a legally acceptable manner.
+            </li>
+            <li>
+              Images and videos that are directly referenced in a piece that is specifically about AI and such cases will be reviewed on a case-by-case basis.
+            </li>
+            <li>
+              The use of generative AI tools developed with specific sets of underlying scientific data that can be attributed, checked and verified for accuracy, provided that ethics, copyright and terms of use restrictions are adhered to.
+            </li>
+          </ul>
+          <p className="mt-4 font-semibold">* All exceptions must be labelled clearly as generated by AI within the image field.</p>
+        </div>
 
-  //       <div>
-  //         <p>
-  //           As we expect things to develop rapidly in this field in the near future, we will review this policy regularly and adapt if necessary.
-  //         </p>
-  //         <p>
-  //           Note: Examples of image types covered by this policy include: video and animation, including video stills; photography; illustration such as scientific diagrams, photo-illustrations and other collages, and editorial illustrations such as drawings, cartoons or other 2D or 3D visual representations. Not included in this policy are text-based and numerical display items, such as: tables, flow charts and other simple graphs that do not contain images. Please note that not all AI tools are generative. The use of non-generative machine learning tools to manipulate, combine or enhance existing images or figures should be disclosed in the relevant caption upon submission to allow a case-by-case review.
-  //         </p>
-  //       </div>
+        <div>
+          <p>
+            As we expect things to develop rapidly in this field in the near future, we will review this policy regularly and adapt if necessary.
+          </p>
+          <p>
+            Note: Examples of image types covered by this policy include: video and animation, including video stills; photography; illustration such as scientific diagrams, photo-illustrations and other collages, and editorial illustrations such as drawings, cartoons or other 2D or 3D visual representations. Not included in this policy are text-based and numerical display items, such as: tables, flow charts and other simple graphs that do not contain images. Please note that not all AI tools are generative. The use of non-generative machine learning tools to manipulate, combine or enhance existing images or figures should be disclosed in the relevant caption upon submission to allow a case-by-case review.
+          </p>
+        </div>
 
-  //       <div>
-  //         <p className="font-semibold text-blue-600">AI-generated Images Guidance</p>
-  //         <p>
-  //           For more information on the inclusion of third party content (i.e. any work that you have not created yourself and which you have reproduced or adapted from other sources) please see <a href="https://www.springernature.com/gp/partners/rights-permissions-third-party-distribution" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-600">Rights, Permissions, Third Party Distribution</a>.
-  //         </p>
-  //       </div>
-  //     </div>
-  //   ),
-  // },
-  // {
-  //   value: "author-s-Kit---instructions-and-templates",
-  //   trigger: "Author's Kit - Instructions and Templates",
-  //   content: (
-  //     <div className="space-y-4 bg-white/3 p-4 rounded-lg border border-white/10">
-  //       <p>Papers must be formatted using the Springer LNICST Authors' Kit.</p>
-  //       <div>
-  //         <p>Instructions and templates are available from <a href="https://link.springer.com/series/558/information-for-authors-and-editors" target="_blank" rel="noopener noreferrer" className="text-blue-600">Springer's LNICST homepage</a>:</p>
-  //         <ul className="space-y-2 list-disc list-inside marker:text-blue-600">
-  //           <li><a href="/templates/EAI-Proceedings-LATEX-Template.zip"
-  //           target="_blank" rel="noopener noreferrer"
-  //           download="EAI-Proceedings-LATEX-Template.zip" className="text-blue-600">EAI-Proceedings-LATEX-Template(zip)</a></li>
-  //           <li><a href="/templates/EAI-Proceedings-DOCX-Template.docx"
-  //           target="_blank" rel="noopener noreferrer" className="text-blue-600">EAI-Proceedings-DOCX-Template</a></li>
-  //         </ul>
-  //         <p className="my-4">
-  //           Please make sure that your paper adheres to the format as specified in the instructions and templates.
-  //         </p>
-  //       </div>
-  //       <div>
-  //         <p>When uploading the camera-ready copy of your paper, please be sure to upload both:</p>
-  //         <ul className="space-y-2 list-disc list-inside marker:text-blue-600">
-  //           <li>a PDF copy of your paper formatted according to the above templates, and</li>
-  //           <li>an archive in .ZIP file, containing <span className="font-semibold">LaTeX or Word</span> source material prepared according to the above guidelines.</li>
-  //         </ul>
-  //       </div>
-  //     </div>
-  //   ),
-  // },
+        <div>
+          <p className="font-semibold text-blue-600">AI-generated Images Guidance</p>
+          <p>
+            For more information on the inclusion of third party content (i.e. any work that you have not created yourself and which you have reproduced or adapted from other sources) please see <a href="https://www.springernature.com/gp/partners/rights-permissions-third-party-distribution" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-600">Rights, Permissions, Third Party Distribution</a>.
+          </p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    value: "author-s-Kit---instructions-and-templates",
+    trigger: "Author's Kit - Instructions and Templates",
+    content: (
+      <div className="space-y-4 bg-white/3 p-4 rounded-lg border border-white/10">
+        <p>Papers must be formatted using the Springer LNICST Authors' Kit.</p>
+        <div>
+          <p>Instructions and templates are available from <a href="https://link.springer.com/series/558/information-for-authors-and-editors" target="_blank" rel="noopener noreferrer" className="text-blue-600">Springer's LNICST homepage</a>:</p>
+          <ul className="space-y-2 list-disc list-inside marker:text-blue-600">
+            <li><a href="/templates/EAI-Proceedings-LATEX-Template.zip"
+            target="_blank" rel="noopener noreferrer"
+            download="EAI-Proceedings-LATEX-Template.zip" className="text-blue-600">EAI-Proceedings-LATEX-Template(zip)</a></li>
+            <li><a href="/templates/EAI-Proceedings-DOCX-Template.docx"
+            target="_blank" rel="noopener noreferrer" className="text-blue-600">EAI-Proceedings-DOCX-Template</a></li>
+          </ul>
+          <p className="my-4">
+            Please make sure that your paper adheres to the format as specified in the instructions and templates.
+          </p>
+        </div>
+        <div>
+          <p>When uploading the camera-ready copy of your paper, please be sure to upload both:</p>
+          <ul className="space-y-2 list-disc list-inside marker:text-blue-600">
+            <li>a PDF copy of your paper formatted according to the above templates, and</li>
+            <li>an archive in .ZIP file, containing <span className="font-semibold">LaTeX or Word</span> source material prepared according to the above guidelines.</li>
+          </ul>
+        </div>
+      </div>
+    ),
+  },
 ];
 
 export default function CallForPapers() {
