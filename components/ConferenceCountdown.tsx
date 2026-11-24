@@ -58,7 +58,7 @@ export default function ConferenceCountdown() {
     const hasEnded = now > CONFERENCE_END;
 
     return (
-        <section className="relative overflow-hidden bg-[#071629] py-16 tablet:py-20">
+        <section className="relative overflow-hidden bg-[#071629] py-4 tablet:py-6">
             {/* Background glow */}
             <div className="pointer-events-none absolute -left-32 top-0 h-72 w-72 rounded-full bg-cyan-500/10 blur-[100px]" />
             <div className="pointer-events-none absolute -right-32 bottom-0 h-72 w-72 rounded-full bg-blue-500/10 blur-[100px]" />
@@ -71,7 +71,7 @@ export default function ConferenceCountdown() {
                         ICETIA 2027
                     </span>
 
-                    <h2 className="mt-6 text-2xl font-bold tracking-tight text-white tablet:text-4xl">
+                    <h2 className="mt-6 text-lg font-bold tracking-tight text-white tablet:text-2xl">
                         {hasEnded
                             ? "Thank You for Being Part of ICETIA 2027"
                             : hasStarted
@@ -79,16 +79,10 @@ export default function ConferenceCountdown() {
                                 : "The Countdown Has Begun"}
                     </h2>
 
-                    <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-slate-300 tablet:text-base">
-                        {hasEnded
-                            ? "Thank you to all our participants, researchers, authors and partners for making this conference memorable."
-                            : "Join researchers, innovators and technology professionals as we explore emerging technologies, innovations and applications."}
-                    </p>
-
                     {!hasEnded && (
                         <>
                             {hasStarted ? (
-                                <div className="mt-10 rounded-2xl border border-cyan-400/20 bg-white/4 px-6 py-8">
+                                <div className="mt-10 rounded-xl border border-cyan-400/20 bg-white/4 px-6 py-8">
                                     <p className="text-lg font-semibold text-cyan-300">
                                         The conference is currently underway!
                                     </p>
@@ -97,11 +91,11 @@ export default function ConferenceCountdown() {
                                     </p>
                                 </div>
                             ) : (
-                                <div className="mt-10 flex items-center justify-center gap-2 tablet:gap-5">
+                                <div className="mt-5 flex items-center justify-center gap-2 tablet:gap-4">
                                     {timeUnits.map((unit, index) => (
                                         <div key={unit.key} className="flex items-center gap-2 tablet:gap-5">
-                                            <div className="group rounded-2xl border border-white/10 bg-white/4 px-1 py-2 lg:px-3 lg:py-6 backdrop-blur-sm transition duration-300 hover:border-cyan-400/40 hover:bg-cyan-400/6 tablet:px-8 tablet:py-8">
-                                                <div className="text-sm lg:text-2xl font-extrabold tabular-nums tracking-tight text-white tablet:text-6xl">
+                                            <div className="group rounded-2xl border border-white/10 bg-white/4 px-1 py-2 lg:px-2 lg:py-4 backdrop-blur-sm transition duration-300 hover:border-cyan-400/40 hover:bg-cyan-400/6 tablet:px-8 tablet:py-1">
+                                                <div className="text-sm lg:text-md font-extrabold tabular-nums tracking-tight text-white tablet:text-lg">
                                                     {String(countdown[unit.key]).padStart(2, "0")}
                                                 </div>
 
@@ -139,7 +133,7 @@ export default function ConferenceCountdown() {
                     {!hasStarted && (
                         <a
                             href="/registration"
-                            className="mt-9 inline-flex items-center justify-center rounded-full bg-cyan-500 px-8 py-3.5 text-sm font-bold text-[#071629] shadow-lg shadow-cyan-500/20 transition hover:-translate-y-1 hover:bg-cyan-400"
+                            className="mt-9 inline-flex items-center justify-center rounded-full bg-cyan-500 px-4 py-3 text-xs font-bold text-[#071629] shadow-lg shadow-cyan-500/20 transition hover:-translate-y-1 hover:bg-cyan-400"
                         >
                             Register for ICETIA 2027
                             <span className="ml-2">→</span>

@@ -38,9 +38,9 @@ export async function POST(request: Request) {
       );
     }
 
-    const siteUrl = "https://icetia.vercel.app";
+    // const siteUrl = "https://icetia.vercel.app";
 
-    // const siteUrl = "https://icetiaconference.org";
+    const siteUrl = "https://icetiaconference.org";
 
     const response = await fetch(
       "https://api.paystack.co/transaction/initialize",

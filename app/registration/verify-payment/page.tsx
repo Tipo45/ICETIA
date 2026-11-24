@@ -1,19 +1,19 @@
 
 import PaymentVerification from "@/components/verify-payment";
 
-export default async function VerifyPayment({searchParams}:{ searchParams: Promise<{ [key: string]: string }>;}) {
+export default async function VerifyPayment({ searchParams }: { searchParams: Promise<{ [key: string]: string }>; }) {
   const { reference, registrationId } = await searchParams;
 
   if (!reference || !registrationId) {
     return <p>Missing payment reference or registration ID.</p>;
   }
 
-  const siteUrl = "https://icetia.vercel.app";
+  // const siteUrl = "https://icetia.vercel.app";
 
 
-// const siteUrl ="https://icetiaconference.org";
+  const siteUrl = "https://icetiaconference.org";
 
- let verificationResult = null;
+  let verificationResult = null;
 
   try {
     const response = await fetch(
@@ -27,11 +27,11 @@ export default async function VerifyPayment({searchParams}:{ searchParams: Promi
   } catch (error) {
     console.error("Payment verification request failed:", error);
   }
- 
+
 
   return (
     <section>
-      <PaymentVerification reference={reference} registrationId={registrationId} initialResult={verificationResult}  />
+      <PaymentVerification reference={reference} registrationId={registrationId} initialResult={verificationResult} />
     </section>
   );
 }

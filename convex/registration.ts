@@ -4,7 +4,7 @@ import { ConvexError } from "convex/values";
 import { Resend } from "@convex-dev/resend";
 import { components } from "./_generated/api";
 import { registrationConfirmationEmail, reminderEmail, ticketEmail, verifyId } from "./emailTemplate";
-import { Id } from "./_generated/dataModel";
+import { Doc, Id } from "./_generated/dataModel";
 import { Email } from "@convex-dev/auth/providers/Email";
 import { Resend as ResendAPI } from "resend";
 import {
@@ -360,9 +360,9 @@ export const getParticipants = query({
             .query("registrations")
             .collect();
 
-        // participants = participants.filter(
-        //     p => p.paymentStatus !== "pending"
-        // );
+        participants = participants.filter(
+            p => p.paymentStatus !== "pending"
+        );
 
         if (args.search) {
             const search = args.search.toLowerCase();
@@ -411,38 +411,41 @@ export const getParticipants = query({
         }
 
         return Promise.all(
-            participants.slice(5, 10).map(async (participant) => {
+            participants
+                .sort((a, b) => b._creationTime - a._creationTime)
+                .slice(0, 5)
+                .map(async (participant) => {
 
-                // Get papers belonging to this participant
-                const papers = await ctx.db
-                    .query("submittedPapers")
-                    .withIndex("by_registration_Id", q =>
-                        q.eq("registrationId", participant._id)
-                    )
-                    .collect();
+                    // Get papers belonging to this participant
+                    const papers = await ctx.db
+                        .query("submittedPapers")
+                        .withIndex("by_registration_Id", q =>
+                            q.eq("registrationId", participant._id)
+                        )
+                        .collect();
 
-                return {
-                    ...participant,
+                    return {
+                        ...participant,
 
-                    registrationPaper: {
-                        paperTrack: participant.paperTrack ?? null,
-                        paperTitle: participant.paperTitle ?? null,
-                        paperFileId: participant.paperFileId ?? null,
-                        paperUrl: participant.paperFileId
-                            ? await ctx.storage.getUrl(participant.paperFileId)
-                            : null,
-                    },
-
-                    submittedPapers: await Promise.all(
-                        papers.map(async (paper) => ({
-                            ...paper,
-                            paperUrl: paper.paperFileId
-                                ? await ctx.storage.getUrl(paper.paperFileId)
+                        registrationPaper: {
+                            paperTrack: participant.paperTrack ?? null,
+                            paperTitle: participant.paperTitle ?? null,
+                            paperFileId: participant.paperFileId ?? null,
+                            paperUrl: participant.paperFileId
+                                ? await ctx.storage.getUrl(participant.paperFileId)
                                 : null,
-                        }))
-                    ),
-                };
-            })
+                        },
+
+                        submittedPapers: await Promise.all(
+                            papers.map(async (paper) => ({
+                                ...paper,
+                                paperUrl: paper.paperFileId
+                                    ? await ctx.storage.getUrl(paper.paperFileId)
+                                    : null,
+                            }))
+                        ),
+                    };
+                })
         );
     },
 });
@@ -466,7 +469,8 @@ export const deleteParticipant = mutation({
             throw new ConvexError("You don't have permission to perform this action.");
         }
 
-        const registration = await ctx.db.get(args.registrationId);
+        const registration: Doc<"registrations"> | null =
+            await ctx.db.get(args.registrationId);
 
         if (!registration) {
             throw new ConvexError("Registration not found.");
@@ -506,7 +510,7 @@ export const deleteParticipant = mutation({
             entityType: "registration",
 
             metadata: {
-                participantName: `${registration.firstName} + ${registration.lastName}`,
+                participantName: `${registration.firstName} ${registration.lastName}`,
                 participantEmail: registration.email,
                 registrationNumber: registration.registrationNumber,
                 deletedPapersCount: papers.length,
@@ -1325,14 +1329,15 @@ export const viewTeamMembers = query({
             );
         }
 
-        return filteredTeam.map((member) => ({
-            id: member._id,
-            name: member.name ?? "Unnamed Member",
-            email: member.email ?? "No email address",
-            role: member.role,
-            status: member.status ?? "active",
-            createdAt: member._creationTime,
-        }));
+        return filteredTeam.sort((a, b) => b._creationTime - a._creationTime)
+            .slice(0, 5).map((member) => ({
+                id: member._id,
+                name: member.name ?? "Unnamed Member",
+                email: member.email ?? "No email address",
+                role: member.role,
+                status: member.status ?? "active",
+                createdAt: member._creationTime,
+            }));
     },
 });
 
@@ -1360,8 +1365,6 @@ export const deleteTeamMember = mutation({
         if (!member || !["editor", "reviewer"].includes(member.role ?? "")) {
             throw new ConvexError("Team member not found.");
         }
-
-        await ctx.db.delete(args.memberId);
 
         await logActivity(ctx, {
             adminId: userId,
@@ -1444,8 +1447,6 @@ export const handleSaveAssignment = mutation({
                     "A registration-level paper cannot have a submitted paper ID."
                 );
             }
-
-
 
             if (
                 !registration.paperTitle ||
@@ -1845,102 +1846,103 @@ export const viewAssignments = query({
             .collect();
 
         const results = await Promise.all(
-            assignments.map(async (assignment) => {
-                // Get registration
-                const registration = await ctx.db.get(
-                    assignment.registrationId
-                );
-
-                if (!registration) {
-                    throw new ConvexError("Cannot find registration");
-                }
-
-                // Resolve paper according to its source
-                let paper = null;
-
-                if (assignment.paperSource === "registration") {
-
-
-                    paper = {
-                        id: assignment.registrationId,
-                        paperSource: "registration" as const,
-                        paperTitle: registration.paperTitle,
-                        paperTrack: registration.paperTrack,
-                        paperUrl: registration?.paperFileId ?? null,
-                    };
-
-                } else if (assignment.submittedPaperId) {
-                    const submittedPaper = await ctx.db.get(
-                        assignment.submittedPaperId
+            assignments.sort((a, b) => b._creationTime - a._creationTime)
+                .slice(0, 5).map(async (assignment) => {
+                    // Get registration
+                    const registration = await ctx.db.get(
+                        assignment.registrationId
                     );
 
-                    if (submittedPaper) {
-                        const paperUrl = submittedPaper.paperFileId
-                            ? await ctx.storage.getUrl(submittedPaper.paperFileId)
-                            : null;
+                    if (!registration) {
+                        throw new ConvexError("Cannot find registration");
+                    }
+
+                    // Resolve paper according to its source
+                    let paper = null;
+
+                    if (assignment.paperSource === "registration") {
+
 
                         paper = {
-                            ...submittedPaper,
-                            id: submittedPaper._id,
-                            paperSource: "call-for-papers" as const,
-                            paperUrl,
+                            id: assignment.registrationId,
+                            paperSource: "registration" as const,
+                            paperTitle: registration.paperTitle,
+                            paperTrack: registration.paperTrack,
+                            paperUrl: registration?.paperFileId ?? null,
                         };
+
+                    } else if (assignment.submittedPaperId) {
+                        const submittedPaper = await ctx.db.get(
+                            assignment.submittedPaperId
+                        );
+
+                        if (submittedPaper) {
+                            const paperUrl = submittedPaper.paperFileId
+                                ? await ctx.storage.getUrl(submittedPaper.paperFileId)
+                                : null;
+
+                            paper = {
+                                ...submittedPaper,
+                                id: submittedPaper._id,
+                                paperSource: "call-for-papers" as const,
+                                paperUrl,
+                            };
+                        }
                     }
-                }
 
-                // Get editor
-                const editor = await ctx.db.get(assignment.editorId);
+                    // Get editor
+                    const editor = await ctx.db.get(assignment.editorId);
 
-                // Get reviewers
-                const reviewers = await Promise.all(
-                    assignment.reviewerIds.map(async (reviewerId) => {
-                        const reviewer = await ctx.db.get(reviewerId);
+                    // Get reviewers
+                    const reviewers = await Promise.all(
+                        assignment.reviewerIds.map(async (reviewerId) => {
+                            const reviewer = await ctx.db.get(reviewerId);
 
-                        return reviewer
+                            return reviewer
+                                ? {
+                                    id: reviewer._id,
+                                    name: reviewer.name ?? "Unnamed Reviewer",
+                                    email: reviewer.email ?? "",
+                                    role: reviewer.role,
+                                }
+                                : null;
+                        })
+                    );
+
+                    // Get assigning admin
+                    const assignedBy = await ctx.db.get(
+                        assignment.assignedBy
+                    );
+
+                    return {
+                        ...assignment,
+
+                        paper,
+
+                        editor: editor
                             ? {
-                                id: reviewer._id,
-                                name: reviewer.name ?? "Unnamed Reviewer",
-                                email: reviewer.email ?? "",
-                                role: reviewer.role,
+                                id: editor._id,
+                                name: editor.name ?? "Unnamed Editor",
+                                email: editor.email ?? "",
+                                role: editor.role,
                             }
-                            : null;
-                    })
-                );
+                            : null,
 
-                // Get assigning admin
-                const assignedBy = await ctx.db.get(
-                    assignment.assignedBy
-                );
+                        reviewers: reviewers.filter(
+                            (reviewer) => reviewer !== null
+                        ),
 
-                return {
-                    ...assignment,
+                        assignedByUser: assignedBy
+                            ? {
+                                id: assignedBy._id,
+                                name: assignedBy.name ?? "Unknown Admin",
+                                email: assignedBy.email ?? "",
+                            }
+                            : null,
 
-                    paper,
-
-                    editor: editor
-                        ? {
-                            id: editor._id,
-                            name: editor.name ?? "Unnamed Editor",
-                            email: editor.email ?? "",
-                            role: editor.role,
-                        }
-                        : null,
-
-                    reviewers: reviewers.filter(
-                        (reviewer) => reviewer !== null
-                    ),
-
-                    assignedByUser: assignedBy
-                        ? {
-                            id: assignedBy._id,
-                            name: assignedBy.name ?? "Unknown Admin",
-                            email: assignedBy.email ?? "",
-                        }
-                        : null,
-
-                    registration,
-                };
-            })
+                        registration,
+                    };
+                })
         );
 
         return results;
