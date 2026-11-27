@@ -46,6 +46,10 @@ const workshopTopics = [
   {
     name: "Digital Transformation for Education, Governance, Health & Industry",
     href: "/conference/for-authors/call-for-workshop-papers/digital-transformation-for-education-governance-health-&-industry"
+  },
+  {
+    name: "Applied Mathematics and Scientific Computing",
+    href: "/conference/for-authors/call-for-workshop-papers/applied-mathematics-&-scientific-computing"
   }
 ];
 

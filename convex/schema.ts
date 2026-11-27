@@ -9,13 +9,11 @@ export default defineSchema({
         name: v.optional(v.string()),
         email: v.optional(v.string()),
         emailVerificationTime: v.optional(v.number()),
-        phone: v.optional(v.string()),
-        phoneVerificationTime: v.optional(v.number()),
-        role: v.optional(v.union(
+        role: v.union(
             v.literal("super-admin"),
             v.literal("editor"),
             v.literal("reviewer")
-        )),
+        ),
         status: v.optional(v.union(
             v.literal("active"),
             v.literal("inactive")
@@ -23,6 +21,27 @@ export default defineSchema({
     }).index("email", ["email"])
         .index("name", ["name"])
         .index("role", ["role"]),
+
+    adminInvitations: defineTable({
+        name: v.string(),
+        email: v.string(),
+
+        role: v.union(
+            v.literal("editor"),
+            v.literal("reviewer")
+        ),
+
+        tokenHash: v.string(),
+
+        expiresAt: v.number(),
+        used: v.boolean(),
+
+        createdAt: v.number(),
+        createdBy: v.id("users"),
+    })
+        .index("by_email", ["email"])
+        .index("by_token_hash", ["tokenHash"]),
+
     registrations: defineTable({
         registrationNumber: v.string(),
         firstName: v.string(),
@@ -212,8 +231,11 @@ export default defineSchema({
         .index("by_status", ["status"]),
 
     paperReviews: defineTable({
-        paperId: v.id("submittedPapers"),
         assignmentId: v.id("paperAssignments"),
+        paperSource: v.union(
+            v.literal("registration"),
+            v.literal("call-for-papers")
+        ),
         reviewerId: v.id("users"),
         status: v.union(
             v.literal("pending"),
@@ -230,11 +252,7 @@ export default defineSchema({
         )),
         comments: v.optional(v.string()),
         confidentialComments: v.optional(v.string()),
-        submittedAt: v.optional(v.number()),
-        createdAt: v.number(),
-    })
-        .index("by_paper", ["paperId"])
-        .index("by_reviewer", ["reviewerId"])
+    }).index("by_reviewer", ["reviewerId"])
         .index("by_assignment", ["assignmentId"]),
 
     editorialDecisions: defineTable({

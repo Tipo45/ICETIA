@@ -158,12 +158,12 @@ export const getEditorialPapers = query({
                     )
                     .unique();
 
-                const reviews = await ctx.db
-                    .query("paperReviews")
-                    .withIndex("by_paper", (q) =>
-                        q.eq("paperId", paper._id)
-                    )
-                    .collect();
+                // const reviews = await ctx.db
+                //     .query("paperReviews")
+                //     .withIndex("by_assignment", (q) =>
+                //         q.eq("assignmentId", assignment?._id)
+                //     )
+                //     .collect();
 
                 const editor = assignment
                     ? await ctx.db.get(assignment.editorId)
@@ -196,7 +196,7 @@ export const getEditorialPapers = query({
 
                     reviewers: reviewers.filter(Boolean),
 
-                    reviews,
+                    // reviews,
                 };
             })
         );
@@ -236,10 +236,6 @@ export const updateReviewStatus = mutation({
             recommendation: args.recommendation,
             comments: args.comments,
             confidentialComments: args.confidentialComments,
-            submittedAt:
-                args.status === "submitted"
-                    ? Date.now()
-                    : review.submittedAt,
         });
 
         // await logActivity(
@@ -259,103 +255,103 @@ export const updateReviewStatus = mutation({
 // EDITORIAL DECISIONS
 // --------------------------------------------------
 
-export const makeEditorialDecision = mutation({
-    args: {
-        paperId: v.id("submittedPapers"),
-        editorId: v.id("users"),
-        decision: v.union(
-            v.literal("accepted"),
-            v.literal("rejected"),
-            v.literal("revision_required")
-        ),
-        comments: v.optional(v.string()),
-    },
+// export const makeEditorialDecision = mutation({
+//     args: {
+//         paperId: v.id("submittedPapers"),
+//         editorId: v.id("users"),
+//         decision: v.union(
+//             v.literal("accepted"),
+//             v.literal("rejected"),
+//             v.literal("revision_required")
+//         ),
+//         comments: v.optional(v.string()),
+//     },
 
-    handler: async (ctx, args) => {
+//     handler: async (ctx, args) => {
 
-        const paper = await ctx.db.get(args.paperId);
+//         const paper = await ctx.db.get(args.paperId);
 
-        if (!paper) {
-            throw new ConvexError("Paper not found.");
-        }
+//         if (!paper) {
+//             throw new ConvexError("Paper not found.");
+//         }
 
-        const editor = await ctx.db.get(args.editorId);
+//         const editor = await ctx.db.get(args.editorId);
 
-        if (!editor || editor.role !== "editor") {
-            throw new ConvexError("Invalid editor.");
-        }
+//         if (!editor || editor.role !== "editor") {
+//             throw new ConvexError("Invalid editor.");
+//         }
 
-        const assignment = await ctx.db
-            .query("paperAssignments")
-            .withIndex("by_submitted_paper", (q) =>
-                q.eq("submittedPaperId", args.paperId)
-            )
-            .unique();
+//         const assignment = await ctx.db
+//             .query("paperAssignments")
+//             .withIndex("by_submitted_paper", (q) =>
+//                 q.eq("submittedPaperId", args.paperId)
+//             )
+//             .unique();
 
-        if (!assignment || assignment.editorId !== args.editorId) {
-            throw new ConvexError(
-                "This editor is not assigned to the paper."
-            );
-        }
+//         if (!assignment || assignment.editorId !== args.editorId) {
+//             throw new ConvexError(
+//                 "This editor is not assigned to the paper."
+//             );
+//         }
 
-        const reviews = await ctx.db
-            .query("paperReviews")
-            .withIndex("by_paper", (q) =>
-                q.eq("paperId", args.paperId)
-            )
-            .collect();
+//         const reviews = await ctx.db
+//             .query("paperReviews")
+//             .withIndex("by_assignment", (q) =>
+//                 q.eq("assignmentId",)
+//             )
+//             .collect();
 
-        if (
-            reviews.length > 0 &&
-            reviews.some((review) => review.status !== "submitted")
-        ) {
-            throw new ConvexError(
-                "All assigned reviewers must submit their reviews before a final decision."
-            );
-        }
+//         if (
+//             reviews.length > 0 &&
+//             reviews.some((review) => review.status !== "submitted")
+//         ) {
+//             throw new ConvexError(
+//                 "All assigned reviewers must submit their reviews before a final decision."
+//             );
+//         }
 
-        await ctx.db.insert("editorialDecisions", {
-            paperId: args.paperId,
-            editorId: args.editorId,
-            decision: args.decision,
-            comments: args.comments,
-            decidedAt: Date.now(),
-        });
+//         await ctx.db.insert("editorialDecisions", {
+//             paperId: args.paperId,
+//             editorId: args.editorId,
+//             decision: args.decision,
+//             comments: args.comments,
+//             decidedAt: Date.now(),
+//         });
 
-        await ctx.db.patch(args.paperId, {
-            status: args.decision,
-        });
+//         await ctx.db.patch(args.paperId, {
+//             status: args.decision,
+//         });
 
-        await ctx.db.patch(assignment._id, {
-            status: "completed",
-        });
+//         await ctx.db.patch(assignment._id, {
+//             status: "completed",
+//         });
 
-        // await logActivity(
-        //     ctx,
-        //     admin._id,
-        //     "EDITORIAL_DECISION",
-        //     `Paper "${paper.paperTitle}" decision: ${args.decision}.`,
-        //     args.paperId,
-        //     args.editorId
-        // );
+//         // await logActivity(
+//         //     ctx,
+//         //     admin._id,
+//         //     "EDITORIAL_DECISION",
+//         //     `Paper "${paper.paperTitle}" decision: ${args.decision}.`,
+//         //     args.paperId,
+//         //     args.editorId
+//         // );
 
-        return { success: true };
-    },
-});
+//         return { success: true };
+//     },
+// });
 
 // --------------------------------------------------
 // ACTIVITY LOG
 // --------------------------------------------------
 
-export const getActivityLogs = query({
-    args: {},
+// export const getActivityLogs = query({
+//     args: {},
 
-    handler: async (ctx, args) => {
+//     handler: async (ctx, args) => {
 
-        return await ctx.db
-            .query("adminActivityLogs")
-            .withIndex("by_created_at")
-            .order("desc")
-            .take(50);
-    },
-});
+//         return await ctx.db
+//             .query("adminActivityLogs")
+//             .withIndex("by_created_at")
+//             .order("desc")
+//             .take(50);
+//     },
+// });

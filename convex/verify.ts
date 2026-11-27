@@ -4,7 +4,7 @@ import QRCode from "qrcode";
 import { v } from "convex/values";
 import { internal } from "./_generated/api";
 import { action, internalAction } from "./_generated/server";
-import { registrationConfirmationEmail, ticketEmail } from "./emailTemplate";
+import { editorInvite, registrationConfirmationEmail, reviewerInvite, ticketEmail } from "./emailTemplate";
 import { createHash } from "node:crypto";
 
 // Verify with Paystack first, then update Convex.
@@ -347,5 +347,66 @@ export const validatePaperSubmissionSession = action({
     );
 
     return { valid };
+  },
+});
+
+export const sendTeamMemberInvitationEmail = internalAction({
+  args: {
+    name: v.string(),
+    email: v.string(),
+    role: v.union(
+      v.literal("editor"),
+      v.literal("reviewer")
+    ),
+  },
+
+  handler: async (ctx, args) => {
+    const roleName =
+      args.role === "editor" ? "Editor" : "Reviewer";
+
+    const apiKey = process.env.RESEND_API_KEY;
+    const fromEmail = process.env.EMAIL_FROM;
+
+    if (!apiKey) {
+      throw new Error("RESEND_API_KEY is not configured.");
+    }
+
+    const response = await fetch(
+      "https://api.resend.com/emails",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: fromEmail,
+          to: [args.email],
+          subject: `Invitation to Join ICETIA 2027 as a ${roleName}`,
+          html: args.role === "editor" ? editorInvite({
+            name: args.name,
+            role: roleName,
+          }) : reviewerInvite({
+            name: args.name,
+            role: roleName,
+          }),
+        }),
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      console.error("Resend invitation error:", result);
+
+      throw new Error(
+        result.message || "Failed to send invitation email."
+      );
+    }
+
+    return {
+      success: true,
+      emailId: result.id,
+    };
   },
 });

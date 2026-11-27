@@ -16,12 +16,8 @@ import { useConvexAuth } from "convex/react"
 import { useRouter } from "next/navigation"
 import VerifySuperAdminOtp from "@/components/admin/VerifySuperAdmin"
 
-interface Props {
-    adminEmail: string;
-}
 
-
-export default function SuperAdminLoginPage({ adminEmail }: Props) {
+export default function SuperAdminLoginPage() {
 
     const router = useRouter();
     const { signIn } = useAuthActions();

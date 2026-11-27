@@ -2,7 +2,7 @@ import { v } from "convex/values";
 import { internalMutation, internalQuery, mutation, query } from "./_generated/server";
 import { ConvexError } from "convex/values";
 import { Resend } from "@convex-dev/resend";
-import { components } from "./_generated/api";
+import { components, internal } from "./_generated/api";
 import { registrationConfirmationEmail, reminderEmail, ticketEmail, verifyId } from "./emailTemplate";
 import { Doc, Id } from "./_generated/dataModel";
 import { Email } from "@convex-dev/auth/providers/Email";
@@ -1119,7 +1119,7 @@ export const handleSaveMember = mutation({
             action: "team_member_created",
             category: "team",
 
-            description: `Created ${args.role} account for ${args.name}.`,
+            description: `Invited ${args.name} for ${args.role}.`,
 
             entityId: String(memberId),
             entityType: "user",
@@ -1130,6 +1130,15 @@ export const handleSaveMember = mutation({
                 memberRole: args.role,
             },
         });
+
+        await ctx.scheduler.runAfter(
+            0,
+            internal.verify.sendTeamMemberInvitationEmail, {
+                name: args.name ?? "",
+                email,
+                role: args.role,
+            }
+        );
 
         return {
             success: true,
@@ -1953,6 +1962,7 @@ export const deleteAssignments = mutation({
     args: {
         assignmentId: v.id("paperAssignments"),
     },
+
     handler: async (ctx, args) => {
         const identity = await ctx.auth.getUserIdentity();
 
@@ -1963,29 +1973,82 @@ export const deleteAssignments = mutation({
         const userId = identity.subject.split("|")[0] as Id<"users">;
         const currentUser = await ctx.db.get(userId);
 
-        if (currentUser?.role !== "super-admin") {
+        if (
+            !currentUser ||
+            currentUser.role !== "super-admin" ||
+            currentUser.status !== "active"
+        ) {
             throw new ConvexError("You don't have permission to perform this action.");
         }
 
         const assignment = await ctx.db.get(args.assignmentId);
 
-        if (currentUser?.role !== "super-admin") {
-            throw new ConvexError("You don't have permission to perform this action.");
-        }
-
         if (!assignment) {
             throw new ConvexError("Assignment not found.");
         }
 
-        await ctx.db.delete(args.assignmentId);
+        // Get the assigned editor
+        const editor = await ctx.db.get(assignment.editorId);
 
+        // Get the paper title and track
+        let title = "Unknown paper";
+        let track = "Unknown track";
 
+        if (assignment.paperSource === "registration") {
+            if (assignment.registrationId) {
+                const registration = await ctx.db.get(assignment.registrationId);
+
+                if (registration) {
+                    title = registration.paperTitle ?? title;
+                    track = registration.paperTrack ?? track;
+                }
+            }
+        } else if (
+            assignment.paperSource === "call-for-papers" &&
+            assignment.submittedPaperId
+        ) {
+            const paper = await ctx.db.get(assignment.submittedPaperId);
+
+            if (paper) {
+                title = paper.paperTitle;
+                track = paper.paperTrack;
+            }
+        }
+
+        await logActivity(ctx, {
+            adminId: userId,
+            actorName: currentUser.name ?? "Unknown user",
+            actorEmail: currentUser.email,
+            actorRole: currentUser.role,
+
+            action: "paper_assignment_deleted",
+            category: "assignment",
+
+            description: `Deleted the editorial assignment for "${title}", assigned to ${editor?.name ?? "Unknown editor"}.`,
+
+            entityId: String(assignment._id),
+            entityType: "assignment",
+
+            metadata: {
+                title,
+                track,
+                editorId: assignment.editorId,
+                editorName: editor?.name ?? "Unknown editor",
+                reviewerIds: assignment.reviewerIds,
+                paperSource: assignment.paperSource,
+            },
+        });
+
+        // Delete the assignment once.
+        await ctx.db.delete(assignment._id);
 
         return {
-            success: true
-        }
-    }
-})
+            success: true,
+            assignmentId: assignment._id,
+            message: "Paper assignment deleted successfully.",
+        };
+    },
+});
 
 export const ResendOTP = Email({
     id: "resend-otp",

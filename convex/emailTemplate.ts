@@ -244,11 +244,7 @@ export function editorInvite({
   role
 }: editorialInviteProps) {
   return `
-  Dear ${name},
-  
-
-On behalf of the Organising Committee of the International Conference on Emerging Technologies, Innovations & Applications (ICETIA 2027), we are pleased to invite you to serve as a ${role} for the maiden edition of our conference.
-
+  Dear ${name || "Colleague"},
 
 On behalf of the Organising Committee of the International Conference on Emerging Technologies, Innovations & Applications (ICETIA 2027), we are pleased to invite you to serve as a ${role} for the maiden edition of our conference.
 
@@ -276,7 +272,8 @@ Kindly confirm your acceptance of this invitation by replying to this email. Upo
 
 We would be honoured to have you join the ICETIA 2027 academic team and contribute to advancing research, innovation, and collaboration.
 
-Kindly confirm your acceptance of this invitation by replying to this email. Upon acceptance, further information regarding your role and access to the conference management platform will be communicated to you.
+Kindly confirm your acceptance of this invitation by setting your password 
+<a href="https://icetia.vercel.app/admin/accept-invitation">here</a>.
 
 Thank you for considering this invitation. We look forward to the possibility of working with you.
 
@@ -295,12 +292,8 @@ export function reviewerInvite({
   role
 }: editorialInviteProps) {
   return `
-  Dear ${name},
+  Dear ${name || "Colleague"},
   
-
-On behalf of the Organising Committee of the International Conference on Emerging Technologies, Innovations & Applications (ICETIA 2027), we are pleased to invite you to serve as a ${role} for the maiden edition of our conference.
-
-
 On behalf of the Organising Committee of the International Conference on Emerging Technologies, Innovations & Applications (ICETIA 2027), we are pleased to invite you to serve as a ${role} for the maiden edition of our conference.
 
 ICETIA 2027 will be held from 28th – 30th April 2027 at the Federal University Otuoke, Bayelsa State, Nigeria, with provisions for on-site and hybrid participation
@@ -321,7 +314,8 @@ As a ${role}, your responsibilities will include:
 
 We would be honoured to have you join the ICETIA 2027 academic team and contribute to advancing research, innovation, and collaboration.
 
-Kindly confirm your acceptance of this invitation by replying to this email. Upon acceptance, further information regarding your role and access to the conference management platform will be communicated to you.
+Kindly confirm your acceptance of this invitation by setting your password 
+<a href="https://icetia.vercel.app/admin/accept-invitation">here</a>.
 
 Thank you for considering this invitation. We look forward to the possibility of working with you.
 
@@ -335,7 +329,7 @@ Website: https://icetiaconference.org
 `
 }
 
-export function editorialAcceptaance({ name, email, role }: editorialAcceptanceProps) {
+export function editorialAcceptance({ name, email, role }: editorialAcceptanceProps) {
   return `
   Dear ${name},
 

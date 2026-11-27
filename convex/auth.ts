@@ -1,5 +1,6 @@
 
 import { convexAuth } from "@convex-dev/auth/server";
+import { Password } from "@convex-dev/auth/providers/Password";
 import { ResendOTP } from "./registration";
 
 export const {
@@ -9,7 +10,7 @@ export const {
     store,
     isAuthenticated,
 } = convexAuth({
-    providers: [ResendOTP],
+    providers: [ResendOTP, Password],
 
     callbacks: {
         async beforeSessionCreation(ctx, { userId }) {
@@ -25,7 +26,7 @@ export const {
                 "reviewers"
             ];
 
-            if (!allowedRoles.includes(user.role)) {
+            if (!user.role || !allowedRoles.includes(user.role)) {
                 throw new Error("You are not authorized to access the admin dashboard.");
             }
 
